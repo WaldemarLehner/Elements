@@ -13,5 +13,13 @@ namespace ComputergrafikSpiel.Test
         {
             Assert.IsTrue(true);
         }
+
+        [DataTestMethod]
+        [DataRow(2,2,4)]
+        [DataRow(0,-1,-1)]
+        public void Add(int x, int y, int result)
+        {
+            Assert.AreEqual(x + y, result);
+        }
     }
 }
