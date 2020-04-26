@@ -1,6 +1,6 @@
 namespace ComputergrafikSpiel.Model
 {
-    public interface IAnimatedTextures : ITextures
+    public interface IAnimatedTexture : ITexture
     {
 
     }
