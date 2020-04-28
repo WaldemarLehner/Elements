@@ -2,5 +2,6 @@
 {
     public interface IView : IRenderer
     {
+        IRenderer Renderer { get; }
     }
 }
