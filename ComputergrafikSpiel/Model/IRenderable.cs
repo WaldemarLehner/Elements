@@ -2,7 +2,7 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.Model
 {
-    public interface IRenderable
+    internal interface IRenderable
     {
         Vector2 Position { get; }
 
