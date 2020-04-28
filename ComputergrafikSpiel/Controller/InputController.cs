@@ -8,9 +8,20 @@ namespace ComputergrafikSpiel.Controller
     {
         private static List<Key> pressedKey;
         private static List<MouseButton> pressedMouse;
+        private static List<AllowedInput> allowedAction;
+
+        private enum AllowedInput
+        {
+            Up,
+            Down,
+            Left,
+            Right,
+            Dash,
+            Attack,
+        }
 
         // Initialize "ControllerListener" -> puts every pressed key/button in a array-list and remove released key/button out of it.
-        // Shall be called once at the beginning
+        // Shall be called in Controller Constructor
         public static void ControllerListener(GameWindow game)
         {
             pressedKey = new List<Key>();
@@ -26,40 +37,37 @@ namespace ComputergrafikSpiel.Controller
         // Shall be called in OnUpdateFrame()
         public void PlayerAction()
         {
-            KeyboardState keyboard = Keyboard.GetState();
-            MouseState mouse = Mouse.GetState();
+            allowedAction = new List<AllowedInput>();
 
-            foreach (Key key in pressedKey)
-            {
-                if (keyboard.IsKeyDown(Key.W).Equals(key))
+            // Compare allowed keys with pressedKey list and add action to allowedAction list
+            if (pressedKey.Contains(OpenTK.Input.Key.W))
                 {
-                    //TODO: Key W
+                    allowedAction.Add(AllowedInput.Up);
                 }
-                else if (keyboard.IsKeyDown(Key.A).Equals(key))
+                else if (pressedKey.Contains(OpenTK.Input.Key.A))
                 {
-                    //TODO: Key A
+                    allowedAction.Add(AllowedInput.Left);
                 }
-                else if (keyboard.IsKeyDown(Key.S).Equals(key))
+                else if (pressedKey.Contains(OpenTK.Input.Key.S))
                 {
-                    //TODO: Key S
+                    allowedAction.Add(AllowedInput.Down);
                 }
-                else if (keyboard.IsKeyDown(Key.D).Equals(key))
+                else if (pressedKey.Contains(OpenTK.Input.Key.D))
                 {
-                    //TODO: Key D
+                    allowedAction.Add(AllowedInput.Right);
                 }
-                else if (keyboard.IsKeyDown(Key.ShiftLeft).Equals(key))
+                else if (pressedKey.Contains(OpenTK.Input.Key.ShiftLeft))
                 {
-                    //TODO: Key ShiftLeft
+                    allowedAction.Add(AllowedInput.Dash);
                 }
-            }
 
-            foreach (MouseButton mouseButton in pressedMouse)
-            {
-                if (mouse.IsButtonDown(MouseButton.Left).Equals(mouseButton))
+            // Compare allowed MouseButton with pressedMouse list and add action to allowedAction list
+            if (pressedMouse.Contains(OpenTK.Input.MouseButton.Left))
                 {
-                    //TODO: Left Mouse Button
+                    allowedAction.Add(AllowedInput.Attack);
                 }
-            }
+
+            // TODO give Interface a IReadOnlyCollection with pressed keys from enum List allowedAction
         }
 
         // Add pressed Key in "List<Key> pressedKey" array-list.
