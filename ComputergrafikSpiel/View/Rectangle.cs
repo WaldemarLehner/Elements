@@ -5,9 +5,9 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.View
 {
-    public struct Rectangle
+    internal struct Rectangle
     {
-        public Rectangle(Vector2 topLeft, Vector2 bottomRight)
+        internal Rectangle(Vector2 topLeft, Vector2 bottomRight)
         {
             this.TopLeft = topLeft;
             this.BottomRight = bottomRight;
@@ -54,7 +54,7 @@ namespace ComputergrafikSpiel.View
             }
         }
 
-        public Rectangle(Vector2 center, float radius)
+        internal Rectangle(Vector2 center, float radius)
         {
             if (radius <= 0)
             {
@@ -67,7 +67,7 @@ namespace ComputergrafikSpiel.View
             this.BottomRight = center + new Vector2(+radius, +radius);
         }
 
-        public Rectangle(IRenderable renderable, bool applyRotation = false)
+        internal Rectangle(IRenderable renderable, bool applyRotation = false)
         {
             this.TopLeft = new Vector2(renderable.Position.X - Math.Abs(renderable.Scale.X), renderable.Position.Y - Math.Abs(renderable.Scale.Y));
             this.TopRight = new Vector2(renderable.Position.X + Math.Abs(renderable.Scale.X), renderable.Position.Y - Math.Abs(renderable.Scale.Y));
@@ -86,7 +86,7 @@ namespace ComputergrafikSpiel.View
             }
         }
 
-        public Rectangle(Vector2 topLeft, float width, float height)
+        internal Rectangle(Vector2 topLeft, float width, float height)
         {
             if (width <= 0)
             {
@@ -104,16 +104,16 @@ namespace ComputergrafikSpiel.View
             this.BottomRight = topLeft + new Vector2(width, height);
         }
 
-        public Vector2 TopLeft { get; private set; }
+        internal Vector2 TopLeft { get; private set; }
 
-        public Vector2 TopRight { get; private set; }
+        internal Vector2 TopRight { get; private set; }
 
-        public Vector2 BottomLeft { get; private set; }
+        internal Vector2 BottomLeft { get; private set; }
 
-        public Vector2 BottomRight { get; private set; }
+        internal Vector2 BottomRight { get; private set; }
 
-        public float Height => Math.Abs(this.TopLeft.Y - this.BottomLeft.Y);
+        internal float Height => Math.Abs(this.TopLeft.Y - this.BottomLeft.Y);
 
-        public float Width => Math.Abs(this.TopLeft.X - this.TopRight.X);
+        internal float Width => Math.Abs(this.TopLeft.X - this.TopRight.X);
     }
 }

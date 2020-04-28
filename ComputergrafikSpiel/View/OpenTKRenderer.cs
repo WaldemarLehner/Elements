@@ -6,9 +6,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View
 {
-    public class OpenTKRenderer : IRenderer
+    internal class OpenTKRenderer : IRenderer
     {
-        public OpenTKRenderer(IReadOnlyCollection<Model.IRenderable> renderables)
+        internal OpenTKRenderer(IReadOnlyCollection<Model.IRenderable> renderables)
         {
             _ = renderables ?? throw new ArgumentNullException(nameof(renderables));
             this.RenderablesCollection = renderables;

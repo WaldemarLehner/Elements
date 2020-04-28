@@ -2,16 +2,16 @@
 
 namespace ComputergrafikSpiel.View
 {
-    public class View : IView
+    internal class View : IView
     {
-        public View(IReadOnlyCollection<Model.IRenderable> renderables)
+        internal View(IReadOnlyCollection<Model.IRenderable> renderables)
         {
             this.OpenTKRenderer = new OpenTKRenderer(renderables);
         }
 
         public IRenderer Renderer { get => this.OpenTKRenderer; }
 
-        public OpenTKRenderer OpenTKRenderer { get; private set; }
+        internal OpenTKRenderer OpenTKRenderer { get; private set; }
 
         public void Render() => this.Renderer.Render();
 
