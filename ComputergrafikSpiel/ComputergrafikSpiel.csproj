@@ -57,6 +57,7 @@
     <Compile Include="Model\IAnimatedTexture.cs" />
     <Compile Include="Model\IRenderable.cs" />
     <Compile Include="Model\ITexture.cs" />  
+    <Compile Include="Model\IUpdateModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
