@@ -1,7 +1,7 @@
 namespace ComputergrafikSpiel.Model
 {
-	interface IUpdateModel
+    internal interface IUpdateModel
     {
-        public void Update(float dTime);
+        void Update(float dTime);
     }
 }
