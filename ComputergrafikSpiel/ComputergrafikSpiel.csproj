@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\PlayerActionEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\IRenderer.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="View\IView.cs" />
     <Compile Include="Model\IAnimatedTexture.cs" />
     <Compile Include="Model\IRenderable.cs" />
-    <Compile Include="Model\ITexture.cs" />  
+    <Compile Include="Model\ITexture.cs" />
     <Compile Include="Model\IUpdateModel.cs" />
   </ItemGroup>
   <ItemGroup>
