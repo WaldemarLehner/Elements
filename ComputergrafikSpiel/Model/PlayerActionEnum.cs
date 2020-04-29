@@ -4,10 +4,10 @@
     {
         public enum PlayerActions
         {
-            Up,
-            Down,
-            Left,
-            Right,
+            MoveUp,
+            MoveDown,
+            MoveLeft,
+            MoveRight,
             Dash,
             Attack,
         }
