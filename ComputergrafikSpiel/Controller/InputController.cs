@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model;
 using OpenTK;
 using OpenTK.Input;
 
@@ -8,9 +9,10 @@ namespace ComputergrafikSpiel.Controller
     {
         private static List<Key> pressedKey;
         private static List<MouseButton> pressedMouse;
-        private static List<AllowedInput> allowedAction;
+        private static List<PlayerActions> pressedAction;
+        private readonly IPlayerControl playerControl;
 
-        private enum AllowedInput
+        public enum PlayerActions
         {
             Up,
             Down,
@@ -37,40 +39,41 @@ namespace ComputergrafikSpiel.Controller
         // Shall be called in OnUpdateFrame()
         public void PlayerAction()
         {
-            allowedAction = new List<AllowedInput>();
+            pressedAction = new List<PlayerActions>();
 
-            // Compare allowed keys with pressedKey list and add action to allowedAction list
+            // Compare allowed keys with pressedKey list and add action to pressedAction list
             if (pressedKey.Contains(OpenTK.Input.Key.W))
                 {
-                    allowedAction.Add(AllowedInput.Up);
+                    pressedAction.Add(PlayerActions.Up);
                 }
                 else if (pressedKey.Contains(OpenTK.Input.Key.A))
                 {
-                    allowedAction.Add(AllowedInput.Left);
+                    pressedAction.Add(PlayerActions.Left);
                 }
                 else if (pressedKey.Contains(OpenTK.Input.Key.S))
                 {
-                    allowedAction.Add(AllowedInput.Down);
+                    pressedAction.Add(PlayerActions.Down);
                 }
                 else if (pressedKey.Contains(OpenTK.Input.Key.D))
                 {
-                    allowedAction.Add(AllowedInput.Right);
+                    pressedAction.Add(PlayerActions.Right);
                 }
                 else if (pressedKey.Contains(OpenTK.Input.Key.ShiftLeft))
                 {
-                    allowedAction.Add(AllowedInput.Dash);
+                    pressedAction.Add(PlayerActions.Dash);
                 }
 
-            // Compare allowed MouseButton with pressedMouse list and add action to allowedAction list
+            // Compare allowed MouseButton with pressedMouse list and add action to pressedAction list
             if (pressedMouse.Contains(OpenTK.Input.MouseButton.Left))
                 {
-                    allowedAction.Add(AllowedInput.Attack);
+                   pressedAction.Add(PlayerActions.Attack);
                 }
 
-            // TODO give Interface a IReadOnlyCollection with pressed keys from enum List allowedAction
+            // Give Interface pressedAction list as IReadOnly
+            this.playerControl.PlayerControl(pressedAction);
         }
 
-        // Add pressed Key in "List<Key> pressedKey" array-list.
+        // Add pressed key in "List<Key> pressedKey" array-list.
         private static void GameKeyDown(object s, KeyboardKeyEventArgs pressed)
         {
             if (!pressedKey.Contains(pressed.Key))
