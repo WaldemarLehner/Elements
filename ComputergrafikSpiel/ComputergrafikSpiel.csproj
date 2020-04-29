@@ -54,6 +54,9 @@
     <Compile Include="View\IResize.cs" />
     <Compile Include="View\IRender.cs" />
     <Compile Include="View\IView.cs" />
+    <Compile Include="Model\IAnimatedTexture.cs" />
+    <Compile Include="Model\IRenderable.cs" />
+    <Compile Include="Model\ITexture.cs" />  
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
