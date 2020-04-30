@@ -10,10 +10,10 @@
             <ModulePaths>
               <Include>
                 <!--<ModulePath>.ComputergrafikSpiel.dll$</ModulePath>-->
-                <ModulePath>ComputergrafikSpiel.exe$</ModulePath>
+                <ModulePath>.*ComputergrafikSpiel.exe$</ModulePath>
               </Include>
               <Exclude>
-                <ModulePath>ComputergrafikSpiel.Test.dll$</ModulePath>
+                <ModulePath>.*ComputergrafikSpiel.Test.dll$</ModulePath>
               </Exclude>
             </ModulePaths>
             
