@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\InputController.cs" />
     <Compile Include="Model\IPlayerControl.cs" />
     <Compile Include="Model\PlayerActionEnum.cs" />
     <Compile Include="Program.cs" />
