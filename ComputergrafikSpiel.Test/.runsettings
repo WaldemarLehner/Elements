@@ -9,11 +9,11 @@
             
             <ModulePaths>
               <Include>
-                <ModulePath>.*\.Test\.dll$</ModulePath>
-                <ModulePath>.*\.Test\.exe$</ModulePath>
+                <!--<ModulePath>.ComputergrafikSpiel.dll$</ModulePath>-->
+                <ModulePath>ComputergrafikSpiel.exe$</ModulePath>
               </Include>
               <Exclude>
-                <ModulePath>.*CPPUnitTestFramework.*</ModulePath>
+                <ModulePath>ComputergrafikSpiel.Test.dll$</ModulePath>
               </Exclude>
             </ModulePaths>
             
