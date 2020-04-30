@@ -66,6 +66,7 @@
     <Compile Include="View\OpenTKRendererTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".runsettings" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
