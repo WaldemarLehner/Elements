@@ -31,7 +31,7 @@ mkdir .\reportgenerator\report      > $null
 # this is %HOMEPATH%, It is needed to access XPlat(cobertura) in the .nuget directory
 $userDir = Get-Variable HOME -ValueOnly
 # run vstest, log result using junit format, collect data using XPlat (cobertura) and export results to "report" 
-dotnet vstest $testProjectDll --ResultsDirectory:".\reportgenerator\report"  --logger:"junit;LogFileName=.\reportgenerator\report\TestResult.xml"  --collect:"XPlat Code Coverage" /testadapterpath:"$userDir\.nuget\packages\coverlet.collector\1.2.0\build\netstandard1.0"
+dotnet vstest $testProjectDll --ResultsDirectory:".\reportgenerator\report"  --logger:"junit;LogFileName=.\reportgenerator\report\TestResult.xml"  --collect:"XPlat Code Coverage" /testadapterpath:"$userDir\.nuget\packages\coverlet.collector\1.2.1\build\netstandard1.0"
 
 "Creating Reports" 
 .\reportgenerator\reportgenerator.exe "-reports:.\reportgenerator\report\*\coverage.cobertura.xml" "-targetdir:.\reportgenerator\output/text" -reportTypes:TextSummary
