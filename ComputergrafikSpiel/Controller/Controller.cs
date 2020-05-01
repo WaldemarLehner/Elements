@@ -1,9 +1,8 @@
-﻿using OpenTK;
-using ComputergrafikSpiel.View;
+﻿using System;
 using ComputergrafikSpiel.Model;
-using System;
+using ComputergrafikSpiel.View;
+using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Controller
 {
@@ -17,13 +16,15 @@ namespace ComputergrafikSpiel.Controller
 
         private IModel IModel { get; set; }
 
+        //private IModel IModel { get; set; }
+
         private InputController InpController { get; set; }
 
-        internal Controller(IView view, IModel model, int width, int height, string title)
+        internal Controller(IView view, IModel imodel, int width, int height, string title)
             : base(width, height, GraphicsMode.Default, title)
         {
             this.View = view;
-            this.Model = model;
+            this.IModel = imodel;
         }
 
         //OnResize soll den Trigger an View weiterleiten
