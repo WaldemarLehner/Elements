@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Controller\InputControllerSettings.cs" />
     <Compile Include="Controller\InputController.cs" />
+    <Compile Include="Controller\Controller.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\IPlayerControl.cs" />
     <Compile Include="Model\PlayerActionEnum.cs" />
