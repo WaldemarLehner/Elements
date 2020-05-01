@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ComputergrafikSpiel.Model;
 using OpenTK.Input;
 
@@ -7,20 +8,20 @@ namespace ComputergrafikSpiel.Controller
     public class InputController
     {
         private IPlayerControl playerControl;
-        private List<PlayerActionEnum.PlayerActions> pressedAction;
+        private readonly List<PlayerActionEnum.PlayerActions> pressedAction;
 
-        private Dictionary<Key, PlayerActionEnum.PlayerActions> KeyboardDefinitions { get; set; }
-
-        private Dictionary<MouseButton, PlayerActionEnum.PlayerActions> MouseDefinitions { get; set; }
-
-        // Initialize Controller Listener => gets a struct of Dictionary
+        // Initialize InputController => gets a struct of Dictionary
         // Shall be called in the Constructor of Controller
-        public void ControllerListener(InputControllerSettings controllersettings)
+        public InputController(InputControllerSettings controllersettings)
         {
             this.MouseDefinitions = controllersettings.MouseAction;
             this.KeyboardDefinitions = controllersettings.KeyboardAction;
             this.playerControl = new Player();
         }
+
+        private Dictionary<Key, PlayerActionEnum.PlayerActions> KeyboardDefinitions { get; set; }
+
+        private Dictionary<MouseButton, PlayerActionEnum.PlayerActions> MouseDefinitions { get; set; }
 
         // Check if pressed key is a allowed player action
         // Shall be called in OnUpdateFrame()
@@ -28,7 +29,6 @@ namespace ComputergrafikSpiel.Controller
         {
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
-
             foreach (var key in this.KeyboardDefinitions.Keys)
             {
                 if (keyboardState.IsKeyDown(key))
