@@ -41,7 +41,7 @@ namespace ComputergrafikSpiel.Controller
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             this.InputController.PlayerAction();
-            this.Model.Update((float)e.Time);   // fragen ob notwendig
+            this.Model.Update((float)e.Time);
             base.OnUpdateFrame(e);
         }
     }
