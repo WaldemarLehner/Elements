@@ -1,56 +1,48 @@
-﻿using OpenTK;
-using ComputergrafikSpiel.View;
+﻿using System;
 using ComputergrafikSpiel.Model;
-using System;
+using ComputergrafikSpiel.View;
+using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Controller
 {
     internal class Controller : GameWindow
-
     {
-
-        private IView View { get; set; }
-
-        private IUpdateModel Model { get; set; }
-
-        private IModel IModel { get; set; }
-
-        private InputController InpController { get; set; }
-
         internal Controller(IView view, IModel model, int width, int height, string title)
-            : base(width, height, GraphicsMode.Default, title)
+           : base(width, height, GraphicsMode.Default, title)
         {
             this.View = view;
             this.Model = model;
+            this.InputController = new InputController(InputControllerSettings.Default);
         }
 
-        //OnResize soll den Trigger an View weiterleiten
+        private IView View { get; set; }
+
+        private IModel Model { get; set; }
+
+        private InputController InputController { get; set; }
+
+        // OnResize soll den Trigger an View weiterleiten
         protected override void OnResize(EventArgs e)
         {
             this.View.Resize(this.Width, this.Height);
             base.OnResize(e);
         }
 
-        //OnRenderFrame soll den Trigger an View weiterleiten
+        // OnRenderFrame soll den Trigger an View weiterleiten
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            //Context.SwapBuffers();
+            // Context.SwapBuffers();
             this.View.Render();
             base.OnRenderFrame(e);
         }
 
-        //OnUpdateFrame soll den Trigger an Model und Input Controller weiterleiten
+        // OnUpdateFrame soll den Trigger an Model und Input Controller weiterleiten
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            this.InpController.PlayerAction();
-            this.Model.Update((float)e.Time);   //fragen ob notwendig
+            this.InputController.PlayerAction();
+            this.Model.Update((float)e.Time);   // fragen ob notwendig
             base.OnUpdateFrame(e);
         }
-
-
-
     }
-
 }
