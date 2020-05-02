@@ -41,7 +41,7 @@ namespace ComputergrafikSpiel.Test.View
             Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => renderer.Resize(width, height));
         }
 
-        [DataTestMethod]
+        [DataTestMethod, Ignore("Thanks to this Function calling the GL.Viewport Method, it has to be disabled for now. GL.<...> Methods require an Active OpenGL Context, such as a GameWindow. Tests using a Running GameWindow have been done, to no success.")]
         [DataRow(30,20)]
         [DataRow(100,300)]
         [DataRow(1920, 1080)]

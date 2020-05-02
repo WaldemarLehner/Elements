@@ -43,6 +43,7 @@ namespace ComputergrafikSpiel.View
             }
 
             this.Screen = new Tuple<int, int>(screenWidth, screenHeight);
+            GL.Viewport(0, 0, screenWidth, screenHeight);
         }
 
         private void RenderRenderable(Model.IRenderable renderable)

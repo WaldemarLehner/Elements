@@ -80,6 +80,7 @@
     <Compile Include="Controller\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Model\IModel.cs" />
+    <Compile Include="Model\Model.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\IPlayerControl.cs" />
     <Compile Include="Model\PlayerActionEnum.cs" />
