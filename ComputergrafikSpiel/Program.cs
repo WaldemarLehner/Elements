@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ComputergrafikSpiel.Model;
+using ComputergrafikSpiel.View;
 
 namespace ComputergrafikSpiel
 {
     public class Program
     {
+        /// <summary>
+        /// This is the entry point. This is where the program starts.
+        /// </summary>
         public static void Main()
         {
-            Console.Write("Hello World.");
-            Console.ReadKey();
+            IModel model = new Model.Model();
+            IView view = new View.View(model.Renderables);
+            Controller.Controller controller = new Controller.Controller(view, model, 200, 200, "Test");
+            controller.Run(60f, 0f);
         }
     }
 }

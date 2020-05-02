@@ -7,7 +7,7 @@ namespace ComputergrafikSpiel.Model
     {
         public void PlayerControl(IReadOnlyList<PlayerActionEnum.PlayerActions> actions)
         {
-            throw new NotImplementedException();
+            // Do nothing
         }
     }
 }

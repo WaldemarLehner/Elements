@@ -8,12 +8,13 @@ namespace ComputergrafikSpiel.Controller
     public class InputController
     {
         private IPlayerControl playerControl;
-        private readonly List<PlayerActionEnum.PlayerActions> pressedAction;
+        private List<PlayerActionEnum.PlayerActions> pressedActions;
 
         // Initialize InputController => gets a struct of Dictionary
         // Shall be called in the Constructor of Controller
         public InputController(InputControllerSettings controllersettings)
         {
+            this.pressedActions = new List<PlayerActionEnum.PlayerActions>();
             this.MouseDefinitions = controllersettings.MouseAction;
             this.KeyboardDefinitions = controllersettings.KeyboardAction;
             this.playerControl = new Player();
@@ -33,7 +34,7 @@ namespace ComputergrafikSpiel.Controller
             {
                 if (keyboardState.IsKeyDown(key))
                 {
-                    this.pressedAction.Add(this.KeyboardDefinitions[key]);
+                    this.pressedActions.Add(this.KeyboardDefinitions[key]);
                 }
             }
 
@@ -41,12 +42,12 @@ namespace ComputergrafikSpiel.Controller
             {
                 if (mouseState.IsButtonDown(button))
                 {
-                    this.pressedAction.Add(this.MouseDefinitions[button]);
+                    this.pressedActions.Add(this.MouseDefinitions[button]);
                 }
             }
 
             // Gives the Player a IReadOnlyList of pressed Actions
-            this.playerControl.PlayerControl(this.pressedAction);
+            this.playerControl.PlayerControl(this.pressedActions);
         }
     }
 }

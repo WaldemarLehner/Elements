@@ -10,6 +10,25 @@ namespace ComputergrafikSpiel.Controller
         public Dictionary<Key, PlayerActionEnum.PlayerActions> KeyboardAction;
         public Dictionary<MouseButton, PlayerActionEnum.PlayerActions> MouseAction;
 
-        public static InputControllerSettings Default => throw new NotImplementedException();
+        public static InputControllerSettings Default => GenerateDefault();
+
+        private static InputControllerSettings GenerateDefault()
+        {
+            return new InputControllerSettings
+            {
+                KeyboardAction = new Dictionary<Key, PlayerActionEnum.PlayerActions>
+                {
+                    [Key.W] = PlayerActionEnum.PlayerActions.MoveUp,
+                    [Key.A] = PlayerActionEnum.PlayerActions.MoveLeft,
+                    [Key.S] = PlayerActionEnum.PlayerActions.MoveDown,
+                    [Key.D] = PlayerActionEnum.PlayerActions.MoveRight,
+                },
+                MouseAction = new Dictionary<MouseButton, PlayerActionEnum.PlayerActions>
+                {
+                    [MouseButton.Left] = PlayerActionEnum.PlayerActions.Attack,
+                    [MouseButton.Right] = PlayerActionEnum.PlayerActions.Dash,
+                },
+            };
+        }
     }
 }

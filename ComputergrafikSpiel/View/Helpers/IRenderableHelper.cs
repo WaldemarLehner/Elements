@@ -76,8 +76,8 @@ namespace ComputergrafikSpiel.View.Helpers
         private static void AddGLPointAsCross(Vector2 location, int screenWidth, int screenHeight, int lineLength = 10)
         {
             GL.Begin(PrimitiveType.Lines);
-            GL.Vertex2(location.X.NormalizeGL(screenWidth), (location.Y - screenWidth).NormalizeGL(screenHeight));
-            GL.Vertex2(location.X.NormalizeGL(screenWidth), (location.Y + screenWidth).NormalizeGL(screenHeight));
+            GL.Vertex2(location.X.NormalizeGL(screenWidth), (location.Y - lineLength).NormalizeGL(screenHeight));
+            GL.Vertex2(location.X.NormalizeGL(screenWidth), (location.Y + lineLength).NormalizeGL(screenHeight));
             GL.End();
 
             GL.Begin(PrimitiveType.Lines);

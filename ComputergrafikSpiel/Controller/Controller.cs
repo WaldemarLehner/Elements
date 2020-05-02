@@ -32,8 +32,8 @@ namespace ComputergrafikSpiel.Controller
         // OnRenderFrame soll den Trigger an View weiterleiten
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            // Context.SwapBuffers();
             this.View.Render();
+            this.SwapBuffers();
             base.OnRenderFrame(e);
         }
 
