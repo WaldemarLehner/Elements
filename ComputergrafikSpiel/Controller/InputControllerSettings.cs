@@ -22,11 +22,12 @@ namespace ComputergrafikSpiel.Controller
                     [Key.A] = PlayerActionEnum.PlayerActions.MoveLeft,
                     [Key.S] = PlayerActionEnum.PlayerActions.MoveDown,
                     [Key.D] = PlayerActionEnum.PlayerActions.MoveRight,
+                    [Key.ShiftLeft] = PlayerActionEnum.PlayerActions.Dash,
+                    [Key.F] = PlayerActionEnum.PlayerActions.Interaction,
                 },
                 MouseAction = new Dictionary<MouseButton, PlayerActionEnum.PlayerActions>
                 {
                     [MouseButton.Left] = PlayerActionEnum.PlayerActions.Attack,
-                    [MouseButton.Right] = PlayerActionEnum.PlayerActions.Dash,
                 },
             };
         }

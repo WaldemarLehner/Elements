@@ -48,6 +48,9 @@ namespace ComputergrafikSpiel.Controller
 
             // Gives the Player a IReadOnlyList of pressed Actions
             this.playerControl.PlayerControl(this.pressedActions);
+
+            // Clear list for next input
+            this.pressedActions.Clear();
         }
     }
 }

@@ -10,6 +10,7 @@
             MoveRight,
             Dash,
             Attack,
+            Interaction,
         }
     }
 }
