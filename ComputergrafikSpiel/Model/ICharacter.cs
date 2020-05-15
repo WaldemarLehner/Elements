@@ -35,28 +35,16 @@ namespace ComputergrafikSpiel.Model
         protected virtual void OnDeath(EventArgs e)
         {
             EventHandler handler = PlayerDeath;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
         }
 
         protected virtual void OnHit(EventArgs e)
         {
             EventHandler handler = PlayerHit;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
         }
 
         protected virtual void OnMove(EventArgs e)
         {
             EventHandler handler = PlayerMove;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
         }
 
     }
