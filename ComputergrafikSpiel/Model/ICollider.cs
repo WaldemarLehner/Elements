@@ -1,4 +1,6 @@
-﻿namespace ComputergrafikSpiel.Model
+﻿using System.Collections.Generic;
+
+namespace ComputergrafikSpiel.Model
 {
     public interface ICollider
     {
