@@ -14,11 +14,11 @@ namespace ComputergrafikSpiel.Model
 
         int AttackSpeed { get; }
 
-        event EventHandler PlayerDeath;
+        event EventHandler CharacterDeath;
 
-        event EventHandler PlayerHit;
+        event EventHandler CharacterHit;
 
-        event EventHandler PlayerMove;
+        event EventHandler CharacterMove;
 
         void OnDeath(EventArgs e);
 
