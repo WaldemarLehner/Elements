@@ -79,8 +79,10 @@
     <Compile Include="Controller\InputControllerSettings.cs" />
     <Compile Include="Controller\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Model\ICollidable.cs" />
     <Compile Include="Model\ICollider.cs" />
     <Compile Include="Model\IModel.cs" />
+    <Compile Include="Model\IPositionable.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\IPlayerControl.cs" />
