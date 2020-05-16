@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Model
 {
-    internal interface ICharacter
+    internal interface ICharacter : IRenderable
     {
         int MaxHealth { get; }
+
+        int CurrentHealth { get; }
 
         int MovementSpeed { get; }
 

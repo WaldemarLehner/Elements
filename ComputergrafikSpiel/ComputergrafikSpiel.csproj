@@ -79,6 +79,8 @@
     <Compile Include="Controller\InputControllerSettings.cs" />
     <Compile Include="Controller\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Model\IInputController.cs" />
+    <Compile Include="Model\IPlayer.cs" />
     <Compile Include="Model\ICharacter.cs" />
     <Compile Include="Model\ICollidable.cs" />
     <Compile Include="Model\ICollider.cs" />

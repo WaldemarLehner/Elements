@@ -8,21 +8,19 @@ namespace ComputergrafikSpiel.Controller
 {
     internal class Controller : GameWindow
     {
+        private IInputController inputController;
+
         internal Controller(IView view, IModel model, int width, int height, string title)
            : base(width, height, GraphicsMode.Default, title)
         {
             this.View = view;
             this.Model = model;
-
-            // TODO: Make IInputController
-            this.InputController = new InputController(InputControllerSettings.Default);
+            this.inputController = new InputController(InputControllerSettings.Default);
         }
 
         private IView View { get; set; }
 
         private IModel Model { get; set; }
-
-        private InputController InputController { get; set; }
 
         // OnResize soll den Trigger an View weiterleiten
         protected override void OnResize(EventArgs e)
@@ -42,8 +40,7 @@ namespace ComputergrafikSpiel.Controller
         // OnUpdateFrame soll den Trigger an Model und Input Controller weiterleiten
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            // TODO: Make IInputController
-            this.InputController.PlayerAction();
+            this.inputController.PlayerAction();
             this.Model.Update((float)e.Time);
             base.OnUpdateFrame(e);
         }

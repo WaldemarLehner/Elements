@@ -5,7 +5,7 @@ using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Controller
 {
-    public class InputController
+    public class InputController : IInputController
     {
         private IPlayerControl playerControl;
         private List<PlayerActionEnum.PlayerActions> pressedActions;

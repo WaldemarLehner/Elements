@@ -7,29 +7,50 @@ namespace ComputergrafikSpiel.Model
     internal class Player : IPlayerControl
     {
         private List<PlayerActionEnum.PlayerActions> playerActionList;
+        private Vector2 directionXY;
 
         public Player()
         {
-            this.currentHealth = this.maxHealth;
+            this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerActionEnum.PlayerActions>();
+            this.Position = new Vector2(50, 50);
         }
 
-        public int movementSpeed = 10;
-        public int defense = 1;
-        public int attackDamage = 1;
-        public int maxHealth = 5;
-        private int currentHealth;
+        // Define Player
+        public event EventHandler CharacterDeath;
+
+        public event EventHandler CharacterHit;
+
+        public event EventHandler CharacterMove;
+
+        public int CurrentHealth { get; set; }
+
+        public int MaxHealth { get; } = 5;
+
+        public int MovementSpeed { get; } = 1;
+
+        public int AttackSpeed { get; } = 1;
+
+        public ITexture Texture { get; } = null;
+
+        public Vector2 Position { get; set; } = Vector2.Zero;
+
+        public Vector2 Scale { get; } = Vector2.One * 20;
+
+        public float Rotation { get; } = 0f;
+
+        public Vector2 RotationAnker { get; } = Vector2.Zero;
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(IReadOnlyList<PlayerActionEnum.PlayerActions> actions)
         {
             foreach (PlayerActionEnum.PlayerActions playerAction in actions)
             {
-                Console.WriteLine(playerAction);
                 if (playerAction == PlayerActionEnum.PlayerActions.MoveUp || playerAction == PlayerActionEnum.PlayerActions.MoveDown || playerAction == PlayerActionEnum.PlayerActions.MoveLeft || playerAction == PlayerActionEnum.PlayerActions.MoveRight)
                 {
                     this.playerActionList.Add(playerAction);
                     this.PlayerMovement(this.playerActionList);
+                    this.OnMove(EventArgs.Empty);
                 }
                 else if (playerAction == PlayerActionEnum.PlayerActions.Attack)
                 {
@@ -44,22 +65,34 @@ namespace ComputergrafikSpiel.Model
             }
         }
 
-        // Shall be called in Enemie OnHit Method => calculate the amount of damage the player gets minus his defense
-        public void PlayerTakingDamage(int damage)
+        public void TakingDamage(int damage)
         {
-            if (damage > this.defense)
+            this.CurrentHealth -= damage;
+            this.OnHit(EventArgs.Empty);
+            if (this.CurrentHealth >= 0)
             {
-                this.currentHealth -= damage - this.defense;
-                if (this.currentHealth <= 0)
-                {
-                    // TODO: Die function (Event)
-                }
+                this.OnDeath(EventArgs.Empty);
             }
+        }
+
+        public void OnDeath(EventArgs e)
+        {
+            this.CharacterDeath?.Invoke(this, e);
+        }
+
+        public void OnHit(EventArgs e)
+        {
+            this.CharacterHit?.Invoke(this, e);
+        }
+
+        public void OnMove(EventArgs e)
+        {
+            this.CharacterMove?.Invoke(this, e);
         }
 
         private void PlayerInteraction()
         {
-            // TODO: Interaction System (Event)
+            // TODO: Interaction System => Need Collider and NPC
         }
 
         // Determines in which direction the player moves
@@ -69,41 +102,33 @@ namespace ComputergrafikSpiel.Model
             {
                 if (direction == PlayerActionEnum.PlayerActions.MoveUp)
                 {
-                    // TODO: Move +Y
+                    this.directionXY.X = 0;
+                    this.directionXY.Y = 1;
                 }
                 else if (direction == PlayerActionEnum.PlayerActions.MoveDown)
                 {
-                    // TODO: Move -Y
+                    this.directionXY.X = 0;
+                    this.directionXY.Y = -1;
                 }
                 else if (direction == PlayerActionEnum.PlayerActions.MoveRight)
                 {
-                    // TODO: Move +X
+                    this.directionXY.X = 1;
+                    this.directionXY.Y = 0;
                 }
                 else if (direction == PlayerActionEnum.PlayerActions.MoveLeft)
                 {
-                    // TODO: Move -X
+                    this.directionXY.X = -1;
+                    this.directionXY.Y = 0;
                 }
             }
+
+            this.Position = this.Position + (this.directionXY * this.MovementSpeed);
+            Console.WriteLine("Player Position: " + this.Position);
         }
 
         private void PlayerAttack()
         {
-            // TODO: Attacking -> Check Collider hits anything (Event)
-        }
-
-        // Just a test => can be deleted
-        public class PlayerRenderTest : IRenderable
-        {
-            public Vector2 Position { get; set; } = Vector2.Zero;
-
-            public Vector2 Scale { get; set; } = Vector2.One * 20;
-
-            public float Rotation { get; set; } = 0f;
-
-            public Vector2 RotationAnker { get; set; } = Vector2.Zero;
-
-            public ITexture Texture { get; set; } = null;
+            // TODO: Attacking => need Collider and NPC
         }
     }
-
 }
