@@ -6,52 +6,24 @@ using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Model
 {
-    internal class ICharacter
+    internal interface ICharacter
     {
+        int MaxHealth { get; }
 
-        private int MaxHealth;
-        //private int MovementSpeed; müssen noch rein
-        //private int AttackSpeed;
+        int MovementSpeed { get; }
 
-        public ICharacter(int passedMaxHealth)
-        {
-            this.MaxHealth = passedMaxHealth;
+        int AttackSpeed { get; }
 
-            if (this.MaxHealth == 0)
-            {
-                /*Falls wir Argumente mit einbinden müssen
-                 * CharacterEventArgs args = new CharacterEventArgs();
-                //args.TimeReached = DateTime.Now;*/
-                OnDeath(EventArgs.Empty);
-            }
-        }
+        event EventHandler PlayerDeath;
 
-        public event EventHandler PlayerDeath;
+        event EventHandler PlayerHit;
 
-        public event EventHandler PlayerHit;
+        event EventHandler PlayerMove;
 
-        public event EventHandler PlayerMove;
+        void OnDeath(EventArgs e);
 
-        protected virtual void OnDeath(EventArgs e)
-        {
-            EventHandler handler = PlayerDeath;
-        }
+        void OnHit(EventArgs e);
 
-        protected virtual void OnHit(EventArgs e)
-        {
-            EventHandler handler = PlayerHit;
-        }
-
-        protected virtual void OnMove(EventArgs e)
-        {
-            EventHandler handler = PlayerMove;
-        }
-
+        void OnMove(EventArgs e);
     }
-
-    /* Nur Falls wir Argumente brauchen (erstmal aber nicht)
-      public class CharacterEventArgs : EventArgs
-    {
-        public DateTime TimeReached { get; set; }
-    }*/
 }
