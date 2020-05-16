@@ -13,6 +13,8 @@ namespace ComputergrafikSpiel.Controller
         {
             this.View = view;
             this.Model = model;
+
+            // TODO: Make IInputController
             this.InputController = new InputController(InputControllerSettings.Default);
         }
 
@@ -40,6 +42,7 @@ namespace ComputergrafikSpiel.Controller
         // OnUpdateFrame soll den Trigger an Model und Input Controller weiterleiten
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
+            // TODO: Make IInputController
             this.InputController.PlayerAction();
             this.Model.Update((float)e.Time);
             base.OnUpdateFrame(e);

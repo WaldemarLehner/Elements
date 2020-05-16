@@ -2,6 +2,7 @@
 {
     public class PlayerActionEnum
     {
+        // Player Actions as Enums => Look @ InputControllerSettings for corresponding keys
         public enum PlayerActions
         {
             MoveUp,
