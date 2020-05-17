@@ -6,13 +6,13 @@ namespace ComputergrafikSpiel.Model
 {
     internal class Player : IPlayerControl
     {
-        private List<PlayerActionEnum.PlayerActions> playerActionList;
+        private List<PlayerEnum.PlayerActions> playerActionList;
         private Vector2 directionXY;
 
         public Player()
         {
             this.CurrentHealth = this.MaxHealth;
-            this.playerActionList = new List<PlayerActionEnum.PlayerActions>();
+            this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
         }
 
@@ -25,11 +25,11 @@ namespace ComputergrafikSpiel.Model
 
         public int CurrentHealth { get; set; }
 
-        public int MaxHealth { get; } = 5;
+        public int MaxHealth { get; set; } = 5;
 
-        public int MovementSpeed { get; } = 1;
+        public int MovementSpeed { get; set; } = 1;
 
-        public int AttackSpeed { get; } = 1;
+        public int Defense { get; set; } = 1;
 
         public ITexture Texture { get; } = null;
 
@@ -42,21 +42,21 @@ namespace ComputergrafikSpiel.Model
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
         // Look wich action was handed over and call corresponding method
-        public void PlayerControl(IReadOnlyList<PlayerActionEnum.PlayerActions> actions)
+        public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
         {
-            foreach (PlayerActionEnum.PlayerActions playerAction in actions)
+            foreach (PlayerEnum.PlayerActions playerAction in actions)
             {
-                if (playerAction == PlayerActionEnum.PlayerActions.MoveUp || playerAction == PlayerActionEnum.PlayerActions.MoveDown || playerAction == PlayerActionEnum.PlayerActions.MoveLeft || playerAction == PlayerActionEnum.PlayerActions.MoveRight)
+                if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
                 {
                     this.playerActionList.Add(playerAction);
                     this.PlayerMovement(this.playerActionList);
                     this.OnMove(EventArgs.Empty);
                 }
-                else if (playerAction == PlayerActionEnum.PlayerActions.Attack)
+                else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
                     this.PlayerAttack();
                 }
-                else if (playerAction == PlayerActionEnum.PlayerActions.Interaction)
+                else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
                     this.PlayerInteraction();
                 }
@@ -67,11 +67,35 @@ namespace ComputergrafikSpiel.Model
 
         public void TakingDamage(int damage)
         {
-            this.CurrentHealth -= damage;
+            if (this.Defense < damage)
+            {
+                damage -= this.Defense;
+                this.CurrentHealth -= damage;
+            }
+
             this.OnHit(EventArgs.Empty);
-            if (this.CurrentHealth >= 0)
+            if (this.CurrentHealth <= 0)
             {
                 this.OnDeath(EventArgs.Empty);
+            }
+        }
+
+        public void IncreasePlayerStats(int incNumber, IReadOnlyList<PlayerEnum.Stats> incstats)
+        {
+            foreach (PlayerEnum.Stats stats in incstats)
+            {
+                if (stats == PlayerEnum.Stats.Defense)
+                {
+                    this.Defense += incNumber;
+                }
+                else if (stats == PlayerEnum.Stats.MaxHealth)
+                {
+                    this.MaxHealth += incNumber;
+                }
+                else if (stats == PlayerEnum.Stats.MovementSpeed)
+                {
+                    this.Defense += incNumber;
+                }
             }
         }
 
@@ -96,26 +120,26 @@ namespace ComputergrafikSpiel.Model
         }
 
         // Determines in which direction the player moves
-        private void PlayerMovement(IReadOnlyList<PlayerActionEnum.PlayerActions> movement)
+        private void PlayerMovement(IReadOnlyList<PlayerEnum.PlayerActions> movement)
         {
-            foreach (PlayerActionEnum.PlayerActions direction in movement)
+            foreach (PlayerEnum.PlayerActions direction in movement)
             {
-                if (direction == PlayerActionEnum.PlayerActions.MoveUp)
+                if (direction == PlayerEnum.PlayerActions.MoveUp)
                 {
                     this.directionXY.X = 0;
                     this.directionXY.Y = 1;
                 }
-                else if (direction == PlayerActionEnum.PlayerActions.MoveDown)
+                else if (direction == PlayerEnum.PlayerActions.MoveDown)
                 {
                     this.directionXY.X = 0;
                     this.directionXY.Y = -1;
                 }
-                else if (direction == PlayerActionEnum.PlayerActions.MoveRight)
+                else if (direction == PlayerEnum.PlayerActions.MoveRight)
                 {
                     this.directionXY.X = 1;
                     this.directionXY.Y = 0;
                 }
-                else if (direction == PlayerActionEnum.PlayerActions.MoveLeft)
+                else if (direction == PlayerEnum.PlayerActions.MoveLeft)
                 {
                     this.directionXY.X = -1;
                     this.directionXY.Y = 0;

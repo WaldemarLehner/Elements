@@ -1,6 +1,6 @@
 ﻿namespace ComputergrafikSpiel.Model
 {
-    public class PlayerActionEnum
+    public class PlayerEnum
     {
         // Player Actions as Enums => Look @ InputControllerSettings for corresponding keys
         public enum PlayerActions
@@ -12,6 +12,13 @@
             Dash,
             Attack,
             Interaction,
+        }
+
+        public enum Stats
+        {
+            MaxHealth,
+            Defense,
+            MovementSpeed,
         }
     }
 }
