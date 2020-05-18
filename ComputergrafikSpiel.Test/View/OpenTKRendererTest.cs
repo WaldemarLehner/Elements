@@ -6,9 +6,6 @@ using OpenTK;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Test.View
 {
@@ -54,7 +51,7 @@ namespace ComputergrafikSpiel.Test.View
             Assert.AreEqual(height, renderer.Screen.Item2);
         }
 
-        private class MockRenderable : Model.IRenderable
+        private class MockRenderable : IRenderable
         {
             public Vector2 Position { get; set; } = Vector2.Zero;
 
