@@ -50,6 +50,7 @@ namespace ComputergrafikSpiel.Model
                 {
                     this.playerActionList.Add(playerAction);
                     this.PlayerMovement(this.playerActionList);
+                    Console.WriteLine("Added Event");
                     this.OnMove(EventArgs.Empty);
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
@@ -67,6 +68,11 @@ namespace ComputergrafikSpiel.Model
 
         public void TakingDamage(int damage)
         {
+            if (damage <= 0)
+            {
+                throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(damage));
+            }
+
             if (this.Defense < damage)
             {
                 damage -= this.Defense;
@@ -82,6 +88,11 @@ namespace ComputergrafikSpiel.Model
 
         public void IncreasePlayerStats(int incNumber, IReadOnlyList<PlayerEnum.Stats> incstats)
         {
+            if (incNumber <= 0)
+            {
+                throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(incNumber));
+            }
+
             foreach (PlayerEnum.Stats stats in incstats)
             {
                 if (stats == PlayerEnum.Stats.Defense)
@@ -94,7 +105,7 @@ namespace ComputergrafikSpiel.Model
                 }
                 else if (stats == PlayerEnum.Stats.MovementSpeed)
                 {
-                    this.Defense += incNumber;
+                    this.MovementSpeed += incNumber;
                 }
             }
         }
@@ -152,7 +163,7 @@ namespace ComputergrafikSpiel.Model
 
         private void PlayerAttack()
         {
-            // TODO: Attacking => need Collider and NPC
+            // TODO: Attacking => need Collider, NPC and Weapon. This Method should call a Attack Method in Weapon class
         }
     }
 }

@@ -54,7 +54,7 @@ namespace ComputergrafikSpiel.Test.View
             Assert.AreEqual(height, renderer.Screen.Item2);
         }
 
-        private class MockRenderable : Model.IRenderable
+        private class MockRenderable : ComputergrafikSpiel.Model.IRenderable
         {
             public Vector2 Position { get; set; } = Vector2.Zero;
 
