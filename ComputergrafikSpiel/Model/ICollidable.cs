@@ -1,6 +1,6 @@
 ﻿namespace ComputergrafikSpiel.Model
 {
-    public interface ICollidable
+    internal interface ICollidable : IPositionable
     {
         ICollider Collider { get; }
     }
