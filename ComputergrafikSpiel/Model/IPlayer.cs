@@ -2,6 +2,5 @@
 {
     internal interface IPlayer : ICharacter
     {
-
     }
 }
