@@ -85,12 +85,14 @@
     <Compile Include="Model\ICollider.cs" />
     <Compile Include="Model\ColliderManager.cs" />
     <Compile Include="Model\IColliderManager.cs" />
+    <Compile Include="Model\IInputController.cs" />
     <Compile Include="Model\IModel.cs" />
+    <Compile Include="Model\IPlayer.cs" />
     <Compile Include="Model\IPositionable.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\IPlayerControl.cs" />
-    <Compile Include="Model\PlayerActionEnum.cs" />
+    <Compile Include="Model\PlayerEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Exceptions\ArgumentNotPositiveIntegerGreaterZeroException.cs" />

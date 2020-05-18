@@ -7,8 +7,8 @@ namespace ComputergrafikSpiel.Controller
 {
     public struct InputControllerSettings
     {
-        public Dictionary<Key, PlayerActionEnum.PlayerActions> KeyboardAction;
-        public Dictionary<MouseButton, PlayerActionEnum.PlayerActions> MouseAction;
+        public Dictionary<Key, PlayerEnum.PlayerActions> KeyboardAction;
+        public Dictionary<MouseButton, PlayerEnum.PlayerActions> MouseAction;
 
         public static InputControllerSettings Default => GenerateDefault();
 
@@ -16,17 +16,18 @@ namespace ComputergrafikSpiel.Controller
         {
             return new InputControllerSettings
             {
-                KeyboardAction = new Dictionary<Key, PlayerActionEnum.PlayerActions>
+                KeyboardAction = new Dictionary<Key, PlayerEnum.PlayerActions>
                 {
-                    [Key.W] = PlayerActionEnum.PlayerActions.MoveUp,
-                    [Key.A] = PlayerActionEnum.PlayerActions.MoveLeft,
-                    [Key.S] = PlayerActionEnum.PlayerActions.MoveDown,
-                    [Key.D] = PlayerActionEnum.PlayerActions.MoveRight,
+                    [Key.W] = PlayerEnum.PlayerActions.MoveUp,
+                    [Key.A] = PlayerEnum.PlayerActions.MoveLeft,
+                    [Key.S] = PlayerEnum.PlayerActions.MoveDown,
+                    [Key.D] = PlayerEnum.PlayerActions.MoveRight,
+                    [Key.ShiftLeft] = PlayerEnum.PlayerActions.Dash,
+                    [Key.F] = PlayerEnum.PlayerActions.Interaction,
                 },
-                MouseAction = new Dictionary<MouseButton, PlayerActionEnum.PlayerActions>
+                MouseAction = new Dictionary<MouseButton, PlayerEnum.PlayerActions>
                 {
-                    [MouseButton.Left] = PlayerActionEnum.PlayerActions.Attack,
-                    [MouseButton.Right] = PlayerActionEnum.PlayerActions.Dash,
+                    [MouseButton.Left] = PlayerEnum.PlayerActions.Attack,
                 },
             };
         }

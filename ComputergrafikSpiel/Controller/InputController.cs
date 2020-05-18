@@ -5,24 +5,24 @@ using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Controller
 {
-    public class InputController
+    public class InputController : IInputController
     {
         private IPlayerControl playerControl;
-        private List<PlayerActionEnum.PlayerActions> pressedActions;
+        private List<PlayerEnum.PlayerActions> pressedActions;
 
         // Initialize InputController => gets a struct of Dictionary
         // Shall be called in the Constructor of Controller
         public InputController(InputControllerSettings controllersettings)
         {
-            this.pressedActions = new List<PlayerActionEnum.PlayerActions>();
+            this.pressedActions = new List<PlayerEnum.PlayerActions>();
             this.MouseDefinitions = controllersettings.MouseAction;
             this.KeyboardDefinitions = controllersettings.KeyboardAction;
             this.playerControl = new Player();
         }
 
-        private Dictionary<Key, PlayerActionEnum.PlayerActions> KeyboardDefinitions { get; set; }
+        private Dictionary<Key, PlayerEnum.PlayerActions> KeyboardDefinitions { get; set; }
 
-        private Dictionary<MouseButton, PlayerActionEnum.PlayerActions> MouseDefinitions { get; set; }
+        private Dictionary<MouseButton, PlayerEnum.PlayerActions> MouseDefinitions { get; set; }
 
         // Check if pressed key is a allowed player action
         // Shall be called in OnUpdateFrame()
@@ -48,6 +48,9 @@ namespace ComputergrafikSpiel.Controller
 
             // Gives the Player a IReadOnlyList of pressed Actions
             this.playerControl.PlayerControl(this.pressedActions);
+
+            // Clear list for next input
+            this.pressedActions.Clear();
         }
     }
 }

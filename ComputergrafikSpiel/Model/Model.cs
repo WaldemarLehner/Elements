@@ -30,7 +30,8 @@ namespace ComputergrafikSpiel.Model
             item.Position = this.CalculateCubePosition(0, Vector2.One * 100, 50);
             item.Rotation = this.timeSum / 20;
             item.RotationAnker = item.Position + (new Vector2((float)Math.Sin(this.timeSum), (float)Math.Cos(this.timeSum)) * 20);
-            Console.WriteLine($"<{item.Position.X},{item.Position.Y}> <{item.RotationAnker.X},{item.RotationAnker.Y}>");
+
+            // Console.WriteLine($"<{item.Position.X},{item.Position.Y}> <{item.RotationAnker.X},{item.RotationAnker.Y}>");
         }
 
         private Vector2 CalculateCubePosition(float timeOffset, Vector2 positionOffset, float radius)
