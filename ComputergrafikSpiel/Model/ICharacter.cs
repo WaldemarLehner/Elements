@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Model
 {
-    internal interface ICharacter : IRenderable
+    internal interface ICharacter
     {
-        int MaxHealth { get; }
-
-        int CurrentHealth { get; }
-
-        int MovementSpeed { get; }
-
-        int Defense { get; }
-
         event EventHandler CharacterDeath;
 
         event EventHandler CharacterHit;
 
         event EventHandler CharacterMove;
+
+        int MaxHealth { get; }
+
+        int MovementSpeed { get; }
+
+        int AttackSpeed { get; }
 
         void OnDeath(EventArgs e);
 

@@ -37,7 +37,7 @@ namespace ComputergrafikSpiel.Test.View.Helpers
             renderable.RenderRectangleDebug(width, height,CallGLFunctions:false);
         }
 
-        private class MockRenderable : ComputergrafikSpiel.Model.IRenderable
+        private class MockRenderable : IRenderable
         {
             public Vector2 Position { get; set; } = Vector2.Zero;
 
