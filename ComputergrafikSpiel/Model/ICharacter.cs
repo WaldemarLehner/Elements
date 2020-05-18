@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel.Model
 
         int MovementSpeed { get; }
 
-        int AttackSpeed { get; }
+        int Defense { get; }
 
         void OnDeath(EventArgs e);
 
