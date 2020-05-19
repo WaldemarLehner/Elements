@@ -1,6 +1,6 @@
 ﻿namespace ComputergrafikSpiel.Model
 {
-    internal interface ICollider : IPositionable
+    internal interface ICollider : ITransformable
     {
         ICollidable CollidableParent { get; }
 

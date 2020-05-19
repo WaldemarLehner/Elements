@@ -2,7 +2,7 @@
 {
     internal interface ITransformable
     {
-        IPositionable Position { get; }
+        ITransformable Position { get; }
 
         IRotatable Rotate { get; }
 
