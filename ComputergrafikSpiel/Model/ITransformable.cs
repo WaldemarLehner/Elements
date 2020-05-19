@@ -1,11 +1,6 @@
 ﻿namespace ComputergrafikSpiel.Model
 {
-    internal interface ITransformable
+    internal interface ITransformable : IPositionable, IRotatable, IScalable
     {
-        ITransformable Position { get; }
-
-        IRotatable Rotate { get; }
-
-        IScalable Scale { get; }
     }
 }
