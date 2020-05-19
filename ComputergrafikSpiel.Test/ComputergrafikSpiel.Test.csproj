@@ -69,6 +69,7 @@
     <Compile Include="View\Helpers\IRenderableHelperTest.cs" />
     <Compile Include="View\Helpers\RotationHelperTest.cs" />
     <Compile Include="View\OpenTKRendererTest.cs" />
+    <Compile Include="Model\PlayerTest.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include=".runsettings" />
