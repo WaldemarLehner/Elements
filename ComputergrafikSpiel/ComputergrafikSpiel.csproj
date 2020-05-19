@@ -89,6 +89,9 @@
     <Compile Include="Model\IModel.cs" />
     <Compile Include="Model\IPlayer.cs" />
     <Compile Include="Model\IPositionable.cs" />
+    <Compile Include="Model\ITransformable.cs" />
+    <Compile Include="Model\IRotatable.cs" />
+    <Compile Include="Model\IScalable.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\IPlayerControl.cs" />
