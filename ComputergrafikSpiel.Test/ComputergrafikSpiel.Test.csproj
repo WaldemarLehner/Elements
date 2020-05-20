@@ -60,16 +60,16 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\InputControllerTest.cs" />
-    <Compile Include="Model\CircleOffsetColliderTest.cs" />
-    <Compile Include="Model\ColliderManagerTest.cs" />
+    <Compile Include="Controller\Input\InputControllerTest.cs" />
+    <Compile Include="Model\Collider\CircleOffsetColliderTest.cs" />
+    <Compile Include="Model\Collider\ColliderManagerTest.cs" />
     <Compile Include="Model\TestHelper\MockRenderable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Helpers\GLNormalizationHelperTest.cs" />
     <Compile Include="View\Helpers\IRenderableHelperTest.cs" />
     <Compile Include="View\Helpers\RotationHelperTest.cs" />
     <Compile Include="View\OpenTKRendererTest.cs" />
-    <Compile Include="Model\PlayerTest.cs"/>
+    <Compile Include="Model\Character\Player\PlayerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".runsettings" />

@@ -1,6 +1,8 @@
-﻿using ComputergrafikSpiel.Model;
-using ComputergrafikSpiel.View;
+﻿using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.View.Renderer.Interfaces;
 using ComputergrafikSpiel.View.Exceptions;
+using ComputergrafikSpiel.View.Renderer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
 using System;

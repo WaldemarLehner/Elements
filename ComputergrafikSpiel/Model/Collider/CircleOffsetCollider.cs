@@ -1,4 +1,5 @@
 ﻿using System;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Collider

@@ -1,4 +1,5 @@
-﻿using ComputergrafikSpiel.Model;
+﻿using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Collider;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Test.Model.TestHelper

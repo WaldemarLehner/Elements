@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ComputergrafikSpiel.Model.EntitySettings;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
@@ -50,7 +52,7 @@ namespace ComputergrafikSpiel.Model
 
             public Vector2 RotationAnker { get; set; } = Vector2.Zero;
 
-            public ITexture Texture { get; set; } = null;
+            public ITexture Texture { get; } = null;
         }
     }
 }

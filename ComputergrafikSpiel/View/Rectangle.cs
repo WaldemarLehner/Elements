@@ -1,5 +1,5 @@
 ﻿using System;
-using ComputergrafikSpiel.Model.EntitySettings;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.View.Helpers;
 using OpenTK;
 

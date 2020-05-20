@@ -1,7 +1,7 @@
 ﻿using System;
-using ComputergrafikSpiel.Model;
-using ComputergrafikSpiel.Model.Character.Player;
-using ComputergrafikSpiel.View;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.View.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -16,7 +16,7 @@ namespace ComputergrafikSpiel.Controller
         {
             this.View = view;
             this.Model = model;
-            this.inputController = new InputController(InputControllerSettings.Default);
+            this.inputController = new Input.InputController(Input.InputControllerSettings.Default);
         }
 
         private IView View { get; set; }

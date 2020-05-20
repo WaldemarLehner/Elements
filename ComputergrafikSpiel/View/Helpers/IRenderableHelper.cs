@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using ComputergrafikSpiel.Model.EntitySettings;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
