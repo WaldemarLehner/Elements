@@ -98,6 +98,12 @@
     <Compile Include="Model\PlayerEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Texture\ITextWriter.cs" />
+    <Compile Include="Texture\IMappedTileFont.cs" />
+    <Compile Include="Texture\ITileTexture.cs" />
+    <Compile Include="Texture\IAnimatedMappedTexture.cs" />
+    <Compile Include="Texture\IAnimation.cs" />
+    <Compile Include="Texture\ITextureLoader.cs" />
     <Compile Include="View\Exceptions\ArgumentNotPositiveIntegerGreaterZeroException.cs" />
     <Compile Include="View\Helpers\GLNormalizationHelper.cs" />
     <Compile Include="View\Helpers\IRenderableHelper.cs" />
@@ -109,7 +115,7 @@
     <Compile Include="View\View.cs" />
     <Compile Include="Model\IAnimatedTexture.cs" />
     <Compile Include="Model\IRenderable.cs" />
-    <Compile Include="Model\ITexture.cs" />
+    <Compile Include="Texture\ITexture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
