@@ -113,7 +113,6 @@
     <Compile Include="View\OpenTKRenderer.cs" />
     <Compile Include="View\Rectangle.cs" />
     <Compile Include="View\View.cs" />
-    <Compile Include="Model\IAnimatedTexture.cs" />
     <Compile Include="Model\IRenderable.cs" />
     <Compile Include="Texture\ITexture.cs" />
   </ItemGroup>
