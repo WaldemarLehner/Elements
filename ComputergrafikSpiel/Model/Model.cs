@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ComputergrafikSpiel.Model.EntitySettings;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model

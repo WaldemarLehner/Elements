@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenTK;
 
-namespace ComputergrafikSpiel.Model
+namespace ComputergrafikSpiel.Model.Collider
 {
     internal class CircleOffsetCollider : ICollider
     {

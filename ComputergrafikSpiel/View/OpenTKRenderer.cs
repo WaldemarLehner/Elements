@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using ComputergrafikSpiel.Model.EntitySettings;
 using ComputergrafikSpiel.View.Helpers;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View
 {
     internal class OpenTKRenderer : IRenderer
     {
-        internal OpenTKRenderer(IReadOnlyCollection<Model.IRenderable> renderables)
+        internal OpenTKRenderer(IReadOnlyCollection<IRenderable> renderables)
         {
             _ = renderables ?? throw new ArgumentNullException(nameof(renderables));
             this.RenderablesCollection = renderables;
@@ -16,7 +16,7 @@ namespace ComputergrafikSpiel.View
 
         public Tuple<int, int> Screen { get; private set; }
 
-        private IReadOnlyCollection<Model.IRenderable> RenderablesCollection { get; }
+        private IReadOnlyCollection<IRenderable> RenderablesCollection { get; }
 
         public void Render()
         {
@@ -46,7 +46,7 @@ namespace ComputergrafikSpiel.View
             GL.Viewport(0, 0, screenWidth, screenHeight);
         }
 
-        private void RenderRenderable(Model.IRenderable renderable)
+        private void RenderRenderable(IRenderable renderable)
         {
             renderable.RenderRectangleDebug(
                 this.Screen.Item1,

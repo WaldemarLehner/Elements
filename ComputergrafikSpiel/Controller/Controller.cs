@@ -1,5 +1,6 @@
 ﻿using System;
 using ComputergrafikSpiel.Model;
+using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.View;
 using OpenTK;
 using OpenTK.Graphics;

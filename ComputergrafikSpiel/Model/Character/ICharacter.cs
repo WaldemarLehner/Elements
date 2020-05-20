@@ -1,8 +1,9 @@
 ﻿using System;
+using ComputergrafikSpiel.Model.EntitySettings;
 
-namespace ComputergrafikSpiel.Model
+namespace ComputergrafikSpiel.Model.Character
 {
-    internal interface ICharacter
+    internal interface ICharacter : IRenderable
     {
         event EventHandler CharacterDeath;
 

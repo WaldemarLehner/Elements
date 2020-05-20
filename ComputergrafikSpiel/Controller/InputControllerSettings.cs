@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ComputergrafikSpiel.Model;
+using ComputergrafikSpiel.Model.Character.Player;
 using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Controller

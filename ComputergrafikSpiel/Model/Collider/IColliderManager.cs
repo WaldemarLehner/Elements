@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ComputergrafikSpiel.Model
+namespace ComputergrafikSpiel.Model.Collider
 {
     internal interface IColliderManager
     {

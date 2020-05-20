@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using ComputergrafikSpiel.Model.EntitySettings;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -18,7 +19,7 @@ namespace ComputergrafikSpiel.View.Helpers
         /// <param name="drawPosition">Should the position Anker be drawn.</param>
         /// <param name="drawGhostBeforeTransformation">Should an outline be drawn of the object before transformation.</param>
         /// <param name="CallGLFunctions">This parameter is for unit tests. It can be set to false so GL.[] functions are no longer called.</param>
-        internal static void RenderRectangleDebug(this Model.IRenderable renderable, int screenWidth, int screenHeight, Color? drawingColor = null, bool drawAnker = false, bool drawPosition = false, bool drawGhostBeforeTransformation = false, bool CallGLFunctions = true)
+        internal static void RenderRectangleDebug(this IRenderable renderable, int screenWidth, int screenHeight, Color? drawingColor = null, bool drawAnker = false, bool drawPosition = false, bool drawGhostBeforeTransformation = false, bool CallGLFunctions = true)
         {
             _ = renderable ?? throw new ArgumentNullException(nameof(renderable));
             if (screenHeight <= 0)

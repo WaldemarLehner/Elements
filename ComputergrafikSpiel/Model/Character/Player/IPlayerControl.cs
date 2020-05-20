@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ComputergrafikSpiel.Model
+namespace ComputergrafikSpiel.Model.Character.Player
 {
     internal interface IPlayerControl : IPlayer
     {

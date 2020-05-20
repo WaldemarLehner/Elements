@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.EntitySettings;
 
 namespace ComputergrafikSpiel.Model
 {

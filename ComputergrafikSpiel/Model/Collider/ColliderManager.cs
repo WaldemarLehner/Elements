@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenTK;
 
-namespace ComputergrafikSpiel.Model
+namespace ComputergrafikSpiel.Model.Collider
 {
     /// <summary>
     /// The Collider Manager stores a reference to all collidable entities and world tiles. Each Scene should have a collider manager.

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using ComputergrafikSpiel.Model.EntitySettings;
 using OpenTK;
 
-namespace ComputergrafikSpiel.Model
+namespace ComputergrafikSpiel.Model.Character.Player
 {
     internal class Player : IPlayerControl
     {
@@ -31,8 +32,6 @@ namespace ComputergrafikSpiel.Model
 
         public int Defense { get; set; } = 1;
 
-        public ITexture Texture { get; } = null;
-
         public Vector2 Position { get; set; } = Vector2.Zero;
 
         public Vector2 Scale { get; } = Vector2.One * 20;
@@ -40,6 +39,8 @@ namespace ComputergrafikSpiel.Model
         public float Rotation { get; } = 0f;
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
+
+        ITexture IRenderable.Texture { get; } = null;
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
