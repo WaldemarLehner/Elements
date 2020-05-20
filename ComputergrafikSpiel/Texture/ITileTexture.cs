@@ -5,9 +5,9 @@ namespace ComputergrafikSpiel.Texture
 {
     internal interface ITileTexture : ITexture
     {
-        int xRows { get; }
+        int XRows { get; }
 
-        int yRows { get; }
+        int YRows { get; }
 
         Tuple<int, int> Pointer { get; }
     }

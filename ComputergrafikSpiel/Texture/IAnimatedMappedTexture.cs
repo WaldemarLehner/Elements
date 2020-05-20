@@ -2,7 +2,7 @@
 
 namespace ComputergrafikSpiel.Texture
 {
-    internal interface IAnimatedMappedTexture<T> : IAnimation, ITileTexture
+    internal interface IAnimatedMappedTexture<T> : ITileTexture
     {
         IDictionary<T, IAnimation> MappedAnimations { get; }
 
