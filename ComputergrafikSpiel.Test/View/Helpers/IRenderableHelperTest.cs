@@ -1,4 +1,5 @@
-﻿using ComputergrafikSpiel.Model;
+﻿using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
 using System.Diagnostics.CodeAnalysis;

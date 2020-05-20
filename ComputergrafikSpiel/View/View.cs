@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.View.Interfaces;
+using ComputergrafikSpiel.View.Renderer;
+using ComputergrafikSpiel.View.Renderer.Interfaces;
 
 namespace ComputergrafikSpiel.View
 {
     internal class View : IView
     {
-        internal View(IReadOnlyCollection<Model.IRenderable> renderables)
+        internal View(IReadOnlyCollection<IRenderable> renderables)
         {
             this.OpenTKRenderer = new OpenTKRenderer(renderables);
         }

@@ -1,5 +1,5 @@
-﻿using ComputergrafikSpiel.Model;
-using ComputergrafikSpiel.View;
+﻿using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.View.Interfaces;
 
 namespace ComputergrafikSpiel
 {
