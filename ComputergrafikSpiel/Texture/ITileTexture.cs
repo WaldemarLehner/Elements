@@ -1,5 +1,5 @@
-﻿using ComputergrafikSpiel.Model;
-using System;
+﻿using System;
+using ComputergrafikSpiel.Model;
 
 namespace ComputergrafikSpiel.Texture
 {

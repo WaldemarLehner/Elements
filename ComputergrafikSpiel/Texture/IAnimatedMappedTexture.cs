@@ -12,9 +12,9 @@ namespace ComputergrafikSpiel.Texture
 
         Queue<IAnimation> AnimationQueue { get; }
 
-        void QueueAnimation(T);
+        void QueueAnimation(T animation);
 
-        void PlayAnimation(T);
+        void PlayAnimation(T animation);
 
         int GetQueueLength();
     }
