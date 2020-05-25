@@ -8,9 +8,9 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
     {
         internal Animation(int firstFrame, int frameCount, float framesPerSecond)
         {
-            if (firstFrame <= 0)
+            if (firstFrame < 0)
             {
-                throw new ArgumentNotPositiveIntegerGreaterZeroException(nameof(firstFrame));
+                throw new ArgumentOutOfRangeException(nameof(firstFrame), "First frame needs to be positive or zero");
             }
 
             if (frameCount <= 0)
@@ -33,5 +33,16 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
         public int FrameCount { get; private set; }
 
         public float FramesPerSecond { get; private set; }
+
+        public int GetCurrentFrameIndex(float playTime)
+        {
+            if (playTime < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(playTime), "playTime needs to be positive or zero");
+            }
+
+            // playtime * seconds per frame => frames, round down (cast to int)
+            return this.FirstFrameIndex + (int)(playTime * this.FramesPerSecond);
+        }
     }
 }

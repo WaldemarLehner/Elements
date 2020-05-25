@@ -7,7 +7,6 @@ using OpenTK;
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
     internal class AnimatedTexture<T> : IAnimatedMappedTexture<T>
-        where T : Enum // Constraint erlaubt nur Enums für T
     {
         public AnimatedTexture(ITextureContructor textureContructor, ITileTextureContructor tiletextureContructor, ICollection<Tuple<T, IAnimation>> animations)
         {
@@ -59,7 +58,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public int YRows { get; private set; }
 
-        public Tuple<int, int> Pointer { get; private set; }
+        public Tuple<int, int> Pointer => (this.CurrentAnimation == null) ? null : this.GetPointer();
 
         public int Width { get; private set; }
 
@@ -67,9 +66,16 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public string FilePath { get; private set; }
 
+        /// <summary>
+        /// Gets the Texture Coordinates for the current frame to be drawn. Order is: TL, TR, BR, BL.
+        /// </summary>
         public Tuple<Vector2, Vector2, Vector2, Vector2> TextureCoordinates => this.GetCurrentTextureCoordinates();
 
-        private float AnimationDuration { get; set; }
+        /// <summary>
+        /// Gets or sets the current Animation's playtime. If 0, no animation is played and the current frame is frozen.
+        /// If Queue has values, these will immediately be drawn.
+        /// </summary>
+        private float AnimationDuration { get; set; } = 0f;
 
         /// <summary>
         /// Add Animation to queue. It will be played once it's place in the queue comes up.
@@ -86,25 +92,45 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
         /// <param name="animation">Key describing the Animation.</param>
         public void PlayAnimation(T animation)
         {
+            if (!this.Animations.ContainsKey(animation))
+            {
+                throw new ArgumentException(nameof(animation), "The given animation cannot be found.");
+            }
+
             this.AnimationQueue.Clear();
             this.CurrentAnimationPlayTime = 0;
             this.CurrentAnimation = this.Animations[animation];
+            this.AnimationDuration = this.CurrentAnimation.FrameCount / this.CurrentAnimation.FramesPerSecond;
+            this.Update(0);
         }
 
         public int GetQueueLength() => this.AnimationQueue.Count;
 
         public void Update(float dTime)
         {
-            if (dTime <= 0)
+            if (dTime < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(dTime), "dTime needs to be a positive float");
+                throw new ArgumentOutOfRangeException(nameof(dTime), "dTime needs to be a positive float or Zero");
+            }
+
+            if (this.AnimationDuration == 0)
+            {
+                // This is a Fixed frame. If the queue is empty, return, else enqueue the new animation.
+                if (this.GetQueueLength() == 0)
+                {
+                    return;
+                }
+
+                this.CurrentAnimation = this.AnimationQueue.Dequeue();
+                this.CurrentAnimationPlayTime = 0;
+                this.AnimationDuration = this.CurrentAnimation.FrameCount / this.CurrentAnimation.FramesPerSecond;
             }
 
             this.CurrentAnimationPlayTime += dTime;
             if (this.CurrentAnimationPlayTime > this.AnimationDuration)
             {
                 // The Animation's duration is exceeded: Time to stop this animation and queue the next
-                this.CurrentAnimationPlayTime = 0;
+                this.CurrentAnimationPlayTime -= this.AnimationDuration;
                 if (this.AnimationQueue.Count > 0)
                 {
                     this.CurrentAnimation = this.AnimationQueue.Dequeue();
@@ -116,44 +142,48 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
                     this.AnimationDuration = float.MaxValue;
                 }
             }
-
-            this.UpdatePointer();
         }
 
         private Tuple<Vector2, Vector2, Vector2, Vector2> GetCurrentTextureCoordinates()
         {
             var tile = this.Pointer;
 
-            var tileWidth = this.Width / this.XRows;
-            var tileHeight = this.Height / this.YRows;
-
             // Tuple: TopLeft, TopRight, BottomRight, BottomLeft coordinated range from 0 to 1.
-            float bottom = ((this.YRows - tile.Item2 - 1) / this.YRows) * tileHeight; // Flipping Y axis
-            float top = bottom + tileHeight;
             float left = tile.Item1 / this.XRows;
-            float right = left + tileWidth;
+            float right = left + (1 / (float)this.XRows);
 
-            Vector2 tl = new Vector2(top, left);
-            Vector2 tr = new Vector2(top, right);
-            Vector2 bl = new Vector2(bottom, left);
-            Vector2 br = new Vector2(bottom, right);
+            float bottom = (this.YRows - tile.Item2 - 1) / (float)this.YRows;
+            float top = bottom + (1 / (float)this.YRows);
+
+            Vector2 tl = new Vector2(left, top);
+            Vector2 tr = new Vector2(right, top);
+            Vector2 bl = new Vector2(left, bottom);
+            Vector2 br = new Vector2(right, bottom);
 
             return new Tuple<Vector2, Vector2, Vector2, Vector2>(tl, tr, br, bl);
         }
 
         private int GetCurrentTileIndex()
         {
-            var current = this.CurrentAnimation;
-            var framesPlayed = (int)(this.CurrentAnimationPlayTime / current.FramesPerSecond); // FramesPlayed is always positive, hence one can safely cast to int without Math.Floor()
-            return current.FirstFrameIndex + framesPlayed;
+            if (this.CurrentAnimation == null)
+            {
+                return -1;
+            }
+
+            return this.CurrentAnimation.GetCurrentFrameIndex(this.CurrentAnimationPlayTime);
         }
 
-        private void UpdatePointer()
+        private Tuple<int, int> GetPointer()
         {
             var currentIndex = this.GetCurrentTileIndex();
-            int yRow = currentIndex / this.YRows;
-            int xRow = currentIndex % this.XRows;
-            this.Pointer = new Tuple<int, int>(xRow, yRow);
+            if (currentIndex == -1)
+            {
+                return null;
+            }
+
+            int x = currentIndex % this.YRows;
+            int y = currentIndex / this.YRows;
+            return new Tuple<int, int>(x, y);
         }
     }
 }

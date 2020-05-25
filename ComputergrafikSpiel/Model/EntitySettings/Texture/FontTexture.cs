@@ -12,7 +12,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
         {
             _ = textureContructor ?? throw new ArgumentNullException(nameof(textureContructor));
             _ = tileTextureContructor ?? throw new ArgumentNullException(nameof(tileTextureContructor));
-
+            _ = mappings ?? throw new ArgumentNullException(nameof(mappings));
             this.Width = textureContructor.Width;
             this.Height = textureContructor.Height;
             this.FilePath = textureContructor.FilePath;
@@ -68,19 +68,17 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
         {
             var tile = this.Pointer;
 
-            var tileWidth = this.Width / this.XRows;
-            var tileHeight = this.Height / this.YRows;
-
             // Tuple: TopLeft, TopRight, BottomRight, BottomLeft coordinated range from 0 to 1.
-            float bottom = ((this.YRows - tile.Item2 - 1) / this.YRows) * tileHeight; // Flipping Y axis
-            float top = bottom + tileHeight;
             float left = tile.Item1 / this.XRows;
-            float right = left + tileWidth;
+            float right = left + (1 / (float)this.XRows);
 
-            Vector2 tl = new Vector2(top, left);
-            Vector2 tr = new Vector2(top, right);
-            Vector2 bl = new Vector2(bottom, left);
-            Vector2 br = new Vector2(bottom, right);
+            float bottom = (this.YRows - tile.Item2 - 1) / (float)this.YRows;
+            float top = bottom + (1 / (float)this.YRows);
+
+            Vector2 tl = new Vector2(left, top);
+            Vector2 tr = new Vector2(right, top);
+            Vector2 bl = new Vector2(left, bottom);
+            Vector2 br = new Vector2(right, bottom);
 
             return new Tuple<Vector2, Vector2, Vector2, Vector2>(tl, tr, br, bl);
         }
