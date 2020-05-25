@@ -99,6 +99,7 @@
     <Compile Include="Model\EntitySettings\Interfaces\ITransformable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRotatable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IScalable.cs" />
+    <Compile Include="Model\Interfaces\IUpdateable.cs" />
     <Compile Include="Model\Model.cs" />
     <Compile Include="Model\Character\Player\PlayerHandler.cs" />
     <Compile Include="Model\Character\Player\Interfaces\IPlayerControl.cs" />
