@@ -52,6 +52,10 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             return this.GetTileIndexFromIndex(this.MappedPositions[key]);
         }
 
+        public void Update(float dTime)
+        {
+        }
+
         public void UpdatePointer(char key)
         {
             this.Pointer = this.GetTileOfKey(key);
