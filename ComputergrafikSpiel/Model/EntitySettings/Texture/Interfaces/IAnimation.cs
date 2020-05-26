@@ -7,5 +7,7 @@
         int FrameCount { get; }
 
         float FramesPerSecond { get; }
+
+        int GetCurrentFrameIndex(float playTime);
     }
 }
