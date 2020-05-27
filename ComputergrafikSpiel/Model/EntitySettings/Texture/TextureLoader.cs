@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using Image = SixLabors.ImageSharp.Image;
 
@@ -6,17 +7,14 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
     internal class TextureLoader : ITextureLoader
     {
+        private readonly Texture texture = new Texture();
+
         public ITexture LoadTexture(string pathOrIdentifier)
         {
-            // Fehler abfangen (leerer Pfad bzw. falscher)
+            // Leerer Pfad bzw. (String)
             if (string.IsNullOrEmpty(pathOrIdentifier))
             {
-                throw new EmptyIdentifierException(nameof(pathOrIdentifier), "The file path cannot be empty!");
-            }
-
-            if (pathOrIdentifier.StartsWith(" ") || pathOrIdentifier.EndsWith(" "))
-            {
-                throw new SpaceBarIdentifierException(nameof(pathOrIdentifier), "Don`t use spacebars at the beginning or at the end!");
+                throw new ArgumentNullException();
             }
 
             // Pfad schon richtig angegeben
@@ -24,18 +22,19 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             {
                 if (File.Exists(pathOrIdentifier) == false)
                 {
-                    throw new PathDoesNotExistException(nameof(pathOrIdentifier), "The File does not exist!");
+                    throw new FileNotFoundException();
                 }
 
+                pathOrIdentifier = pathOrIdentifier.Trim();
                 Image currentTexture = Image.Load(pathOrIdentifier);
 
-                return ITexture;
+                return this.texture;
             }
 
-            // Nur Texturename angegeben BSP: character.png
+            // Wenn falscher Pfad eingegeben
             else
             {
-                throw new InvalidPathException(nameof(pathOrIdentifier), "Wrong path to file.");
+                throw new FileNotFoundException();
             }
         }
     }
