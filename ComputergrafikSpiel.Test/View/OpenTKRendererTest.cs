@@ -33,8 +33,8 @@ namespace ComputergrafikSpiel.Test.View
 
         [DataTestMethod()]
         [DataRow(-1,1920)]
-        [DataRow(0, 1920)]
-        [DataRow(2, 0)]
+        //[DataRow(0, 1920)]  -> Zero no longer throws exception, but deactivates the renderer. This is to prevent from Crashes when minimized
+        //[DataRow(2, 0)]
         [DataRow(40,-1)]
         public void AssertThatInvalidScreenDimensionsThrowArgumentNotPositiveIntegerGreaterZeroException(int width, int height)
         {
