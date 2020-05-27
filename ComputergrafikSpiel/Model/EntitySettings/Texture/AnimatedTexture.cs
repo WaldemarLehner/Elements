@@ -69,7 +69,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
         /// <summary>
         /// Gets the Texture Coordinates for the current frame to be drawn. Order is: TL, TR, BR, BL.
         /// </summary>
-        public Tuple<Vector2, Vector2, Vector2, Vector2> TextureCoordinates => this.GetCurrentTextureCoordinates();
+        public (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) TextureCoordinates => this.GetCurrentTextureCoordinates();
 
         /// <summary>
         /// Gets or sets the current Animation's playtime. If 0, no animation is played and the current frame is frozen.
@@ -144,7 +144,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             }
         }
 
-        private Tuple<Vector2, Vector2, Vector2, Vector2> GetCurrentTextureCoordinates()
+        private (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) GetCurrentTextureCoordinates()
         {
             var tile = this.Pointer;
 
@@ -160,7 +160,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             Vector2 bl = new Vector2(left, bottom);
             Vector2 br = new Vector2(right, bottom);
 
-            return new Tuple<Vector2, Vector2, Vector2, Vector2>(tl, tr, br, bl);
+            return (tl, tr, br, bl);
         }
 
         private int GetCurrentTileIndex()

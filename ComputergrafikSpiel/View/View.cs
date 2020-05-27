@@ -10,7 +10,7 @@ namespace ComputergrafikSpiel.View
     {
         internal View(IReadOnlyCollection<IRenderable> renderables)
         {
-            this.OpenTKRenderer = new OpenTKRenderer(renderables);
+            this.OpenTKRenderer = new OpenTKRenderer(renderables, new Camera(100, 0, 0, 100));
         }
 
         public IRenderer Renderer { get => this.OpenTKRenderer; }

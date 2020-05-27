@@ -40,7 +40,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public string FilePath { get; private set; }
 
-        public Tuple<Vector2, Vector2, Vector2, Vector2> TextureCoordinates => this.GetCurrentTextureCoordinates();
+        public (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) TextureCoordinates => this.GetCurrentTextureCoordinates();
 
         public Tuple<int, int> GetTileOfKey(char key)
         {
@@ -68,7 +68,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             return new Tuple<int, int>(x, y);
         }
 
-        private Tuple<Vector2, Vector2, Vector2, Vector2> GetCurrentTextureCoordinates()
+        private (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) GetCurrentTextureCoordinates()
         {
             var tile = this.Pointer;
 
@@ -84,7 +84,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             Vector2 bl = new Vector2(left, bottom);
             Vector2 br = new Vector2(right, bottom);
 
-            return new Tuple<Vector2, Vector2, Vector2, Vector2>(tl, tr, br, bl);
+            return (tl, tr, br, bl);
         }
     }
 }

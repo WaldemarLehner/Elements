@@ -7,25 +7,28 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using ComputergrafikSpiel.View;
+using ComputergrafikSpiel.View.Interfaces;
 
 namespace ComputergrafikSpiel.Test.View
 {
-    [TestClass, ExcludeFromCodeCoverage]
+    [TestClass]
     public class OpenTKRendererTest
     {
         [TestMethod]
         public void AssertThatCreatingInstanceWithNullIRenderableThrowsArgumentNullException()
         {
             List<MockRenderable> renderables = null;
-            Assert.ThrowsException<ArgumentNullException>(() => new OpenTKRenderer(renderables));
+            ICamera camera = new Camera(100, 0, 0, 100);
+            Assert.ThrowsException<ArgumentNullException>(() => new OpenTKRenderer(renderables,camera));
         }
 
         [TestMethod]
         public void AssertThatCreatingInstanceWithEmptyListDoesNotThrowException()
         {
             List<MockRenderable> renderables = new List<MockRenderable>();
-            new OpenTKRenderer(renderables);
+            ICamera camera = new Camera(100, 0, 0, 100);
+            new OpenTKRenderer(renderables,camera);
         }
 
         [DataTestMethod()]
@@ -36,7 +39,8 @@ namespace ComputergrafikSpiel.Test.View
         public void AssertThatInvalidScreenDimensionsThrowArgumentNotPositiveIntegerGreaterZeroException(int width, int height)
         {
             List<MockRenderable> renderables = new List<MockRenderable>();
-            IRenderer renderer = new OpenTKRenderer(renderables);
+            ICamera camera = new Camera(100, 0, 0, 100);
+            IRenderer renderer = new OpenTKRenderer(renderables,camera);
             Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => renderer.Resize(width, height));
         }
 
@@ -47,7 +51,8 @@ namespace ComputergrafikSpiel.Test.View
         public void AssertThatResizeUpdatesScreenDimensions(int width, int height)
         {
             List<MockRenderable> renderables = new List<MockRenderable>();
-            OpenTKRenderer renderer = new OpenTKRenderer(renderables);
+            ICamera camera = new Camera(100, 0, 0, 100);
+            OpenTKRenderer renderer = new OpenTKRenderer(renderables,camera);
             renderer.Resize(width, height);
             Assert.AreEqual(width, renderer.Screen.Item1);
             Assert.AreEqual(height, renderer.Screen.Item2);
