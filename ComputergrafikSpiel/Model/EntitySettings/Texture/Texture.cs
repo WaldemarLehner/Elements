@@ -6,6 +6,13 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
     internal class Texture : ITexture
     {
+        private readonly string path;
+
+        public Texture(string path) //Noch auf Fehler Prüfen, wurde bei path eine Exception geworfen?
+        {
+            this.path = path;
+        }
+
         public int Width => throw new NotImplementedException();
 
         public int Height => throw new NotImplementedException();
