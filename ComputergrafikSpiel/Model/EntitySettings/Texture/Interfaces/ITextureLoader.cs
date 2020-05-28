@@ -4,6 +4,6 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
 {
     internal interface ITextureLoader
     {
-        ITexture LoadTexture(string thisIsTheName);
+        ITexture LoadTexture(string name);
     }
 }

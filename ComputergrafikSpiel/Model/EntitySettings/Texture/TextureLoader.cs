@@ -10,15 +10,17 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         // In Welchem Pfad befinde ich mich gerade (von User zu User verschieden -> user/bin)
         private string currentDirectory;
+        private string pathWithName;
 
-        public ITexture LoadTexture(string thisIsTheName)
+        public ITexture LoadTexture(string name)
         {
             //Endung .png wird hinzugefügt
-            thisIsTheName = thisIsTheName + ".png";
+            name = name + ".png";
 
             //Pfad wird erstellt (an currentDirectory wird der Pfad zur Textur hinzugefügt)
             this.currentDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            currentDirectory = currentDirectory.Replace("bin\" , "source\Repos\ComputergrafikSpiel\ComputergrafikSpiel\model\EntitySettings\texture\Images\" + thisIsTheName);
+            pathWithName = currentDirectory.Replace("bin\" , "source\Repos\ComputergrafikSpiel\ComputergrafikSpiel\model\EntitySettings\texture\Images\" + thisIsTheName);
+
             // Leerer Pfad bzw. (String)
             if (string.IsNullOrEmpty(currentDirectory))
             {
