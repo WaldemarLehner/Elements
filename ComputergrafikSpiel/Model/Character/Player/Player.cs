@@ -12,7 +12,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
     internal class Player : IPlayer
     {
         private List<PlayerEnum.PlayerActions> playerActionList;
-        private Vector2 directionXY = Vector2.Zero;
         private bool run = false;
         private PlayerAttackSystem playerAttackSystem;
         private PlayerMovementSystem playerMovementSystem;
@@ -28,6 +27,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem();
         }
+
+        public Vector2 directionXY = Vector2.Zero;
 
         // Define Player
         public event EventHandler CharacterDeath;

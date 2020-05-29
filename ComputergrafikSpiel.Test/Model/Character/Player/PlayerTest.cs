@@ -8,24 +8,6 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
     [TestClass]
     public class PlayerTest
     {
-        [TestMethod]
-        public void PlayerControlMovementTest()
-        {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
-            Vector2 position = player.Position;
-            List<PlayerEnum.PlayerActions> movement = new List<PlayerEnum.PlayerActions>();
-            movement.Add(PlayerEnum.PlayerActions.MoveDown);
-            movement.Add(PlayerEnum.PlayerActions.MoveRight);
-            player.PlayerControl(movement);
-            Assert.AreNotEqual(position, player.Position);
-            movement.Clear();
-            position = player.Position;
-            movement.Add(PlayerEnum.PlayerActions.MoveUp);
-            movement.Add(PlayerEnum.PlayerActions.MoveLeft);
-            player.PlayerControl(movement);
-            Assert.AreNotEqual(position, player.Position);
-        }
-
         [DataTestMethod]
         [DataRow(0)]
         [DataRow(-1)]
