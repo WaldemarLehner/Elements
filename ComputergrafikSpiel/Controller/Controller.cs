@@ -1,4 +1,5 @@
 ﻿using System;
+using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.View.Interfaces;
@@ -17,7 +18,10 @@ namespace ComputergrafikSpiel.Controller
             this.View = view;
             this.Model = model;
             this.inputController = new Input.InputController(Input.InputControllerSettings.Default);
+            this.Updateable = new PlayerHandler();
         }
+
+        private IUpdateable Updateable { get; set; }
 
         private IView View { get; set; }
 
@@ -43,6 +47,7 @@ namespace ComputergrafikSpiel.Controller
         {
             this.inputController.PlayerAction();
             this.Model.Update((float)e.Time);
+            this.Updateable.Update((float)e.Time);
             base.OnUpdateFrame(e);
         }
     }

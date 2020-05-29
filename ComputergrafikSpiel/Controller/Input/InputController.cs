@@ -28,6 +28,9 @@ namespace ComputergrafikSpiel.Controller.Input
         // Shall be called in OnUpdateFrame()
         public void PlayerAction()
         {
+            // Clear list for next input
+            this.pressedActions.Clear();
+
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
             foreach (var key in this.KeyboardDefinitions.Keys)
@@ -48,9 +51,6 @@ namespace ComputergrafikSpiel.Controller.Input
 
             // Gives the Player a IReadOnlyList of pressed Actions
             this.playerControl.PlayerControl(this.pressedActions);
-
-            // Clear list for next input
-            this.pressedActions.Clear();
         }
     }
 }

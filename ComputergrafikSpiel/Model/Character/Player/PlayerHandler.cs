@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 
@@ -29,7 +30,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public int MaxHealth { get; set; } = 5;
 
-        public int MovementSpeed { get; set; } = 1;
+        public float MovementSpeed { get; set; } = 1;
 
         public int Defense { get; set; } = 1;
 
@@ -43,6 +44,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public ITexture Texture { get; } = null;
 
+        public ICollider Collider => throw new NotImplementedException();
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
         {
@@ -51,8 +54,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
                 {
                     this.playerActionList.Add(playerAction);
-                    this.PlayerMovement(this.playerActionList);
-                    Console.WriteLine("Added Event");
                     this.OnMove(EventArgs.Empty);
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
@@ -63,9 +64,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 {
                     this.PlayerInteraction();
                 }
-
-                this.playerActionList.Clear();
             }
+
+            this.PlayerMovement(this.playerActionList);
+            this.playerActionList.Clear();
         }
 
         public void TakingDamage(int damage)
@@ -112,6 +114,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
         }
 
+        public void Update(float dtime)
+        {
+            this.Position = this.Position + (this.directionXY * this.MovementSpeed * dtime);
+            Console.WriteLine(this.directionXY * this.MovementSpeed * dtime);
+            Console.WriteLine($"{this.directionXY}, {this.MovementSpeed}, {dtime}");
+            // this.directionXY = Vector2.Zero;
+        }
+
         public void OnDeath(EventArgs e)
         {
             this.CharacterDeath?.Invoke(this, e);
@@ -135,32 +145,33 @@ namespace ComputergrafikSpiel.Model.Character.Player
         // Determines in which direction the player moves
         private void PlayerMovement(IReadOnlyList<PlayerEnum.PlayerActions> movement)
         {
+            if (movement.Count == 0)
+            {
+                return;
+            }
+
             foreach (PlayerEnum.PlayerActions direction in movement)
             {
                 if (direction == PlayerEnum.PlayerActions.MoveUp)
                 {
-                    this.directionXY.X = 0;
                     this.directionXY.Y = 1;
                 }
                 else if (direction == PlayerEnum.PlayerActions.MoveDown)
                 {
-                    this.directionXY.X = 0;
                     this.directionXY.Y = -1;
                 }
                 else if (direction == PlayerEnum.PlayerActions.MoveRight)
                 {
                     this.directionXY.X = 1;
-                    this.directionXY.Y = 0;
                 }
                 else if (direction == PlayerEnum.PlayerActions.MoveLeft)
                 {
                     this.directionXY.X = -1;
-                    this.directionXY.Y = 0;
                 }
             }
 
-            this.Position = this.Position + (this.directionXY * this.MovementSpeed);
-            Console.WriteLine("Player Position: " + this.Position);
+            this.directionXY.Normalize();
+            //Console.WriteLine(this.directionXY);
         }
 
         private void PlayerAttack()
