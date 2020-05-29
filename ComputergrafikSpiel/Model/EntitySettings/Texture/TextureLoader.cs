@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using Image = SixLabors.ImageSharp.Image;
@@ -25,7 +26,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
             // Pfad wird erstellt (an individualPathLocationToProject wird der Pfad zur Textur hinzugefügt)
             this.individualPathLocationToProject = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            this.pathToTexture = this.individualPathLocationToProject + "/Content/Images/" + name;
+            this.pathToTexture = Path.Combine(this.individualPathLocationToProject, "/Content/Images/", name);
 
             // Prüfung ob Datei existiert
             if (!File.Exists(this.pathToTexture))
