@@ -5,7 +5,6 @@ using ComputergrafikSpiel.View.Exceptions;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers
 {
-
     /// <summary>
     /// Parameters required to create an object of <see cref="EntitySettings.Texture.Interfaces.ITexture"/>.
     /// </summary>

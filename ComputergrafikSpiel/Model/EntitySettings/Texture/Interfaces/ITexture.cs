@@ -6,11 +6,11 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
 {
     internal interface ITexture : IUpdateable
     {
-        int Width { get; }
+        int Width { get; set; }
 
-        int Height { get; }
+        int Height { get; set; }
 
-        string FilePath { get; }
+        string FilePath { get; set; }
 
         /// <summary>
         /// Gets the Coordinates for said texture, in case a spezialisation of the ITexture outputs just a subset of the entire texture.
