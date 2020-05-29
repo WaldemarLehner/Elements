@@ -9,8 +9,8 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
     internal class TextureLoader : ITextureLoader
     {
         // In Welchem Pfad befinde ich mich gerade (von User zu User verschieden -> user/bin)
-        private string currentDirectory;
-        private string pathWithName;
+        private string individualPathLocationToProject;
+        private string pathToTexture;
 
         public ITexture LoadTexture(string name)
         {
@@ -23,22 +23,22 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             // Endung .png wird hinzugefügt
             name = name + ".png";
 
-            // Pfad wird erstellt (an currentDirectory wird der Pfad zur Textur hinzugefügt)
-            currentDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            pathWithName = this.currentDirectory.Replace("bin/", "source/Repos/ComputergrafikSpiel/ComputergrafikSpiel/model/EntitySettings/texture/Images/" + name);
+            // Pfad wird erstellt (an individualPathLocationToProject wird der Pfad zur Textur hinzugefügt)
+            this.individualPathLocationToProject = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            this.pathToTexture = this.individualPathLocationToProject + "/Content/Images/" + name;
 
-            // Pfad schon richtig angegeben
-            if (!File.Exists(currentDirectory))
+            // Prüfung ob Datei existiert
+            if (!File.Exists(this.pathToTexture))
             {
-                throw new FileNotFoundException(nameof(currentDirectory), "Error: File does not exist or wrong Path");
+                throw new FileNotFoundException(nameof(this.individualPathLocationToProject), "Error: File does not exist or wrong Path");
             }
 
-            Image currentTexture = Image.Load(pathWithName);
+            Image currentTexture = Image.Load(this.pathToTexture);
             TextureContructor constructor;
 
             try
             {
-                constructor = new TextureContructor(currentTexture.Width, currentTexture.Height, pathWithName);
+                constructor = new TextureContructor(currentTexture.Width, currentTexture.Height, this.pathToTexture);
             }
             catch (Exception e)
             {
