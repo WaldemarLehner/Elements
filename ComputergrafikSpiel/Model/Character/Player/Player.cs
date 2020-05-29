@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
@@ -11,12 +12,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
     {
         private List<PlayerEnum.PlayerActions> playerActionList;
         private Vector2 directionXY = Vector2.Zero;
+        private bool run = false;
 
         public Player()
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
         }
 
         // Define Player
@@ -44,7 +47,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public ITexture Texture { get; } = null;
 
-        public ICollider Collider => throw new NotImplementedException();
+        public ICollider Collider { get; set; }
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
@@ -63,6 +66,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
                     this.PlayerInteraction();
+                }
+                else if (playerAction == PlayerEnum.PlayerActions.Run)
+                {
+                    this.run = true;
+                }
+                else if (playerAction == PlayerEnum.PlayerActions.Dash)
+                {
+                    this.PlayerDash();
                 }
             }
 
@@ -116,9 +127,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
+            if (this.run)
+            {
+                this.Position += this.directionXY * this.MovementSpeed * dtime * 2;
+                this.run = false;
+            }
+
             this.Position += this.directionXY * this.MovementSpeed * dtime;
-            Console.WriteLine(this.directionXY * this.MovementSpeed * dtime);
-            Console.WriteLine($"{this.directionXY}, {this.MovementSpeed}, {dtime}");
 
             this.directionXY = Vector2.Zero;
         }
@@ -136,6 +151,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void OnMove(EventArgs e)
         {
             this.CharacterMove?.Invoke(this, e);
+        }
+
+        private void PlayerDash()
+        {
+            throw new NotImplementedException();
         }
 
         private void PlayerInteraction()

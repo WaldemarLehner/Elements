@@ -9,9 +9,10 @@
             MoveDown,
             MoveLeft,
             MoveRight,
-            Dash,
+            Run,
             Attack,
             Interaction,
+            Dash,
         }
 
         public enum Stats

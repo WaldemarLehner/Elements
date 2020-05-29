@@ -22,7 +22,8 @@ namespace ComputergrafikSpiel.Controller.Input
                     [Key.A] = PlayerEnum.PlayerActions.MoveLeft,
                     [Key.S] = PlayerEnum.PlayerActions.MoveDown,
                     [Key.D] = PlayerEnum.PlayerActions.MoveRight,
-                    [Key.ShiftLeft] = PlayerEnum.PlayerActions.Dash,
+                    [Key.ShiftLeft] = PlayerEnum.PlayerActions.Run,
+                    [Key.Space] = PlayerEnum.PlayerActions.Dash,
                     [Key.F] = PlayerEnum.PlayerActions.Interaction,
                 },
                 MouseAction = new Dictionary<MouseButton, PlayerEnum.PlayerActions>
