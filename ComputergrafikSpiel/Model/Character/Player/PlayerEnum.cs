@@ -21,5 +21,11 @@
             Defense,
             MovementSpeed,
         }
+
+        public enum Weapon
+        {
+            Bow,
+            Sword,
+        }
     }
 }

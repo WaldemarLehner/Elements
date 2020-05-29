@@ -79,6 +79,9 @@
     <Compile Include="Controller\Input\InputControllerSettings.cs" />
     <Compile Include="Controller\Input\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
+    <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
+    <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
     <Compile Include="Model\Collider\CircleOffsetCollider.cs" />
     <Compile Include="Model\Character\ICharacter.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollidable.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
@@ -13,6 +14,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private List<PlayerEnum.PlayerActions> playerActionList;
         private Vector2 directionXY = Vector2.Zero;
         private bool run = false;
+        private PlayerAttackSystem playerAttackSystem;
+        private PlayerMovementSystem playerMovementSystem;
+        private PlayerInteractionSystem playerInteractionSystem;
 
         public Player()
         {
@@ -20,6 +24,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
+            this.playerAttackSystem = new PlayerAttackSystem();
+            this.playerMovementSystem = new PlayerMovementSystem();
+            this.playerInteractionSystem = new PlayerInteractionSystem();
         }
 
         // Define Player
@@ -28,6 +35,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public event EventHandler CharacterHit;
 
         public event EventHandler CharacterMove;
+
+        public event EventHandler PlayerInc;
 
         public int CurrentHealth { get; set; }
 
@@ -52,6 +61,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
         {
+
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {
                 if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
@@ -61,11 +71,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    this.PlayerAttack();
+                    this.playerAttackSystem.PlayerAttack();
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
-                    this.PlayerInteraction();
+                    this.playerInteractionSystem.PlayerInteraction(this.Collider);
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Run)
                 {
@@ -73,14 +83,15 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Dash)
                 {
-                    this.PlayerDash();
+                    this.playerMovementSystem.PlayerDash();
                 }
             }
 
-            this.SetPlayerDirection(this.playerActionList);
+            this.directionXY = this.playerMovementSystem.SetPlayerDirection(this.playerActionList);
             this.playerActionList.Clear();
         }
 
+        // Needs EventHandler from Npc who hits player
         public void TakingDamage(int damage)
         {
             if (damage <= 0)
@@ -122,6 +133,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 {
                     this.MovementSpeed += incNumber;
                 }
+
+                this.OnInc(EventArgs.Empty);
             }
         }
 
@@ -138,6 +151,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.directionXY = Vector2.Zero;
         }
 
+        public void OnInc(EventArgs e)
+        {
+            this.PlayerInc?.Invoke(this, e);
+        }
+
         public void OnDeath(EventArgs e)
         {
             this.CharacterDeath?.Invoke(this, e);
@@ -151,56 +169,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void OnMove(EventArgs e)
         {
             this.CharacterMove?.Invoke(this, e);
-        }
-
-        private void PlayerDash()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void PlayerInteraction()
-        {
-            // TODO: Interaction System => Need Collider and NPC
-        }
-
-        // Determines in which direction the player moves
-        private void SetPlayerDirection(IReadOnlyList<PlayerEnum.PlayerActions> movement)
-        {
-            Vector2 dir = Vector2.Zero;
-
-            if (movement.Count == 0)
-            {
-                return;
-            }
-
-            foreach (PlayerEnum.PlayerActions direction in movement)
-            {
-                if (direction == PlayerEnum.PlayerActions.MoveUp)
-                {
-                    dir.Y = 1;
-                }
-                else if (direction == PlayerEnum.PlayerActions.MoveDown)
-                {
-                    dir.Y = -1;
-                }
-                else if (direction == PlayerEnum.PlayerActions.MoveRight)
-                {
-                    dir.X = 1;
-                }
-                else if (direction == PlayerEnum.PlayerActions.MoveLeft)
-                {
-                    dir.X = -1;
-                }
-            }
-
-            this.directionXY = dir.Normalized();
-
-            // Console.WriteLine(this.directionXY);
-        }
-
-        private void PlayerAttack()
-        {
-            // TODO: Attacking => need Collider, NPC and Weapon. This Method should call a Attack Method in Weapon class
         }
     }
 }
