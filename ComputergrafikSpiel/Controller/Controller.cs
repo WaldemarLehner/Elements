@@ -10,18 +10,16 @@ namespace ComputergrafikSpiel.Controller
 {
     internal class Controller : GameWindow
     {
-        private IInputController inputController;
-
         internal Controller(IView view, IModel model, int width, int height, string title)
            : base(width, height, GraphicsMode.Default, title)
         {
             this.View = view;
             this.Model = model;
-            this.inputController = new Input.InputController(Input.InputControllerSettings.Default);
-            this.Updateable = new PlayerHandler();
+            this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
+            this.Model.CreatePlayerOnce(this.InputController);
         }
 
-        private IUpdateable Updateable { get; set; }
+        public IInputController InputController { get; private set; }
 
         private IView View { get; set; }
 
@@ -45,9 +43,8 @@ namespace ComputergrafikSpiel.Controller
         // OnUpdateFrame soll den Trigger an Model und Input Controller weiterleiten
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            this.inputController.PlayerAction();
+            this.InputController.PlayerAction();
             this.Model.Update((float)e.Time);
-            this.Updateable.Update((float)e.Time);
             base.OnUpdateFrame(e);
         }
     }

@@ -3,7 +3,7 @@ using ComputergrafikSpiel.Model.Interfaces;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Interfaces
 {
-    internal interface IEntity : ICollidable, IUpdateable, IRenderable
+    public interface IEntity : ICollidable, IUpdateable, IRenderable
     {
     }
 }

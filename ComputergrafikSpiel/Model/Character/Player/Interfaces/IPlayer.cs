@@ -1,6 +1,10 @@
-﻿namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
+﻿using System.Collections.Generic;
+
+namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 {
-    internal interface IPlayer : ICharacter
+    public interface IPlayer : ICharacter
     {
+        // Receives a enum list of pressed player actions -> MoveUp, MoveDown, MoveLeft, MoveRight, Dash, Attack, Interaction
+        void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions);
     }
 }

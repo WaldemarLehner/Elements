@@ -95,15 +95,14 @@
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TileTextureConstructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
-    <Compile Include="Model\Character\Player\Interfaces\IPlayer.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\ITransformable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRotatable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IScalable.cs" />
     <Compile Include="Model\Interfaces\IUpdateable.cs" />
     <Compile Include="Model\Model.cs" />
-    <Compile Include="Model\Character\Player\PlayerHandler.cs" />
-    <Compile Include="Model\Character\Player\Interfaces\IPlayerControl.cs" />
+    <Compile Include="Model\Character\Player\Player.cs" />
+    <Compile Include="Model\Character\Player\Interfaces\IPlayer.cs" />
     <Compile Include="Model\Character\Player\PlayerEnum.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\IAnimatedMappedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\IAnimation.cs" />

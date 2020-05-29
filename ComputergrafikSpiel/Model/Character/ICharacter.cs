@@ -3,7 +3,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Character
 {
-    internal interface ICharacter : IEntity
+    public interface ICharacter : IEntity
     {
         event EventHandler CharacterDeath;
 

@@ -11,7 +11,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [TestMethod]
         public void PlayerControlMovementTest()
         {
-            PlayerHandler player = new PlayerHandler();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             Vector2 position = player.Position;
             List<PlayerEnum.PlayerActions> movement = new List<PlayerEnum.PlayerActions>();
             movement.Add(PlayerEnum.PlayerActions.MoveDown);
@@ -31,14 +31,14 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(-1)]
         public void AssertThatPlayerTakingDamageThrowsArgumentNotPositiveGreaterZeroException(int damage)
         {
-            PlayerHandler player = new PlayerHandler();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             Assert.ThrowsException<ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => player.TakingDamage(damage));
         }
 
         [TestMethod]
         public void AssertThatPlayerIncreaseStatsThrowsArgumentPositiveGreaterZeroException()
         {
-            PlayerHandler player = new PlayerHandler();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             List<PlayerEnum.Stats> stats = new List<PlayerEnum.Stats>();
             stats.Add(PlayerEnum.Stats.Defense);
             stats.Add(PlayerEnum.Stats.MaxHealth);
@@ -51,7 +51,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(4, 3)]
         public void AssertThatLessDefenseThanDamageMakesDamage(int damage, int defense)
         {
-            PlayerHandler player = new PlayerHandler();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             int Health = player.CurrentHealth;
             player.Defense = defense;
             player.TakingDamage(damage);
@@ -63,7 +63,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(3, 6)]
         public void AssertThatMoreDefenseThanDamageMakesNoDamage(int damage, int defense)
         {
-            PlayerHandler player = new PlayerHandler();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             int Health = player.CurrentHealth;
             player.Defense = defense;
             player.TakingDamage(damage);
@@ -75,10 +75,10 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(2)]
         public void AssertThatIncreasingPlayerStatsIncreaseRightStats(int incNumber)
         {
-            PlayerHandler player = new PlayerHandler();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             int Defense = player.Defense;
             int MaxHealth = player.MaxHealth;
-            int MovementSpeed = player.MovementSpeed;
+            float MovementSpeed = player.MovementSpeed;
             List<PlayerEnum.Stats> stats = new List<PlayerEnum.Stats>();
             stats.Add(PlayerEnum.Stats.Defense);
             stats.Add(PlayerEnum.Stats.MaxHealth);

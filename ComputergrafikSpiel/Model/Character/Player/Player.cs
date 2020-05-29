@@ -7,12 +7,12 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.Player
 {
-    internal class PlayerHandler : IPlayerControl
+    internal class Player : IPlayer
     {
         private List<PlayerEnum.PlayerActions> playerActionList;
-        private Vector2 directionXY;
+        private Vector2 directionXY = Vector2.Zero;
 
-        public PlayerHandler()
+        public Player()
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
@@ -30,7 +30,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public int MaxHealth { get; set; } = 5;
 
-        public float MovementSpeed { get; set; } = 1;
+        public float MovementSpeed { get; set; } = 50;
 
         public int Defense { get; set; } = 1;
 
@@ -66,7 +66,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
             }
 
-            this.PlayerMovement(this.playerActionList);
+            this.SetPlayerDirection(this.playerActionList);
             this.playerActionList.Clear();
         }
 
@@ -116,10 +116,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
-            this.Position = this.Position + (this.directionXY * this.MovementSpeed * dtime);
+            this.Position += this.directionXY * this.MovementSpeed * dtime;
             Console.WriteLine(this.directionXY * this.MovementSpeed * dtime);
             Console.WriteLine($"{this.directionXY}, {this.MovementSpeed}, {dtime}");
-            // this.directionXY = Vector2.Zero;
+
+            this.directionXY = Vector2.Zero;
         }
 
         public void OnDeath(EventArgs e)
@@ -143,8 +144,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
         }
 
         // Determines in which direction the player moves
-        private void PlayerMovement(IReadOnlyList<PlayerEnum.PlayerActions> movement)
+        private void SetPlayerDirection(IReadOnlyList<PlayerEnum.PlayerActions> movement)
         {
+            Vector2 dir = Vector2.Zero;
+
             if (movement.Count == 0)
             {
                 return;
@@ -154,24 +157,25 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 if (direction == PlayerEnum.PlayerActions.MoveUp)
                 {
-                    this.directionXY.Y = 1;
+                    dir.Y = 1;
                 }
                 else if (direction == PlayerEnum.PlayerActions.MoveDown)
                 {
-                    this.directionXY.Y = -1;
+                    dir.Y = -1;
                 }
                 else if (direction == PlayerEnum.PlayerActions.MoveRight)
                 {
-                    this.directionXY.X = 1;
+                    dir.X = 1;
                 }
                 else if (direction == PlayerEnum.PlayerActions.MoveLeft)
                 {
-                    this.directionXY.X = -1;
+                    dir.X = -1;
                 }
             }
 
-            this.directionXY.Normalize();
-            //Console.WriteLine(this.directionXY);
+            this.directionXY = dir.Normalized();
+
+            // Console.WriteLine(this.directionXY);
         }
 
         private void PlayerAttack()

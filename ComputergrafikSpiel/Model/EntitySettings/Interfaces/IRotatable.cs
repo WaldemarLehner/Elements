@@ -2,7 +2,7 @@
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Interfaces
 {
-    internal interface IRotatable
+    public interface IRotatable
     {
         float Rotation { get; }
 
