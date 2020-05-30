@@ -63,6 +63,7 @@
     <Compile Include="Controller\Input\InputControllerTest.cs" />
     <Compile Include="Model\Collider\CircleOffsetColliderTest.cs" />
     <Compile Include="Model\Collider\ColliderManagerTest.cs" />
+    <Compile Include="Model\Collider\RayTest.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTextureTest.cs" />
     <Compile Include="Model\EntitySettings\Texture\FontTextureTest.cs" />
     <Compile Include="Model\EntitySettings\Texture\TestHelper\MockTextureConstructorNoFilepath.cs" />

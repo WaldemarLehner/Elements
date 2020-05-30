@@ -86,6 +86,8 @@
     <Compile Include="Model\Collider\ColliderManager.cs" />
     <Compile Include="Model\Collider\Interfaces\IColliderManager.cs" />
     <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
+    <Compile Include="Model\Collider\Interfaces\IRay.cs" />
+    <Compile Include="Model\Collider\Ray.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\Interfaces\ITextureContructor.cs" />
