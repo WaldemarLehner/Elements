@@ -109,8 +109,12 @@
     <Compile Include="Model\Collider\ColliderManager.cs" />
     <Compile Include="Model\Collider\Interfaces\IColliderManager.cs" />
     <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
+    <Compile Include="Model\Collider\Interfaces\IRay.cs" />
+    <Compile Include="Model\Collider\Ray.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
+    <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
+    <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\Interfaces\ITextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\Interfaces\ITileTextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TextureContructor.cs" />
@@ -164,6 +168,12 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Images\character.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="View\Shader\" />
