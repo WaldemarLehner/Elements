@@ -24,5 +24,7 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
         void ClearEntityColliders();
 
         IReadOnlyCollection<ICollidable> GetCollisions(ICollidable collidable);
+
+        IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray);
     }
 }

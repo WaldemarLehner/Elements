@@ -116,7 +116,32 @@ namespace ComputergrafikSpiel.Test.Model
             Assert.AreEqual(2, collisions.Count);
 
         }
-       
+
+        [TestMethod]
+        public void AssertThatRayCollisionsAreDetected()
+        {
+            IColliderManager manager = new ColliderManager(1);
+            Ray testRay = new Ray(new Vector2(2, 2), new Vector2( 1, 0), 10);
+            ICollidable static1 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(1, 2), 1);
+            ICollidable static2 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 2), 1);
+            ICollidable static3 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 3), 1);
+            ICollidable static4 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(14, 4), 10);
+            ICollidable dynamic1 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(1, 2), 0.5f);
+            ICollidable dynamic2 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 2), 0.5f);
+            
+            manager.AddWorldTileCollidable(1, 2, static1);
+            manager.AddWorldTileCollidable(4, 2, static2);
+            manager.AddWorldTileCollidable(4, 3, static3);
+            manager.AddWorldTileCollidable(14, 4, static4);
+            manager.AddEntityCollidable(dynamic1);
+            manager.AddEntityCollidable(dynamic2);
+
+            var collisions = manager.GetRayCollisions(testRay);
+            Assert.IsTrue(collisions.Count > 0);
+            Assert.AreEqual(4, collisions.Count);
+
+        }
+
     }
 
    
