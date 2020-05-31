@@ -89,6 +89,8 @@
     <Compile Include="Model\Collider\ColliderManager.cs" />
     <Compile Include="Model\Collider\Interfaces\IColliderManager.cs" />
     <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
+    <Compile Include="Model\Collider\Interfaces\IRay.cs" />
+    <Compile Include="Model\Collider\Ray.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IEntity.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
@@ -142,7 +144,9 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\Images\character.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

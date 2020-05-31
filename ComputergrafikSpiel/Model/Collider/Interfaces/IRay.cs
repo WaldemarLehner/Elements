@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Collider.Interfaces
 {
-    internal interface IRay
+    public interface IRay
     {
         Vector2 Position { get; }
 
