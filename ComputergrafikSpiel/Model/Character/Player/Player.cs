@@ -4,6 +4,8 @@ using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Entity;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 
@@ -16,8 +18,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private PlayerAttackSystem playerAttackSystem;
         private PlayerMovementSystem playerMovementSystem;
         private PlayerInteractionSystem playerInteractionSystem;
+        private Vector2 directionXY = Vector2.Zero;
 
-        public Player()
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable)
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
@@ -25,10 +28,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
-            this.playerInteractionSystem = new PlayerInteractionSystem();
+            this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
         }
-
-        public Vector2 directionXY = Vector2.Zero;
 
         // Define Player
         public event EventHandler CharacterDeath;
@@ -62,7 +63,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
         {
-
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {
                 if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
@@ -76,7 +76,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
-                    this.playerInteractionSystem.PlayerInteraction(this.Collider);
+                    this.playerInteractionSystem.PlayerInteraction(this);
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Run)
                 {

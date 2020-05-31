@@ -97,6 +97,7 @@
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TileTextureConstructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
+    <Compile Include="Model\Entity\TestInteractable.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\ITransformable.cs" />

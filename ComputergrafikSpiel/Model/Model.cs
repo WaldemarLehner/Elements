@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 
@@ -12,6 +13,7 @@ namespace ComputergrafikSpiel.Model
         {
             this.RenderablesList = new List<IRenderable>();
             this.Updateables = new List<IUpdateable>();
+            this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
         }
 
         public IReadOnlyCollection<IRenderable> Renderables => this.RenderablesList;
@@ -21,6 +23,10 @@ namespace ComputergrafikSpiel.Model
         private List<IUpdateable> Updateables { get; }
 
         private IPlayer Player { get; set; } = null;
+
+        private IEntity IncMovementSpeed { get; set; } = null;
+
+        private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = null;
 
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
@@ -38,11 +44,25 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.Player == null)
             {
-                this.Player = new Player();
+                this.Player = new Player(this.Interactable);
                 controller.HookPlayer(this.Player);
                 this.Updateables.Add(this.Player);
                 this.RenderablesList.Add(this.Player);
                 return true;
+            }
+
+            return false;
+        }
+
+        public bool CreateTestInteractable()
+        {
+            if (this.IncMovementSpeed == null)
+            {
+            this.IncMovementSpeed = new TestInteractable();
+            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
+            this.Updateables.Add(this.IncMovementSpeed);
+            this.RenderablesList.Add(this.IncMovementSpeed);
+            return true;
             }
 
             return false;

@@ -1,4 +1,5 @@
 ﻿using ComputergrafikSpiel.Model.Character.Player;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
 using System.Collections.Generic;
@@ -13,14 +14,14 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(-1)]
         public void AssertThatPlayerTakingDamageThrowsArgumentNotPositiveGreaterZeroException(int damage)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(null);
             Assert.ThrowsException<ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => player.TakingDamage(damage));
         }
 
         [TestMethod]
         public void AssertThatPlayerIncreaseStatsThrowsArgumentPositiveGreaterZeroException()
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(null);
             List<PlayerEnum.Stats> stats = new List<PlayerEnum.Stats>();
             stats.Add(PlayerEnum.Stats.Defense);
             stats.Add(PlayerEnum.Stats.MaxHealth);
@@ -33,7 +34,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(4, 3)]
         public void AssertThatLessDefenseThanDamageMakesDamage(int damage, int defense)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(null);
             int Health = player.CurrentHealth;
             player.Defense = defense;
             player.TakingDamage(damage);
@@ -45,7 +46,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(3, 6)]
         public void AssertThatMoreDefenseThanDamageMakesNoDamage(int damage, int defense)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(null);
             int Health = player.CurrentHealth;
             player.Defense = defense;
             player.TakingDamage(damage);
@@ -57,7 +58,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(2)]
         public void AssertThatIncreasingPlayerStatsIncreaseRightStats(int incNumber)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(null);
             int Defense = player.Defense;
             int MaxHealth = player.MaxHealth;
             float MovementSpeed = player.MovementSpeed;

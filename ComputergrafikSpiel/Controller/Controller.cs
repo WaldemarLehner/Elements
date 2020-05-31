@@ -16,6 +16,7 @@ namespace ComputergrafikSpiel.Controller
             this.View = view;
             this.Model = model;
             this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
+            this.Model.CreateTestInteractable();
             this.Model.CreatePlayerOnce(this.InputController);
         }
 

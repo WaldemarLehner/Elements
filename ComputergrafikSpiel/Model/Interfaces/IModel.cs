@@ -11,5 +11,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
         void Update(float dTime);
 
         bool CreatePlayerOnce(IInputController controller);
+
+        bool CreateTestInteractable();
     }
 }
