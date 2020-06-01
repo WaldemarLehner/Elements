@@ -8,11 +8,12 @@ namespace ComputergrafikSpiel.Model.Entity
 {
     internal class TestInteractable : IEntity
     {
-
         public TestInteractable()
         {
-            this.Position = new Vector2(500, 500);
+            this.Position = new Vector2(200, 200);
+            this.Scale = new Vector2(5, 5);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
+            this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("debugGrid16x16_directional");
         }
 
         public ICollider Collider { get; set; }

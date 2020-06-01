@@ -8,9 +8,9 @@ namespace ComputergrafikSpiel.Model.Interfaces
     {
         (float top, float bottom, float left, float right) CurrentSceneBounds { get; }
 
-        IReadOnlyCollection<IUiRenderable> UiRenderables { get; }
+        IEnumerable<IUiRenderable> UiRenderables { get; }
 
-        IReadOnlyCollection<IRenderable> Renderables { get; }
+        IEnumerable<IRenderable> Renderables { get; }
 
         void Update(float dTime);
 

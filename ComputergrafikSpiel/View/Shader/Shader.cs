@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View.Shader
 {
-    [Obsolete("It has been tried to a Shader and Buffer-Objects. We are using the simpler default pipeline instead.",true)]
+    [Obsolete("It has been tried to a Shader and Buffer-Objects. We are using the simpler default pipeline instead.", true)]
     public class Shader : IDisposable
     {
         private bool isDisposed = false;
@@ -63,7 +63,7 @@ namespace ComputergrafikSpiel.View.Shader
             return (fragHandle, vertHandle);
         }
 
-        private static int CreateProgrammAndLinkShaders(bool deleteShaders, params int[] handles )
+        private static int CreateProgrammAndLinkShaders(bool deleteShaders, params int[] handles)
         {
             int programHandle = GL.CreateProgram();
             foreach (var handle in handles)

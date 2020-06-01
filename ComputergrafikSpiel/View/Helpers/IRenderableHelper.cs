@@ -19,8 +19,8 @@ namespace ComputergrafikSpiel.View.Helpers
         /// <param name="drawAnker">Should the rotational anker be drawn.</param>
         /// <param name="drawPosition">Should the position Anker be drawn.</param>
         /// <param name="drawGhostBeforeTransformation">Should an outline be drawn of the object before transformation.</param>
-        /// <param name="CallGLFunctions">This parameter is for unit tests. It can be set to false so GL.[] functions are no longer called.</param>
-        internal static void RenderRectangleDebug(this IRenderable renderable, int screenWidth, int screenHeight, Color? drawingColor = null, bool drawAnker = false, bool drawPosition = false, bool drawGhostBeforeTransformation = false, bool CallGLFunctions = true)
+        /// <param name="callGLFunctions">This parameter is for unit tests. It can be set to false so GL.[] functions are no longer called.</param>
+        internal static void RenderRectangleDebug(this IRenderable renderable, int screenWidth, int screenHeight, Color? drawingColor = null, bool drawAnker = false, bool drawPosition = false, bool drawGhostBeforeTransformation = false, bool callGLFunctions = true)
         {
             _ = renderable ?? throw new ArgumentNullException(nameof(renderable));
             if (screenHeight <= 0)
@@ -37,7 +37,7 @@ namespace ComputergrafikSpiel.View.Helpers
             Rectangle rectangle = new Rectangle(renderable, true);
 
             // Only Draw Calls from here. If the Draw Variable is set to false, return here
-            if (!CallGLFunctions)
+            if (!callGLFunctions)
             {
                 return;
             }

@@ -1,10 +1,8 @@
-﻿using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+﻿using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Test.Model.TestHelper
 {
@@ -14,11 +12,21 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public List<IUiRenderable> UiRenderableList { get; set; } = new List<IUiRenderable>();
 
-        public IReadOnlyCollection<IUiRenderable> UiRenderables => UiRenderableList;
+        public IEnumerable<IUiRenderable> UiRenderables => UiRenderableList;
 
         public List<IRenderable> RenderableList { get; set; } = new List<IRenderable>();
 
-        public IReadOnlyCollection<IRenderable> Renderables => RenderableList;
+        public IEnumerable<IRenderable> Renderables => RenderableList;
+
+        public bool CreatePlayerOnce(IInputController controller)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CreateTestInteractable()
+        {
+            throw new NotImplementedException();
+        }
 
         public void Update(float dTime)
         {

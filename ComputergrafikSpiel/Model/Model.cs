@@ -3,8 +3,6 @@ using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
-using ComputergrafikSpiel.Model.EntitySettings.Texture;
-using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 
 namespace ComputergrafikSpiel.Model
@@ -18,15 +16,15 @@ namespace ComputergrafikSpiel.Model
             this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
         }
 
-        public IReadOnlyCollection<IRenderable> Renderables => this.RenderablesList;
+        public IEnumerable<IRenderable> Renderables => this.RenderablesList;
 
-        public (float top, float bottom, float left, float right) CurrentSceneBounds => (100, 0, 0, 100);
+        public (float top, float bottom, float left, float right) CurrentSceneBounds => (500, 0, 0, 800);
 
-        public IReadOnlyCollection<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
+        public IEnumerable<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
 
-        private List<IRenderable> RenderablesList { get; }
+        private List<IRenderable> RenderablesList { get; } = new List<IRenderable>();
 
-        private List<IUpdateable> Updateables { get; }
+        private List<IUpdateable> Updateables { get; } = new List<IUpdateable>();
 
         private IPlayer Player { get; set; } = null;
 

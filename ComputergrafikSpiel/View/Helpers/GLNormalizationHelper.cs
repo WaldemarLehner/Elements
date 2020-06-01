@@ -1,6 +1,6 @@
-﻿using ComputergrafikSpiel.View.Exceptions;
+﻿using System;
+using ComputergrafikSpiel.View.Exceptions;
 using OpenTK;
-using System;
 
 namespace ComputergrafikSpiel.View.Helpers
 {

@@ -14,6 +14,7 @@ namespace ComputergrafikSpiel.View.Renderer
 {
     internal class OpenTKRenderer : IRenderer
     {
+        private IModel model;
 
         internal OpenTKRenderer(IModel model, ICamera camera)
         {
@@ -21,7 +22,7 @@ namespace ComputergrafikSpiel.View.Renderer
             _ = model.Renderables ?? throw new ArgumentNullException(nameof(model.Renderables));
             _ = camera ?? throw new ArgumentNullException(nameof(camera));
 
-            this.RenderablesCollection = model.Renderables;
+            this.model = model;
             this.Camera = camera;
             this.TextureData = new Dictionary<string, TextureData>();
             this.Debug = true;
@@ -35,7 +36,7 @@ namespace ComputergrafikSpiel.View.Renderer
 
         public (int width, int height) Screen { get; private set; }
 
-        private IReadOnlyCollection<IRenderable> RenderablesCollection { get; }
+        private IEnumerable<IRenderable> RenderablesEnumerator => this.model.Renderables;
 
         private Dictionary<string, TextureData> TextureData { get; set; }
 
@@ -53,7 +54,7 @@ namespace ComputergrafikSpiel.View.Renderer
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Render each IRenderable, in their order from 1st to last.
-            foreach (var entry in this.RenderablesCollection)
+            foreach (var entry in this.RenderablesEnumerator)
             {
                 this.RenderRenderable(entry);
             }
@@ -61,14 +62,13 @@ namespace ComputergrafikSpiel.View.Renderer
             if (this.Debug)
             {
                 var rand = new Random(13456);
-                foreach (var entry in this.RenderablesCollection)
+                foreach (var entry in this.RenderablesEnumerator)
                 {
                     byte[] buf = new byte[3];
                     rand.NextBytes(buf);
                     this.RenderRenderableDebug(entry, new Color4(buf[0], buf[1], buf[2], 0xFF));
                 }
             }
-
         }
 
         public void Resize(int screenWidth, int screenHeight)

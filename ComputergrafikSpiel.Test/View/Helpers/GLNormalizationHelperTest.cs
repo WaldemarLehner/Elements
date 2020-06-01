@@ -3,33 +3,34 @@ using ComputergrafikSpiel.View.Helpers;
 using System.Diagnostics.CodeAnalysis;
 using ComputergrafikSpiel.View.Exceptions;
 using OpenTK;
+using System;
 
 namespace ComputergrafikSpiel.Test.View.Helpers
 {
     
-    [TestClass, ExcludeFromCodeCoverage]
+    [TestClass, ExcludeFromCodeCoverage, Obsolete]
     public class GLNormalizationHelperTest
     {
-        [TestClass]
+        [TestClass, Ignore("Tests Obsolete Code"), Obsolete]
         public class NormalizeGL_float
         {
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatZeroWillReturnMinusOne()
             {
                 Assert.AreEqual(-1f, 0f.NormalizeGL(3));
             }
 
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatANegativeBoundWillThrow()
             {
                 Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => GLNormalizationHelper.NormalizeGL(3, -3));
             }
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatZeroBoundWillThrow()
             {
                 Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => GLNormalizationHelper.NormalizeGL(0, 0));
             }
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatAValueHalfOfTheBoundWillReturnZero()
             {
                 int bound = 100;
@@ -38,10 +39,10 @@ namespace ComputergrafikSpiel.Test.View.Helpers
             }
         }
 
-        [TestClass]
+        [TestClass, Ignore("Tests Obsolete Code"), Obsolete]
         public class NormalizeGL_Vector2
         {
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatZeroWillReturnMinusOne()
             {
                 Vector2 input = Vector2.Zero;
@@ -50,27 +51,27 @@ namespace ComputergrafikSpiel.Test.View.Helpers
                 Assert.AreEqual(-1, normalized.Y);
             }
 
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatANegativeXBoundWillThrow()
             {
                 Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => GLNormalizationHelper.NormalizeGL(Vector2.Zero, -3,5));
             }
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatANegativeYBoundWillThrow()
             {
                 Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => GLNormalizationHelper.NormalizeGL(Vector2.Zero, 5, -5));
             }
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatZeroXBoundWillThrow()
             {
                 Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => GLNormalizationHelper.NormalizeGL(Vector2.Zero,0, 5));
             }
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatZeroYBoundWillThrow()
             {
                 Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => GLNormalizationHelper.NormalizeGL(Vector2.Zero,2, 0));
             }
-            [TestMethod]
+            [TestMethod, Ignore("Tests Obsolete Code"), Obsolete]
             public void AssertThatAValueHalfOfTheBoundWillReturnZero()
             {
                 int bound = 100;

@@ -35,7 +35,7 @@ namespace ComputergrafikSpiel.Test.View.Helpers
             //Assert that does not throw
             MockRenderable renderable = new MockRenderable { Position = new Vector2(50, 50) };
             int width = 100, height = 100;
-            renderable.RenderRectangleDebug(width, height,CallGLFunctions:false);
+            renderable.RenderRectangleDebug(width, height,callGLFunctions:false);
         }
 
         private class MockRenderable : IRenderable

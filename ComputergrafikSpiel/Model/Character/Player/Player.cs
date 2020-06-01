@@ -6,6 +6,7 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 
@@ -13,11 +14,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
 {
     internal class Player : IPlayer
     {
-        private List<PlayerEnum.PlayerActions> playerActionList;
+        private readonly List<PlayerEnum.PlayerActions> playerActionList;
+        private readonly PlayerAttackSystem playerAttackSystem;
+        private readonly PlayerMovementSystem playerMovementSystem;
+        private readonly PlayerInteractionSystem playerInteractionSystem;
         private bool run = false;
-        private PlayerAttackSystem playerAttackSystem;
-        private PlayerMovementSystem playerMovementSystem;
-        private PlayerInteractionSystem playerInteractionSystem;
         private Vector2 directionXY = Vector2.Zero;
 
         public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable)
@@ -29,6 +30,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
+            this.Texture = new TextureLoader().LoadTexture("character");
         }
 
         // Define Player
@@ -56,7 +58,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
-        public ITexture Texture { get; } = null;
+        public ITexture Texture { get; }
 
         public ICollider Collider { get; set; }
 

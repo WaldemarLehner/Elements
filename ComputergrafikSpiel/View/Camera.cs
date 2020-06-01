@@ -102,8 +102,7 @@ namespace ComputergrafikSpiel.View
                 CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.TopLeft, multipliers, this),
                 CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.TopRight, multipliers, this),
                 CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.BottomRight, multipliers, this),
-                CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.BottomLeft, multipliers, this)
-                );
+                CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.BottomLeft, multipliers, this));
         }
 
         // WARN: TODO: For some reason having the "correct" Tex Coords results in orientation, namely 90deg clockwise. This is why they had to be swapped
