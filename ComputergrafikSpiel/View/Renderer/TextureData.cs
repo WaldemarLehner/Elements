@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Tracing;
 using System.IO;
+using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.View.Helpers;
 using OpenTK.Graphics.OpenGL;
@@ -18,10 +19,11 @@ namespace ComputergrafikSpiel.View.Renderer
         internal TextureData(ITexture texture, TextureWrapMode wrapMode = TextureWrapMode.MirroredRepeat)
         {
             this.ConstructorInputCheck(texture);
-            this.data = ImageToByteHelper.ImageToByteArray(texture.FilePath);
+            this.data = ImageToByteHelper.ImageToByteArray(texture.FilePath, (texture.Width, texture.Height));
             this.handle = GL.GenTexture();
             this.Enable();
             this.CreateGLTexture(wrapMode, texture.Width, texture.Height);
+            this.Disable();
         }
 
         internal void Enable()
@@ -46,13 +48,14 @@ namespace ComputergrafikSpiel.View.Renderer
 
         private void CreateGLTexture(TextureWrapMode wrapMode, int width, int height)
         {
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, this.data);
+
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest); // Erstellt den Pixel Look.
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);  // Wenn ein Pixel zw. 2 Texturen liegt wird mit Linearisierung daran angenähert
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)wrapMode);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)wrapMode);
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, this.data);
         }
     }
 }

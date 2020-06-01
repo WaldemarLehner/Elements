@@ -1,9 +1,6 @@
-﻿using System;
-using System.Numerics;
-using ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers;
+﻿using ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
-using Vector2 = OpenTK.Vector2;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
@@ -22,12 +19,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public string FilePath { get; }
 
-        private Vector2 tl = new Vector2(0, 1);
-        private Vector2 tr = new Vector2(1, 1);
-        private Vector2 br = new Vector2(1, 0);
-        private Vector2 bl = new Vector2(0, 0);
-
-        public Tuple<Vector2, Vector2, Vector2, Vector2> TextureCoordinates => Tuple.Create(this.tl, this.tr, this.br, this.bl);
+        public (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) TextureCoordinates => (new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0));
 
         public void Update(float dtime)
         {

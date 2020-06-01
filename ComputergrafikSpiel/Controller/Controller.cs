@@ -9,7 +9,7 @@ namespace ComputergrafikSpiel.Controller
 {
     internal class Controller : GameWindow
     {
-        private IInputController inputController;
+        private readonly IInputController inputController;
 
         internal Controller(IView view, IModel model, int width, int height, string title)
            : base(width, height, GraphicsMode.Default, title)

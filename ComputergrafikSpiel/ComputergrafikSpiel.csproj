@@ -111,6 +111,7 @@
     <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
     <Compile Include="Model\Collider\Interfaces\IRay.cs" />
     <Compile Include="Model\Collider\Ray.cs" />
+    <Compile Include="Model\EntitySettings\Interfaces\IUiRenderable.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
     <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Camera.cs" />
     <Compile Include="View\Exceptions\ArgumentNotPositiveIntegerGreaterZeroException.cs" />
+    <Compile Include="View\Exceptions\ShaderCompileException.cs" />
     <Compile Include="View\Helpers\CameraCoordinateConversionHelper.cs" />
     <Compile Include="View\Helpers\GLNormalizationHelper.cs" />
     <Compile Include="View\Helpers\ImageToByteHelper.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="View\Renderer\OpenTKRenderer.cs" />
     <Compile Include="View\Rectangle.cs" />
     <Compile Include="View\Renderer\TextureData.cs" />
+    <Compile Include="View\Shader\Shader.cs" />
     <Compile Include="View\View.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\IAnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRenderable.cs" />
@@ -160,6 +163,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ComputergrafikSpiel.ruleset" />
+    <None Include="Content\Shaders\basic.frag">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Shaders\basic.vert">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -171,13 +180,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Content\Images\character.png">
+    <Content Include="Content\Images\character.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Content>
+    <Content Include="Content\Images\test.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="View\Shader\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
-using ComputergrafikSpiel.View.Helpers;
+using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View.Renderer
 {
     internal class OpenTKRenderer : IRenderer
     {
-        internal OpenTKRenderer(IReadOnlyCollection<IRenderable> renderables, ICamera camera)
+        private Shader.Shader textureShader;
+
+        internal OpenTKRenderer(IModel model, ICamera camera)
         {
-            _ = renderables ?? throw new ArgumentNullException(nameof(renderables));
+            _ = model ?? throw new ArgumentNullException(nameof(model));
+            _ = model.Renderables ?? throw new ArgumentNullException(nameof(model.Renderables));
             _ = camera ?? throw new ArgumentNullException(nameof(camera));
 
-            this.RenderablesCollection = renderables;
+            this.RenderablesCollection = model.Renderables;
             this.Camera = camera;
             this.TextureData = new Dictionary<string, TextureData>();
         }
@@ -34,13 +37,21 @@ namespace ComputergrafikSpiel.View.Renderer
 
         public void Render()
         {
+            if (this.textureShader == null)
+            {
+                // this.textureShader = new Shader.Shader("basic.vert", "basic.frag");
+            }
+
             if (!this.Active)
             {
                 return;
             }
 
+            // this.textureShader.Use();
+
             // Clear the Screen
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.ClearColor(new Color4(150, 150, 150, 255));
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Render each IRenderable, in their order from 1st to last.
             foreach (var entry in this.RenderablesCollection)
@@ -84,6 +95,10 @@ namespace ComputergrafikSpiel.View.Renderer
                 this.TextureData[renderable.Texture.FilePath] = new TextureData(renderable.Texture);
             }
 
+            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
             // Get the bounds of the Renderable and check if it can be skipped
             if (!this.IsDrawNeeded(renderableRectangle))
             {
@@ -94,6 +109,8 @@ namespace ComputergrafikSpiel.View.Renderer
             this.TextureData[renderable.Texture.FilePath].Enable();
             this.Camera.DrawRectangle(renderableRectangle, texCoords, this.Screen);
             this.TextureData[renderable.Texture.FilePath].Disable();
+            GL.Disable(EnableCap.Texture2D);
+            GL.Disable(EnableCap.Blend);
         }
 
         private bool IsDrawNeeded(Rectangle rect)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
@@ -14,11 +15,19 @@ namespace ComputergrafikSpiel.Model
 
         internal Model()
         {
-            this.RenderablesList = new List<IRenderable>();
-            this.RenderablesList.Add(new TestRenderable());
+            this.RenderablesList = new List<IRenderable>
+            {
+                new TestRenderable("character"),
+                new TestRenderable("character"),
+                new TestRenderable("test"),
+            };
         }
 
         public IReadOnlyCollection<IRenderable> Renderables => this.RenderablesList;
+
+        public (float top, float bottom, float left, float right) CurrentSceneBounds => (100, 0, 0, 100);
+
+        public IReadOnlyCollection<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
 
         private List<IRenderable> RenderablesList { get; }
 
@@ -30,11 +39,13 @@ namespace ComputergrafikSpiel.Model
         {
             this.timeSum += dTime;
             TestRenderable item = this.RenderablesList.First() as TestRenderable;
-            item.Position = this.CalculateCubePosition(0, Vector2.One * 100, 50);
+            item.Position = this.CalculateCubePosition(0, Vector2.One * 50, 5);
             item.Rotation = this.timeSum / 20;
             item.RotationAnker = item.Position + (new Vector2((float)Math.Sin(this.timeSum), (float)Math.Cos(this.timeSum)) * 20);
-
-            // Console.WriteLine($"<{item.Position.X},{item.Position.Y}> <{item.RotationAnker.X},{item.RotationAnker.Y}>");
+            TestRenderable item2 = this.RenderablesList.Last() as TestRenderable;
+            item2.Scale = new Vector2(2, 8);
+            item2.Position = new Vector2(30, 0);
+          
         }
 
         private Vector2 CalculateCubePosition(float timeOffset, Vector2 positionOffset, float radius)
@@ -42,17 +53,21 @@ namespace ComputergrafikSpiel.Model
             return (new Vector2((float)Math.Cos(timeOffset + this.timeSum), (float)Math.Sin(timeOffset + this.timeSum)) * radius) + positionOffset;
         }
 
-        private class TestRenderable : IRenderable
+        internal class TestRenderable : IRenderable
         {
+            internal TestRenderable(string texname)
+            {
+                this.Texture = new TextureLoader().LoadTexture(texname);
+            }
             public Vector2 Position { get; set; } = Vector2.Zero;
 
             public Vector2 Scale { get; set; } = Vector2.One * 20;
 
-            public float Rotation { get; set; } = 0f;
+            public float Rotation { get; set; } = 0;
 
             public Vector2 RotationAnker { get; set; } = Vector2.Zero;
 
-            public ITexture Texture { get; } = null;
+            public ITexture Texture { get; }
         }
     }
 }

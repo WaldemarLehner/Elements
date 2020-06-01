@@ -2,7 +2,7 @@
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Interfaces
 {
-    internal interface IPositionable
+    public interface IPositionable
     {
         Vector2 Position { get; }
     }

@@ -60,7 +60,7 @@ namespace ComputergrafikSpiel.Model.Collider
             if (Vector2.Distance(lotfusspoint, this.position) > this.maxDistance)
             {
                 Vector2 maxDistPoint = Vector2.Add(this.position, this.direction);
-                distance = Vector2.Distance(maxDistPoint ,tileCenter);
+                distance = Vector2.Distance(maxDistPoint, tileCenter);
 
                 return distance;
             }

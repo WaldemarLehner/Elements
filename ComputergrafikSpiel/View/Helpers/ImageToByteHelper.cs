@@ -8,10 +8,20 @@ namespace ComputergrafikSpiel.View.Helpers
 {
     internal static class ImageToByteHelper
     {
-        internal static byte[] ImageToByteArray(string filePath)
+        internal static byte[] ImageToByteArray(string filePath, (int width, int height) dimensions)
         {
             _ = filePath ?? throw new ArgumentNullException(nameof(filePath));
             Image<Rgba32> image = (Image<Rgba32>)Image.Load(filePath);
+
+            if (dimensions.width != image.Width)
+            {
+                throw new ArgumentException("File-Width  does not match ITexture-Width");
+            }
+
+            if (dimensions.height != image.Height)
+            {
+                throw new ArgumentException("File-Height  does not match ITexture-Height");
+            }
 
             // Sixlabors.ImageSharp fängt mit dem Laden der Pixel oben links ab, OpenTK jedoch unten links, spiegel
             // das Bild entlang y um dies zu korregieren.

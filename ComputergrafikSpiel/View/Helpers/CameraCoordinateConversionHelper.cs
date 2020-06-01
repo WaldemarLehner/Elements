@@ -70,7 +70,7 @@ namespace ComputergrafikSpiel.View.Helpers
                 throw new ArgumentOutOfRangeException(nameof(lower) + " " + nameof(upper), "Lower and Upper may not be equal, as this will create a division by 0");
             }
 
-            return (value - lower) * (upper - lower);
+            return (value - lower) / (upper - lower);
         }
     }
 }

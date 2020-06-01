@@ -69,10 +69,10 @@ namespace ComputergrafikSpiel.View
 
         internal Rectangle(IRenderable renderable, bool applyRotation = false)
         {
-            this.TopLeft = new Vector2(renderable.Position.X - Math.Abs(renderable.Scale.X), renderable.Position.Y - Math.Abs(renderable.Scale.Y));
-            this.TopRight = new Vector2(renderable.Position.X + Math.Abs(renderable.Scale.X), renderable.Position.Y - Math.Abs(renderable.Scale.Y));
-            this.BottomLeft = new Vector2(renderable.Position.X - Math.Abs(renderable.Scale.X), renderable.Position.Y + Math.Abs(renderable.Scale.Y));
-            this.BottomRight = new Vector2(renderable.Position.X + Math.Abs(renderable.Scale.X), renderable.Position.Y + Math.Abs(renderable.Scale.Y));
+            this.TopLeft        = new Vector2(renderable.Position.X - Math.Abs(renderable.Scale.X), renderable.Position.Y + Math.Abs(renderable.Scale.Y));
+            this.TopRight       = new Vector2(renderable.Position.X + Math.Abs(renderable.Scale.X), renderable.Position.Y + Math.Abs(renderable.Scale.Y));
+            this.BottomLeft     = new Vector2(renderable.Position.X - Math.Abs(renderable.Scale.X), renderable.Position.Y - Math.Abs(renderable.Scale.Y));
+            this.BottomRight    = new Vector2(renderable.Position.X + Math.Abs(renderable.Scale.X), renderable.Position.Y - Math.Abs(renderable.Scale.Y));
 
             if (applyRotation)
             {

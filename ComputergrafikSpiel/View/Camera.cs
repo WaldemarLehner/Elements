@@ -68,6 +68,7 @@ namespace ComputergrafikSpiel.View
             var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.AspectRatio, screen.width / (float)screen.height);
             (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVertices = this.GenerateNDCVertices(vertices, multipliers);
             var vertTexPair = this.GenerateNDCVertex_TexCollection(ndcVertices, texCoords);
+
             this.DrawPrimitive(vertTexPair, PrimitiveType.Quads);
         }
 
@@ -158,7 +159,6 @@ namespace ComputergrafikSpiel.View
                 GL.Vertex2(vert);
                 GL.TexCoord2(tex);
             }
-
             GL.End();
         }
     }

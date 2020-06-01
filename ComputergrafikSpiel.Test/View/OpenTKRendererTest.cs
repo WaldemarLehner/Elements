@@ -6,9 +6,10 @@ using ComputergrafikSpiel.View.Renderer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
 using System;
-using System.Collections.Generic;
 using ComputergrafikSpiel.View;
 using ComputergrafikSpiel.View.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Test.Model.TestHelper;
 
 namespace ComputergrafikSpiel.Test.View
 {
@@ -18,17 +19,20 @@ namespace ComputergrafikSpiel.Test.View
         [TestMethod]
         public void AssertThatCreatingInstanceWithNullIRenderableThrowsArgumentNullException()
         {
-            List<MockRenderable> renderables = null;
+            MockModel m = new MockModel();
+            m.RenderableList = null;
             ICamera camera = new Camera(100, 0, 0, 100);
-            Assert.ThrowsException<ArgumentNullException>(() => new OpenTKRenderer(renderables,camera));
+            Assert.ThrowsException<ArgumentNullException>(() => new OpenTKRenderer(m,camera));
         }
 
         [TestMethod]
         public void AssertThatCreatingInstanceWithEmptyListDoesNotThrowException()
         {
-            List<MockRenderable> renderables = new List<MockRenderable>();
+            
+            IModel model = new MockModel();
+       
             ICamera camera = new Camera(100, 0, 0, 100);
-            new OpenTKRenderer(renderables,camera);
+            new OpenTKRenderer(model,camera);
         }
 
         [DataTestMethod()]
@@ -38,9 +42,9 @@ namespace ComputergrafikSpiel.Test.View
         [DataRow(40,-1)]
         public void AssertThatInvalidScreenDimensionsThrowArgumentNotPositiveIntegerGreaterZeroException(int width, int height)
         {
-            List<MockRenderable> renderables = new List<MockRenderable>();
+            IModel m = new MockModel();
             ICamera camera = new Camera(100, 0, 0, 100);
-            IRenderer renderer = new OpenTKRenderer(renderables,camera);
+            IRenderer renderer = new OpenTKRenderer(m,camera);
             Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => renderer.Resize(width, height));
         }
 
@@ -50,15 +54,15 @@ namespace ComputergrafikSpiel.Test.View
         [DataRow(1920, 1080)]
         public void AssertThatResizeUpdatesScreenDimensions(int width, int height)
         {
-            List<MockRenderable> renderables = new List<MockRenderable>();
+            IModel m = new MockModel();
             ICamera camera = new Camera(100, 0, 0, 100);
-            OpenTKRenderer renderer = new OpenTKRenderer(renderables,camera);
+            OpenTKRenderer renderer = new OpenTKRenderer(m,camera);
             renderer.Resize(width, height);
-            Assert.AreEqual(width, renderer.Screen.Item1);
-            Assert.AreEqual(height, renderer.Screen.Item2);
+            Assert.AreEqual(width, renderer.Screen.width);
+            Assert.AreEqual(height, renderer.Screen.height);
         }
 
-        private class MockRenderable : IRenderable
+        internal class MockRenderable : IRenderable
         {
             public Vector2 Position { get; set; } = Vector2.Zero;
 
