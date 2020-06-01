@@ -13,7 +13,7 @@ namespace ComputergrafikSpiel
         public static void Main()
         {
             IModel model = new Model.Model();
-            IView view = new View.View(model.Renderables);
+            IView view = new View.View(model);
             Controller.Controller controller = new Controller.Controller(view, model, 200, 200, "Test");
             controller.Run(60f, 0f);
         }

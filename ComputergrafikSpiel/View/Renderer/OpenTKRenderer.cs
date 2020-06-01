@@ -1,60 +1,167 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.View.Helpers;
+using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
+using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View.Renderer
 {
     internal class OpenTKRenderer : IRenderer
     {
-        internal OpenTKRenderer(IReadOnlyCollection<IRenderable> renderables)
+        private IModel model;
+
+        internal OpenTKRenderer(IModel model, ICamera camera)
         {
-            _ = renderables ?? throw new ArgumentNullException(nameof(renderables));
-            this.RenderablesCollection = renderables;
+            _ = model ?? throw new ArgumentNullException(nameof(model));
+            _ = model.Renderables ?? throw new ArgumentNullException(nameof(model.Renderables));
+            _ = camera ?? throw new ArgumentNullException(nameof(camera));
+
+            this.model = model;
+            this.Camera = camera;
+            this.TextureData = new Dictionary<string, TextureData>();
+            this.Debug = true;
         }
 
-        public Tuple<int, int> Screen { get; private set; }
+        public bool Active { get; private set; } = true;
 
-        private IReadOnlyCollection<IRenderable> RenderablesCollection { get; }
+        public ICamera Camera { get; private set; }
+
+        public bool Debug { get; set; } = false;
+
+        public (int width, int height) Screen { get; private set; }
+
+        private IEnumerable<IRenderable> RenderablesEnumerator => this.model.Renderables;
+
+        private Dictionary<string, TextureData> TextureData { get; set; }
 
         public void Render()
         {
+            if (!this.Active)
+            {
+                return;
+            }
+
+            // this.textureShader.Use();
+
             // Clear the Screen
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.ClearColor(new Color4(150, 150, 150, 255));
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Render each IRenderable, in their order from 1st to last.
-            foreach (var entry in this.RenderablesCollection)
+            foreach (var entry in this.RenderablesEnumerator)
             {
                 this.RenderRenderable(entry);
+            }
+
+            if (this.Debug)
+            {
+                var rand = new Random(13456);
+                foreach (var entry in this.RenderablesEnumerator)
+                {
+                    byte[] buf = new byte[3];
+                    rand.NextBytes(buf);
+                    this.RenderRenderableDebug(entry, new Color4(buf[0], buf[1], buf[2], 0xFF));
+                }
             }
         }
 
         public void Resize(int screenWidth, int screenHeight)
         {
-            if (screenHeight <= 0)
+            if (screenHeight < 0)
             {
                 throw new Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(screenHeight));
             }
 
-            if (screenWidth <= 0)
+            if (screenWidth < 0)
             {
                 throw new Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(screenWidth));
             }
 
-            this.Screen = new Tuple<int, int>(screenWidth, screenHeight);
+            if (screenHeight == 0 || screenWidth == 0)
+            {
+                this.Active = false;
+                return;
+            }
+
+            this.Active = true;
+
+            this.Screen = (screenWidth, screenHeight);
             GL.Viewport(0, 0, screenWidth, screenHeight);
+        }
+
+        private void RenderRenderableDebug(IRenderable entry, Color4 color)
+        {
+            var rect = new Rectangle(entry, true);
+            var vertsWorldSpace = new List<Vector2>() { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
+            var vertsNDC = new List<Vector2>();
+
+            foreach (var vert in vertsWorldSpace)
+            {
+                var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.Camera.AspectRatio, this.Screen.width / (float)this.Screen.height);
+                vertsNDC.Add(CameraCoordinateConversionHelper.WorldToNDC(vert, multipliers, this.Camera));
+            }
+
+            GL.Color4(color);
+            GL.Begin(PrimitiveType.LineLoop);
+            vertsNDC.ForEach(v => GL.Vertex2(v));
+            GL.End();
+            GL.Color4(Color4.White);
         }
 
         private void RenderRenderable(IRenderable renderable)
         {
-            renderable.RenderRectangleDebug(
-                this.Screen.Item1,
-                this.Screen.Item2,
-                drawAnker: true,
-                drawPosition: true,
-                drawGhostBeforeTransformation: true);
+            // Make Rectangle out of Renderable
+            var renderableRectangle = new Rectangle(renderable, true);
+
+            // Check if Texture Data is already stored, if not, add Texture
+            if (!this.TextureData.ContainsKey(renderable.Texture.FilePath))
+            {
+                this.TextureData[renderable.Texture.FilePath] = new TextureData(renderable.Texture);
+            }
+
+            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            // Get the bounds of the Renderable and check if it can be skipped
+            if (!this.IsDrawNeeded(renderableRectangle))
+            {
+                return;
+            }
+
+            var texCoords = renderable.Texture.TextureCoordinates;
+            this.TextureData[renderable.Texture.FilePath].Enable();
+            this.Camera.DrawRectangle(renderableRectangle, texCoords, this.Screen);
+            this.TextureData[renderable.Texture.FilePath].Disable();
+            GL.Disable(EnableCap.Texture2D);
+            GL.Disable(EnableCap.Blend);
+        }
+
+        private bool IsDrawNeeded(Rectangle rect)
+        {
+            List<Vector2> points = new List<Vector2>
+            {
+                rect.TopLeft,
+                rect.TopRight,
+                rect.BottomLeft,
+                rect.BottomRight,
+            };
+
+            foreach (var point in points)
+            {
+                if (this.Camera.CanPointBeSeenByCamera(point))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

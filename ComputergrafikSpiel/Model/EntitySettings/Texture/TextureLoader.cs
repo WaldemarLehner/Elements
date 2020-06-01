@@ -1,18 +1,14 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
-using Image = SixLabors.ImageSharp.Image;
+using SixLabors.ImageSharp;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
     internal class TextureLoader : ITextureLoader
     {
-        // In Welchem Pfad befinde ich mich gerade (von User zu User verschieden -> user/bin)
-        private string individualPathLocationToProject;
-        private string pathToTexture;
-
         public ITexture LoadTexture(string name)
         {
             // Leerer Texture name
@@ -22,24 +18,15 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             }
 
             // Endung .png wird hinzugefügt
-            name = name + ".png";
+            name += ".png";
 
-            // Pfad wird erstellt (an individualPathLocationToProject wird der Pfad zur Textur hinzugefügt)
-            this.individualPathLocationToProject = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            this.pathToTexture = Path.Combine(this.individualPathLocationToProject, "/Content/Images/", name);
-
-            // Prüfung ob Datei existiert
-            if (!File.Exists(this.pathToTexture))
-            {
-                throw new FileNotFoundException(nameof(this.individualPathLocationToProject), "Error: File does not exist or wrong Path");
-            }
-
-            Image currentTexture = Image.Load(this.pathToTexture);
+            var pathToTexture = Path.Combine("./Content/Images/", name);
+            Image currentTexture = Image.Load(pathToTexture);
             TextureContructor constructor;
 
             try
             {
-                constructor = new TextureContructor(currentTexture.Width, currentTexture.Height, this.pathToTexture);
+                constructor = new TextureContructor(currentTexture.Width, currentTexture.Height, pathToTexture);
             }
             catch (Exception e)
             {

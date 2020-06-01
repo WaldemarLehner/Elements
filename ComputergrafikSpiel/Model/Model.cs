@@ -16,11 +16,15 @@ namespace ComputergrafikSpiel.Model
             this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
         }
 
-        public IReadOnlyCollection<IRenderable> Renderables => this.RenderablesList;
+        public IEnumerable<IRenderable> Renderables => this.RenderablesList;
 
-        private List<IRenderable> RenderablesList { get; }
+        public (float top, float bottom, float left, float right) CurrentSceneBounds => (500, 0, 0, 800);
 
-        private List<IUpdateable> Updateables { get; }
+        public IEnumerable<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
+
+        private List<IRenderable> RenderablesList { get; } = new List<IRenderable>();
+
+        private List<IUpdateable> Updateables { get; } = new List<IUpdateable>();
 
         private IPlayer Player { get; set; } = null;
 

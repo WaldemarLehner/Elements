@@ -6,7 +6,11 @@ namespace ComputergrafikSpiel.Model.Interfaces
 {
     internal interface IModel
     {
-        IReadOnlyCollection<IRenderable> Renderables { get; }
+        (float top, float bottom, float left, float right) CurrentSceneBounds { get; }
+
+        IEnumerable<IUiRenderable> UiRenderables { get; }
+
+        IEnumerable<IRenderable> Renderables { get; }
 
         void Update(float dTime);
 

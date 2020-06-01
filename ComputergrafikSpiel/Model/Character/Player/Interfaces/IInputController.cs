@@ -1,6 +1,6 @@
 ﻿namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 {
-    internal interface IInputController
+    public interface IInputController
     {
         void PlayerAction();
 
