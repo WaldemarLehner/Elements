@@ -3,5 +3,7 @@
     internal interface IInputController
     {
         void PlayerAction();
+
+        void HookPlayer(IPlayer control);
     }
 }

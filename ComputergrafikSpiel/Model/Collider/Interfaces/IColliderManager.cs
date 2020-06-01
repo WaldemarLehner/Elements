@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ComputergrafikSpiel.Model.Collider.Interfaces
 {
-    internal interface IColliderManager
+    public interface IColliderManager
     {
         IReadOnlyCollection<ICollidable> CollidableEntitiesCollection { get; }
 

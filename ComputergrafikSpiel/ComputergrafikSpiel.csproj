@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.Toolset.3.1.0\build\Microsoft.Net.Compilers.Toolset.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.Toolset.3.1.0\build\Microsoft.Net.Compilers.Toolset.props')" />
   <Import Project="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\build\Microsoft.CodeAnalysis.Analyzers.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\build\Microsoft.CodeAnalysis.Analyzers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -102,6 +101,9 @@
     <Compile Include="Controller\Input\InputControllerSettings.cs" />
     <Compile Include="Controller\Input\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
+    <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
+    <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
     <Compile Include="Model\Collider\CircleOffsetCollider.cs" />
     <Compile Include="Model\Character\ICharacter.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollidable.cs" />
@@ -111,26 +113,27 @@
     <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
     <Compile Include="Model\Collider\Interfaces\IRay.cs" />
     <Compile Include="Model\Collider\Ray.cs" />
+    <Compile Include="Model\EntitySettings\Interfaces\IEntity.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IUiRenderable.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
-    <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
-    <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\Interfaces\ITextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\Interfaces\ITileTextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TileTextureConstructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
+    <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
+    <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
+    <Compile Include="Model\Entity\TestInteractable.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
-    <Compile Include="Model\Character\Player\Interfaces\IPlayer.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\ITransformable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRotatable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IScalable.cs" />
     <Compile Include="Model\Interfaces\IUpdateable.cs" />
     <Compile Include="Model\Model.cs" />
-    <Compile Include="Model\Character\Player\PlayerHandler.cs" />
-    <Compile Include="Model\Character\Player\Interfaces\IPlayerControl.cs" />
+    <Compile Include="Model\Character\Player\Player.cs" />
+    <Compile Include="Model\Character\Player\Interfaces\IPlayer.cs" />
     <Compile Include="Model\Character\Player\PlayerEnum.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\IAnimatedMappedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\IAnimation.cs" />
@@ -139,6 +142,7 @@
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITextureLoader.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITextWriter.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITileTexture.cs" />
+    <Compile Include="Model\Scene\IScene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Camera.cs" />
@@ -178,7 +182,6 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Content\Images\character.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -7,7 +7,7 @@ namespace ComputergrafikSpiel.Controller.Input
 {
     public class InputController : IInputController
     {
-        private IPlayerControl playerControl;
+        private IPlayer playerControl;
         private List<PlayerEnum.PlayerActions> pressedActions;
 
         // Initialize InputController => gets a struct of Dictionary
@@ -17,17 +17,25 @@ namespace ComputergrafikSpiel.Controller.Input
             this.pressedActions = new List<PlayerEnum.PlayerActions>();
             this.MouseDefinitions = controllersettings.MouseAction;
             this.KeyboardDefinitions = controllersettings.KeyboardAction;
-            this.playerControl = new PlayerHandler();
+            this.playerControl = null;
         }
 
         private Dictionary<Key, PlayerEnum.PlayerActions> KeyboardDefinitions { get; set; }
 
         private Dictionary<MouseButton, PlayerEnum.PlayerActions> MouseDefinitions { get; set; }
 
+        public void HookPlayer(IPlayer control)
+        {
+            this.playerControl = control;
+        }
+
         // Check if pressed key is a allowed player action
         // Shall be called in OnUpdateFrame()
         public void PlayerAction()
         {
+            // Clear list for next input
+            this.pressedActions.Clear();
+
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
             foreach (var key in this.KeyboardDefinitions.Keys)
@@ -47,10 +55,10 @@ namespace ComputergrafikSpiel.Controller.Input
             }
 
             // Gives the Player a IReadOnlyList of pressed Actions
-            this.playerControl.PlayerControl(this.pressedActions);
-
-            // Clear list for next input
-            this.pressedActions.Clear();
+            if (this.playerControl != null)
+            {
+                this.playerControl.PlayerControl(this.pressedActions);
+            }
         }
     }
 }

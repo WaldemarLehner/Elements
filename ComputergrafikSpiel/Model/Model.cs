@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.Player;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
-using OpenTK;
 
 namespace ComputergrafikSpiel.Model
 {
     internal class Model : IModel
     {
-        private float timeSum = 0;
-
         internal Model()
         {
-            this.RenderablesList = new List<IRenderable>
-            {
-                new TestRenderable("character"),
-                new TestRenderable("test"),
-                new TestRenderable("debugGrid16x16_directional"),
-            };
+            this.RenderablesList = new List<IRenderable>();
+            this.Updateables = new List<IUpdateable>();
+            this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
         }
 
         public IReadOnlyCollection<IRenderable> Renderables => this.RenderablesList;
@@ -31,47 +26,52 @@ namespace ComputergrafikSpiel.Model
 
         private List<IRenderable> RenderablesList { get; }
 
+        private List<IUpdateable> Updateables { get; }
+
+        private IPlayer Player { get; set; } = null;
+
+        private IEntity IncMovementSpeed { get; set; } = null;
+
+        private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = null;
+
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
         /// </summary>
         /// <param name="dTime">Time between two Update Calls in Seconds.</param>
         public void Update(float dTime)
         {
-            this.timeSum += dTime;
-            TestRenderable item = this.RenderablesList.First() as TestRenderable;
-           item.Position = this.CalculateCubePosition(0, Vector2.One * 50, 5);
-           item.Rotation = this.timeSum / 20;
-           item.RotationAnker = item.Position + (new Vector2((float)Math.Sin(this.timeSum), (float)Math.Cos(this.timeSum)) * 20);
-            TestRenderable item3 = this.RenderablesList.Last() as TestRenderable;
-            item3.Scale = new Vector2(25, 25);
-            item3.Position = new Vector2(25, 25);
-
-            TestRenderable item2 = this.RenderablesList.GetRange(1, 1).First() as TestRenderable;
-            item2.Position = new Vector2(75, 50);
-            item2.Scale = new Vector2(25f, 25f / 4);
-          
-        }
-
-        private Vector2 CalculateCubePosition(float timeOffset, Vector2 positionOffset, float radius)
-        {
-            return (new Vector2((float)Math.Cos(timeOffset + this.timeSum), (float)Math.Sin(timeOffset + this.timeSum)) * radius) + positionOffset;
-        }
-
-        internal class TestRenderable : IRenderable
-        {
-            internal TestRenderable(string texname)
+            foreach (var entry in this.Updateables)
             {
-                this.Texture = new TextureLoader().LoadTexture(texname);
+                entry.Update(dTime);
             }
-            public Vector2 Position { get; set; } = Vector2.Zero;
+        }
 
-            public Vector2 Scale { get; set; } = Vector2.One * 20;
+        public bool CreatePlayerOnce(IInputController controller)
+        {
+            if (this.Player == null)
+            {
+                this.Player = new Player(this.Interactable);
+                controller.HookPlayer(this.Player);
+                this.Updateables.Add(this.Player);
+                this.RenderablesList.Add(this.Player);
+                return true;
+            }
 
-            public float Rotation { get; set; } = 0;
+            return false;
+        }
 
-            public Vector2 RotationAnker { get; set; } = Vector2.Zero;
+        public bool CreateTestInteractable()
+        {
+            if (this.IncMovementSpeed == null)
+            {
+            this.IncMovementSpeed = new TestInteractable();
+            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
+            this.Updateables.Add(this.IncMovementSpeed);
+            this.RenderablesList.Add(this.IncMovementSpeed);
+            return true;
+            }
 
-            public ITexture Texture { get; }
+            return false;
         }
     }
 }

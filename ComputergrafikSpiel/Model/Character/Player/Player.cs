@@ -1,21 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
+using ComputergrafikSpiel.Model.Collider;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Entity;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.Player
 {
-    internal class PlayerHandler : IPlayerControl
+    internal class Player : IPlayer
     {
         private List<PlayerEnum.PlayerActions> playerActionList;
-        private Vector2 directionXY;
+        private bool run = false;
+        private PlayerAttackSystem playerAttackSystem;
+        private PlayerMovementSystem playerMovementSystem;
+        private PlayerInteractionSystem playerInteractionSystem;
+        private Vector2 directionXY = Vector2.Zero;
 
-        public PlayerHandler()
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable)
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
+            this.playerAttackSystem = new PlayerAttackSystem();
+            this.playerMovementSystem = new PlayerMovementSystem();
+            this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
         }
 
         // Define Player
@@ -25,11 +38,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public event EventHandler CharacterMove;
 
+        public event EventHandler PlayerInc;
+
         public int CurrentHealth { get; set; }
 
         public int MaxHealth { get; set; } = 5;
 
-        public int MovementSpeed { get; set; } = 1;
+        public float MovementSpeed { get; set; } = 50;
 
         public int Defense { get; set; } = 1;
 
@@ -43,6 +58,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public ITexture Texture { get; } = null;
 
+        public ICollider Collider { get; set; }
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
         {
@@ -51,23 +68,31 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
                 {
                     this.playerActionList.Add(playerAction);
-                    this.PlayerMovement(this.playerActionList);
-                    Console.WriteLine("Added Event");
                     this.OnMove(EventArgs.Empty);
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    this.PlayerAttack();
+                    this.playerAttackSystem.PlayerAttack();
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
-                    this.PlayerInteraction();
+                    this.playerInteractionSystem.PlayerInteraction(this);
                 }
-
-                this.playerActionList.Clear();
+                else if (playerAction == PlayerEnum.PlayerActions.Run)
+                {
+                    this.run = true;
+                }
+                else if (playerAction == PlayerEnum.PlayerActions.Dash)
+                {
+                    this.playerMovementSystem.PlayerDash();
+                }
             }
+
+            this.directionXY = this.playerMovementSystem.SetPlayerDirection(this.playerActionList);
+            this.playerActionList.Clear();
         }
 
+        // Needs EventHandler from Npc who hits player
         public void TakingDamage(int damage)
         {
             if (damage <= 0)
@@ -109,7 +134,27 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 {
                     this.MovementSpeed += incNumber;
                 }
+
+                this.OnInc(EventArgs.Empty);
             }
+        }
+
+        public void Update(float dtime)
+        {
+            if (this.run)
+            {
+                this.Position += this.directionXY * this.MovementSpeed * dtime * 2;
+                this.run = false;
+            }
+
+            this.Position += this.directionXY * this.MovementSpeed * dtime;
+
+            this.directionXY = Vector2.Zero;
+        }
+
+        public void OnInc(EventArgs e)
+        {
+            this.PlayerInc?.Invoke(this, e);
         }
 
         public void OnDeath(EventArgs e)
@@ -125,47 +170,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void OnMove(EventArgs e)
         {
             this.CharacterMove?.Invoke(this, e);
-        }
-
-        private void PlayerInteraction()
-        {
-            // TODO: Interaction System => Need Collider and NPC
-        }
-
-        // Determines in which direction the player moves
-        private void PlayerMovement(IReadOnlyList<PlayerEnum.PlayerActions> movement)
-        {
-            foreach (PlayerEnum.PlayerActions direction in movement)
-            {
-                if (direction == PlayerEnum.PlayerActions.MoveUp)
-                {
-                    this.directionXY.X = 0;
-                    this.directionXY.Y = 1;
-                }
-                else if (direction == PlayerEnum.PlayerActions.MoveDown)
-                {
-                    this.directionXY.X = 0;
-                    this.directionXY.Y = -1;
-                }
-                else if (direction == PlayerEnum.PlayerActions.MoveRight)
-                {
-                    this.directionXY.X = 1;
-                    this.directionXY.Y = 0;
-                }
-                else if (direction == PlayerEnum.PlayerActions.MoveLeft)
-                {
-                    this.directionXY.X = -1;
-                    this.directionXY.Y = 0;
-                }
-            }
-
-            this.Position = this.Position + (this.directionXY * this.MovementSpeed);
-            Console.WriteLine("Player Position: " + this.Position);
-        }
-
-        private void PlayerAttack()
-        {
-            // TODO: Attacking => need Collider, NPC and Weapon. This Method should call a Attack Method in Weapon class
         }
     }
 }

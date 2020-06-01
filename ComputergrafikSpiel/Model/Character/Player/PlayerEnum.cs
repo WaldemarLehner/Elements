@@ -9,9 +9,10 @@
             MoveDown,
             MoveLeft,
             MoveRight,
-            Dash,
+            Run,
             Attack,
             Interaction,
+            Dash,
         }
 
         public enum Stats
@@ -19,6 +20,12 @@
             MaxHealth,
             Defense,
             MovementSpeed,
+        }
+
+        public enum Weapon
+        {
+            Bow,
+            Sword,
         }
     }
 }
