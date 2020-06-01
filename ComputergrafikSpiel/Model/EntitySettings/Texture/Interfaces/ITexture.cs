@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
 {
-    internal interface ITexture : IUpdateable
+    public interface ITexture : IUpdateable
     {
         int Width { get; }
 

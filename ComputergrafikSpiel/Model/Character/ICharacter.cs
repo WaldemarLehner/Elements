@@ -3,7 +3,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Character
 {
-    internal interface ICharacter : IRenderable
+    public interface ICharacter : IEntity
     {
         event EventHandler CharacterDeath;
 
@@ -13,7 +13,7 @@ namespace ComputergrafikSpiel.Model.Character
 
         int MaxHealth { get; }
 
-        int MovementSpeed { get; }
+        float MovementSpeed { get; }
 
         int Defense { get; }
 

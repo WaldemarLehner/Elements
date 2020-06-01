@@ -1,6 +1,6 @@
 ﻿namespace ComputergrafikSpiel.Model.EntitySettings.Interfaces
 {
-    internal interface ITransformable : IPositionable, IRotatable, IScalable
+    public interface ITransformable : IPositionable, IRotatable, IScalable
     {
     }
 }

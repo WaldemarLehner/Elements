@@ -2,7 +2,7 @@
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Interfaces
 {
-    internal interface IScalable
+    public interface IScalable
     {
         Vector2 Scale { get; }
     }

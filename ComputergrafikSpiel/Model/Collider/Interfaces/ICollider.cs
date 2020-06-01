@@ -2,7 +2,7 @@
 
 namespace ComputergrafikSpiel.Model.Collider.Interfaces
 {
-    internal interface ICollider : ITransformable
+    public interface ICollider : IPositionable
     {
         ICollidable CollidableParent { get; }
 
