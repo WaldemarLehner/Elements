@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.View.Helpers;
 using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
@@ -22,11 +24,14 @@ namespace ComputergrafikSpiel.View.Renderer
             this.RenderablesCollection = model.Renderables;
             this.Camera = camera;
             this.TextureData = new Dictionary<string, TextureData>();
+            this.Debug = true;
         }
 
         public bool Active { get; private set; } = true;
 
         public ICamera Camera { get; private set; }
+
+        public bool Debug { get; set; } = false;
 
         public (int width, int height) Screen { get; private set; }
 
@@ -52,6 +57,18 @@ namespace ComputergrafikSpiel.View.Renderer
             {
                 this.RenderRenderable(entry);
             }
+
+            if (this.Debug)
+            {
+                var rand = new Random(13456);
+                foreach (var entry in this.RenderablesCollection)
+                {
+                    byte[] buf = new byte[3];
+                    rand.NextBytes(buf);
+                    this.RenderRenderableDebug(entry, new Color4(buf[0], buf[1], buf[2], 0xFF));
+                }
+            }
+
         }
 
         public void Resize(int screenWidth, int screenHeight)
@@ -76,6 +93,25 @@ namespace ComputergrafikSpiel.View.Renderer
 
             this.Screen = (screenWidth, screenHeight);
             GL.Viewport(0, 0, screenWidth, screenHeight);
+        }
+
+        private void RenderRenderableDebug(IRenderable entry, Color4 color)
+        {
+            var rect = new Rectangle(entry, true);
+            var vertsWorldSpace = new List<Vector2>() { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
+            var vertsNDC = new List<Vector2>();
+
+            foreach (var vert in vertsWorldSpace)
+            {
+                var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.Camera.AspectRatio, this.Screen.width / (float)this.Screen.height);
+                vertsNDC.Add(CameraCoordinateConversionHelper.WorldToNDC(vert, multipliers, this.Camera));
+            }
+
+            GL.Color4(color);
+            GL.Begin(PrimitiveType.LineLoop);
+            vertsNDC.ForEach(v => GL.Vertex2(v));
+            GL.End();
+            GL.Color4(Color4.White);
         }
 
         private void RenderRenderable(IRenderable renderable)

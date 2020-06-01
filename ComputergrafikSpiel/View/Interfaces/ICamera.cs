@@ -20,6 +20,8 @@ namespace ComputergrafikSpiel.View.Interfaces
 
         Vector2 BottomLeft { get; }
 
+        float AspectRatio { get; }
+
         (Vector2 TL, Vector2 TR, Vector2 BL, Vector2 BR) CameraBounds { get; }
 
         bool CanPointBeSeenByCamera(Vector2 point);

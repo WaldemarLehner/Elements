@@ -98,20 +98,23 @@ namespace ComputergrafikSpiel.View
 
         private (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) GenerateNDCVertices(Rectangle worldSpaceVerts, (float x, float y) multipliers)
         {
-            return (CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.TopLeft, multipliers, this),
+            return (
+                CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.TopLeft, multipliers, this),
                 CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.TopRight, multipliers, this),
                 CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.BottomRight, multipliers, this),
-                CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.BottomLeft, multipliers, this));
+                CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.BottomLeft, multipliers, this)
+                );
         }
 
+        // WARN: TODO: For some reason having the "correct" Tex Coords results in orientation, namely 90deg clockwise. This is why they had to be swapped
         private ICollection<(Vector2 vert, Vector2 tex)> GenerateNDCVertex_TexCollection((Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVert, (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) tex)
         {
             return new List<(Vector2 vert, Vector2 tex)>()
             {
-                (ndcVert.TL, tex.TL),
-                (ndcVert.TR, tex.TR),
-                (ndcVert.BR, tex.BR),
-                (ndcVert.BL, tex.BL),
+                (ndcVert.TL, tex.TR),
+                (ndcVert.TR, tex.BR),
+                (ndcVert.BR, tex.BL),
+                (ndcVert.BL, tex.TL),
             };
         }
 
