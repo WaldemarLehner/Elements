@@ -6,6 +6,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View.Helpers
 {
+    [Obsolete]
     internal static class IRenderableHelper
     {
         /// <summary>

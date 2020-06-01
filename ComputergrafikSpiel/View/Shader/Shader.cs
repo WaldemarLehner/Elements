@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View.Shader
 {
-    [Obsolete]
+    [Obsolete("It has been tried to a Shader and Buffer-Objects. We are using the simpler default pipeline instead.",true)]
     public class Shader : IDisposable
     {
         private bool isDisposed = false;

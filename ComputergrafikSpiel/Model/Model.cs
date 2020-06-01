@@ -19,7 +19,7 @@ namespace ComputergrafikSpiel.Model
             {
                 new TestRenderable("character"),
                 new TestRenderable("character"),
-                new TestRenderable("test"),
+                new TestRenderable("debugGrid16x16"),
             };
         }
 
@@ -39,12 +39,12 @@ namespace ComputergrafikSpiel.Model
         {
             this.timeSum += dTime;
             TestRenderable item = this.RenderablesList.First() as TestRenderable;
-            item.Position = this.CalculateCubePosition(0, Vector2.One * 50, 5);
-            item.Rotation = this.timeSum / 20;
-            item.RotationAnker = item.Position + (new Vector2((float)Math.Sin(this.timeSum), (float)Math.Cos(this.timeSum)) * 20);
+           item.Position = this.CalculateCubePosition(0, Vector2.One * 50, 5);
+           item.Rotation = this.timeSum / 20;
+           item.RotationAnker = item.Position + (new Vector2((float)Math.Sin(this.timeSum), (float)Math.Cos(this.timeSum)) * 20);
             TestRenderable item2 = this.RenderablesList.Last() as TestRenderable;
-            item2.Scale = new Vector2(2, 8);
-            item2.Position = new Vector2(30, 0);
+            item2.Scale = new Vector2(5, 5);
+            item2.Position = new Vector2(5, 5);
           
         }
 

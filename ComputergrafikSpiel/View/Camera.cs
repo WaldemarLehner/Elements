@@ -159,6 +159,7 @@ namespace ComputergrafikSpiel.View
                 GL.Vertex2(vert);
                 GL.TexCoord2(tex);
             }
+
             GL.End();
         }
     }

@@ -1,8 +1,10 @@
 ﻿using ComputergrafikSpiel.View.Exceptions;
 using OpenTK;
+using System;
 
 namespace ComputergrafikSpiel.View.Helpers
 {
+    [Obsolete]
     internal static class GLNormalizationHelper
     {
         internal static float NormalizeGL(this float value, int boundary)

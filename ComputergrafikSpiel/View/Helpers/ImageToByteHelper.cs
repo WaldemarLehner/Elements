@@ -26,6 +26,7 @@ namespace ComputergrafikSpiel.View.Helpers
             // Sixlabors.ImageSharp fängt mit dem Laden der Pixel oben links ab, OpenTK jedoch unten links, spiegel
             // das Bild entlang y um dies zu korregieren.
             image.Mutate(img => img.Flip(FlipMode.Vertical));
+
             var pixelCount = image.Height * image.Width;
             return GenerateByteArrayFromPixelSpan(image.GetPixelSpan());
         }

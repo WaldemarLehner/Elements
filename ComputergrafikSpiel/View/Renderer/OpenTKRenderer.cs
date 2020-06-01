@@ -12,7 +12,6 @@ namespace ComputergrafikSpiel.View.Renderer
 {
     internal class OpenTKRenderer : IRenderer
     {
-        private Shader.Shader textureShader;
 
         internal OpenTKRenderer(IModel model, ICamera camera)
         {
@@ -37,11 +36,6 @@ namespace ComputergrafikSpiel.View.Renderer
 
         public void Render()
         {
-            if (this.textureShader == null)
-            {
-                // this.textureShader = new Shader.Shader("basic.vert", "basic.frag");
-            }
-
             if (!this.Active)
             {
                 return;
