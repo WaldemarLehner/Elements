@@ -10,6 +10,8 @@ using ComputergrafikSpiel.View;
 using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Test.Model.TestHelper;
+using System.Collections.Generic;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Test.View
 {
@@ -19,8 +21,10 @@ namespace ComputergrafikSpiel.Test.View
         [TestMethod]
         public void AssertThatCreatingInstanceWithNullIRenderableThrowsArgumentNullException()
         {
-            MockModel m = new MockModel();
-            m.RenderableList = null;
+            MockModel m = new MockModel
+            {
+                RenderableList = null
+            };
             ICamera camera = new Camera(100, 0, 0, 100);
             Assert.ThrowsException<ArgumentNullException>(() => new OpenTKRenderer(m,camera));
         }
@@ -75,6 +79,8 @@ namespace ComputergrafikSpiel.Test.View
             public ITexture Texture { get; set; }
 
             ITexture IRenderable.Texture => throw new NotImplementedException();
+
+            public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4 color, Vector2[] vertices)>();
         }
     }
 }
