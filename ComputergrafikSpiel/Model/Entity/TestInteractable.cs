@@ -1,8 +1,10 @@
-﻿using ComputergrafikSpiel.Model.Collider;
+﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Entity
 {
@@ -27,6 +29,8 @@ namespace ComputergrafikSpiel.Model.Entity
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
         public Vector2 Scale { get; } = Vector2.One * 20;
+
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
         public void Update(float dtime)
         {

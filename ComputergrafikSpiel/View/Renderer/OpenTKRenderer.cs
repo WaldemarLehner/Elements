@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel.View.Renderer
 {
     internal class OpenTKRenderer : IRenderer
     {
-        private IModel model;
+        private readonly IModel model;
 
         internal OpenTKRenderer(IModel model, ICamera camera)
         {
@@ -67,6 +67,25 @@ namespace ComputergrafikSpiel.View.Renderer
                     byte[] buf = new byte[3];
                     rand.NextBytes(buf);
                     this.RenderRenderableDebug(entry, new Color4(buf[0], buf[1], buf[2], 0xFF));
+                    if (entry.DebugData != null)
+                    {
+                        foreach (var debugData in entry.DebugData)
+                        {
+                            Color4 color;
+                            if (debugData.color == null)
+                            {
+                                var randBytes = new byte[3];
+                                rand.NextBytes(randBytes);
+                                color = new Color4(randBytes[0], randBytes[1], randBytes[2], 0xFF);
+                            }
+                            else
+                            {
+                                color = debugData.color;
+                            }
+
+                            this.RenderRenderableDebug(debugData.vertices, color);
+                        }
+                    }
                 }
             }
         }
@@ -95,10 +114,8 @@ namespace ComputergrafikSpiel.View.Renderer
             GL.Viewport(0, 0, screenWidth, screenHeight);
         }
 
-        private void RenderRenderableDebug(IRenderable entry, Color4 color)
+        private void RenderRenderableDebug(Vector2[] vertsWorldSpace, Color4 color)
         {
-            var rect = new Rectangle(entry, true);
-            var vertsWorldSpace = new List<Vector2>() { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
             var vertsNDC = new List<Vector2>();
 
             foreach (var vert in vertsWorldSpace)
@@ -112,6 +129,14 @@ namespace ComputergrafikSpiel.View.Renderer
             vertsNDC.ForEach(v => GL.Vertex2(v));
             GL.End();
             GL.Color4(Color4.White);
+        }
+
+        private void RenderRenderableDebug(IRenderable entry, Color4 color)
+        {
+            var rect = new Rectangle(entry, true);
+            var vertsWorldSpace = new Vector2[] { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
+
+            this.RenderRenderableDebug(vertsWorldSpace, color);
         }
 
         private void RenderRenderable(IRenderable renderable)
