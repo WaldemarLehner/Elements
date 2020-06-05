@@ -30,7 +30,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
-            this.Texture = new TextureLoader().LoadTexture("character");
+            this.Texture = new TextureLoader().LoadTexture("Player");
         }
 
         // Define Player
