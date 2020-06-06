@@ -4,6 +4,7 @@ using System.Data;
 using System.Diagnostics;
 using ComputergrafikSpiel.View.Exceptions;
 using ComputergrafikSpiel.View.Helpers;
+using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -23,6 +24,8 @@ namespace ComputergrafikSpiel.View
         {
             this.Update(top, bottom, left, right);
         }
+
+        public IRenderer Parent { get; private set; }
 
         public float Width => this.Right - this.Left;
 
@@ -47,6 +50,21 @@ namespace ComputergrafikSpiel.View
         public Vector2 BottomRight => new Vector2(this.Right, this.Bottom);
 
         public (Vector2 TL, Vector2 TR, Vector2 BL, Vector2 BR) CameraBounds => (TL: this.TopLeft, TR: this.TopRight, BL: this.BottomLeft, BR: this.BottomRight);
+
+        public Vector2 WorldToNDC(Vector2 world) => CameraCoordinateConversionHelper.WorldToNDC(world, CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.Parent), this);
+
+        public Vector2 NDCToWorld(Vector2 ndc) => CameraCoordinateConversionHelper.NDCToWorld(ndc, CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.Parent), this);
+
+        public bool AttachRenderer(IRenderer renderer)
+        {
+            if (this.Parent == null)
+            {
+                this.Parent = renderer;
+                return true;
+            }
+
+            return false;
+        }
 
         public bool CanPointBeSeenByCamera(Vector2 point)
         {

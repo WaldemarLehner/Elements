@@ -1,9 +1,12 @@
-﻿using OpenTK;
+﻿using ComputergrafikSpiel.View.Renderer.Interfaces;
+using OpenTK;
 
 namespace ComputergrafikSpiel.View.Interfaces
 {
-    internal interface ICamera
+    public interface ICamera
     {
+        IRenderer Parent { get; }
+
         float Top { get; }
 
         float Bottom { get; }
@@ -24,9 +27,15 @@ namespace ComputergrafikSpiel.View.Interfaces
 
         (Vector2 TL, Vector2 TR, Vector2 BL, Vector2 BR) CameraBounds { get; }
 
+        bool AttachRenderer(IRenderer renderer);
+
         bool CanPointBeSeenByCamera(Vector2 point);
 
         void Update(float top, float bottom, float left, float right);
+
+        Vector2 WorldToNDC(Vector2 pointWorldSpace);
+
+        Vector2 NDCToWorld(Vector2 pointNDC);
 
         void DrawRectangle(Rectangle vertices, (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) texCoords, (int width, int height) screen);
     }
