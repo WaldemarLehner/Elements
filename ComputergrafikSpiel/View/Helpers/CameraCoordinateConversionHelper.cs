@@ -60,7 +60,6 @@ namespace ComputergrafikSpiel.View.Helpers
 
         public static Vector2 NDCToWorld(Vector2 point, (float width, float height) multipliers, ICamera camera)
         {
-
             var ndcCorrectedForRatio = new Vector2(point.X / multipliers.width, point.Y / multipliers.height);
             var screenSpace = NDCToScreen(ndcCorrectedForRatio);
             return ScreenToWorld(screenSpace, camera);

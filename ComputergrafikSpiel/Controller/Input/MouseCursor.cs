@@ -18,9 +18,6 @@ namespace ComputergrafikSpiel.Controller.Input
             cursorNDC.Y *= -1;
             this.WindowNDCCoordinates = cursorNDC;
             this.WorldCoordinates = renderer.Camera.NDCToWorld(cursorNDC);
-            Console.WriteLine(this.WindowNDCCoordinates);
-            Console.WriteLine(this.WorldCoordinates);
-            Console.WriteLine();
         }
     }
 }

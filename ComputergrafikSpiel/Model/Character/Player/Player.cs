@@ -63,7 +63,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public ICollider Collider { get; set; }
 
         // Look wich action was handed over and call corresponding method
-        public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
+        public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Controller.Input.MouseCursor mouseCursor)
         {
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {

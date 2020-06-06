@@ -65,7 +65,7 @@ namespace ComputergrafikSpiel.Controller.Input
             // Gives the Player a IReadOnlyList of pressed Actions
             if (this.playerControl != null)
             {
-                this.playerControl.PlayerControl(this.pressedActions);
+                this.playerControl.PlayerControl(this.pressedActions, this.mouseCursor);
             }
         }
     }

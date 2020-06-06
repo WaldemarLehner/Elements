@@ -13,7 +13,6 @@ namespace ComputergrafikSpiel.View
         {
             var (top, bottom, left, right) = model.CurrentSceneBounds;
             this.OpenTKRenderer = new OpenTKRenderer(model, new Camera(top, bottom, left, right));
-            
         }
 
         public IRenderer Renderer => this.OpenTKRenderer;
