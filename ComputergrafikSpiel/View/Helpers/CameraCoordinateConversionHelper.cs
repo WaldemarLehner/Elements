@@ -1,5 +1,6 @@
 ﻿using System;
 using ComputergrafikSpiel.View.Interfaces;
+using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.View.Helpers
@@ -38,6 +39,13 @@ namespace ComputergrafikSpiel.View.Helpers
             }
         }
 
+        public static (float x, float y) CalculateAspectRatioMultiplier(IRenderer renderer)
+        {
+            float screenAR = renderer.Screen.width / (float)renderer.Screen.height;
+            float cameraAR = renderer.Camera.AspectRatio;
+            return CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(cameraAR, screenAR);
+        }
+
         public static Vector2 WorldToNDC(Vector2 point, (float width, float height) multipliers, ICamera camera)
         {
             // All vertices are now mapped to x{0;1} , y{0;1} , representing what the camera can "see"
@@ -52,8 +60,18 @@ namespace ComputergrafikSpiel.View.Helpers
 
         public static Vector2 NDCToWorld(Vector2 point, (float width, float height) multipliers, ICamera camera)
         {
-            var cameraSpace = new Vector2(point.X / multipliers.width, point.Y / multipliers.height);
-            return ScreenToWorld(cameraSpace, camera);
+
+            var ndcCorrectedForRatio = new Vector2(point.X / multipliers.width, point.Y / multipliers.height);
+            var screenSpace = NDCToScreen(ndcCorrectedForRatio);
+            return ScreenToWorld(screenSpace, camera);
+        }
+
+        private static Vector2 NDCToScreen(Vector2 ndcCorrectedForRatio)
+        {
+            // (-1..1; -1..1) -> (0..1; 0..1)
+            ndcCorrectedForRatio += Vector2.One;
+            ndcCorrectedForRatio *= .5f;
+            return ndcCorrectedForRatio;
         }
 
         private static Vector2 ScreenToWorld(Vector2 point, ICamera camera)

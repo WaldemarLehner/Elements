@@ -52,7 +52,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
-        public Vector2 Scale { get; } = Vector2.One * 20;
+        public Vector2 Scale { get; } = Vector2.One * 10;
 
         public float Rotation { get; } = 0f;
 

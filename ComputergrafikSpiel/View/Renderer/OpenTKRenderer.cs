@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel.View.Renderer
 {
     internal class OpenTKRenderer : IRenderer
     {
-        private IModel model;
+        private readonly IModel model;
 
         internal OpenTKRenderer(IModel model, ICamera camera)
         {
@@ -24,6 +24,7 @@ namespace ComputergrafikSpiel.View.Renderer
 
             this.model = model;
             this.Camera = camera;
+            this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
             this.Debug = true;
         }
