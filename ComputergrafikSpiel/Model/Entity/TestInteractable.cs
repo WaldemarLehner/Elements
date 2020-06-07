@@ -13,9 +13,9 @@ namespace ComputergrafikSpiel.Model.Entity
         public TestInteractable()
         {
             this.Position = new Vector2(200, 200);
-            this.Scale = new Vector2(5, 5);
+            this.Scale = new Vector2(20, 20);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
-            this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("debugGrid16x16_directional");
+            this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/MovementSpeedIncrease");
         }
 
         public ICollider Collider { get; set; }

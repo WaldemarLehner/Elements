@@ -27,11 +27,12 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
+            this.Scale = new Vector2(32, 32);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
-            this.Texture = new TextureLoader().LoadTexture("character");
+            this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
         }
 
         // Define Player
