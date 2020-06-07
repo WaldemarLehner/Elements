@@ -1,14 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.View.Interfaces;
+using ComputergrafikSpiel.View.Renderer.Interfaces;
+using OpenTK;
 using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Controller.Input
 {
     public class InputController : IInputController
     {
+        private readonly List<PlayerEnum.PlayerActions> pressedActions;
+        private readonly MouseCursor mouseCursor;
         private IPlayer playerControl;
-        private List<PlayerEnum.PlayerActions> pressedActions;
 
         // Initialize InputController => gets a struct of Dictionary
         // Shall be called in the Constructor of Controller
@@ -18,6 +23,7 @@ namespace ComputergrafikSpiel.Controller.Input
             this.MouseDefinitions = controllersettings.MouseAction;
             this.KeyboardDefinitions = controllersettings.KeyboardAction;
             this.playerControl = null;
+            this.mouseCursor = new MouseCursor();
         }
 
         private Dictionary<Key, PlayerEnum.PlayerActions> KeyboardDefinitions { get; set; }
@@ -31,13 +37,15 @@ namespace ComputergrafikSpiel.Controller.Input
 
         // Check if pressed key is a allowed player action
         // Shall be called in OnUpdateFrame()
-        public void PlayerAction()
+        public void PlayerAction(IRenderer renderer, Vector2 cursorNDC)
         {
             // Clear list for next input
             this.pressedActions.Clear();
 
             KeyboardState keyboardState = Keyboard.GetState();
             MouseState mouseState = Mouse.GetState();
+            this.mouseCursor.Update(renderer, cursorNDC);
+
             foreach (var key in this.KeyboardDefinitions.Keys)
             {
                 if (keyboardState.IsKeyDown(key))
@@ -57,7 +65,7 @@ namespace ComputergrafikSpiel.Controller.Input
             // Gives the Player a IReadOnlyList of pressed Actions
             if (this.playerControl != null)
             {
-                this.playerControl.PlayerControl(this.pressedActions);
+                this.playerControl.PlayerControl(this.pressedActions, this.mouseCursor);
             }
         }
     }

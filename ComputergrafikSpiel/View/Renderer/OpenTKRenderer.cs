@@ -24,6 +24,7 @@ namespace ComputergrafikSpiel.View.Renderer
 
             this.model = model;
             this.Camera = camera;
+            this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
             this.Debug = true;
         }

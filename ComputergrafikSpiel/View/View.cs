@@ -15,9 +15,13 @@ namespace ComputergrafikSpiel.View
             this.OpenTKRenderer = new OpenTKRenderer(model, new Camera(top, bottom, left, right));
         }
 
-        public IRenderer Renderer { get => this.OpenTKRenderer; }
+        public IRenderer Renderer => this.OpenTKRenderer;
 
-        internal OpenTKRenderer OpenTKRenderer { get; private set; }
+        public ICamera Camera => this.Renderer.Camera;
+
+        public OpenTKRenderer OpenTKRenderer { get; private set; }
+
+        public (int width, int height) Screen => this.Renderer.Screen;
 
         public void Render() => this.Renderer.Render();
 

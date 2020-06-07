@@ -54,7 +54,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
-        public Vector2 Scale { get; } = Vector2.One * 20;
+        public Vector2 Scale { get; } = Vector2.One * 10;
 
         public float Rotation { get; } = 0f;
 
@@ -67,7 +67,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
         // Look wich action was handed over and call corresponding method
-        public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
+        public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Controller.Input.MouseCursor mouseCursor)
         {
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {

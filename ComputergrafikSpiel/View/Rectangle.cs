@@ -5,7 +5,7 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.View
 {
-    internal struct Rectangle
+    public struct Rectangle
     {
         internal Rectangle(Vector2 topLeft, Vector2 bottomRight)
         {
