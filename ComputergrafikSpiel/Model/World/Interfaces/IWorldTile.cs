@@ -3,7 +3,6 @@
 namespace ComputergrafikSpiel.Model.World
 {
     internal interface IWorldTile : IRenderable
-
     {
     }
 }

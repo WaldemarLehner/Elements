@@ -9,6 +9,5 @@
         bool DoorLeft { get; }
 
         bool DoorRight { get; }
-
     }
 }
