@@ -146,7 +146,6 @@
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITileTexture.cs" />
     <Compile Include="Model\Scene\IScene.cs" />
     <Compile Include="Model\World\Interfaces\IWorldSceneDefinition.cs" />
-    <Compile Include="Model\World\Interfaces\IWorldSceneGenerator.cs" />
     <Compile Include="Model\World\Interfaces\IWorldGenerator.cs" />
     <Compile Include="Model\World\Interfaces\IWorldTileCollidable.cs" />
     <Compile Include="Model\World\Interfaces\IWorldTile.cs" />

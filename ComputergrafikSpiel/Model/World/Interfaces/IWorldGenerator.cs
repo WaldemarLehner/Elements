@@ -1,6 +1,9 @@
 ﻿namespace ComputergrafikSpiel.Model.World.Interfaces
 {
-    internal interface IWorldGenerator
+    public interface IWorldGenerator
     {
+        IWorldTile WorldTile { get; }
+
+        IWorldSceneDefinition WorldSceneDefinition { get; }
     }
 }

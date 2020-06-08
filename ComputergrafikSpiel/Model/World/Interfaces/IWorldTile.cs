@@ -1,8 +1,9 @@
 ﻿using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.World.Interfaces;
 
 namespace ComputergrafikSpiel.Model.World
 {
-    internal interface IWorldTile : IRenderable
+    public interface IWorldTile : IRenderable
     {
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ComputergrafikSpiel.Model.World.Interfaces
 {
-    internal interface IWorldSceneDefinition
+    public interface IWorldSceneDefinition
     {
         bool DoorTop { get; }
 

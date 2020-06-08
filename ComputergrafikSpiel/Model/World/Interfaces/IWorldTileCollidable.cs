@@ -2,7 +2,7 @@
 
 namespace ComputergrafikSpiel.Model.World.Interfaces
 {
-    internal interface IWorldTileCollidable : IWorldTile, ICollidable
+    public interface IWorldTileCollidable : IWorldTile, ICollidable
     {
         // Enum -> ColType wird erst noch definiert
         // ColType CollidableType { get; }
