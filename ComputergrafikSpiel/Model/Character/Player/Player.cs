@@ -22,7 +22,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager)
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
@@ -33,6 +33,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
+            colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player

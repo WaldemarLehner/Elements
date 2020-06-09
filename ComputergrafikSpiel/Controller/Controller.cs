@@ -20,6 +20,7 @@ namespace ComputergrafikSpiel.Controller
             this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
             this.Model.CreateTestInteractable();
             this.Model.CreatePlayerOnce(this.InputController);
+            this.Model.CreateTestEnemy();
         }
 
         public IInputController InputController { get; private set; }

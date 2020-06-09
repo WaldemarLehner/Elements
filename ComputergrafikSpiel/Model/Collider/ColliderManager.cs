@@ -110,12 +110,15 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray)
         {
-            List<ICollidable> collidedCollidables = new List<ICollidable>();
+            var @static = this.GetRayCollisionsWithStatic(ray);
+            var @dynamic = this.GetRayCollisionsWithDynamic(ray);
+            return Enumerable.Union(@static, dynamic).ToList();
+        }
 
-            this.GetRayCollisionsWithStatic(ray, collidedCollidables);
-            this.GetRayCollisionsWithDynamic(ray, collidedCollidables);
-
-            return collidedCollidables;
+        public IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray, Vector2 position)
+        {
+            var unsorted = this.GetRayCollisions(ray);
+            return (from entry in unsorted orderby Vector2.DistanceSquared(position, entry.Collider.Position) ascending select entry).ToList();
         }
 
         internal IEnumerable<Tuple<int, int>> GetAffectedStaticTiles(Vector2 position, float maxDistance)
@@ -134,8 +137,10 @@ namespace ComputergrafikSpiel.Model.Collider
             return from key in boxedKeys where (Vector2.Distance(position, this.collidableTiles[key].Collider.Position) - this.collidableTiles[key].Collider.MaximumDistanceFromPosition) <= maxDistance select key;
         }
 
-        internal IReadOnlyCollection<ICollidable> GetRayCollisionsWithStatic(IRay ray, List<ICollidable> collidedCollidables)
+        internal IReadOnlyCollection<ICollidable> GetRayCollisionsWithStatic(IRay ray)
         {
+            var collidedCollidables = new List<ICollidable>();
+
             // currently slow with O(n), will have to be optimized later on
             foreach (KeyValuePair<Tuple<int, int>, ICollidable> tile in this.collidableTiles)
             {
@@ -149,8 +154,9 @@ namespace ComputergrafikSpiel.Model.Collider
             return collidedCollidables;
         }
 
-        internal IReadOnlyCollection<ICollidable> GetRayCollisionsWithDynamic(IRay ray, List<ICollidable> collidedCollidables)
+        internal IReadOnlyCollection<ICollidable> GetRayCollisionsWithDynamic(IRay ray)
         {
+            var collidedCollidables = new List<ICollidable>();
             foreach (var entity in this.collidableEntities)
             {
                 // compare min distance of the Entity's position and Ray with the "radius" of the Entity
@@ -161,6 +167,12 @@ namespace ComputergrafikSpiel.Model.Collider
             }
 
             return collidedCollidables;
+        }
+
+        internal IReadOnlyCollection<ICollidable> GetRayCollisionsWithDynamic(IRay ray, Vector2 initialPosition)
+        {
+            var collidedCollidables = this.GetRayCollisionsWithDynamic(ray);
+            return (from entry in collidedCollidables orderby Vector2.DistanceSquared(entry.Collider.Position, initialPosition) ascending select entry).ToList();
         }
     }
 }

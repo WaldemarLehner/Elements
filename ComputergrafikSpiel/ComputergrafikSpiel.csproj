@@ -103,6 +103,10 @@
     <Compile Include="Controller\Input\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\Input\MouseCursor.cs" />
+    <Compile Include="Model\Character\NPC\NPCAI\AIEnemy.cs" />
+    <Compile Include="Model\Character\NPC\TestEnemy.cs" />
+    <Compile Include="Model\Character\NPC\Interfaces\INonPlayerCharacter.cs" />
+    <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
@@ -186,7 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\Door\TreeBranchesDoor.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Enemy\Fungus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -195,7 +199,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\PlayerWeapon.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Projectile\Blast.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -267,22 +271,22 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\Wall.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\WallGround.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\WallTipBottom.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\WallTipLeft.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\WallTipRight.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\WallTipTop.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\Water.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

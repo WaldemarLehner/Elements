@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.NPC;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Collider;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model
 {
@@ -14,6 +20,7 @@ namespace ComputergrafikSpiel.Model
             this.RenderablesList = new List<IRenderable>();
             this.Updateables = new List<IUpdateable>();
             this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
+            this.ColliderManager = new ColliderManager(32);
         }
 
         public IEnumerable<IRenderable> Renderables => this.RenderablesList;
@@ -30,7 +37,11 @@ namespace ComputergrafikSpiel.Model
 
         private IEntity IncMovementSpeed { get; set; } = null;
 
+        private INonPlayerCharacter TestEnemy { get; set; } = null;
+
         private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = null;
+
+        private IColliderManager ColliderManager { get; set; }
 
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
@@ -48,7 +59,7 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.Player == null)
             {
-                this.Player = new Player(this.Interactable);
+                this.Player = new Player(this.Interactable, this.ColliderManager);
                 controller.HookPlayer(this.Player);
                 this.Updateables.Add(this.Player);
                 this.RenderablesList.Add(this.Player);
@@ -62,11 +73,24 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.IncMovementSpeed == null)
             {
-            this.IncMovementSpeed = new TestInteractable();
+            this.IncMovementSpeed = new TestInteractable(this.ColliderManager);
             this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
             this.Updateables.Add(this.IncMovementSpeed);
             this.RenderablesList.Add(this.IncMovementSpeed);
             return true;
+            }
+
+            return false;
+        }
+
+        public bool CreateTestEnemy()
+        {
+            if (this.TestEnemy == null)
+            {
+                this.TestEnemy = new TestEnemy(10, "WaterDrop", this.Player, this.ColliderManager);
+                this.Updateables.Add(this.TestEnemy);
+                this.RenderablesList.Add(this.TestEnemy);
+                return true;
             }
 
             return false;
