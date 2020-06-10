@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
 using OpenTK.Input;

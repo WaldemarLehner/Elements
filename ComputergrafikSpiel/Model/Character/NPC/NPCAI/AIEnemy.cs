@@ -15,23 +15,31 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
         private Vector2 direction;
         private IColliderManager colliderManager;
         private List<ICollidable> collidables;
+        private IPlayer player;
+        private ICollection<INonPlayerCharacter> otherEnemys;
 
-        public AIEnemy(IColliderManager colliderManager)
+        public AIEnemy(IColliderManager colliderManager, ICollection<INonPlayerCharacter> otherEnemys, IPlayer player)
         {
             this.colliderManager = colliderManager;
             this.collidables = new List<ICollidable>();
+            this.otherEnemys = otherEnemys;
+            this.player = player;
         }
 
-        public Vector2 EnemyAI(INonPlayerCharacter enemy, IPlayer player)
+        public Vector2 EnemyAIMovement(INonPlayerCharacter myself)
         {
-            this.direction = player.Position - enemy.Position;
+            this.direction = this.player.Position - myself.Position;
             this.direction.Normalize();
 
-            this.ray = new Ray(enemy.Position, this.direction, 500);
-            this.collidables = (List<ICollidable>)this.colliderManager.GetRayCollisions(this.ray, enemy.Position);
-            this.collidables.Remove(enemy.Collider.CollidableParent);
+            this.ray = new Ray(myself.Position, this.direction, 500);
+            this.collidables = (List<ICollidable>)this.colliderManager.GetRayCollisions(this.ray, myself.Position);
+            this.collidables.Remove(myself.Collider.CollidableParent);
+            foreach (INonPlayerCharacter otherEnemys in this.otherEnemys)
+            {
+                this.collidables.Remove(otherEnemys.Collider.CollidableParent);
+            }
 
-            if (this.collidables.FirstOrDefault<ICollidable>() == player.Collider.CollidableParent)
+            if (this.collidables.FirstOrDefault<ICollidable>() == this.player.Collider.CollidableParent)
             {
                 return this.direction;
             }

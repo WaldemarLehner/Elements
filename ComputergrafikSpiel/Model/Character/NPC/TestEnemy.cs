@@ -14,17 +14,18 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public class TestEnemy : INonPlayerCharacter
     {
-        public TestEnemy(int maxHealth, string texture, IPlayer player, IColliderManager colliderManager)
+        public TestEnemy(int maxHealth, string texture, float movementSpeed, int defense, IPlayer player, IColliderManager colliderManager, ICollection<INonPlayerCharacter> allEnemys, Vector2 startPosition)
         {
             this.MaxHealth = maxHealth;
+            this.MovementSpeed = movementSpeed;
+            this.Defense = defense;
             this.Texture = new TextureLoader().LoadTexture("Enemy/" + texture);
-            this.Position = new Vector2(400, 500);
+            this.Position = startPosition;
             this.Scale = new Vector2(16, 16);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             this.Player = player;
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
-            this.NPCController = new AIEnemy(colliderManager);
-
+            this.NPCController = new AIEnemy(colliderManager, allEnemys, this.Player);
         }
 
         public event EventHandler CharacterDeath;
@@ -55,9 +56,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public Vector2 Scale { get; } = Vector2.One * 20;
 
+        private Vector2 Direction { get; set; }
+
         private IPlayer Player { get; }
 
-        private Vector2 Direction { get; set; }
+        private int CurrentHealth { get; set; }
 
         public void OnDeath(EventArgs e)
         {
@@ -74,11 +77,41 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.CharacterMove?.Invoke(this, e);
         }
 
+        public void TakingDamage(int damage)
+        {
+            if (damage <= 0)
+            {
+                throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(damage));
+            }
+
+            if (this.Defense < damage)
+            {
+                damage -= this.Defense;
+                this.CurrentHealth -= damage;
+                this.OnHit(EventArgs.Empty);
+            }
+
+            if (this.CurrentHealth <= 0)
+            {
+                this.OnDeath(EventArgs.Empty);
+            }
+        }
+
         public void Update(float dtime)
         {
-            this.Direction = this.NPCController.EnemyAI(this, this.Player);
+            this.Direction = this.NPCController.EnemyAIMovement(this);
 
             this.Position += this.Direction * this.MovementSpeed * dtime;
+
+            this.GiveDamageToPlayer();
+        }
+
+        public void GiveDamageToPlayer()
+        {
+            if (this.Collider.DidCollideWith(this.Player.Collider))
+            {
+                this.Player.TakingDamage(1);
+            }
         }
     }
 }

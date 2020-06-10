@@ -51,7 +51,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float MovementSpeed { get; set; } = 50;
 
-        public int Defense { get; set; } = 1;
+        public int Defense { get; set; } = 0;
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
@@ -111,11 +111,12 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 damage -= this.Defense;
                 this.CurrentHealth -= damage;
+                this.OnHit(EventArgs.Empty);
             }
 
-            this.OnHit(EventArgs.Empty);
             if (this.CurrentHealth <= 0)
             {
+                Console.WriteLine("git gud, u died");
                 this.OnDeath(EventArgs.Empty);
             }
         }

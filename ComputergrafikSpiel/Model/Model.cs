@@ -21,6 +21,7 @@ namespace ComputergrafikSpiel.Model
             this.Updateables = new List<IUpdateable>();
             this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
             this.ColliderManager = new ColliderManager(32);
+            this.EnemysList = new List<INonPlayerCharacter>();
         }
 
         public IEnumerable<IRenderable> Renderables => this.RenderablesList;
@@ -37,11 +38,14 @@ namespace ComputergrafikSpiel.Model
 
         private IEntity IncMovementSpeed { get; set; } = null;
 
-        private INonPlayerCharacter TestEnemy { get; set; } = null;
+        private INonPlayerCharacter Enemys { get; set; } = null;
+
+        private ICollection<INonPlayerCharacter> EnemysList { get; set; } = null;
 
         private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = null;
 
         private IColliderManager ColliderManager { get; set; }
+
 
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
@@ -85,11 +89,16 @@ namespace ComputergrafikSpiel.Model
 
         public bool CreateTestEnemy()
         {
-            if (this.TestEnemy == null)
+            if (this.Enemys == null)
             {
-                this.TestEnemy = new TestEnemy(10, "WaterDrop", this.Player, this.ColliderManager);
-                this.Updateables.Add(this.TestEnemy);
-                this.RenderablesList.Add(this.TestEnemy);
+                this.Enemys = new TestEnemy(10, "Fungus", 20, 1, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
+                this.Updateables.Add(this.Enemys);
+                this.RenderablesList.Add(this.Enemys);
+                this.EnemysList.Add(this.Enemys);
+                this.Enemys = new TestEnemy(10, "WaterDrop", 35, 0, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 400));
+                this.Updateables.Add(this.Enemys);
+                this.RenderablesList.Add(this.Enemys);
+                this.EnemysList.Add(this.Enemys);
                 return true;
             }
 

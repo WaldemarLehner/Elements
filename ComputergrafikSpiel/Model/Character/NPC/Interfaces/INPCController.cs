@@ -6,6 +6,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC.Interfaces
 {
     public interface INPCController
     {
-        Vector2 EnemyAI(INonPlayerCharacter enemy, IPlayer player);
+        Vector2 EnemyAIMovement(INonPlayerCharacter myself);
     }
 }

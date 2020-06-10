@@ -23,6 +23,11 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
             throw new NotImplementedException();
         }
 
+        public bool CreateTestEnemy()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CreateTestInteractable()
         {
             throw new NotImplementedException();
