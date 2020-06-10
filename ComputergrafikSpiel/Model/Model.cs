@@ -30,6 +30,8 @@ namespace ComputergrafikSpiel.Model
 
         private IEntity IncMovementSpeed { get; set; } = null;
 
+        private IEntity IncWährung { get; set; } = null;
+
         private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = null;
 
         /// <summary>
@@ -62,12 +64,17 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.IncMovementSpeed == null)
             {
-            this.IncMovementSpeed = new TestInteractable();
-            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
-            this.Updateables.Add(this.IncMovementSpeed);
-            this.RenderablesList.Add(this.IncMovementSpeed);
-            return true;
+                this.IncMovementSpeed = new TestInteractable(PlayerEnum.Stats.MovementSpeed, 200, 200);
+                this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
+                this.Updateables.Add(this.IncMovementSpeed);
+                this.RenderablesList.Add(this.IncMovementSpeed);
+                //return true;
             }
+
+            /*this.IncWährung = new TestInteractable(PlayerEnum.Stats.Währung, 300, 200);
+            this.Interactable.Add(PlayerEnum.Stats.Währung, this.IncWährung);
+            this.Updateables.Add(this.IncWährung);
+            this.RenderablesList.Add(this.IncWährung);*/
 
             return false;
         }

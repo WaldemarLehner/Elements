@@ -44,13 +44,17 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public event EventHandler PlayerInc;
 
+        public int MaxHealth { get; set; } = 5;
+
         public int CurrentHealth { get; set; }
 
-        public int MaxHealth { get; set; } = 5;
+        public int Defense { get; set; } = 1;
+
+        public float AttackSpeed { get; set; } = 5;
 
         public float MovementSpeed { get; set; } = 50;
 
-        public int Defense { get; set; } = 1;
+        public int Währung { get; set; } = 0;
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
@@ -128,17 +132,41 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             foreach (PlayerEnum.Stats stats in incstats)
             {
-                if (stats == PlayerEnum.Stats.Defense)
+                /*Interactable MaxHealth: Bei Rundenende kann das Maximalleben um eins erhöht werden
+                -> Überprüfung das bisheriges Leben auch auf Max ist*/
+                if (stats == PlayerEnum.Stats.MaxHealth && this.CurrentHealth == this.MaxHealth)
+                {
+                    this.CurrentHealth = this.MaxHealth++;
+                }
+
+                // Leben wird um eins erhöht
+                else if (stats == PlayerEnum.Stats.Heal)
+                {
+                    this.CurrentHealth++;
+                }
+
+                // Defense wird erhöht
+                else if (stats == PlayerEnum.Stats.Defense)
                 {
                     this.Defense += incNumber;
                 }
-                else if (stats == PlayerEnum.Stats.MaxHealth)
+
+                // AttackSpeed wird erhöht
+                else if (stats == PlayerEnum.Stats.AttackSpeed)
                 {
-                    this.MaxHealth += incNumber;
+                    this.AttackSpeed += incNumber;
                 }
+
+                // MovementSpeed wird erhöht
                 else if (stats == PlayerEnum.Stats.MovementSpeed)
                 {
                     this.MovementSpeed += incNumber;
+                }
+
+                // Währung wird an der Stelle gespawnt, an der der Gegner gestorben ist
+                else if (stats == PlayerEnum.Stats.Währung)
+                {
+                    this.Währung += incNumber;
                 }
 
                 this.OnInc(EventArgs.Empty);
@@ -151,6 +179,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 this.Position += this.directionXY * this.MovementSpeed * dtime * 2;
                 this.run = false;
+
+                //Dient nur zu Testzwecken
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Write("Währung: {0}  MovementSpeed: {1} \n", Währung, MovementSpeed);
             }
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;

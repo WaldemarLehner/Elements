@@ -28,6 +28,15 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                     player.IncreasePlayerStats(10, this.statsList);
                 }
             }
+
+            /*if (this.incInteractable.TryGetValue(PlayerEnum.Stats.Währung, out this.stats))
+            {
+                if (player.Collider.DidCollideWith(this.stats.Collider))
+                {
+                    this.statsList.Add(PlayerEnum.Stats.Währung);
+                    player.IncreasePlayerStats(200, this.statsList);
+                }
+            }*/
         }
     }
 }
