@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
+using ComputergrafikSpiel.Model.Character.Weapon;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
@@ -21,7 +23,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager)
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
@@ -31,6 +33,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
             this.Texture = new TextureLoader().LoadTexture("character");
+            this.ColliderManager = colliderManager;
         }
 
         // Define Player
@@ -61,6 +64,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public ITexture Texture { get; }
 
         public ICollider Collider { get; set; }
+
+        // temporary
+        public IColliderManager ColliderManager { get; }
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
@@ -172,6 +178,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void OnMove(EventArgs e)
         {
             this.CharacterMove?.Invoke(this, e);
+        }
+
+        // weapon will be initialized in the scene
+        IWeapon weapon = new Weapon();
+
+        public void EquipWeapon(IWeapon weapon)
+        {
+            this.weapon = weapon;
         }
     }
 }

@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Drawing.Text;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
+using ComputergrafikSpiel.Model.Collider;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
@@ -9,11 +13,16 @@ namespace ComputergrafikSpiel.Model
 {
     internal class Model : IModel
     {
+        // temporary
+        private IColliderManager colliderManager;
+        private IWeapon weapon;
+
         internal Model()
         {
             this.RenderablesList = new List<IRenderable>();
             this.Updateables = new List<IUpdateable>();
             this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
+            this.colliderManager = new ColliderManager(32);
         }
 
         public IEnumerable<IRenderable> Renderables => this.RenderablesList;
@@ -48,7 +57,7 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.Player == null)
             {
-                this.Player = new Player(this.Interactable);
+                this.Player = new Player(this.Interactable, this.colliderManager);
                 controller.HookPlayer(this.Player);
                 this.Updateables.Add(this.Player);
                 this.RenderablesList.Add(this.Player);
@@ -70,6 +79,11 @@ namespace ComputergrafikSpiel.Model
             }
 
             return false;
+        }
+
+        public bool CreateTestWeapon()
+        {
+            this.weapon = Weapon();
         }
     }
 }

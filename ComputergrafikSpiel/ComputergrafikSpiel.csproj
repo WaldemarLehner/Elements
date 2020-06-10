@@ -104,6 +104,9 @@
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
+    <Compile Include="Model\Character\Weapon\Interfaces\IWeapon.cs" />
+    <Compile Include="Model\Character\Weapon\Projectile.cs" />
+    <Compile Include="Model\Character\Weapon\Weapon.cs" />
     <Compile Include="Model\Collider\CircleOffsetCollider.cs" />
     <Compile Include="Model\Character\ICharacter.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollidable.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Character
@@ -22,5 +23,7 @@ namespace ComputergrafikSpiel.Model.Character
         void OnHit(EventArgs e);
 
         void OnMove(EventArgs e);
+
+        void EquipWeapon(IWeapon weapon);
     }
 }

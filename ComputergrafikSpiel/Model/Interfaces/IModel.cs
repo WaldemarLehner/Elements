@@ -17,5 +17,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
         bool CreatePlayerOnce(IInputController controller);
 
         bool CreateTestInteractable();
+
+        bool CreateTestWeapon();
     }
 }
