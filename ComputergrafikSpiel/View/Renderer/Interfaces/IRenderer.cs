@@ -1,7 +1,13 @@
-﻿namespace ComputergrafikSpiel.View.Renderer.Interfaces
+﻿using ComputergrafikSpiel.View.Interfaces;
+
+namespace ComputergrafikSpiel.View.Renderer.Interfaces
 {
     public interface IRenderer
     {
+        ICamera Camera { get; }
+
+        (int width, int height) Screen { get; }
+
         /// <summary>
         /// Triggers the Rendering of the current IRenderables.
         /// </summary>

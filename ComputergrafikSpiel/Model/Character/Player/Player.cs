@@ -9,6 +9,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.Player
 {
@@ -26,11 +27,12 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
+            this.Scale = new Vector2(32, 32);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
-            this.Texture = new TextureLoader().LoadTexture("character");
+            this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
         }
 
         // Define Player
@@ -52,7 +54,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
-        public Vector2 Scale { get; } = Vector2.One * 20;
+        public Vector2 Scale { get; } = Vector2.One * 10;
 
         public float Rotation { get; } = 0f;
 
@@ -62,8 +64,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public ICollider Collider { get; set; }
 
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
+
         // Look wich action was handed over and call corresponding method
-        public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
+        public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Controller.Input.MouseCursor mouseCursor)
         {
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {

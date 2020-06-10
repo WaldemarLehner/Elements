@@ -1,8 +1,10 @@
-﻿using ComputergrafikSpiel.Model.Collider;
+﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Entity
 {
@@ -11,9 +13,9 @@ namespace ComputergrafikSpiel.Model.Entity
         public TestInteractable()
         {
             this.Position = new Vector2(200, 200);
-            this.Scale = new Vector2(5, 5);
+            this.Scale = new Vector2(20, 20);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
-            this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("debugGrid16x16_directional");
+            this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/MovementSpeedIncrease");
         }
 
         public ICollider Collider { get; set; }
@@ -27,6 +29,8 @@ namespace ComputergrafikSpiel.Model.Entity
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
         public Vector2 Scale { get; } = Vector2.One * 20;
+
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
         public void Update(float dtime)
         {
