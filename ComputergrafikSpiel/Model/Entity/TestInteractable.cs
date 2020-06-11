@@ -10,11 +10,11 @@ using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Entity
 {
-    internal class TestInteractable : IEntity
+    internal class CreateInteractable : IEntity
     {
         private readonly string texturename;
 
-        public TestInteractable(PlayerEnum.Stats stats, int positionX, int positionY)
+        public CreateInteractable(PlayerEnum.Stats stats, int positionX, int positionY)
         {
             switch (stats)
             {
@@ -41,8 +41,6 @@ namespace ComputergrafikSpiel.Model.Entity
                     break;
             }
 
-            //this.CurrentStat = stats;
-
             this.Position = new Vector2(positionX, positionY);
             this.Scale = new Vector2(20, 20);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
@@ -62,8 +60,6 @@ namespace ComputergrafikSpiel.Model.Entity
         public Vector2 Scale { get; } = Vector2.One * 20;
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
-
-        //public PlayerEnum.Stats CurrentStat { get; }
 
         public void Update(float dtime)
         {

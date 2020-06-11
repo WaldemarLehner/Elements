@@ -28,6 +28,14 @@ namespace ComputergrafikSpiel.Model
 
         private IPlayer Player { get; set; } = null;
 
+        private IEntity IncMaxHealth { get; set; } = null;
+
+        private IEntity IncHeal { get; set; } = null;
+
+        private IEntity IncDefense { get; set; } = null;
+
+        private IEntity IncAttackSpeed { get; set; } = null;
+
         private IEntity IncMovementSpeed { get; set; } = null;
 
         private IEntity IncWährung { get; set; } = null;
@@ -62,19 +70,41 @@ namespace ComputergrafikSpiel.Model
 
         public bool CreateTestInteractable()
         {
-            if (this.IncMovementSpeed == null)
-            {
-                this.IncMovementSpeed = new TestInteractable(PlayerEnum.Stats.MovementSpeed, 200, 200);
-                this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
-                this.Updateables.Add(this.IncMovementSpeed);
-                this.RenderablesList.Add(this.IncMovementSpeed);
-                //return true;
-            }
+            // MaxHealth Interactable
+            this.IncMaxHealth = new CreateInteractable(PlayerEnum.Stats.MaxHealth, 200, 100);
+            this.Interactable.Add(PlayerEnum.Stats.MaxHealth, this.IncMaxHealth);
+            this.Updateables.Add(this.IncMaxHealth);
+            this.RenderablesList.Add(this.IncMaxHealth);
 
-            /*this.IncWährung = new TestInteractable(PlayerEnum.Stats.Währung, 300, 200);
+            // Heal Interactable
+            this.IncHeal = new CreateInteractable(PlayerEnum.Stats.Heal, 300, 100);
+            this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncHeal);
+            this.Updateables.Add(this.IncHeal);
+            this.RenderablesList.Add(this.IncHeal);
+
+            // Defense Interactable
+            this.IncDefense = new CreateInteractable(PlayerEnum.Stats.Defense, 400, 100);
+            this.Interactable.Add(PlayerEnum.Stats.Defense, this.IncDefense);
+            this.Updateables.Add(this.IncDefense);
+            this.RenderablesList.Add(this.IncDefense);
+
+            // AttackSpeed Interactable
+            this.IncAttackSpeed = new CreateInteractable(PlayerEnum.Stats.AttackSpeed, 500, 100);
+            this.Interactable.Add(PlayerEnum.Stats.AttackSpeed, this.IncAttackSpeed);
+            this.Updateables.Add(this.IncAttackSpeed);
+            this.RenderablesList.Add(this.IncAttackSpeed);
+
+            // MovementSpeed Interactable
+            this.IncMovementSpeed = new CreateInteractable(PlayerEnum.Stats.MovementSpeed, 600, 100);
+            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
+            this.Updateables.Add(this.IncMovementSpeed);
+            this.RenderablesList.Add(this.IncMovementSpeed);
+
+            // Währung Interactable
+            this.IncWährung = new CreateInteractable(PlayerEnum.Stats.Währung, 700, 100);
             this.Interactable.Add(PlayerEnum.Stats.Währung, this.IncWährung);
             this.Updateables.Add(this.IncWährung);
-            this.RenderablesList.Add(this.IncWährung);*/
+            this.RenderablesList.Add(this.IncWährung);
 
             return false;
         }

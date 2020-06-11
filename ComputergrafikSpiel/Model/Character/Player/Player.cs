@@ -138,13 +138,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 /*Interactable MaxHealth: Bei Rundenende kann das Maximalleben um eins erhöht werden
                 -> Überprüfung das bisheriges Leben auch auf Max ist*/
-                if (stats == PlayerEnum.Stats.MaxHealth && this.CurrentHealth == this.MaxHealth)
+                if (stats == PlayerEnum.Stats.MaxHealth)
                 {
-                    this.CurrentHealth = this.MaxHealth++;
+                    this.MaxHealth++;
                 }
 
                 // Leben wird um eins erhöht
-                else if (stats == PlayerEnum.Stats.Heal)
+                else if (stats == PlayerEnum.Stats.Heal && this.CurrentHealth < this.MaxHealth)
                 {
                     this.CurrentHealth++;
                 }
@@ -186,7 +186,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
                 //Dient nur zu Testzwecken
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("Währung: {0}  MovementSpeed: {1} \n", Währung, MovementSpeed);
+                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", MaxHealth, CurrentHealth, Defense, AttackSpeed, MovementSpeed, Währung);
             }
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;
