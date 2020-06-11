@@ -23,7 +23,5 @@ namespace ComputergrafikSpiel.Model.Character
         void OnHit(EventArgs e);
 
         void OnMove(EventArgs e);
-
-        void EquipWeapon(IWeapon weapon);
     }
 }

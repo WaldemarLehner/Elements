@@ -1,15 +1,17 @@
-﻿using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
+﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Weapon : IWeapon
     {
-        internal Weapon(float firerate, int projectileCCount, int bulletTTL, float bulletSize, IColliderManager colliderManager)
+        internal Weapon(float firerate, int projectileCCount, int bulletTTL, float bulletSize, IColliderManager colliderManager, float attackDamage)
         {
             this.Firerate = firerate;
             this.ProjectileCreationCount = projectileCCount;
@@ -17,7 +19,8 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.BulletSize = bulletSize;
             this.ColliderManager = colliderManager;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
-            this.Texture = new TextureLoader().LoadTexture("statincrease/");
+            this.Texture = new TextureLoader().LoadTexture("StatIncrease/AttackDamageIncrease");
+            this.AttackDamage = attackDamage;
         }
 
         public int ProjectileCreationCount { get; }
@@ -30,19 +33,22 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public IColliderManager ColliderManager { get; }
 
-        public ICollider Collider { get; }
+        public ICollider Collider { get; set; }
 
-        public ITexture Texture { get; }
+        public ITexture Texture { get; set; }
 
-        public Vector2 Position => throw new System.NotImplementedException();
+        // temp position
+        public Vector2 Position => new Vector2(300, 300);
 
         public float Rotation { get; } = 0f;
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
-        public Vector2 Scale => throw new System.NotImplementedException();
+        public Vector2 Scale => new Vector2(32, 32);
 
-        public float AttackDamage => throw new System.NotImplementedException();
+        public float AttackDamage { get; }
+
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
         // has to be changed for shotgun/semi-automatic. For this it will always be as if the projectile count is 1
         public void CreateProjectile(Vector2 position, Vector2 direction)
@@ -53,9 +59,17 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             }
         }
 
+        public void EraseWeaponOnPickup()
+        {
+            this.ColliderManager.RemoveEntityCollidable(this);
+
+            // what to do about this?
+            // this.Texture = null;
+            this.Collider = null;
+        }
+
         public void Update(float dtime)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

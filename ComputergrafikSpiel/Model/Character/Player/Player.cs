@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
@@ -21,8 +22,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerInteractionSystem playerInteractionSystem;
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
+        private IWeapon equipedWeapon = null;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, IWeapon weapon)
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
@@ -33,6 +35,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
+            colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
+            this.equipedWeapon = weapon;
         }
 
         // Define Player
@@ -78,7 +82,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    this.playerAttackSystem.PlayerAttack();
+                    if (this.equipedWeapon != null)
+                    {
+                        this.playerAttackSystem.PlayerAttack(this, this.equipedWeapon, mouseCursor);
+                    }
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {

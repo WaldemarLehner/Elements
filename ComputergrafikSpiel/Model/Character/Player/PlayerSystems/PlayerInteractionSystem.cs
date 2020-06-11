@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 

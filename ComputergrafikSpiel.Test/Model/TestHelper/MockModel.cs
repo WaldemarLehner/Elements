@@ -28,6 +28,11 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
             throw new NotImplementedException();
         }
 
+        public void CreateTestWeapon()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(float dTime)
         {
             throw new NotImplementedException();

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing.Text;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -57,7 +59,8 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.Player == null)
             {
-                this.Player = new Player(this.Interactable, this.colliderManager);
+                this.weapon = new Weapon(3, 1, 20, 2, this.colliderManager, 1);
+                this.Player = new Player(this.Interactable, this.colliderManager, weapon);
                 controller.HookPlayer(this.Player);
                 this.Updateables.Add(this.Player);
                 this.RenderablesList.Add(this.Player);
@@ -71,19 +74,14 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.IncMovementSpeed == null)
             {
-            this.IncMovementSpeed = new TestInteractable();
-            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
-            this.Updateables.Add(this.IncMovementSpeed);
-            this.RenderablesList.Add(this.IncMovementSpeed);
-            return true;
+                this.IncMovementSpeed = new TestInteractable();
+                this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
+                this.Updateables.Add(this.IncMovementSpeed);
+                this.RenderablesList.Add(this.IncMovementSpeed);
+                return true;
             }
 
             return false;
-        }
-
-        public bool CreateTestWeapon()
-        {
-            this.weapon = Weapon();
         }
     }
 }

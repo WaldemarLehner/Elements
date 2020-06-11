@@ -19,6 +19,7 @@ namespace ComputergrafikSpiel.Controller
             this.Model = model;
             this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
             this.Model.CreateTestInteractable();
+            // this.Model.CreateTestWeapon();
             this.Model.CreatePlayerOnce(this.InputController);
         }
 
