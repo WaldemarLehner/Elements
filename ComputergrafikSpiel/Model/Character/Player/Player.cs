@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Collider;
@@ -70,6 +71,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
+        private int i;
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Controller.Input.MouseCursor mouseCursor)
         {
@@ -87,6 +90,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
                     this.playerInteractionSystem.PlayerInteraction(this);
+                    Console.WriteLine("MovementSpeed Inc: " + this.i);
+                    this.i++;
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Run)
                 {
