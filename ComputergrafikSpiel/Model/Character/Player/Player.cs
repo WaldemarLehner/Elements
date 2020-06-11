@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
-using ComputergrafikSpiel.Model.Character.Weapon;
-using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
@@ -11,6 +9,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.Player
 {
@@ -23,17 +22,17 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable)
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
+            this.Scale = new Vector2(32, 32);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
-            this.Texture = new TextureLoader().LoadTexture("character");
-            this.ColliderManager = colliderManager;
+            this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
         }
 
         // Define Player
@@ -55,7 +54,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
-        public Vector2 Scale { get; } = Vector2.One * 20;
+        public Vector2 Scale { get; } = Vector2.One * 10;
 
         public float Rotation { get; } = 0f;
 
@@ -65,11 +64,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public ICollider Collider { get; set; }
 
-        // temporary
-        public IColliderManager ColliderManager { get; }
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
         // Look wich action was handed over and call corresponding method
-        public void PlayerControl(IReadOnlyList<PlayerEnum.PlayerActions> actions)
+        public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Controller.Input.MouseCursor mouseCursor)
         {
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {
@@ -178,14 +176,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void OnMove(EventArgs e)
         {
             this.CharacterMove?.Invoke(this, e);
-        }
-
-        // weapon will be initialized in the scene
-        IWeapon weapon = new Weapon();
-
-        public void EquipWeapon(IWeapon weapon)
-        {
-            this.weapon = weapon;
         }
     }
 }

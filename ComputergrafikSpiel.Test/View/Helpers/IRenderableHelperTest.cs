@@ -5,6 +5,8 @@ using OpenTK;
 using System.Diagnostics.CodeAnalysis;
 using ComputergrafikSpiel.View.Helpers;
 using System;
+using System.Collections.Generic;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Test.View.Helpers
 {
@@ -49,6 +51,8 @@ namespace ComputergrafikSpiel.Test.View.Helpers
             public Vector2 RotationAnker { get; set; } = Vector2.Zero;
 
             public ITexture Texture { get; set; }
+
+            public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4 color, Vector2[] vertices)>();
         }
     }
 }
