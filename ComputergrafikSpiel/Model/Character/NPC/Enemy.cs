@@ -12,10 +12,13 @@ using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.NPC
 {
-    public class TestEnemy : INonPlayerCharacter
+    public class Enemy : INonPlayerCharacter
     {
-        public TestEnemy(int maxHealth, string texture, float movementSpeed, int defense, IPlayer player, IColliderManager colliderManager, ICollection<INonPlayerCharacter> allEnemys, Vector2 startPosition)
+        private int attackDamage;
+
+        public Enemy(int maxHealth, string texture, float movementSpeed, int defense, int attackDamage, IPlayer player, IColliderManager colliderManager, ICollection<INonPlayerCharacter> allEnemys, Vector2 startPosition)
         {
+            this.attackDamage = attackDamage;
             this.MaxHealth = maxHealth;
             this.MovementSpeed = movementSpeed;
             this.Defense = defense;
@@ -36,11 +39,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public INPCController NPCController { get; }
 
-        public int MaxHealth { get; }
+        public int MaxHealth { get; set; }
 
-        public float MovementSpeed { get; } = 35;
+        public float MovementSpeed { get; set; } = 35;
 
-        public int Defense { get; }
+        public int Defense { get; set; }
 
         public ICollider Collider { get; }
 
@@ -97,6 +100,14 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             }
         }
 
+        public void IncreaseDifficulty(int multiplier)
+        {
+            this.attackDamage += multiplier;
+            this.Defense += multiplier;
+            this.MaxHealth += multiplier;
+            this.MovementSpeed += multiplier;
+        }
+
         public void Update(float dtime)
         {
             this.Direction = this.NPCController.EnemyAIMovement(this);
@@ -106,11 +117,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.GiveDamageToPlayer();
         }
 
-        public void GiveDamageToPlayer()
+        private void GiveDamageToPlayer()
         {
             if (this.Collider.DidCollideWith(this.Player.Collider))
             {
-                this.Player.TakingDamage(1);
+                this.Player.TakingDamage(this.attackDamage);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
@@ -46,24 +47,27 @@ namespace ComputergrafikSpiel.Model
 
         private IColliderManager ColliderManager { get; set; }
 
-
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
         /// </summary>
         /// <param name="dTime">Time between two Update Calls in Seconds.</param>
         public void Update(float dTime)
         {
-            foreach (var entry in this.Updateables)
+            if (this.Updateables != null)
             {
-                entry.Update(dTime);
+                foreach (var entry in this.Updateables.Reverse<IUpdateable>())
+                {
+                    entry.Update(dTime);
+                }
             }
+
         }
 
         public bool CreatePlayerOnce(IInputController controller)
         {
             if (this.Player == null)
             {
-                this.Player = new Player(this.Interactable, this.ColliderManager);
+                this.Player = new Player(this.Interactable, this.ColliderManager, this.EnemysList, this);
                 controller.HookPlayer(this.Player);
                 this.Updateables.Add(this.Player);
                 this.RenderablesList.Add(this.Player);
@@ -91,11 +95,11 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.Enemys == null)
             {
-                this.Enemys = new TestEnemy(10, "Fungus", 20, 1, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
+                this.Enemys = new Enemy(10, "Fungus", 20, 1, 1, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
                 this.Updateables.Add(this.Enemys);
                 this.RenderablesList.Add(this.Enemys);
                 this.EnemysList.Add(this.Enemys);
-                this.Enemys = new TestEnemy(10, "WaterDrop", 35, 0, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 400));
+                this.Enemys = new Enemy(10, "WaterDrop", 35, 0, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 400));
                 this.Updateables.Add(this.Enemys);
                 this.RenderablesList.Add(this.Enemys);
                 this.EnemysList.Add(this.Enemys);
@@ -103,6 +107,31 @@ namespace ComputergrafikSpiel.Model
             }
 
             return false;
+        }
+
+        public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
+        {
+            if (player != null)
+            {
+                this.ColliderManager.RemoveEntityCollidable(player.Collider.CollidableParent);
+                this.Updateables.Remove(player);
+                this.RenderablesList.Remove(player);
+                player = null;
+            }
+            else if (entity != null)
+            {
+                this.ColliderManager.RemoveEntityCollidable(entity.Collider.CollidableParent);
+                this.Updateables.Remove(entity);
+                this.RenderablesList.Remove(entity);
+                entity = null;
+            }
+            else if (npc != null)
+            {
+                this.ColliderManager.RemoveEntityCollidable(entity.Collider.CollidableParent);
+                this.Updateables.Remove(npc);
+                this.RenderablesList.Remove(npc);
+                npc = null;
+            }
         }
     }
 }

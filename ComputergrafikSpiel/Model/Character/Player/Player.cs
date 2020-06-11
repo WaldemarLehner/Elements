@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Collider;
@@ -8,6 +9,7 @@ using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -21,9 +23,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerInteractionSystem playerInteractionSystem;
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
+        private ICollection<INonPlayerCharacter> enemyList;
+        private IModel model;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemys, IModel model)
         {
+            this.model = model;
+            this.enemyList = enemys;
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
@@ -118,6 +124,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 Console.WriteLine("git gud, u died");
                 this.OnDeath(EventArgs.Empty);
+                //this.model.DestroyObject(this, null, null);
             }
         }
 
