@@ -14,11 +14,9 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public class Enemy : INonPlayerCharacter
     {
-        private int attackDamage;
-
         public Enemy(int maxHealth, string texture, float movementSpeed, int defense, int attackDamage, IPlayer player, IColliderManager colliderManager, ICollection<INonPlayerCharacter> allEnemys, Vector2 startPosition)
         {
-            this.attackDamage = attackDamage;
+            this.AttackDamage = attackDamage;
             this.MaxHealth = maxHealth;
             this.MovementSpeed = movementSpeed;
             this.Defense = defense;
@@ -36,6 +34,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public event EventHandler CharacterHit;
 
         public event EventHandler CharacterMove;
+
+        public int CurrentHealth { get; set; }
 
         public INPCController NPCController { get; }
 
@@ -59,11 +59,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public Vector2 Scale { get; } = Vector2.One * 20;
 
+        public int AttackDamage { get; set; }
+
         private Vector2 Direction { get; set; }
 
         private IPlayer Player { get; }
-
-        private int CurrentHealth { get; set; }
 
         public void OnDeath(EventArgs e)
         {
@@ -102,7 +102,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void IncreaseDifficulty(int multiplier)
         {
-            this.attackDamage += multiplier;
+            this.AttackDamage += multiplier;
             this.Defense += multiplier;
             this.MaxHealth += multiplier;
             this.MovementSpeed += multiplier;
@@ -121,7 +121,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         {
             if (this.Collider.DidCollideWith(this.Player.Collider))
             {
-                this.Player.TakingDamage(this.attackDamage);
+                this.Player.TakingDamage(this.AttackDamage);
             }
         }
     }
