@@ -90,8 +90,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
                     this.playerInteractionSystem.PlayerInteraction(this);
-                    Console.WriteLine("MovementSpeed Inc: " + this.i);
-                    this.i++;
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Run)
                 {
@@ -130,6 +128,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void IncreasePlayerStats(int incNumber, IReadOnlyList<PlayerEnum.Stats> incstats)
         {
+            Console.WriteLine(incNumber);
             if (incNumber <= 0)
             {
                 throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(incNumber));

@@ -29,6 +29,8 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                 }
             }
 
+            this.statsList.Clear();
+
             /*if (this.incInteractable.TryGetValue(PlayerEnum.Stats.Währung, out this.stats))
             {
                 if (player.Collider.DidCollideWith(this.stats.Collider))
