@@ -38,7 +38,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
-            this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
+            this.playerInteractionSystem = new PlayerInteractionSystem(interactable, model);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
             colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }

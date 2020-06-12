@@ -147,6 +147,7 @@ namespace ComputergrafikSpiel.Model
             return false;
         }
 
+        // Somehow the Object will not be destroyed entirely. It will just dissapear.
         public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
         {
             if (player != null)
