@@ -130,6 +130,7 @@ namespace ComputergrafikSpiel.Model
 
         public bool CreateTestEnemy()
         {
+            return false;
             if (this.Enemys == null)
             {
                 this.Enemys = new Enemy(10, "Fungus", 20, 1, 1, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
