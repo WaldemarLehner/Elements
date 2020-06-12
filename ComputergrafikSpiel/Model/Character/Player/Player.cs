@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using System.Linq;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
@@ -9,6 +10,7 @@ using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -22,9 +24,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerInteractionSystem playerInteractionSystem;
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
+        private ICollection<INonPlayerCharacter> enemyList;
+        private IModel model;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemys, IModel model)
         {
+            this.model = model;
+            this.enemyList = enemys;
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
@@ -34,6 +40,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
+            colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player
@@ -70,8 +77,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public ICollider Collider { get; set; }
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
-
-        private int i;
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Controller.Input.MouseCursor mouseCursor)
@@ -117,12 +122,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 damage -= this.Defense;
                 this.CurrentHealth -= damage;
+                this.OnHit(EventArgs.Empty);
             }
 
-            this.OnHit(EventArgs.Empty);
             if (this.CurrentHealth <= 0)
             {
+                Console.WriteLine("git gud, u died");
                 this.OnDeath(EventArgs.Empty);
+                //this.model.DestroyObject(this, null, null);
             }
         }
 

@@ -103,6 +103,10 @@
     <Compile Include="Controller\Input\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\Input\MouseCursor.cs" />
+    <Compile Include="Model\Character\NPC\NPCAI\AIEnemy.cs" />
+    <Compile Include="Model\Character\NPC\Enemy.cs" />
+    <Compile Include="Model\Character\NPC\Interfaces\INonPlayerCharacter.cs" />
+    <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />

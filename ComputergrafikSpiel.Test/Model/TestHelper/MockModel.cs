@@ -1,4 +1,5 @@
-﻿using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+﻿using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using System;
@@ -23,7 +24,17 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
             throw new NotImplementedException();
         }
 
+        public bool CreateTestEnemy()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CreateTestInteractable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
         {
             throw new NotImplementedException();
         }

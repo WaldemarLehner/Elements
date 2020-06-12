@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 
 namespace ComputergrafikSpiel.Model.Collider.Interfaces
@@ -26,5 +27,7 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
         IReadOnlyCollection<ICollidable> GetCollisions(ICollidable collidable);
 
         IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray);
+
+        IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray, Vector2 position);
     }
 }
