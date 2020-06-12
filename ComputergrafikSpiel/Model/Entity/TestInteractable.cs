@@ -10,11 +10,12 @@ namespace ComputergrafikSpiel.Model.Entity
 {
     internal class TestInteractable : IEntity
     {
-        public TestInteractable()
+        public TestInteractable(IColliderManager colliderManager)
         {
             this.Position = new Vector2(200, 200);
             this.Scale = new Vector2(20, 20);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
+            colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
             this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/MovementSpeedIncrease");
         }
 

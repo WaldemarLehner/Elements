@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 
@@ -17,5 +19,9 @@ namespace ComputergrafikSpiel.Model.Interfaces
         bool CreatePlayerOnce(IInputController controller);
 
         bool CreateTestInteractable();
+
+        bool CreateTestEnemy();
+
+        void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
     }
 }
