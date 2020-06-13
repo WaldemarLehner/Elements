@@ -15,7 +15,6 @@ namespace ComputergrafikSpiel.Model
             this.Updateables = new List<IUpdateable>();
             this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
         }
-        
 
         public IEnumerable<IRenderable> Renderables => this.RenderablesList;
 

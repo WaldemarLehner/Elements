@@ -4,7 +4,6 @@ namespace ComputergrafikSpiel.Model.World
 {
     internal class WorldSceneDefinition : IWorldSceneDefinition
     {
-
         internal WorldSceneDefinition(bool doorTop, bool doorBottom, bool doorLeft, bool doorRight, int xCount, int yCount, int noiseScale)
         {
             this.DoorTop = doorTop;

@@ -13,7 +13,6 @@ namespace ComputergrafikSpiel.Model.World
             this.Random = new Random(seed ?? new Random().Next(int.MinValue, int.MaxValue));
         }
 
-
         public IWorldSceneDefinition WorldSceneDefinition { get; }
 
         private Random Random { get; }
@@ -26,7 +25,5 @@ namespace ComputergrafikSpiel.Model.World
 
             return null;
         }
-
-        
     }
 }

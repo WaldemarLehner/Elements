@@ -5,9 +5,5 @@
         IWorldSceneDefinition WorldSceneDefinition { get; }
 
         IWorldScene GenerateWorldScene();
-
-        
-
-        
     }
 }

@@ -129,6 +129,7 @@
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
     <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
+    <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
     <Compile Include="Model\Entity\TestInteractable.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />

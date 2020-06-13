@@ -132,6 +132,5 @@ namespace ComputergrafikSpiel.Model.World
 
             return mappings[0].type;
         }
-
     }
 }

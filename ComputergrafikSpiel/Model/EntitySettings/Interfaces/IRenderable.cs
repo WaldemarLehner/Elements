@@ -10,4 +10,11 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Interfaces
 
         IEnumerable<(OpenTK.Graphics.Color4 color, Vector2[] vertices)> DebugData { get; }
     }
+
+    public interface IRenderableLayeredTextures : ITransformable
+    {
+        (IEnumerable<(Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL)>, ITileTexture) Texture { get; }
+
+        IEnumerable<(OpenTK.Graphics.Color4 color, Vector2[] vertices)> DebugData { get; }
+    }
 }

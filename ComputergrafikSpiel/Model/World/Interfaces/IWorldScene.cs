@@ -11,7 +11,5 @@ namespace ComputergrafikSpiel.Model.World.Interfaces
         IWorldSceneDefinition SceneDefinition { get; }
 
         IWorldTile[,] WorldTiles { get; }
-
-
     }
 }
