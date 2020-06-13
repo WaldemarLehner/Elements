@@ -150,10 +150,6 @@ namespace ComputergrafikSpiel.Model
         }
 
         // Somehow the Object will not be destroyed entirely. It will just dissapear.
-        /*this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MaxHealth, 250, 250);
-         this.Interactable.Add(PlayerEnum.Stats.MaxHealth, this.IncInteractables);
-         this.Updateables.Add(this.IncInteractables);
-         this.RenderablesList.Add(this.IncInteractables);*/
         public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
         {
             if (player != null)
