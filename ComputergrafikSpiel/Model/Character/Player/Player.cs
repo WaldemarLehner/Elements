@@ -127,7 +127,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             if (this.CurrentHealth <= 0)
             {
-                Console.WriteLine("git gud, u died");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
                 //this.model.DestroyObject(this, null, null);
             }

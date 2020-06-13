@@ -37,17 +37,7 @@ namespace ComputergrafikSpiel.Model
 
         private IPlayer Player { get; set; } = null;
 
-        private IEntity IncMaxHealth { get; set; } = null;
-
-        private IEntity IncHeal { get; set; } = null;
-
-        private IEntity IncDefense { get; set; } = null;
-
-        private IEntity IncAttackSpeed { get; set; } = null;
-
-        private IEntity IncMovementSpeed { get; set; } = null;
-
-        private IEntity IncWährung { get; set; } = null;
+        private IEntity IncInteractables { get; set; } = null;
 
         private INonPlayerCharacter Enemys { get; set; } = null;
 
@@ -87,56 +77,68 @@ namespace ComputergrafikSpiel.Model
             return false;
         }
 
-        public bool CreateTestInteractable()
+        public bool SpawnHeal(float playerPositionX, float playerPositionY)
         {
-            // MaxHealth Interactable
-            this.IncMaxHealth = new CreateInteractable(PlayerEnum.Stats.MaxHealth, 200, 100);
-            this.Interactable.Add(PlayerEnum.Stats.MaxHealth, this.IncMaxHealth);
-            this.Updateables.Add(this.IncMaxHealth);
-            this.RenderablesList.Add(this.IncMaxHealth);
-
             // Heal Interactable
-            this.IncHeal = new CreateInteractable(PlayerEnum.Stats.Heal, 300, 100);
-            this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncHeal);
-            this.Updateables.Add(this.IncHeal);
-            this.RenderablesList.Add(this.IncHeal);
-
-            // Defense Interactable
-            this.IncDefense = new CreateInteractable(PlayerEnum.Stats.Defense, 400, 100);
-            this.Interactable.Add(PlayerEnum.Stats.Defense, this.IncDefense);
-            this.Updateables.Add(this.IncDefense);
-            this.RenderablesList.Add(this.IncDefense);
-
-            // AttackSpeed Interactable
-            this.IncAttackSpeed = new CreateInteractable(PlayerEnum.Stats.AttackSpeed, 500, 100);
-            this.Interactable.Add(PlayerEnum.Stats.AttackSpeed, this.IncAttackSpeed);
-            this.Updateables.Add(this.IncAttackSpeed);
-            this.RenderablesList.Add(this.IncAttackSpeed);
-
-            // MovementSpeed Interactable
-            this.IncMovementSpeed = new CreateInteractable(PlayerEnum.Stats.MovementSpeed, 600, 100);
-            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
-            this.Updateables.Add(this.IncMovementSpeed);
-            this.RenderablesList.Add(this.IncMovementSpeed);
-
-            // Währung Interactable
-            this.IncWährung = new CreateInteractable(PlayerEnum.Stats.Währung, 700, 100);
-            this.Interactable.Add(PlayerEnum.Stats.Währung, this.IncWährung);
-            this.Updateables.Add(this.IncWährung);
-            this.RenderablesList.Add(this.IncWährung);
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Heal, playerPositionX, playerPositionY);
+            this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
 
             return false;
         }
 
-        public bool CreateTestEnemy()
+        public bool SpawnWährung(float playerPositionX, float playerPositionY)
         {
+            // Währung Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Währung, playerPositionX, playerPositionY);
+            this.Interactable.Add(PlayerEnum.Stats.Währung, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
             return false;
+        }
+
+        // After each round the player can choose between 4 power-ups -> they spawn by calling this function
+        public bool CreateRoundEndInteractables()
+        {
+            // MaxHealth Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MaxHealth, 250, 250);
+            this.Interactable.Add(PlayerEnum.Stats.MaxHealth, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            // Defense Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Defense, 350, 250);
+            this.Interactable.Add(PlayerEnum.Stats.Defense, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            // AttackSpeed Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250);
+            this.Interactable.Add(PlayerEnum.Stats.AttackSpeed, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            // MovementSpeed Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250);
+            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            return false;
+        }
+
+        public bool CreateEnemy()
+        {
+            //return false;
             if (this.Enemys == null)
             {
-                this.Enemys = new Enemy(10, "Fungus", 20, 1, 1, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
+                this.Enemys = new Enemy(10, "Fungus", 20, 1, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
                 this.Updateables.Add(this.Enemys);
                 this.RenderablesList.Add(this.Enemys);
                 this.EnemysList.Add(this.Enemys);
+                return true;
                 this.Enemys = new Enemy(10, "WaterDrop", 35, 0, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 400));
                 this.Updateables.Add(this.Enemys);
                 this.RenderablesList.Add(this.Enemys);
@@ -148,6 +150,10 @@ namespace ComputergrafikSpiel.Model
         }
 
         // Somehow the Object will not be destroyed entirely. It will just dissapear.
+        /*this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MaxHealth, 250, 250);
+         this.Interactable.Add(PlayerEnum.Stats.MaxHealth, this.IncInteractables);
+         this.Updateables.Add(this.IncInteractables);
+         this.RenderablesList.Add(this.IncInteractables);*/
         public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
         {
             if (player != null)

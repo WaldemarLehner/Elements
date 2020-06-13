@@ -24,12 +24,12 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
             throw new NotImplementedException();
         }
 
-        public bool CreateTestEnemy()
+        public bool CreateEnemy()
         {
             throw new NotImplementedException();
         }
 
-        public bool CreateTestInteractable()
+        public bool CreateSoloInteractable()
         {
             throw new NotImplementedException();
         }
@@ -40,6 +40,21 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         }
 
         public void Update(float dTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CreateRoundEndInteractables()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SpawnHeal(float playerPositionX, float playerPositionY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SpawnWährung(float playerPositionX, float playerPositionY)
         {
             throw new NotImplementedException();
         }

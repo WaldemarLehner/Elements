@@ -18,9 +18,13 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         bool CreatePlayerOnce(IInputController controller);
 
-        bool CreateTestInteractable();
+        bool SpawnHeal(float playerPositionX, float playerPositionY);
 
-        bool CreateTestEnemy();
+        bool SpawnWährung(float playerPositionX, float playerPositionY);
+
+        bool CreateRoundEndInteractables();
+
+        bool CreateEnemy();
 
         void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
     }

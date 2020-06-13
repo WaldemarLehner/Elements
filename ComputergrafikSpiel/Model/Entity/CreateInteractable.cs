@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel.Model.Entity
     {
         private readonly string texturename;
 
-        public CreateInteractable(PlayerEnum.Stats stats, int positionX, int positionY)
+        public CreateInteractable(PlayerEnum.Stats stats, float positionX, float positionY)
         {
             switch (stats)
             {

@@ -69,17 +69,28 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         public void AssertThatIncreasingPlayerStatsIncreaseRightStats(int incNumber)
         {
             ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, this.EnemysList, this.model);
-            int Defense = player.Defense;
             int MaxHealth = player.MaxHealth;
+            int Currenthealth = player.CurrentHealth;
+            int Defense = player.Defense;
+            float AttackSpeed = player.AttackSpeed;
             float MovementSpeed = player.MovementSpeed;
+            int Währung = player.Währung;
+
             List<PlayerEnum.Stats> stats = new List<PlayerEnum.Stats>();
-            stats.Add(PlayerEnum.Stats.Defense);
             stats.Add(PlayerEnum.Stats.MaxHealth);
+            stats.Add(PlayerEnum.Stats.Heal);
+            stats.Add(PlayerEnum.Stats.Defense);
+            stats.Add(PlayerEnum.Stats.AttackSpeed);
             stats.Add(PlayerEnum.Stats.MovementSpeed);
+            stats.Add(PlayerEnum.Stats.Währung);
+
             player.IncreasePlayerStats(incNumber, stats);
-            Assert.AreNotEqual(Defense, player.Defense);
             Assert.AreNotEqual(MaxHealth, player.MaxHealth);
+            Assert.AreNotEqual(Currenthealth, player.CurrentHealth);
+            Assert.AreNotEqual(Defense, player.Defense);
+            Assert.AreNotEqual(AttackSpeed, player.AttackSpeed);
             Assert.AreNotEqual(MovementSpeed, player.MovementSpeed);
+            Assert.AreNotEqual(Währung, player.Währung);
         }
     }
 }
