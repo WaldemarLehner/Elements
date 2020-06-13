@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 
@@ -16,6 +18,14 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         bool CreatePlayerOnce(IInputController controller);
 
-        bool CreateTestInteractable();
+        bool SpawnHeal(float positionX, float positionY);
+
+        bool SpawnWährung(float positionX, float positionY);
+
+        bool CreateRoundEndInteractables();
+
+        bool CreateEnemy();
+
+        void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
     }
 }

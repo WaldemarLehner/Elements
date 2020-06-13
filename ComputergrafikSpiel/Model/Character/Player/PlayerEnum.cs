@@ -18,8 +18,11 @@
         public enum Stats
         {
             MaxHealth,
+            Heal,
             Defense,
+            AttackSpeed,
             MovementSpeed,
+            Währung,
         }
 
         public enum Weapon
