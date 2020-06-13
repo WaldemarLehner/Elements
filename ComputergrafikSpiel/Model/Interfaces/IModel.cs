@@ -29,6 +29,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
         bool CreateEnemy();
 
         void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
+
         bool CreateTestInteractable();
 
         void CreateProjectile(int projectileCreationCount, Vector2 position, Vector2 direction, int bulletTTL, float bulletSize, IColliderManager colliderManager);

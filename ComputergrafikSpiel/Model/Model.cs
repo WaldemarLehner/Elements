@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Drawing.Text;
 using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using System.Collections.ObjectModel;
-using System.Drawing.Text;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.Model.Collider;
-using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
@@ -70,7 +68,6 @@ namespace ComputergrafikSpiel.Model
                     entry.Update(dTime);
                 }
             }
-
         }
 
         public bool CreatePlayerOnce(IInputController controller)
@@ -142,7 +139,7 @@ namespace ComputergrafikSpiel.Model
 
         public bool CreateEnemy()
         {
-            //return false;
+            // return false;
             if (this.Enemys == null)
             {
                 this.Enemys = new Enemy(10, "Fungus", 20, 1, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
@@ -190,10 +187,15 @@ namespace ComputergrafikSpiel.Model
         {
             for (int i = 0; i <= projectileCreationCount; i++)
             {
-                Projectile projectile = new Projectile(position, direction, bulletTTL, bulletSize, colliderManager);
+                Projectile projectile = new Projectile(position, direction, bulletTTL, bulletSize, colliderManager, this);
                 this.Updateables.Add(projectile);
                 this.RenderablesList.Add(projectile);
             }
+        }
+
+        public bool CreateTestInteractable()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using System.Linq;
+using System.Windows.Forms;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
@@ -27,7 +29,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private ICollection<INonPlayerCharacter> enemyList;
         private IModel model;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemys, IModel model)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, IWeapon weapon, ICollection<INonPlayerCharacter> enemys, IModel model)
         {
             this.model = model;
             this.enemyList = enemys;
@@ -41,6 +43,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable, model);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
             colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
+            this.EquipedWeapon = weapon;
         }
 
         // Define Player
@@ -78,6 +81,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
+        public IWeapon EquipedWeapon { get; }
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Controller.Input.MouseCursor mouseCursor)
         {
@@ -90,7 +95,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    this.playerAttackSystem.PlayerAttack();
+                    if (this.EquipedWeapon != null)
+                    {
+                        this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursor);
+                    }
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
