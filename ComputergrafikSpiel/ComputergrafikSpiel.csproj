@@ -103,6 +103,10 @@
     <Compile Include="Controller\Input\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\Input\MouseCursor.cs" />
+    <Compile Include="Model\Character\NPC\NPCAI\AIEnemy.cs" />
+    <Compile Include="Model\Character\NPC\Enemy.cs" />
+    <Compile Include="Model\Character\NPC\Interfaces\INonPlayerCharacter.cs" />
+    <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
@@ -129,7 +133,7 @@
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
     <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
-    <Compile Include="Model\Entity\TestInteractable.cs" />
+    <Compile Include="Model\Entity\CreateInteractable.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\ITransformable.cs" />
@@ -201,6 +205,15 @@
     <Content Include="Content\Images\Enemy\WaterDrop.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\Ground\EarthTileSet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Ground\Grass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Ground\WaterTileSet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\PlayerWeapon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -210,7 +223,7 @@
     <Content Include="Content\Images\Projectile\Bullet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\StatIncrease\AttackDamageIncrease.png">
+    <Content Include="Content\Images\StatIncrease\AttackSpeedIncrease.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\character.png">
@@ -225,37 +238,8 @@
     <Content Include="Content\Images\StatIncrease\DefenseIncrease.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Ground\EarthBottom.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\EarthCornerBottomLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\EarthCornerBottomRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\EarthCornerTopLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\EarthCornerTopRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\EarthLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\EarthMiddle.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\EarthRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\EarthTop.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Ground\Grass.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\StatIncrease\MaximunHealthIncrease.png">
+    <Content Include="Content\Images\StatIncrease\HealIncrease.png" />
+    <Content Include="Content\Images\StatIncrease\MaxHealthIncrease.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\StatIncrease\MovementSpeedIncrease.png">
@@ -265,6 +249,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Obstacle\Stone.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\StatIncrease\Währung.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\test.png">
@@ -279,43 +266,7 @@
     <Content Include="Content\Images\Wall\WallGround.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Wall\WallTipBottom.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WallTipLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WallTipRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WallTipTop.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\Water.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WaterBottom.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WaterConrerTopRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WaterCornerBottomLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WaterCornerBottomRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WaterCornerTopLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WaterLeft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WaterRight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\Wall\WaterTop.png">
+    <Content Include="Content\Images\Wall\WallTipTileSet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
