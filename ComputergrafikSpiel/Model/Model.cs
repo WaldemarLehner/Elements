@@ -37,7 +37,7 @@ namespace ComputergrafikSpiel.Model
 
         private IPlayer Player { get; set; } = null;
 
-        private IEntity IncMovementSpeed { get; set; } = null;
+        private IEntity IncInteractables { get; set; } = null;
 
         private INonPlayerCharacter Enemys { get; set; } = null;
 
@@ -77,28 +77,68 @@ namespace ComputergrafikSpiel.Model
             return false;
         }
 
-        public bool CreateTestInteractable()
+        public bool SpawnHeal(float positionX, float positionY)
         {
-            if (this.IncMovementSpeed == null)
-            {
-            this.IncMovementSpeed = new TestInteractable(this.ColliderManager);
-            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncMovementSpeed);
-            this.Updateables.Add(this.IncMovementSpeed);
-            this.RenderablesList.Add(this.IncMovementSpeed);
-            return true;
-            }
+            // Heal Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Heal, positionX, positionY);
+            this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
 
             return false;
         }
 
-        public bool CreateTestEnemy()
+        public bool SpawnWährung(float positionX, float positionY)
         {
+            // Währung Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Währung, positionX, positionY);
+            this.Interactable.Add(PlayerEnum.Stats.Währung, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            return false;
+        }
+
+        // After each round the player can choose between 4 power-ups -> they spawn by calling this function
+        public bool CreateRoundEndInteractables()
+        {
+            // MaxHealth Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MaxHealth, 250, 250);
+            this.Interactable.Add(PlayerEnum.Stats.MaxHealth, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            // Defense Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Defense, 350, 250);
+            this.Interactable.Add(PlayerEnum.Stats.Defense, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            // AttackSpeed Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250);
+            this.Interactable.Add(PlayerEnum.Stats.AttackSpeed, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            // MovementSpeed Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250);
+            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
+
+            return false;
+        }
+
+        public bool CreateEnemy()
+        {
+            //return false;
             if (this.Enemys == null)
             {
-                this.Enemys = new Enemy(10, "Fungus", 20, 1, 1, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
+                this.Enemys = new Enemy(10, "Fungus", 20, 1, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
                 this.Updateables.Add(this.Enemys);
                 this.RenderablesList.Add(this.Enemys);
                 this.EnemysList.Add(this.Enemys);
+                return true;
                 this.Enemys = new Enemy(10, "WaterDrop", 35, 0, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 400));
                 this.Updateables.Add(this.Enemys);
                 this.RenderablesList.Add(this.Enemys);
@@ -109,6 +149,7 @@ namespace ComputergrafikSpiel.Model
             return false;
         }
 
+        // Somehow the Object will not be destroyed entirely. It will just dissapear.
         public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
         {
             if (player != null)

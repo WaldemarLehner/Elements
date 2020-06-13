@@ -130,7 +130,7 @@
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
     <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
-    <Compile Include="Model\Entity\TestInteractable.cs" />
+    <Compile Include="Model\Entity\CreateInteractable.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\ITransformable.cs" />
@@ -203,13 +203,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Ground\EarthTileSet.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Ground\Grass.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Ground\WaterTileSet.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\PlayerWeapon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -220,7 +220,7 @@
     <Content Include="Content\Images\Projectile\Bullet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\StatIncrease\AttackDamageIncrease.png">
+    <Content Include="Content\Images\StatIncrease\AttackSpeedIncrease.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\character.png">
@@ -235,7 +235,8 @@
     <Content Include="Content\Images\StatIncrease\DefenseIncrease.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\StatIncrease\MaximunHealthIncrease.png">
+    <Content Include="Content\Images\StatIncrease\HealIncrease.png" />
+    <Content Include="Content\Images\StatIncrease\MaxHealthIncrease.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\StatIncrease\MovementSpeedIncrease.png">
@@ -247,6 +248,9 @@
     <Content Include="Content\Images\Obstacle\Stone.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\StatIncrease\Währung.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\test.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -254,13 +258,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\Wall.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\WallGround.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\WallTipTileSet.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup />

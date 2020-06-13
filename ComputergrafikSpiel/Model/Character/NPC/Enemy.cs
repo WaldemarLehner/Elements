@@ -121,6 +121,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         {
             if (this.Collider.DidCollideWith(this.Player.Collider))
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("Spieler wurde getroffen!\n");
                 this.Player.TakingDamage(this.AttackDamage);
             }
         }
