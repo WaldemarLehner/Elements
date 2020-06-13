@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Interfaces
 {
@@ -17,5 +19,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
         bool CreatePlayerOnce(IInputController controller);
 
         bool CreateTestInteractable();
+
+        void CreateProjectile(int projectileCreationCount, Vector2 position, Vector2 direction, int bulletTTL, float bulletSize, IColliderManager colliderManager);
     }
 }

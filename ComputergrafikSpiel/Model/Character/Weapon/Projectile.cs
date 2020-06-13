@@ -11,14 +11,13 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Projectile : IEntity
     {
-        private readonly int ttl;
         private readonly float bulletSize;
 
         internal Projectile(Vector2 position, Vector2 direction, int ttl, float bulletSize, IColliderManager colliderManager)
         {
             this.Position = position;
             this.Direction = direction;
-            this.ttl = ttl;
+            this.TTL = ttl;
             this.bulletSize = bulletSize;
 
             // name of texture to be determined
@@ -26,8 +25,13 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
             // added to the ColliderManager?
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize);
-            colliderManager.AddEntityCollidable(this);
+            this.ColliderManager = colliderManager;
+            this.ColliderManager.AddEntityCollidable(this);
         }
+
+        public IColliderManager ColliderManager { get; }
+
+        public int TTL { get; set; }
 
         public Vector2 Position { get; set; }
 
@@ -44,12 +48,19 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         // should this be multiplied by bullet size instead?
         public Vector2 Scale { get; } = Vector2.One * 20;
 
-        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => throw new System.NotImplementedException();
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
         // does this work?
         public void Update(float dtime)
         {
             this.Position += this.Direction * dtime;
+            this.TTL -= (int)dtime;
+
+            if (this.TTL <= 0)
+            {
+                // has to still be removed from Updatable and Renderables
+                this.ColliderManager.RemoveEntityCollidable(this);
+            }
         }
     }
 }

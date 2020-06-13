@@ -18,7 +18,9 @@ namespace ComputergrafikSpiel.Model.Character.Weapon.Interfaces
 
         IColliderManager ColliderManager { get; }
 
-        void CreateProjectile(Vector2 position, Vector2 direction);
+        void Shoot(Vector2 position, Vector2 direction);
+
+        // void CreateProjectile(Vector2 position, Vector2 direction);
 
         // possibly for later (enums for spread shot, regular shot, etc)
         // int Firemode { get; }

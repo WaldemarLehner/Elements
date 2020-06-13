@@ -10,6 +10,7 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model
 {
@@ -59,8 +60,8 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.Player == null)
             {
-                this.weapon = new Weapon(3, 1, 20, 2, this.colliderManager, 1);
-                this.Player = new Player(this.Interactable, this.colliderManager, weapon);
+                this.weapon = new Weapon(3, 1, 20, 2, this.colliderManager, 1, this);
+                this.Player = new Player(this.Interactable, this.colliderManager, this.weapon);
                 controller.HookPlayer(this.Player);
                 this.Updateables.Add(this.Player);
                 this.RenderablesList.Add(this.Player);
@@ -82,6 +83,16 @@ namespace ComputergrafikSpiel.Model
             }
 
             return false;
+        }
+
+        public void CreateProjectile(int projectileCreationCount, Vector2 position, Vector2 direction, int bulletTTL, float bulletSize, IColliderManager colliderManager)
+        {
+            for (int i = 0; i <= projectileCreationCount; i++)
+            {
+                Projectile projectile = new Projectile(position, direction, bulletTTL, bulletSize, colliderManager);
+                this.Updateables.Add(projectile);
+                this.RenderablesList.Add(projectile);
+            }
         }
     }
 }

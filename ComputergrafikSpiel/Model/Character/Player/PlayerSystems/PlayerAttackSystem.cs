@@ -13,9 +13,11 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
             // Need Weapon to handle Collider and Damage. NPC to determine if attack hit or not
 
             // use weapon object in here to spawn projectiles
-            Vector2 direction = Vector2.Subtract(player.Position, (Vector2)mouseCursor.WorldCoordinates);
-            weapon.CreateProjectile(player.Position, direction);
-            Console.WriteLine("bang");
+            Vector2 direction = Vector2.Normalize(Vector2.Subtract((Vector2)mouseCursor.WorldCoordinates, player.Position));
+
+            // could be changed to bulletspeed instead of a set number
+            direction = Vector2.Multiply(direction, 300);
+            weapon.Shoot(player.Position, direction);
         }
     }
 }

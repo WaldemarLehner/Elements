@@ -4,6 +4,7 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -11,7 +12,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Weapon : IWeapon
     {
-        internal Weapon(float firerate, int projectileCCount, int bulletTTL, float bulletSize, IColliderManager colliderManager, float attackDamage)
+        internal Weapon(float firerate, int projectileCCount, int bulletTTL, float bulletSize, IColliderManager colliderManager, float attackDamage, IModel model)
         {
             this.Firerate = firerate;
             this.ProjectileCreationCount = projectileCCount;
@@ -21,7 +22,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             this.Texture = new TextureLoader().LoadTexture("StatIncrease/AttackDamageIncrease");
             this.AttackDamage = attackDamage;
+            this.Model = model;
         }
+
+        // most likely temporary
+        public IModel Model { get; }
 
         public int ProjectileCreationCount { get; }
 
@@ -50,23 +55,19 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
+        public void Shoot(Vector2 position, Vector2 direction)
+        {
+            this.Model.CreateProjectile(this.ProjectileCreationCount, position, direction, this.BulletTTL, this.BulletSize, this.ColliderManager);
+        }
+
         // has to be changed for shotgun/semi-automatic. For this it will always be as if the projectile count is 1
-        public void CreateProjectile(Vector2 position, Vector2 direction)
+        /* public void CreateProjectile(Vector2 position, Vector2 direction)
         {
             for (int i = 0; i <= this.ProjectileCreationCount; i++)
             {
                 new Projectile(position, direction, this.BulletTTL, this.BulletSize, this.ColliderManager);
             }
-        }
-
-        public void EraseWeaponOnPickup()
-        {
-            this.ColliderManager.RemoveEntityCollidable(this);
-
-            // what to do about this?
-            // this.Texture = null;
-            this.Collider = null;
-        }
+        } */
 
         public void Update(float dtime)
         {
