@@ -20,7 +20,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.BulletSize = bulletSize;
             this.ColliderManager = colliderManager;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
-            this.Texture = new TextureLoader().LoadTexture("StatIncrease/AttackDamageIncrease");
             this.AttackDamage = attackDamage;
             this.Model = model;
         }
@@ -40,8 +39,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public ICollider Collider { get; set; }
 
-        public ITexture Texture { get; set; }
-
         // temp position
         public Vector2 Position => new Vector2(300, 300);
 
@@ -54,6 +51,8 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         public float AttackDamage { get; }
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
+
+        public ITexture Texture { get; }
 
         public void Shoot(Vector2 position, Vector2 direction)
         {

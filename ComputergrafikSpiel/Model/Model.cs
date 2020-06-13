@@ -21,7 +21,6 @@ namespace ComputergrafikSpiel.Model
     internal class Model : IModel
     {
         // temporary
-        private IColliderManager colliderManager;
         private IWeapon weapon;
 
         internal Model()
@@ -74,7 +73,7 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.Player == null)
             {
-                this.weapon = new Weapon(3, 1, 20, 2, this.colliderManager, 1, this);
+                this.weapon = new Weapon(3, 1, 20, 2, this.ColliderManager, 1, this);
                 this.Player = new Player(this.Interactable, this.ColliderManager, this.weapon, this.EnemysList, this);
                 controller.HookPlayer(this.Player);
                 this.Updateables.Add(this.Player);
@@ -139,7 +138,7 @@ namespace ComputergrafikSpiel.Model
 
         public bool CreateEnemy()
         {
-            // return false;
+            return false;
             if (this.Enemys == null)
             {
                 this.Enemys = new Enemy(10, "Fungus", 20, 1, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
@@ -191,11 +190,6 @@ namespace ComputergrafikSpiel.Model
                 this.Updateables.Add(projectile);
                 this.RenderablesList.Add(projectile);
             }
-        }
-
-        public bool CreateTestInteractable()
-        {
-            throw new NotImplementedException();
         }
     }
 }
