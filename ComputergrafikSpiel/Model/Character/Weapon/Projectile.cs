@@ -4,6 +4,7 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -13,7 +14,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
     {
         private readonly float bulletSize;
 
-        internal Projectile(Vector2 position, Vector2 direction, int ttl, float bulletSize, IColliderManager colliderManager)
+        internal Projectile(Vector2 position, Vector2 direction, int ttl, float bulletSize, IColliderManager colliderManager, IModel model)
         {
             this.Position = position;
             this.Direction = direction;
@@ -23,11 +24,13 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             // name of texture to be determined
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
-            // added to the ColliderManager?
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize);
             this.ColliderManager = colliderManager;
             this.ColliderManager.AddEntityCollidable(this);
+            this.Model = model;
         }
+
+        public IModel Model { get; }
 
         public IColliderManager ColliderManager { get; }
 
