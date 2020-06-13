@@ -49,12 +49,12 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
             throw new NotImplementedException();
         }
 
-        public bool SpawnHeal(float playerPositionX, float playerPositionY)
+        public bool SpawnHeal(float positionX, float positionY)
         {
             throw new NotImplementedException();
         }
 
-        public bool SpawnWährung(float playerPositionX, float playerPositionY)
+        public bool SpawnWährung(float positionX, float positionY)
         {
             throw new NotImplementedException();
         }

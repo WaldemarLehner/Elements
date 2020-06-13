@@ -18,9 +18,9 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         bool CreatePlayerOnce(IInputController controller);
 
-        bool SpawnHeal(float playerPositionX, float playerPositionY);
+        bool SpawnHeal(float positionX, float positionY);
 
-        bool SpawnWährung(float playerPositionX, float playerPositionY);
+        bool SpawnWährung(float positionX, float positionY);
 
         bool CreateRoundEndInteractables();
 

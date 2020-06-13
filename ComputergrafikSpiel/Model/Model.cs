@@ -77,10 +77,10 @@ namespace ComputergrafikSpiel.Model
             return false;
         }
 
-        public bool SpawnHeal(float playerPositionX, float playerPositionY)
+        public bool SpawnHeal(float positionX, float positionY)
         {
             // Heal Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Heal, playerPositionX, playerPositionY);
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Heal, positionX, positionY);
             this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncInteractables);
             this.Updateables.Add(this.IncInteractables);
             this.RenderablesList.Add(this.IncInteractables);
@@ -88,10 +88,10 @@ namespace ComputergrafikSpiel.Model
             return false;
         }
 
-        public bool SpawnWährung(float playerPositionX, float playerPositionY)
+        public bool SpawnWährung(float positionX, float positionY)
         {
             // Währung Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Währung, playerPositionX, playerPositionY);
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Währung, positionX, positionY);
             this.Interactable.Add(PlayerEnum.Stats.Währung, this.IncInteractables);
             this.Updateables.Add(this.IncInteractables);
             this.RenderablesList.Add(this.IncInteractables);
