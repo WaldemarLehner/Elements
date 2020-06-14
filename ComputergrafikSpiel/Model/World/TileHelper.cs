@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using ComputergrafikSpiel.Model.Collider;
 
 namespace ComputergrafikSpiel.Model.World
 {
     internal static class TileHelper
     {
-        internal static bool IsWalkable(WorldTile.Type type)
+        internal static bool IsWalkable(TileDefinitions.Type type)
         {
-            if (type == WorldTile.Type.Dirt || type == WorldTile.Type.Grass)
+            if (type == TileDefinitions.Type.Dirt || type == TileDefinitions.Type.Grass)
             {
                 return true;
             }
@@ -15,80 +15,80 @@ namespace ComputergrafikSpiel.Model.World
             return false;
         }
 
-        internal static WorldTile.TextureSubType[] GetTexturesTransitionable(SurroundingTiles n)
+        internal static TileDefinitions.TextureSubType[] GetTexturesTransitionable(TileDefinitions.SurroundingTiles n)
         {
             n.RemoveUnneccesary();
             if (n.Count == 0)
             {
-                return new WorldTile.TextureSubType[] { WorldTile.TextureSubType.Filled, WorldTile.TextureSubType.NarrowSingle };
+                return new TileDefinitions.TextureSubType[] { TileDefinitions.TextureSubType.Filled, TileDefinitions.TextureSubType.NarrowSingle };
             }
 
             if (n.Count == 8)
             {
-                return new WorldTile.TextureSubType[] { WorldTile.TextureSubType.Filled };
+                return new TileDefinitions.TextureSubType[] { TileDefinitions.TextureSubType.Filled };
             }
 
-            List<WorldTile.TextureSubType> textures = new List<WorldTile.TextureSubType>() { WorldTile.TextureSubType.Filled };
+            List<TileDefinitions.TextureSubType> textures = new List<TileDefinitions.TextureSubType>() { TileDefinitions.TextureSubType.Filled };
 
             // Check TopRight
             if (!n.Top && !n.Right)
             {
-                textures.Add(WorldTile.TextureSubType.EdgeCornerTopRight);
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopRight);
             }
             else if (n.Top && !n.TopRight && n.Right)
             {
-                textures.Add(WorldTile.TextureSubType.InvertCornerTopRight);
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopRight);
             }
 
             // Check TopLeft
             if (!n.Top && !n.Left)
             {
-                textures.Add(WorldTile.TextureSubType.EdgeCornerTopLeft);
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopLeft);
             }
             else if (n.Top && n.Left && !n.TopLeft)
             {
-                textures.Add(WorldTile.TextureSubType.InvertCornerTopLeft);
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopLeft);
             }
 
             // Check BottomRight
             if (!n.Bottom && !n.Right)
             {
-                textures.Add(WorldTile.TextureSubType.EdgeCornerBottomRight);
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomRight);
             }
             else if (n.Bottom && !n.BottomRight && n.Right)
             {
-                textures.Add(WorldTile.TextureSubType.InvertCornerBottomRight);
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomRight);
             }
 
             // Check BottomLeft
             if (!n.Bottom && !n.Left)
             {
-                textures.Add(WorldTile.TextureSubType.EdgeCornerBottomLeft);
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomLeft);
             }
             else if (n.Bottom && n.Left && !n.BottomLeft)
             {
-                textures.Add(WorldTile.TextureSubType.InvertCornerBottomLeft);
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomLeft);
             }
 
             // Check Edges
             if (!n.Top && n.Bottom)
             {
-                textures.Add(WorldTile.TextureSubType.EdgeTop);
+                textures.Add(TileDefinitions.TextureSubType.EdgeTop);
             }
 
             if (!n.Bottom && n.Top)
             {
-                textures.Add(WorldTile.TextureSubType.EdgeBottom);
+                textures.Add(TileDefinitions.TextureSubType.EdgeBottom);
             }
 
             if (!n.Left && n.Right)
             {
-                textures.Add(WorldTile.TextureSubType.EdgeLeft);
+                textures.Add(TileDefinitions.TextureSubType.EdgeLeft);
             }
 
             if (!n.Right && n.Left)
             {
-                textures.Add(WorldTile.TextureSubType.EdgeRight);
+                textures.Add(TileDefinitions.TextureSubType.EdgeRight);
             }
 
             // Check Narrow Variants
@@ -96,93 +96,103 @@ namespace ComputergrafikSpiel.Model.World
             {
                 if (n.Right)
                 {
-                    textures.Add(WorldTile.TextureSubType.NarrowCapEndLeft);
+                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndLeft);
                 }
                 else if (n.Left)
                 {
-                    textures.Add(WorldTile.TextureSubType.NarrowCapEndRight);
+                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndRight);
                 }
                 else if (n.Top)
                 {
-                    textures.Add(WorldTile.TextureSubType.NarrowCapEndBottom);
+                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndBottom);
                 }
                 else if (n.Bottom)
                 {
-                    textures.Add(WorldTile.TextureSubType.NarrowCapEndTop);
+                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndTop);
                 }
             }
             else if (n.Count == 2)
             {
                 if (n.Right && n.Left)
                 {
-                    textures.Add(WorldTile.TextureSubType.NarrowHorizontal);
+                    textures.Add(TileDefinitions.TextureSubType.NarrowHorizontal);
                 }
                 else if (n.Top && n.Bottom)
                 {
-                    textures.Add(WorldTile.TextureSubType.NarrowVertical);
+                    textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
                 }
             }
 
             return textures.ToArray();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1101:Prefix local calls with this", Justification = "ommitting this helps visiblilty")]
-        internal class SurroundingTiles
+        internal static ColliderLayer.Layer GetCollisionLayers(TileDefinitions.Type type)
         {
-            internal bool Top { get; set; } = false;
-
-            internal bool Left { get; set; } = false;
-
-            internal bool Bottom { get; set; } = false;
-
-            internal bool Right { get; set; } = false;
-
-            internal bool TopLeft { get; set; } = false;
-
-            internal bool TopRight { get; set; } = false;
-
-            internal bool BottomLeft { get; set; } = false;
-
-            internal bool BottomRight { get; set; } = false;
-
-            internal int Count
+            ColliderLayer.Layer layers = ColliderLayer.Layer.Empty;
+            if (!IsWalkable(type))
             {
-                get
-                {
-                    bool[] enumerable = { Top, Bottom, Left, Right, TopLeft, TopRight, BottomLeft, BottomRight };
-                    return (from x in enumerable where x select x).Count();
-                }
+                // Players and Enemies will collide with this Tile
+                layers |= ColliderLayer.Layer.Player | ColliderLayer.Layer.Enemy;
             }
 
-            internal bool TopRow => Top && TopLeft && TopRight;
-
-            internal bool BottomRow => Bottom && BottomRight && BottomLeft;
-
-            internal bool LeftColumn => Left && TopLeft && BottomLeft;
-
-            internal bool RightColumn => Right && TopRight && BottomRight;
-
-            internal void RemoveUnneccesary()
+            if (!CanBulletsPassThrough(type))
             {
-                if (this.TopLeft && !this.Left && !this.Top)
-                {
-                    this.TopLeft = false;
-                }
+                layers |= ColliderLayer.Layer.Bullet;
+            }
 
-                if (this.TopRight && !this.Right && !this.Top)
-                {
-                    this.TopRight = false;
-                }
+            return layers;
+        }
 
-                if (this.BottomRight && !this.Bottom && !this.Right)
-                {
-                    this.BottomRight = false;
-                }
+        internal static bool HasTileTypeTrims(TileDefinitions.Type type)
+        {
+            switch (type)
+            {
+                case TileDefinitions.Type.Dirt:
+                case TileDefinitions.Type.WallTrim:
+                case TileDefinitions.Type.Water:
+                    return true;
 
-                if (this.BottomLeft && !this.Bottom && !this.Left)
-                {
-                    this.BottomLeft = false;
-                }
+                case TileDefinitions.Type.Wall:
+                case TileDefinitions.Type.Grass:
+                default:
+                    return false;
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1025:Code should not contain multiple whitespace in a row", Justification = "better visibility")]
+        internal static TileDefinitions.SurroundingTiles GetSurroundingTile(in TileDefinitions.Type[,] tileResult, (int x, int y) index, (int x, int y) maxLen)
+        {
+            int x = index.x;
+            int y = index.y;
+            maxLen.x--;
+            maxLen.y--;
+            var current = tileResult[x, y];
+
+            var top =           (y == 0)                            ? true : current == tileResult[x,      y - 1];
+            var bottom =        (y == maxLen.y)                     ? true : current == tileResult[x,      y + 1];
+            var left =          (x == 0)                            ? true : current == tileResult[x - 1,  y];
+            var right =         (x == maxLen.x)                     ? true : current == tileResult[x + 1,  y];
+            var topright =      (x == maxLen.x || y == 0)           ? true : current == tileResult[x + 1,  y - 1];
+            var topleft =       (x == 0 || y == 0)                  ? true : current == tileResult[x - 1,  y - 1];
+            var bottomright =   (x == maxLen.x || y == maxLen.y)    ? true : current == tileResult[x + 1,  y + 1];
+            var bottomleft =    (x == 0 || y == maxLen.y)           ? true : current == tileResult[x - 1,  y + 1];
+
+            return new TileDefinitions.SurroundingTiles(top, bottom, left, right, topleft, topright, bottomright, bottomleft);
+
+        }
+
+        private static bool CanBulletsPassThrough(TileDefinitions.Type type)
+        {
+            switch (type)
+            {
+                case TileDefinitions.Type.Dirt:
+                case TileDefinitions.Type.Error:
+                case TileDefinitions.Type.Water:
+                    return true;
+                case TileDefinitions.Type.Wall:
+                case TileDefinitions.Type.WallTrim:
+                default:
+                    return false;
             }
         }
     }

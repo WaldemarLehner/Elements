@@ -12,6 +12,8 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
 
         float MaxDistance { get; }
 
+        ColliderLayer.Layer Layer { get; }
+
         float MinimalDistanceTo(Vector2 tileCenter);
     }
 }

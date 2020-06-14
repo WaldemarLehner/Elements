@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
-using OpenTK;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
     internal class FontTexture : IMappedTileFont
     {
-        internal FontTexture(ITextureContructor textureContructor, ITileTextureContructor tileTextureContructor, ICollection<Tuple<char, int>> mappings)
+        private char currentKey = '\0';
+
+        internal FontTexture(ITextureContructor textureContructor, ITileTextureContructor tileTextureContructor, ICollection<(char key, int index)> mappings)
         {
             _ = textureContructor ?? throw new ArgumentNullException(nameof(textureContructor));
             _ = tileTextureContructor ?? throw new ArgumentNullException(nameof(tileTextureContructor));
@@ -20,9 +21,9 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             this.YRows = tileTextureContructor.YRows;
             this.MappedPositions = new Dictionary<char, int>(mappings.Count);
 
-            foreach (var entry in mappings)
+            foreach (var (key, index) in mappings)
             {
-                this.MappedPositions[entry.Item1] = entry.Item2;
+                this.MappedPositions[key] = index;
             }
         }
 
@@ -32,7 +33,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public int YRows { get; private set; }
 
-        public Tuple<int, int> Pointer { get; private set; }
+        public (int x, int y) Pointer { get; private set; }
 
         public int Width { get; private set; }
 
@@ -40,13 +41,13 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public string FilePath { get; private set; }
 
-        public (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) TextureCoordinates => this.GetCurrentTextureCoordinates();
+        public TextureCoordinates TextureCoordinates => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, this.currentKey) ?? TextureCoordinates.Error;
 
-        public Tuple<int, int> GetTileOfKey(char key)
+        public (int x, int y) GetTileOfKey(char key)
         {
             if (!this.MappedPositions.ContainsKey(key))
             {
-                return null;
+                return (-1, -1);
             }
 
             return this.GetTileIndexFromIndex(this.MappedPositions[key]);
@@ -58,33 +59,21 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public void UpdatePointer(char key)
         {
-            this.Pointer = this.GetTileOfKey(key);
+            if (!this.MappedPositions.ContainsKey(key))
+            {
+                throw new ArgumentOutOfRangeException(nameof(key), "Given key is not part of the Texture's Set");
+            }
+
+            this.currentKey = key;
         }
 
-        private Tuple<int, int> GetTileIndexFromIndex(int i)
+        public TextureCoordinates GetTexCoordsOfIndex(int index) => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? TextureCoordinates.Error;
+
+        private (int x, int y) GetTileIndexFromIndex(int i)
         {
             int x = i % this.XRows;
             int y = i / this.XRows;
-            return new Tuple<int, int>(x, y);
-        }
-
-        private (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) GetCurrentTextureCoordinates()
-        {
-            var tile = this.Pointer;
-
-            // Tuple: TopLeft, TopRight, BottomRight, BottomLeft coordinated range from 0 to 1.
-            float left = tile.Item1 / this.XRows;
-            float right = left + (1 / (float)this.XRows);
-
-            float bottom = (this.YRows - tile.Item2 - 1) / (float)this.YRows;
-            float top = bottom + (1 / (float)this.YRows);
-
-            Vector2 tl = new Vector2(left, top);
-            Vector2 tr = new Vector2(right, top);
-            Vector2 bl = new Vector2(left, bottom);
-            Vector2 br = new Vector2(right, bottom);
-
-            return (tl, tr, br, bl);
+            return (x, y);
         }
     }
 }

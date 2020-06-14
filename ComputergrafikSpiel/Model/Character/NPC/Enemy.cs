@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public class Enemy : INonPlayerCharacter
     {
-        public Enemy(int maxHealth, string texture, float movementSpeed, int defense, int attackDamage, IPlayer player, IColliderManager colliderManager, ICollection<INonPlayerCharacter> allEnemys, Vector2 startPosition)
+        public Enemy(int maxHealth, string texture, float movementSpeed, int defense, int attackDamage, Vector2 startPosition)
         {
             this.AttackDamage = attackDamage;
             this.MaxHealth = maxHealth;
@@ -23,10 +23,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.Texture = new TextureLoader().LoadTexture("Enemy/" + texture);
             this.Position = startPosition;
             this.Scale = new Vector2(16, 16);
-            this.Player = player;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
-            colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
-            this.NPCController = new AIEnemy(colliderManager, allEnemys, this.Player);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player | ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Wall);
+            this.NPCController = new AIEnemy();
         }
 
         public event EventHandler CharacterDeath;
@@ -119,6 +117,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         private void GiveDamageToPlayer()
         {
+            return;
             if (this.Collider.DidCollideWith(this.Player.Collider))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;

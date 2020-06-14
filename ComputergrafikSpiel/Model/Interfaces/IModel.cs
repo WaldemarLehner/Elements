@@ -6,7 +6,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Interfaces
 {
-    internal interface IModel
+    public interface IModel
     {
         (float top, float bottom, float left, float right) CurrentSceneBounds { get; }
 
@@ -17,15 +17,5 @@ namespace ComputergrafikSpiel.Model.Interfaces
         void Update(float dTime);
 
         bool CreatePlayerOnce(IInputController controller);
-
-        bool SpawnHeal(float positionX, float positionY);
-
-        bool SpawnWährung(float positionX, float positionY);
-
-        bool CreateRoundEndInteractables();
-
-        bool CreateEnemy();
-
-        void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
     }
 }

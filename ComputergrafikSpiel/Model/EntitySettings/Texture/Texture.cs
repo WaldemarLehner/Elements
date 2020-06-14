@@ -19,7 +19,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public string FilePath { get; }
 
-        public (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) TextureCoordinates => (new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0));
+        public TextureCoordinates TextureCoordinates => new TextureCoordinates(new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0));
 
         public void Update(float dtime)
         {

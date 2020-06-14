@@ -1,4 +1,5 @@
 ﻿using System;
+using ComputergrafikSpiel.Model;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.View.Interfaces;
@@ -19,9 +20,9 @@ namespace ComputergrafikSpiel.Controller
             this.Model = model;
             this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
             // Wird später von der Szene geladen, bei Rundenende
-            this.Model.CreateRoundEndInteractables();
+            (this.Model as Model.Model).CreateRoundEndInteractables();
             this.Model.CreatePlayerOnce(this.InputController);
-            this.Model.CreateEnemy();
+            (this.Model as Model.Model).CreateEnemy();
         }
 
         public IInputController InputController { get; private set; }

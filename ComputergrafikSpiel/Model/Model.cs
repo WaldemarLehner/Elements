@@ -10,6 +10,8 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
+using ComputergrafikSpiel.Model.World;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
@@ -18,24 +20,23 @@ namespace ComputergrafikSpiel.Model
     {
         internal Model()
         {
+            /*
             this.RenderablesList = new List<IRenderable>();
             this.Updateables = new List<IUpdateable>();
             this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
             this.ColliderManager = new ColliderManager(32);
             this.EnemysList = new List<INonPlayerCharacter>();
+            */
+
+            var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .3f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
+            new Scene.Scene(worldScene);
         }
 
-        public IEnumerable<IRenderable> Renderables => this.RenderablesList;
+        public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
 
-        public (float top, float bottom, float left, float right) CurrentSceneBounds => (500, 0, 0, 800);
+        public (float top, float bottom, float left, float right) CurrentSceneBounds => Scene.Scene.Current.World.WorldSceneBounds;
 
         public IEnumerable<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
-
-        private List<IRenderable> RenderablesList { get; } = new List<IRenderable>();
-
-        private List<IUpdateable> Updateables { get; } = new List<IUpdateable>();
-
-        private IPlayer Player { get; set; } = null;
 
         private IEntity IncInteractables { get; set; } = null;
 
@@ -53,126 +54,54 @@ namespace ComputergrafikSpiel.Model
         /// <param name="dTime">Time between two Update Calls in Seconds.</param>
         public void Update(float dTime)
         {
-            if (this.Updateables != null)
-            {
-                foreach (var entry in this.Updateables.Reverse<IUpdateable>())
-                {
-                    entry.Update(dTime);
-                }
-            }
-
+            Scene.Scene.Current.Update(dTime);
         }
 
         public bool CreatePlayerOnce(IInputController controller)
         {
-            if (this.Player == null)
+            if (Scene.Scene.Player != null)
             {
-                this.Player = new Player(this.Interactable, this.ColliderManager, this.EnemysList, this);
-                controller.HookPlayer(this.Player);
-                this.Updateables.Add(this.Player);
-                this.RenderablesList.Add(this.Player);
-                return true;
+                return false;
             }
 
-            return false;
+            var player = new Player(this.Interactable, this);
+            controller.HookPlayer(player);
+
+            return Scene.Scene.CreatePlayer(player);
         }
 
-        public bool SpawnHeal(float positionX, float positionY)
+        public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY)
         {
             // Heal Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Heal, positionX, positionY);
-            this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
-
-            return false;
+            this.IncInteractables = new Interactable(stat, positionX, positionY);
+            Scene.Scene.Current.SpawnEntity(this.IncInteractables);
         }
 
-        public bool SpawnWährung(float positionX, float positionY)
+        public void SpawnCurrency(float positionX, float positionY)
         {
             // Währung Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Währung, positionX, positionY);
-            this.Interactable.Add(PlayerEnum.Stats.Währung, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
-
-            return false;
+            Scene.Scene.Current.SpawnEntity(new Interactable(PlayerEnum.Stats.Währung, positionX, positionY));
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
-        public bool CreateRoundEndInteractables()
+        public void CreateRoundEndInteractables()
         {
             // MaxHealth Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MaxHealth, 250, 250);
-            this.Interactable.Add(PlayerEnum.Stats.MaxHealth, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
+            this.SpawnInteractable(PlayerEnum.Stats.MaxHealth, 250, 250);
 
             // Defense Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Defense, 350, 250);
-            this.Interactable.Add(PlayerEnum.Stats.Defense, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
+            this.SpawnInteractable(PlayerEnum.Stats.Defense, 350, 250);
 
             // AttackSpeed Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250);
-            this.Interactable.Add(PlayerEnum.Stats.AttackSpeed, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
+            this.SpawnInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250);
 
             // MovementSpeed Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250);
-            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
-
-            return false;
+            this.SpawnInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250);
         }
 
-        public bool CreateEnemy()
+        public void CreateEnemy()
         {
-            //return false;
-            if (this.Enemys == null)
-            {
-                this.Enemys = new Enemy(10, "Fungus", 20, 1, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
-                this.Updateables.Add(this.Enemys);
-                this.RenderablesList.Add(this.Enemys);
-                this.EnemysList.Add(this.Enemys);
-                return true;
-                this.Enemys = new Enemy(10, "WaterDrop", 35, 0, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 400));
-                this.Updateables.Add(this.Enemys);
-                this.RenderablesList.Add(this.Enemys);
-                this.EnemysList.Add(this.Enemys);
-                return true;
-            }
-
-            return false;
-        }
-
-        // Somehow the Object will not be destroyed entirely. It will just dissapear.
-        public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
-        {
-            if (player != null)
-            {
-                this.ColliderManager.RemoveEntityCollidable(player.Collider.CollidableParent);
-                this.Updateables.Remove(player);
-                this.RenderablesList.Remove(player);
-                player = null;
-            }
-            else if (entity != null)
-            {
-                this.ColliderManager.RemoveEntityCollidable(entity.Collider.CollidableParent);
-                this.Updateables.Remove(entity);
-                this.RenderablesList.Remove(entity);
-                entity = null;
-            }
-            else if (npc != null)
-            {
-                this.ColliderManager.RemoveEntityCollidable(entity.Collider.CollidableParent);
-                this.Updateables.Remove(npc);
-                this.RenderablesList.Remove(npc);
-                npc = null;
-            }
+                Scene.Scene.Current.CreateNPC(new Enemy(10, "Fungus", 20, 1, 2, new Vector2(300, 200)));
         }
     }
 }

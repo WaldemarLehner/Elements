@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
@@ -11,40 +12,26 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
 {
     public class AIEnemy : INPCController
     {
-        private IRay ray;
-        private Vector2 direction;
-        private IColliderManager colliderManager;
-        private List<ICollidable> collidables;
-        private IPlayer player;
-        private ICollection<INonPlayerCharacter> otherEnemys;
-
-        public AIEnemy(IColliderManager colliderManager, ICollection<INonPlayerCharacter> otherEnemys, IPlayer player)
+        public AIEnemy()
         {
-            this.colliderManager = colliderManager;
-            this.collidables = new List<ICollidable>();
-            this.otherEnemys = otherEnemys;
-            this.player = player;
         }
 
         public Vector2 EnemyAIMovement(INonPlayerCharacter myself)
         {
-            this.direction = this.player.Position - myself.Position;
-            this.direction.Normalize();
+            var direction = Scene.Scene.Player.Position - myself.Position;
+            direction.Normalize();
 
-            this.ray = new Ray(myself.Position, this.direction, 500);
-            this.collidables = (List<ICollidable>)this.colliderManager.GetRayCollisions(this.ray, myself.Position);
-            this.collidables.Remove(myself.Collider.CollidableParent);
-            foreach (INonPlayerCharacter otherEnemys in this.otherEnemys)
+            var ray = new Ray(myself.Position, direction, 500, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall);
+            var collidables = Scene.Scene.Current.ColliderManager.GetRayCollisions(ray, myself.Position);
+
+            var first = (from col in collidables orderby Vector2.DistanceSquared(col.Collider.Position, myself.Position) - col.Collider.MaximumDistanceFromPosition ascending select col).FirstOrDefault();
+            if (first == null || !(first is IPlayer))
             {
-                this.collidables.Remove(otherEnemys.Collider.CollidableParent);
+                // TODO: Walk around.
+                return Vector2.Zero;
             }
 
-            if (this.collidables.FirstOrDefault<ICollidable>() == this.player.Collider.CollidableParent)
-            {
-                return this.direction;
-            }
-
-            return Vector2.Zero;
+            return direction;
         }
     }
 }

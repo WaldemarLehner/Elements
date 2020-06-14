@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
+using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.View.Exceptions;
 using ComputergrafikSpiel.View.Helpers;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
@@ -81,7 +80,7 @@ namespace ComputergrafikSpiel.View
             return true;
         }
 
-        public void DrawRectangle(Rectangle vertices, (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) texCoords, (int width, int height) screen)
+        public void DrawRectangle(Rectangle vertices, TextureCoordinates texCoords, (int width, int height) screen)
         {
             var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.AspectRatio, screen.width / (float)screen.height);
             (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVertices = this.GenerateNDCVertices(vertices, multipliers);
@@ -124,14 +123,14 @@ namespace ComputergrafikSpiel.View
         }
 
         // WARN: TODO: For some reason having the "correct" Tex Coords results in orientation, namely 90deg clockwise. This is why they had to be swapped
-        private ICollection<(Vector2 vert, Vector2 tex)> GenerateNDCVertex_TexCollection((Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVert, (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) tex)
+        private ICollection<(Vector2 vert, Vector2 tex)> GenerateNDCVertex_TexCollection((Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVert, TextureCoordinates tex)
         {
             return new List<(Vector2 vert, Vector2 tex)>()
             {
-                (ndcVert.TL, tex.TR),
-                (ndcVert.TR, tex.BR),
-                (ndcVert.BR, tex.BL),
-                (ndcVert.BL, tex.TL),
+                (ndcVert.TL, tex.TopRight),
+                (ndcVert.TR, tex.BottomRight),
+                (ndcVert.BR, tex.BottomLeft),
+                (ndcVert.BL, tex.TopLeft),
             };
         }
 

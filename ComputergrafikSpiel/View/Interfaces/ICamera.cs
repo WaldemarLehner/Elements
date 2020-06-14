@@ -1,4 +1,5 @@
-﻿using ComputergrafikSpiel.View.Renderer.Interfaces;
+﻿using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.View.Interfaces
@@ -37,6 +38,6 @@ namespace ComputergrafikSpiel.View.Interfaces
 
         Vector2 NDCToWorld(Vector2 pointNDC);
 
-        void DrawRectangle(Rectangle vertices, (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) texCoords, (int width, int height) screen);
+        void DrawRectangle(Rectangle vertices, TextureCoordinates texCoords, (int width, int height) screen);
     }
 }

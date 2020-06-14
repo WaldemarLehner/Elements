@@ -10,8 +10,8 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
 
         int YRows { get; }
 
-        Tuple<int, int> Pointer { get; }
+        (int x, int y) Pointer { get; }
 
-        (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) GetTexCoordsOfIndex(int index);
+        TextureCoordinates GetTexCoordsOfIndex(int index);
     }
 }

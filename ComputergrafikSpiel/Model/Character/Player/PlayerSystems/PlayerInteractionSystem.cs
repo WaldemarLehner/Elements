@@ -29,7 +29,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                 if (player.Collider.DidCollideWith(this.stats.Collider))
                 {
                     this.statsList.Add(PlayerEnum.Stats.MaxHealth);
-                    this.model.DestroyObject(null, this.stats, null);
+                    // @Nico: this.model as Model).DestroyObject(null, this.stats, null);
                     player.IncreasePlayerStats(1, this.statsList);
                 }
             }
@@ -39,7 +39,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                 if (player.Collider.DidCollideWith(this.stats.Collider))
                 {
                     this.statsList.Add(PlayerEnum.Stats.Heal);
-                    this.model.DestroyObject(null, this.stats, null);
+                    // @Nico: this.model.DestroyObject(null, this.stats, null);
                     player.IncreasePlayerStats(1, this.statsList);
                 }
             }
@@ -49,7 +49,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                 if (player.Collider.DidCollideWith(this.stats.Collider))
                 {
                     this.statsList.Add(PlayerEnum.Stats.Defense);
-                    this.model.DestroyObject(null, this.stats, null);
+                    // @Nico: this.model.DestroyObject(null, this.stats, null);
                     player.IncreasePlayerStats(1, this.statsList);
                 }
             }
@@ -59,7 +59,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                 if (player.Collider.DidCollideWith(this.stats.Collider))
                 {
                     this.statsList.Add(PlayerEnum.Stats.AttackSpeed);
-                    this.model.DestroyObject(null, this.stats, null);
+                    // @Nico: this.model.DestroyObject(null, this.stats, null);
                     player.IncreasePlayerStats(5, this.statsList);
                 }
             }
@@ -69,7 +69,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                 if (player.Collider.DidCollideWith(this.stats.Collider))
                 {
                     this.statsList.Add(PlayerEnum.Stats.MovementSpeed);
-                    this.model.DestroyObject(null, this.stats, null);
+                    // @Nico: this.model.DestroyObject(null, this.stats, null);
                     player.IncreasePlayerStats(20, this.statsList);
                 }
             }
@@ -79,7 +79,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                 if (player.Collider.DidCollideWith(this.stats.Collider))
                 {
                     this.statsList.Add(PlayerEnum.Stats.Währung);
-                    this.model.DestroyObject(null, this.stats, null);
+                    // @Nico: this.model.DestroyObject(null, this.stats, null);
                     player.IncreasePlayerStats(200, this.statsList);
                 }
             }

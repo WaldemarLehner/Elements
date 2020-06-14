@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using System.Linq;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
 using OpenTK;
 using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.Player
 {
-    internal class Player : IPlayer
+    public class Player : IPlayer
     {
         private readonly List<PlayerEnum.PlayerActions> playerActionList;
         private readonly PlayerAttackSystem playerAttackSystem;
@@ -24,23 +23,20 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerInteractionSystem playerInteractionSystem;
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
-        private ICollection<INonPlayerCharacter> enemyList;
         private IModel model;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemys, IModel model)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IModel model)
         {
             this.model = model;
-            this.enemyList = enemys;
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
             this.Scale = new Vector2(32, 32);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable, model);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
-            colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player

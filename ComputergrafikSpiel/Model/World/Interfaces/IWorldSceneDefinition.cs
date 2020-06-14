@@ -14,6 +14,8 @@
 
         float NoiseScale { get; }
 
-        (int weight, WorldTile.Type type)[] NoiseDefinition { get; }
+        (int weight, TileDefinitions.Type type)[] NoiseDefinition { get; }
+
+        int TileSize { get; }
     }
 }

@@ -21,9 +21,29 @@ namespace ComputergrafikSpiel.Model.World
         {
             Noise.Seed = this.Random.Next();
             var noiseResult = Noise.Calc2D(this.WorldSceneDefinition.TileCount.x, this.WorldSceneDefinition.TileCount.y, this.WorldSceneDefinition.NoiseScale);
-            var tileResult = NoiseToTileConversionHelper.ConvertNoiseToTiles(noiseResult, this.WorldSceneDefinition.NoiseDefinition);
+            TileDefinitions.Type[,] tileResult = NoiseToTileConversionHelper.ConvertNoiseToTiles(noiseResult, this.WorldSceneDefinition.NoiseDefinition);
 
-            return null;
+            int xMax = tileResult.GetLength(0);
+            int yMax = tileResult.GetLength(1);
+            IWorldTile[,] tiles = new IWorldTile[xMax, yMax];
+            for (int x = 0; x < xMax; x++)
+            {
+                for (int y = 0; y < yMax; y++)
+                {
+                    var type = tileResult[x, y];
+                    var neighbor = TileHelper.GetSurroundingTile(in tileResult, (x, y), (xMax, yMax));
+                    if (TileHelper.IsWalkable(type))
+                    {
+                        tiles[x, y] = new WorldTile(this.WorldSceneDefinition.TileSize, (x, y), type, neighbor);
+                    }
+                    else
+                    {
+                        tiles[x, y] = new CollidableWorldTile(this.WorldSceneDefinition.TileSize, (x, y), type, neighbor);
+                    }
+                }
+            }
+
+            return new WorldScene(this.WorldSceneDefinition, tiles, new IWorldObstacle[0]);
         }
     }
 }

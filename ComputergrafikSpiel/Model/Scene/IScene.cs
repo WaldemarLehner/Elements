@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.Model.World;
+using ComputergrafikSpiel.Model.World.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
     public interface IScene : IUpdateable
     {
-        IWorldTile WorldTile { get; }
-
         IColliderManager ColliderManager { get; }
 
-        ICollection<IEntity> Entities { get; }
+        IEnumerable<IEntity> Entities { get; }
 
         IScene TopScene { get; }
 
@@ -22,6 +22,12 @@ namespace ComputergrafikSpiel.Model.Scene
 
         IScene BottomScene { get; }
 
-        void SwitchScene(IScene scene);
+        IEnumerable<INonPlayerCharacter> NPCs { get; }
+
+        IWorldScene World { get; }
+
+        void SetAsActive();
+
+        void Disable();
     }
 }

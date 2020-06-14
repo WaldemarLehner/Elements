@@ -6,60 +6,56 @@ namespace ComputergrafikSpiel.Model.Collider
 {
     internal class Ray : IRay
     {
-        private readonly Vector2 position;
-        private readonly Vector2 direction;
-
-        // is not yet used
-        private readonly float maxDistance;
-
-        internal Ray(Vector2 position, Vector2 direction, float maxDis)
+        internal Ray(Vector2 position, Vector2 direction, float maxDis, ColliderLayer.Layer layer)
         {
-            this.position = position;
-
+            this.Position = position;
+            this.Layer = layer;
             if (direction.X == 0 && direction.Y == 0)
             {
                 throw new ArgumentOutOfRangeException("Direction can't be 0,0");
             }
 
-            this.direction = direction;
+            this.Direction = direction;
 
             if (maxDis <= 0)
             {
                 throw new ArgumentOutOfRangeException("Maximum Distance has to be above 0");
             }
 
-            this.maxDistance = maxDis;
+            this.MaxDistance = maxDis;
         }
 
-        public Vector2 Position => this.position;
+        public Vector2 Position { get; }
 
-        public Vector2 Direction => this.direction;
+        public Vector2 Direction { get; }
 
-        public float MaxDistance => this.maxDistance;
+        public float MaxDistance { get; }
+
+        public ColliderLayer.Layer Layer { get; }
 
         public float MinimalDistanceTo(Vector2 tileCenter)
         {
             float distance;
 
             // use the Lotfußpunktverfahren in order to calculate min distance between the tile's center and the Ray
-            float intermediateResultNotContainingR = ((this.position.X - tileCenter.X) * this.direction.X) + ((this.position.Y - tileCenter.Y) * this.direction.Y);
-            float intermediateResultContainingR = ((float)Math.Pow(this.direction.X, 2) + (float)Math.Pow(this.direction.Y, 2)) * -1;
+            float intermediateResultNotContainingR = ((this.Position.X - tileCenter.X) * this.Direction.X) + ((this.Position.Y - tileCenter.Y) * this.Direction.Y);
+            float intermediateResultContainingR = ((float)Math.Pow(this.Direction.X, 2) + (float)Math.Pow(this.Direction.Y, 2)) * -1;
 
             float r = intermediateResultNotContainingR / intermediateResultContainingR;
 
             if (r <= 0)
             {
-                distance = Vector2.Distance(this.position, tileCenter);
+                distance = Vector2.Distance(this.Position, tileCenter);
 
                 return distance;
             }
 
-            Vector2 lotfusspoint = Vector2.Add(this.position, Vector2.Multiply(this.direction, r));
+            Vector2 lotfusspoint = Vector2.Add(this.Position, Vector2.Multiply(this.Direction, r));
 
             // if the lotfuspoint is further away than the "point" of maxDistance, then use distance between max distance "point" and tileCenter instead
-            if (Vector2.Distance(lotfusspoint, this.position) > this.maxDistance)
+            if (Vector2.Distance(lotfusspoint, this.Position) > this.MaxDistance)
             {
-                Vector2 maxDistPoint = Vector2.Add(this.position, this.direction);
+                Vector2 maxDistPoint = Vector2.Add(this.Position, this.Direction);
                 distance = Vector2.Distance(maxDistPoint, tileCenter);
 
                 return distance;

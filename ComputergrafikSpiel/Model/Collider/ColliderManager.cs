@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using OpenTK;
 
@@ -25,7 +24,7 @@ namespace ComputergrafikSpiel.Model.Collider
         /// A Tuple which assigns a Static Collider to a World Tile Coordinate.
         /// That way checking collision takes O(1) for static objects.
         /// </summary>
-        private Dictionary<Tuple<int, int>, ICollidable> collidableTiles;
+        private readonly Dictionary<Tuple<int, int>, ICollidable> collidableTiles;
 
         internal ColliderManager(int tileSize)
         {

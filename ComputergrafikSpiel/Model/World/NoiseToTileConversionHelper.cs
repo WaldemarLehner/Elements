@@ -6,14 +6,16 @@ namespace ComputergrafikSpiel.Model.World
 {
     internal static class NoiseToTileConversionHelper
     {
-        internal static WorldTile.Type[,] ConvertNoiseToTiles(float[,] noiseTiles, (int weight, WorldTile.Type type)[] noiseMapping)
+        internal static TileDefinitions.Type[,] ConvertNoiseToTiles(float[,] noiseTiles, (int weight, TileDefinitions.Type type)[] noiseMapping)
         {
-            (float lowerBound, WorldTile.Type type)[] map = NoiseToTileConversionHelper.GenerateMapping(noiseMapping);
-            var returnArray = new WorldTile.Type[noiseTiles.GetLength(0) + 4, noiseTiles.GetLength(1) + 4];
+            (float lowerBound, TileDefinitions.Type type)[] map = NoiseToTileConversionHelper.GenerateMapping(noiseMapping);
+            var returnArray = new TileDefinitions.Type[noiseTiles.GetLength(0) + 4, noiseTiles.GetLength(1) + 4];
             for (int x = 0; x < noiseTiles.GetLength(0); x++)
             {
                 for (int y = 0; y < noiseTiles.GetLength(1); y++)
                 {
+                    // Simplex produces a range from 0..255.
+                    noiseTiles[x, y] /= 255;
                     var tile = NoiseToTileConversionHelper.GetTileFromNoise(noiseTiles[x, y], map);
                     returnArray[x + 2, y + 2] = tile;
                 }
@@ -27,7 +29,7 @@ namespace ComputergrafikSpiel.Model.World
             return returnArray;
         }
 
-        private static void CreateWalkableBorder(ref WorldTile.Type[,] returnArray)
+        private static void CreateWalkableBorder(ref TileDefinitions.Type[,] returnArray)
         {
             int upperX = returnArray.GetLength(0) - 2;
             int upperY = returnArray.GetLength(1) - 2;
@@ -38,12 +40,12 @@ namespace ComputergrafikSpiel.Model.World
                 var bottom = returnArray[x, upperY];
                 if (!TileHelper.IsWalkable(top))
                 {
-                    returnArray[x, 2] = WorldTile.Type.Grass;
+                    returnArray[x, 2] = TileDefinitions.Type.Grass;
                 }
 
                 if (!TileHelper.IsWalkable(bottom))
                 {
-                    returnArray[x, upperY] = WorldTile.Type.Grass;
+                    returnArray[x, upperY] = TileDefinitions.Type.Grass;
                 }
             }
 
@@ -53,18 +55,19 @@ namespace ComputergrafikSpiel.Model.World
                 var right = returnArray[upperX, y];
                 if (!TileHelper.IsWalkable(left))
                 {
-                    returnArray[2, y] = WorldTile.Type.Grass;
+                    returnArray[2, y] = TileDefinitions.Type.Grass;
                 }
 
                 if (!TileHelper.IsWalkable(right))
                 {
-                    returnArray[upperX, y] = WorldTile.Type.Grass;
+                    returnArray[upperX, y] = TileDefinitions.Type.Grass;
                 }
             }
         }
 
-        private static void AddBorder(ref WorldTile.Type[,] returnArray)
+        private static void AddBorder(ref TileDefinitions.Type[,] returnArray)
         {
+            // Border Bounds (NOT Trim Bounds)
             int upperX = returnArray.GetLength(0) - 2;
             int upperY = returnArray.GetLength(1) - 2;
             int lowerX = 1, lowerY = 1;
@@ -72,29 +75,33 @@ namespace ComputergrafikSpiel.Model.World
             // Horizontals
             for (int x = lowerX; x < upperX; x++)
             {
-                returnArray[x, lowerY] = returnArray[x, upperX] = WorldTile.Type.Wall;
-                returnArray[x, lowerY - 1] = returnArray[x, upperX + 1] = WorldTile.Type.WallTrim;
+                returnArray[x, lowerY] = TileDefinitions.Type.Wall;
+                returnArray[x, upperY] = TileDefinitions.Type.Water;
+                returnArray[x, lowerY - 1] = TileDefinitions.Type.WallTrim;
+                returnArray[x, upperY + 1] = TileDefinitions.Type.WallTrim;
             }
 
             // Verticals
             for (int y = lowerY; y < upperY; y++)
             {
-                returnArray[lowerX, y] = returnArray[upperX, y] = WorldTile.Type.Wall;
-                returnArray[lowerX - 1, y] = returnArray[upperX + 1, y] = WorldTile.Type.WallTrim;
+                returnArray[lowerX, y] = TileDefinitions.Type.Wall;
+                returnArray[upperX, y] = TileDefinitions.Type.Wall;
+                returnArray[lowerX - 1, y] = TileDefinitions.Type.WallTrim;
+                returnArray[upperX + 1, y] = TileDefinitions.Type.WallTrim;
             }
 
             // Corners
             returnArray[lowerX - 1, lowerY - 1] =
                 returnArray[lowerX - 1, upperY + 1] =
                 returnArray[upperX + 1, lowerY - 1] =
-                returnArray[upperX + 1, upperY + 1] = WorldTile.Type.WallTrim;
+                returnArray[upperX + 1, upperY + 1] = TileDefinitions.Type.WallTrim;
         }
 
-        private static (float lowerBound, WorldTile.Type type)[] GenerateMapping((int weight, WorldTile.Type type)[] noiseMapping)
+        private static (float lowerBound, TileDefinitions.Type type)[] GenerateMapping((int weight, TileDefinitions.Type type)[] noiseMapping)
         {
             var weightSum = noiseMapping.Sum(e => e.weight);
             int sum = 0;
-            List<(float lowerBound, WorldTile.Type type)> returnList = new List<(float lowerBound, WorldTile.Type type)>();
+            List<(float lowerBound, TileDefinitions.Type type)> returnList = new List<(float lowerBound, TileDefinitions.Type type)>();
             foreach (var (weight, type) in noiseMapping)
             {
                 if (weight == 0)
@@ -114,7 +121,7 @@ namespace ComputergrafikSpiel.Model.World
             return returnList.ToArray();
         }
 
-        private static WorldTile.Type GetTileFromNoise(float value, in (float lowerBound, WorldTile.Type type)[] mappings)
+        private static TileDefinitions.Type GetTileFromNoise(float value, in (float lowerBound, TileDefinitions.Type type)[] mappings)
         {
             int firstIndexLargerValue = 0;
             for (; firstIndexLargerValue < mappings.Length; firstIndexLargerValue++)
@@ -127,7 +134,7 @@ namespace ComputergrafikSpiel.Model.World
 
             if (firstIndexLargerValue > 0)
             {
-                return mappings[firstIndexLargerValue--].type;
+                return mappings[--firstIndexLargerValue].type;
             }
 
             return mappings[0].type;

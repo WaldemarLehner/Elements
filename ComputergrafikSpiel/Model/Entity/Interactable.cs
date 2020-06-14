@@ -10,11 +10,11 @@ using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Entity
 {
-    internal class CreateInteractable : IEntity
+    public class Interactable : IEntity
     {
         private readonly string texturename;
 
-        public CreateInteractable(PlayerEnum.Stats stats, float positionX, float positionY)
+        public Interactable(PlayerEnum.Stats stats, float positionX, float positionY)
         {
             switch (stats)
             {
@@ -43,7 +43,7 @@ namespace ComputergrafikSpiel.Model.Entity
 
             this.Position = new Vector2(positionX, positionY);
             this.Scale = new Vector2(20, 20);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player);
             this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/" + this.texturename);
         }
 
