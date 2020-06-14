@@ -1,4 +1,6 @@
-﻿using ComputergrafikSpiel.Model.Collider.Interfaces;
+﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using OpenTK;
 
@@ -10,15 +12,15 @@ namespace ComputergrafikSpiel.Model.Character.Weapon.Interfaces
 
         int ProjectileCreationCount { get; }
 
-        int BulletTTL { get; }
+        float BulletTTL { get; }
 
         float BulletSize { get; }
 
-        float AttackDamage { get; }
+        int AttackDamage { get; }
 
         IColliderManager ColliderManager { get; }
 
-        void Shoot(Vector2 position, Vector2 direction);
+        void Shoot(Vector2 position, Vector2 direction, ICollection<INonPlayerCharacter> enemyList);
 
         // void CreateProjectile(Vector2 position, Vector2 direction);
 

@@ -1,7 +1,9 @@
 ﻿using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using OpenTK;
 using System;
 using System.Collections.Generic;
 
@@ -60,6 +62,11 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         }
 
         public bool SpawnWährung(float positionX, float positionY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList)
         {
             throw new NotImplementedException();
         }

@@ -27,6 +27,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
             colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
             this.NPCController = new AIEnemy(colliderManager, allEnemys, this.Player);
+            this.CurrentHealth = maxHealth;
         }
 
         public event EventHandler CharacterDeath;

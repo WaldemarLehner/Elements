@@ -73,7 +73,7 @@ namespace ComputergrafikSpiel.Model
         {
             if (this.Player == null)
             {
-                this.weapon = new Weapon(3, 1, 20, 2, this.ColliderManager, 1, this);
+                this.weapon = new Weapon(3, 1, 4, 20, this.ColliderManager, 1, this);
                 this.Player = new Player(this.Interactable, this.ColliderManager, this.weapon, this.EnemysList, this);
                 controller.HookPlayer(this.Player);
                 this.Updateables.Add(this.Player);
@@ -138,10 +138,10 @@ namespace ComputergrafikSpiel.Model
 
         public bool CreateEnemy()
         {
-            return false;
+            // return false;
             if (this.Enemys == null)
             {
-                this.Enemys = new Enemy(10, "Fungus", 20, 1, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
+                this.Enemys = new Enemy(3, "Fungus", 20, 0, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
                 this.Updateables.Add(this.Enemys);
                 this.RenderablesList.Add(this.Enemys);
                 this.EnemysList.Add(this.Enemys);
@@ -182,11 +182,11 @@ namespace ComputergrafikSpiel.Model
             }
         }
 
-        public void CreateProjectile(int projectileCreationCount, Vector2 position, Vector2 direction, int bulletTTL, float bulletSize, IColliderManager colliderManager)
+        public void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList)
         {
-            for (int i = 0; i <= projectileCreationCount; i++)
+            for (int i = 0; i < projectileCreationCount; i++)
             {
-                Projectile projectile = new Projectile(position, direction, bulletTTL, bulletSize, colliderManager, this);
+                Projectile projectile = new Projectile(attackDamage, position, direction, bulletTTL, bulletSize, colliderManager, this, enemyList);
                 this.Updateables.Add(projectile);
                 this.RenderablesList.Add(projectile);
             }

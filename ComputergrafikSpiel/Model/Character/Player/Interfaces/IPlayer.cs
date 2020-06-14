@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Controller.Input;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 {
@@ -9,7 +10,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
         event EventHandler PlayerInc;
 
         // Receives a enum list of pressed player actions -> MoveUp, MoveDown, MoveLeft, MoveRight, Dash, Attack, Interaction
-        void PlayerControl(List<PlayerEnum.PlayerActions> pressedActions, MouseCursor mouseCursor);
+        void PlayerControl(List<PlayerEnum.PlayerActions> pressedActions, Vector2 mouseControlerCooridantes);
 
         void OnInc(EventArgs e);
 

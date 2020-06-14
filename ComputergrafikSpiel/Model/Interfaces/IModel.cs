@@ -30,6 +30,6 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
 
-        void CreateProjectile(int projectileCreationCount, Vector2 position, Vector2 direction, int bulletTTL, float bulletSize, IColliderManager colliderManager);
+        void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList);
     }
 }
