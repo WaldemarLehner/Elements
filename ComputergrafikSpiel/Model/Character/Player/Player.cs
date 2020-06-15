@@ -23,11 +23,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerInteractionSystem playerInteractionSystem;
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
-        private IModel model;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IModel model)
+        public Player()
         {
-            this.model = model;
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
@@ -35,7 +33,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
-            this.playerInteractionSystem = new PlayerInteractionSystem(interactable, model);
+            this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
         }
 
@@ -130,55 +128,51 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
         }
 
-        public void IncreasePlayerStats(int incNumber, IReadOnlyList<PlayerEnum.Stats> incstats)
+        public void IncreasePlayerStats(int incNumber, PlayerEnum.Stats stats)
         {
-            Console.WriteLine(incNumber);
             if (incNumber <= 0)
             {
                 throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(incNumber));
             }
 
-            foreach (PlayerEnum.Stats stats in incstats)
+            /*Interactable MaxHealth: Bei Rundenende kann das Maximalleben um eins erhöht werden
+            -> Überprüfung das bisheriges Leben auch auf Max ist*/
+            if (stats == PlayerEnum.Stats.MaxHealth)
             {
-                /*Interactable MaxHealth: Bei Rundenende kann das Maximalleben um eins erhöht werden
-                -> Überprüfung das bisheriges Leben auch auf Max ist*/
-                if (stats == PlayerEnum.Stats.MaxHealth)
-                {
-                    this.MaxHealth++;
-                }
-
-                // Leben wird um eins erhöht
-                else if (stats == PlayerEnum.Stats.Heal && this.CurrentHealth < this.MaxHealth)
-                {
-                    this.CurrentHealth++;
-                }
-
-                // Defense wird erhöht
-                else if (stats == PlayerEnum.Stats.Defense)
-                {
-                    this.Defense += incNumber;
-                }
-
-                // AttackSpeed wird erhöht
-                else if (stats == PlayerEnum.Stats.AttackSpeed)
-                {
-                    this.AttackSpeed += incNumber;
-                }
-
-                // MovementSpeed wird erhöht
-                else if (stats == PlayerEnum.Stats.MovementSpeed)
-                {
-                    this.MovementSpeed += incNumber;
-                }
-
-                // Währung wird an der Stelle gespawnt, an der der Gegner gestorben ist
-                else if (stats == PlayerEnum.Stats.Währung)
-                {
-                    this.Währung += incNumber;
-                }
-
-                this.OnInc(EventArgs.Empty);
+                    this.MaxHealth += incNumber;
             }
+
+            // Leben wird um eins erhöht
+            else if (stats == PlayerEnum.Stats.Heal && this.CurrentHealth < this.MaxHealth)
+            {
+                    this.CurrentHealth += incNumber;
+            }
+
+            // Defense wird erhöht
+            else if (stats == PlayerEnum.Stats.Defense)
+            {
+                this.Defense += incNumber;
+            }
+
+            // AttackSpeed wird erhöht
+            else if (stats == PlayerEnum.Stats.AttackSpeed)
+            {
+                this.AttackSpeed += incNumber;
+            }
+
+            // MovementSpeed wird erhöht
+            else if (stats == PlayerEnum.Stats.MovementSpeed)
+            {
+                this.MovementSpeed += incNumber;
+            }
+
+            // Währung wird an der Stelle gespawnt, an der der Gegner gestorben ist
+            else if (stats == PlayerEnum.Stats.Währung)
+            {
+                this.Währung += incNumber;
+            }
+
+            this.OnInc(EventArgs.Empty);
         }
 
         public void Update(float dtime)
