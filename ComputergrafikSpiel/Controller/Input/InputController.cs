@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
 using OpenTK.Input;
@@ -14,6 +14,9 @@ namespace ComputergrafikSpiel.Controller.Input
         private readonly List<PlayerEnum.PlayerActions> pressedActions;
         private readonly MouseCursor mouseCursor;
         private IPlayer playerControl;
+        private bool lockedInteractKey = false;
+        private bool lockedAttackButton = false;
+        private bool lockedDashKey = false;
 
         // Initialize InputController => gets a struct of Dictionary
         // Shall be called in the Constructor of Controller
@@ -48,9 +51,34 @@ namespace ComputergrafikSpiel.Controller.Input
 
             foreach (var key in this.KeyboardDefinitions.Keys)
             {
+                /// <summary>
+                /// Diese If Abfragen müssen geändert werden! Es soll eine Methode implementiert werden, die gedrückte Tasten locked,
+                /// damit diese keine neue Funktionen aufrufen können, bis sie wieder released werden.
+                /// </summary>
                 if (keyboardState.IsKeyDown(key))
                 {
-                    this.pressedActions.Add(this.KeyboardDefinitions[key]);
+                    if (this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.MoveDown || this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.MoveUp || this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.MoveRight || this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.MoveLeft || this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.Run)
+                    {
+                        this.pressedActions.Add(this.KeyboardDefinitions[key]);
+                    }
+                    else if (!this.lockedInteractKey && this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.Interaction)
+                    {
+                        this.pressedActions.Add(this.KeyboardDefinitions[key]);
+                        this.lockedInteractKey = true;
+                    }
+                    else if (!this.lockedDashKey && this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.Dash)
+                    {
+                        this.pressedActions.Add(this.KeyboardDefinitions[key]);
+                        this.lockedDashKey = true;
+                    }
+                }
+                else if (keyboardState.IsKeyUp(Key.F))
+                {
+                    this.lockedInteractKey = false;
+                }
+                else if (keyboardState.IsKeyUp(Key.Space))
+                {
+                    this.lockedDashKey = false;
                 }
             }
 
@@ -58,14 +86,24 @@ namespace ComputergrafikSpiel.Controller.Input
             {
                 if (mouseState.IsButtonDown(button))
                 {
-                    this.pressedActions.Add(this.MouseDefinitions[button]);
+                    if (!this.lockedAttackButton)
+                    {
+                        this.pressedActions.Add(this.MouseDefinitions[button]);
+                    }
+                }
+                else if (mouseState.IsButtonUp(MouseButton.Left))
+                {
+                    this.lockedAttackButton = false;
                 }
             }
 
             // Gives the Player a IReadOnlyList of pressed Actions
             if (this.playerControl != null)
             {
-                this.playerControl.PlayerControl(this.pressedActions, this.mouseCursor);
+                if (this.pressedActions.Count != 0)
+                {
+                    this.playerControl.PlayerControl(this.pressedActions, this.mouseCursor);
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+﻿using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using System;
@@ -23,12 +24,37 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
             throw new NotImplementedException();
         }
 
-        public bool CreateTestInteractable()
+        public bool CreateEnemy()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CreateSoloInteractable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
         {
             throw new NotImplementedException();
         }
 
         public void Update(float dTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CreateRoundEndInteractables()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SpawnHeal(float positionX, float positionY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SpawnWährung(float positionX, float positionY)
         {
             throw new NotImplementedException();
         }
