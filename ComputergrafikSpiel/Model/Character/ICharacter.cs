@@ -1,4 +1,5 @@
 ﻿using System;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Character
