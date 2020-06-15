@@ -2,7 +2,9 @@
 using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Interfaces
 {
@@ -27,5 +29,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
         bool CreateEnemy();
 
         void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
+
+        void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList);
     }
 }

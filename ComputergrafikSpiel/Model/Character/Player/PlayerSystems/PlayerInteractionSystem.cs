@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
@@ -23,6 +25,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
         public void PlayerInteraction(IPlayer player)
         {
             this.statsList.Clear();
+
             // Need other collider (From NPC etc.) to determine if player is in range of interaction => playercollider.DidCollideWith(otherCollider)
             if (this.incInteractable.TryGetValue(PlayerEnum.Stats.MaxHealth, out this.stats))
             {
@@ -60,7 +63,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                 {
                     this.statsList.Add(PlayerEnum.Stats.AttackSpeed);
                     this.model.DestroyObject(null, this.stats, null);
-                    player.IncreasePlayerStats(5, this.statsList);
+                    player.IncreasePlayerStats(1, this.statsList);
                 }
             }
 
@@ -83,7 +86,6 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
                     player.IncreasePlayerStats(200, this.statsList);
                 }
             }
-
         }
     }
 }

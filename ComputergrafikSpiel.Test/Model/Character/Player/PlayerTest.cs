@@ -24,14 +24,14 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(-1)]
         public void AssertThatPlayerTakingDamageThrowsArgumentNotPositiveGreaterZeroException(int damage)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
             Assert.ThrowsException<ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => player.TakingDamage(damage));
         }
 
         [TestMethod]
         public void AssertThatPlayerIncreaseStatsThrowsArgumentPositiveGreaterZeroException()
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
             List<PlayerEnum.Stats> stats = new List<PlayerEnum.Stats>();
             stats.Add(PlayerEnum.Stats.Defense);
             stats.Add(PlayerEnum.Stats.MaxHealth);
@@ -44,7 +44,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(4, 3)]
         public void AssertThatLessDefenseThanDamageMakesDamage(int damage, int defense)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
             int Health = player.CurrentHealth;
             player.Defense = defense;
             player.TakingDamage(damage);
@@ -56,7 +56,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(3, 6)]
         public void AssertThatMoreDefenseThanDamageMakesNoDamage(int damage, int defense)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
             int Health = player.CurrentHealth;
             player.Defense = defense;
             player.TakingDamage(damage);
@@ -68,7 +68,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(2)]
         public void AssertThatIncreasingPlayerStatsIncreaseRightStats(int incNumber)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
             int MaxHealth = player.MaxHealth;
             int Currenthealth = player.CurrentHealth;
             int Defense = player.Defense;
@@ -92,5 +92,26 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             Assert.AreNotEqual(MovementSpeed, player.MovementSpeed);
             Assert.AreNotEqual(Währung, player.Währung);
         }
+
+        /*
+        [DataTestMethod]
+        [DataRow(0)]
+        public void AssertThatCooldownIsSetCorrectlyAndAttackingCorrectlySetsTheCooldown(float initialCountdownTime)
+        {
+            ComputergrafikSpiel.Model.Character.Weapon.Weapon weapon = new ComputergrafikSpiel.Model.Character.Weapon.Weapon(3, 1, 4, 20, this.ColliderManager, 1, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, weapon, this.EnemysList, this.model);
+
+            Assert.AreEqual(initialCountdownTime, player.AttackCooldownCurrnent);
+
+            List<PlayerEnum.PlayerActions> testActions = new List<PlayerEnum.PlayerActions>();
+            testActions.Add(PlayerEnum.PlayerActions.Attack);
+            player.Position = new Vector2(0, 0);
+            Vector2 testMouseCoordinates = new Vector2(0, 0);
+
+            player.PlayerControl(testActions, testMouseCoordinates);
+
+            Assert.AreEqual(player.AttackCooldown, player.AttackCooldownCurrnent);
+        }
+        */
     }
 }

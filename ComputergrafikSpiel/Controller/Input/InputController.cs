@@ -15,7 +15,6 @@ namespace ComputergrafikSpiel.Controller.Input
         private readonly MouseCursor mouseCursor;
         private IPlayer playerControl;
         private bool lockedInteractKey = false;
-        private bool lockedAttackButton = false;
         private bool lockedDashKey = false;
 
         // Initialize InputController => gets a struct of Dictionary
@@ -86,14 +85,7 @@ namespace ComputergrafikSpiel.Controller.Input
             {
                 if (mouseState.IsButtonDown(button))
                 {
-                    if (!this.lockedAttackButton)
-                    {
-                        this.pressedActions.Add(this.MouseDefinitions[button]);
-                    }
-                }
-                else if (mouseState.IsButtonUp(MouseButton.Left))
-                {
-                    this.lockedAttackButton = false;
+                    this.pressedActions.Add(this.MouseDefinitions[button]);
                 }
             }
 
@@ -102,7 +94,7 @@ namespace ComputergrafikSpiel.Controller.Input
             {
                 if (this.pressedActions.Count != 0)
                 {
-                    this.playerControl.PlayerControl(this.pressedActions, this.mouseCursor);
+                    this.playerControl.PlayerControl(this.pressedActions, (Vector2)this.mouseCursor.WorldCoordinates);
                 }
             }
         }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using System.Linq;
+using System.Windows.Forms;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
@@ -27,7 +29,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private ICollection<INonPlayerCharacter> enemyList;
         private IModel model;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemys, IModel model)
+        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, IWeapon weapon, ICollection<INonPlayerCharacter> enemys, IModel model)
         {
             this.model = model;
             this.enemyList = enemys;
@@ -41,6 +43,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable, model);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
             colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
+            this.EquipedWeapon = weapon;
+            this.AttackCooldownCurrnent = 0;
         }
 
         // Define Player
@@ -58,7 +62,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public int Defense { get; set; } = 1;
 
-        public float AttackSpeed { get; set; } = 5;
+        public float AttackSpeed { get; set; } = 2;
+
+        public float AttackCooldown { get; } = 100;
+
+        public float AttackCooldownCurrnent { get; set; }
 
         public float MovementSpeed { get; set; } = 50;
 
@@ -78,8 +86,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
+        public IWeapon EquipedWeapon { get; }
+
         // Look wich action was handed over and call corresponding method
-        public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Controller.Input.MouseCursor mouseCursor)
+        public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Vector2 mouseCursorCoordinates)
         {
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {
@@ -90,7 +100,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    this.playerAttackSystem.PlayerAttack();
+                    if (this.EquipedWeapon != null && this.AttackCooldownCurrnent <= 0)
+                    {
+                        this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, this.enemyList);
+                        this.AttackCooldownCurrnent = this.AttackCooldown;
+                    }
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
                 {
@@ -130,7 +144,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
-                //this.model.DestroyObject(this, null, null);
+
+                // this.model.DestroyObject(this, null, null);
             }
         }
 
@@ -192,14 +207,16 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 this.Position += this.directionXY * this.MovementSpeed * dtime * 2;
                 this.run = false;
 
-                //Dient nur zu Testzwecken
+                // Dient nur zu Testzwecken
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", MaxHealth, CurrentHealth, Defense, AttackSpeed, MovementSpeed, Währung);
+                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", this.MaxHealth, this.CurrentHealth, this.Defense, this.AttackSpeed, this.MovementSpeed, this.Währung);
             }
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;
 
             this.directionXY = Vector2.Zero;
+
+            this.AttackCooldownCurrnent -= dtime + this.AttackSpeed;
         }
 
         public void OnInc(EventArgs e)

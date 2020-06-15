@@ -18,6 +18,7 @@ namespace ComputergrafikSpiel.Controller
             this.View = view;
             this.Model = model;
             this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
+
             // Wird später von der Szene geladen, bei Rundenende
             this.Model.CreateRoundEndInteractables();
             this.Model.CreatePlayerOnce(this.InputController);
