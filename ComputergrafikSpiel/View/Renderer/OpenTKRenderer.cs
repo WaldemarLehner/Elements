@@ -48,7 +48,7 @@ namespace ComputergrafikSpiel.View.Renderer
             }
 
             // Clear the Screen
-            GL.ClearColor(new Color4(0x13,0x0e,0x1c,0xff));
+            GL.ClearColor(new Color4(0x13, 0x0e, 0x1c, 0xff));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Render each IRenderable, in their order from 1st to last.

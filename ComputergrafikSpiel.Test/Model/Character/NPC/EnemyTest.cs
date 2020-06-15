@@ -1,22 +1,16 @@
 ﻿
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Test.Model.Character.NPC
 {
     [TestClass]
     public class EnemyTest
     {
-        private IPlayer player = null;
         private IColliderManager ColliderManager { get; set; } = new ColliderManager(32);
 
         private Vector2 Position = new Vector2(200, 200);

@@ -60,6 +60,29 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IWorldScene World { get; }
 
+        public IEnumerable<IRenderable> Renderables
+        {
+            get
+            {
+                List<IRenderable> enumerable = new List<IRenderable>();
+
+                var renderables = new IEnumerable<IRenderable>[]
+                {
+                    this.World.WorldTilesEnumerable,
+                    this.World.Obstacles,
+                };
+
+                foreach (var entry in renderables)
+                {
+                    enumerable.AddRange(entry);
+                }
+
+                enumerable.Add(Scene.Player);
+                enumerable.AddRange(this.NPCs);
+                return enumerable;
+            }
+        }
+
         public IEnumerable<INonPlayerCharacter> NPCs => this.NpcList;
 
         public IEnumerable<Interactable> Interactables => from entity in this.Entities where entity is Interactable select entity as Interactable;
@@ -137,35 +160,10 @@ namespace ComputergrafikSpiel.Model.Scene
             }
         }
 
-        public IEnumerable<IRenderable> Renderables
-        {
-            get
-            {
-                List<IRenderable> enumerable = new List<IRenderable>();
-
-                var renderables = new IEnumerable<IRenderable>[]
-                {
-                    this.World.WorldTilesEnumerable,
-                    this.World.Obstacles,
-                   
-                };
-
-                foreach (var entry in renderables)
-                {
-                    enumerable.AddRange(entry);
-                }
-
-                enumerable.Add(Scene.Player);
-                enumerable.AddRange(this.NPCs);
-                return enumerable;
-            }
-        }
-
         private void Initialize()
         {
             this.initialized = true;
-            //TODO: 
+            // TODO:
         }
-
     }
 }

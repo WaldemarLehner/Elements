@@ -24,14 +24,7 @@ namespace ComputergrafikSpiel.View
         internal Camera(float top, float bottom, float left, float right)
         {
             this.Update(top, bottom, left, right);
-            Scene.ChangeScene += Scene_ChangeScene;
-        }
-
-        private void Scene_ChangeScene(object sender, EventArgs e)
-        {
-            var scene = sender as Scene;
-            var (top, bottom, left, right) = scene.World.WorldSceneBounds;
-            this.Update(top, bottom, left, right);
+            Scene.ChangeScene += this.Scene_ChangeScene;
         }
 
         public IRenderer Parent { get; private set; }
@@ -142,6 +135,13 @@ namespace ComputergrafikSpiel.View
                 (ndcVert.BR, tex.BottomLeft),
                 (ndcVert.BL, tex.TopLeft),
             };
+        }
+
+        private void Scene_ChangeScene(object sender, EventArgs e)
+        {
+            var scene = sender as Scene;
+            var (top, bottom, left, right) = scene.World.WorldSceneBounds;
+            this.Update(top, bottom, left, right);
         }
 
         private void ConstructorCheckWorldCoordinatesBounds(Vector2 screenSpaceCoord, (int w, int h) screen)

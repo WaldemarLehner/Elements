@@ -46,7 +46,6 @@ namespace ComputergrafikSpiel.Model.World
         {
             internal SurroundingTiles()
             {
-
             }
 
             internal SurroundingTiles(bool top, bool bottom, bool left, bool right, bool topleft, bool topright, bool bottomright, bool bottomleft)

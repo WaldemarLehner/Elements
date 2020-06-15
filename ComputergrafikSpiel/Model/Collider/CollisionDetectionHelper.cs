@@ -30,14 +30,14 @@ namespace ComputergrafikSpiel.Model.Collider
         {
             if (collider1 is CircleOffsetCollider && collider2 is CircleOffsetCollider)
             {
-                return MinDistanceBetween(collider1 as CircleOffsetCollider, collider2 as CircleOffsetCollider) < 0;
+                return MinDistanceBetween(collider1 as CircleOffsetCollider, collider2 as CircleOffsetCollider) <= 0;
             }
 
             if ((collider1 is RectangleOffsetCollider && collider2 is CircleOffsetCollider) || (collider1 is CircleOffsetCollider && collider2 is RectangleOffsetCollider))
             {
                 var rect = (collider1 is RectangleOffsetCollider) ? collider1 as RectangleOffsetCollider : collider2 as RectangleOffsetCollider;
                 var circle = (collider1 is CircleOffsetCollider) ? collider1 as CircleOffsetCollider : collider2 as CircleOffsetCollider;
-                return (from corner in rect.Corners orderby DistanceVectorCircle(corner, circle) ascending select DistanceVectorCircle(corner, circle)).First() < 0;
+                return (from corner in rect.Corners orderby DistanceVectorCircle(corner, circle) ascending select DistanceVectorCircle(corner, circle)).First() <= 0;
             }
 
             if (collider1 is RectangleOffsetCollider && collider2 is RectangleOffsetCollider)

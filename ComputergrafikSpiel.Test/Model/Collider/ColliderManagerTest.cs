@@ -121,7 +121,7 @@ namespace ComputergrafikSpiel.Test.Model
         public void AssertThatRayCollisionsAreDetected()
         {
             IColliderManager manager = new ColliderManager(1);
-            Ray testRay = new Ray(new Vector2(2, 2), new Vector2( 1, 0), 10);
+            Ray testRay = new Ray(new Vector2(2, 2), new Vector2( 1, 0), 10, (ColliderLayer.Layer)~0);
             ICollidable static1 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(1, 2), 1);
             ICollidable static2 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 2), 1);
             ICollidable static3 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 3), 1);

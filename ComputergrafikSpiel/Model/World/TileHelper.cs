@@ -178,7 +178,6 @@ namespace ComputergrafikSpiel.Model.World
             var bottomleft =    (x == 0 || y == maxLen.y)           ? true : current == tileResult[x - 1,  y + 1];
 
             return new TileDefinitions.SurroundingTiles(top, bottom, left, right, topleft, topright, bottomright, bottomleft);
-
         }
 
         private static bool CanBulletsPassThrough(TileDefinitions.Type type)

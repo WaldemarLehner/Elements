@@ -33,7 +33,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public int YRows { get; private set; }
 
-        public (int x, int y) Pointer { get; private set; }
+        public (int x, int y) Pointer => TexturePointerCalculationHelper.GetPointer(this, this.MappedPositions[this.currentKey]) ?? throw new NullReferenceException();
 
         public int Width { get; private set; }
 
@@ -41,7 +41,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public string FilePath { get; private set; }
 
-        public TextureCoordinates TextureCoordinates => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, this.currentKey) ?? TextureCoordinates.Error;
+        public TextureCoordinates TextureCoordinates => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, this.MappedPositions[this.currentKey]) ?? TextureCoordinates.Error;
 
         public (int x, int y) GetTileOfKey(char key)
         {
