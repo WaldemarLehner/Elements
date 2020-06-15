@@ -20,6 +20,7 @@ namespace ComputergrafikSpiel.Controller
             this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
 
             // Wird später von der Szene geladen, bei Rundenende
+            this.Model.CreateTriggerZone();
             this.Model.CreateRoundEndInteractables();
             this.Model.CreatePlayerOnce(this.InputController);
             this.Model.CreateEnemy();

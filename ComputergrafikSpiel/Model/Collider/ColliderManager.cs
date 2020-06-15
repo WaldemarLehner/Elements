@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Collider
@@ -26,6 +28,7 @@ namespace ComputergrafikSpiel.Model.Collider
         /// That way checking collision takes O(1) for static objects.
         /// </summary>
         private Dictionary<Tuple<int, int>, ICollidable> collidableTiles;
+        private Dictionary<Tuple<int, int>, ITrigger> collidableTriggers;
 
         internal ColliderManager(int tileSize)
         {
@@ -37,11 +40,14 @@ namespace ComputergrafikSpiel.Model.Collider
             this.tileSize = tileSize;
             this.collidableEntities = new List<ICollidable>();
             this.collidableTiles = new Dictionary<Tuple<int, int>, ICollidable>();
+            this.collidableTriggers = new Dictionary<Tuple<int, int>, ITrigger>();
         }
 
         public IReadOnlyCollection<ICollidable> CollidableEntitiesCollection => this.collidableEntities;
 
         public IReadOnlyDictionary<Tuple<int, int>, ICollidable> CollidableTileDictionary => this.collidableTiles;
+
+        public IReadOnlyDictionary<Tuple<int, int>, ITrigger> CollidableTriggerDictionary => this.collidableTriggers;
 
         public void AddEntityCollidable(ICollidable collidable)
         {
@@ -51,6 +57,11 @@ namespace ComputergrafikSpiel.Model.Collider
         public void AddWorldTileCollidable(int x, int y, ICollidable collidable)
         {
             this.collidableTiles[new Tuple<int, int>(x, y)] = collidable;
+        }
+
+        public void AddTriggerCollidable(int x, int y, ITrigger trigger)
+        {
+            this.collidableTriggers[new Tuple<int, int>(x, y)] = trigger;
         }
 
         public void RemoveEntityCollidable(ICollidable collidable)
@@ -63,10 +74,16 @@ namespace ComputergrafikSpiel.Model.Collider
             this.collidableTiles.Remove(new Tuple<int, int>(x, y));
         }
 
+        public void RemoveTriggerCollidable(int x, int y)
+        {
+            this.collidableTriggers.Remove(new Tuple<int, int>(x, y));
+        }
+
         public void ClearAll()
         {
             this.ClearWorldTileColliders();
             this.ClearEntityColliders();
+            this.ClearTriggerColliders();
         }
 
         public void ClearWorldTileColliders()
@@ -77,6 +94,11 @@ namespace ComputergrafikSpiel.Model.Collider
         public void ClearEntityColliders()
         {
             this.collidableEntities.Clear();
+        }
+
+        public void ClearTriggerColliders()
+        {
+            this.collidableTriggers.Clear();
         }
 
         public IReadOnlyCollection<ICollidable> GetCollisions(ICollidable collidable)
@@ -106,6 +128,18 @@ namespace ComputergrafikSpiel.Model.Collider
             }
 
             return collidedCollidables;
+        }
+
+
+        public void HandleTriggerCollisions(IPlayer player)
+        {
+            foreach (var trigger in this.collidableTriggers)
+            {
+                if (player.Collider.DidCollideWith(trigger.Value.Collider))
+                {
+                    trigger.Value.TriggerCollisionFunction();
+                }
+            }
         }
 
         public IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray)
