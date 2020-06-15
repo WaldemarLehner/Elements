@@ -10,6 +10,8 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Trigger;
+using ComputergrafikSpiel.Model.Trigger.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
@@ -37,6 +39,8 @@ namespace ComputergrafikSpiel.Model
 
         private IPlayer Player { get; set; } = null;
 
+        private ITrigger TriggerZone { get; set; } = null;
+
         private IEntity IncInteractables { get; set; } = null;
 
         private INonPlayerCharacter Enemys { get; set; } = null;
@@ -60,7 +64,6 @@ namespace ComputergrafikSpiel.Model
                     entry.Update(dTime);
                 }
             }
-
         }
 
         public bool CreatePlayerOnce(IInputController controller)
@@ -75,6 +78,12 @@ namespace ComputergrafikSpiel.Model
             }
 
             return false;
+        }
+
+        public void CreateTriggerZone()
+        {
+            this.TriggerZone = new Trigger(this.ColliderManager, new Vector2(300, 50));
+            return;
         }
 
         public bool SpawnHeal(float positionX, float positionY)

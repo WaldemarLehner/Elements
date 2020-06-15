@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using System.Linq;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Collider;
@@ -40,7 +40,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem(interactable, model);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
-            colliderManager.AddEntityCollidable(this.Collider.CollidableParent);
+            this.ColliderManager = colliderManager;
+            this.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player
@@ -73,6 +74,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
         public ITexture Texture { get; }
+
+        public IColliderManager ColliderManager { get; }
 
         public ICollider Collider { get; set; }
 
@@ -200,6 +203,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Position += this.directionXY * this.MovementSpeed * dtime;
 
             this.directionXY = Vector2.Zero;
+
+            this.ColliderManager.HandleTriggerCollisions(this);
         }
 
         public void OnInc(EventArgs e)

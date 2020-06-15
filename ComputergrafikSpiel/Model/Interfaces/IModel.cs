@@ -27,5 +27,6 @@ namespace ComputergrafikSpiel.Model.Interfaces
         bool CreateEnemy();
 
         void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
+        void CreateTriggerZone();
     }
 }
