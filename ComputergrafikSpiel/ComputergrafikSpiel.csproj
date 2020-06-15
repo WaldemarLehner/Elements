@@ -149,8 +149,8 @@
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITextWriter.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITileTexture.cs" />
     <Compile Include="Model\Scene\IScene.cs" />
-    <Compile Include="Model\Trigger\Interfaces\ITrigger.cs" />
-    <Compile Include="Model\Trigger\Trigger.cs" />
+    <Compile Include="Model\Triggers\Interfaces\ITrigger.cs" />
+    <Compile Include="Model\Triggers\Trigger.cs" />
     <Compile Include="Model\World\Interfaces\IWorldSceneDefinition.cs" />
     <Compile Include="Model\World\Interfaces\IWorldGenerator.cs" />
     <Compile Include="Model\World\Interfaces\IWorldTileCollidable.cs" />

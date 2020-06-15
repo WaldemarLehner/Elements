@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.Trigger.Interfaces;
+using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Collider
@@ -46,6 +46,8 @@ namespace ComputergrafikSpiel.Model.Collider
         public IReadOnlyCollection<ICollidable> CollidableEntitiesCollection => this.collidableEntities;
 
         public IReadOnlyDictionary<Tuple<int, int>, ICollidable> CollidableTileDictionary => this.collidableTiles;
+
+        public IReadOnlyDictionary<Tuple<int, int>, ITrigger> CollidableTriggerDictionary => this.collidableTriggers;
 
         public void AddEntityCollidable(ICollidable collidable)
         {
@@ -135,7 +137,7 @@ namespace ComputergrafikSpiel.Model.Collider
             {
                 if (player.Collider.DidCollideWith(trigger.Value.Collider))
                 {
-                    // not sure what goes here
+                    trigger.Value.TriggerCollisionFunction();
                 }
             }
         }

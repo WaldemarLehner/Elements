@@ -10,8 +10,8 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.Model.Trigger;
-using ComputergrafikSpiel.Model.Trigger.Interfaces;
+using ComputergrafikSpiel.Model.Triggers;
+using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
@@ -82,7 +82,9 @@ namespace ComputergrafikSpiel.Model
 
         public void CreateTriggerZone()
         {
-            this.TriggerZone = new Trigger(this.ColliderManager, new Vector2(300, 50));
+            this.TriggerZone = new Trigger(this.ColliderManager, new Vector2(30, 250));
+            this.Updateables.Add(this.TriggerZone);
+            this.RenderablesList.Add(this.TriggerZone);
             return;
         }
 

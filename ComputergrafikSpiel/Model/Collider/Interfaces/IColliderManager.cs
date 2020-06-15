@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.Model.Trigger.Interfaces;
+using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Collider.Interfaces
@@ -11,6 +11,8 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
         IReadOnlyCollection<ICollidable> CollidableEntitiesCollection { get; }
 
         IReadOnlyDictionary<Tuple<int, int>, ICollidable> CollidableTileDictionary { get; }
+
+        IReadOnlyDictionary<Tuple<int, int>, ITrigger> CollidableTriggerDictionary { get; }
 
         void AddEntityCollidable(ICollidable collidable);
 

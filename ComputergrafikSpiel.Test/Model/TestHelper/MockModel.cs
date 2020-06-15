@@ -58,5 +58,10 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         {
             throw new NotImplementedException();
         }
+
+        public void CreateTriggerZone()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
