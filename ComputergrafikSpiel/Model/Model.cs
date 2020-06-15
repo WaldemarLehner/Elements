@@ -64,32 +64,32 @@ namespace ComputergrafikSpiel.Model
                 return false;
             }
 
-            var player = new Player(this.Interactable, this);
+            var player = new Player();
             controller.HookPlayer(player);
 
             return Scene.Scene.CreatePlayer(player);
         }
 
-        public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY)
+        public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY, int incNumber)
         {
             // Heal Interactable
-            Scene.Scene.Current.SpawnEntity(new Interactable(stat, positionX, positionY));
+            Scene.Scene.Current.SpawnEntity(new Interactable(stat, positionX, positionY, incNumber));
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
         public void CreateRoundEndInteractables()
         {
             // MaxHealth Interactable
-            this.SpawnInteractable(PlayerEnum.Stats.MaxHealth, 250, 250);
+            this.SpawnInteractable(PlayerEnum.Stats.MaxHealth, 250, 250, 1);
 
             // Defense Interactable
-            this.SpawnInteractable(PlayerEnum.Stats.Defense, 350, 250);
+            this.SpawnInteractable(PlayerEnum.Stats.Defense, 350, 250, 2);
 
             // AttackSpeed Interactable
-            this.SpawnInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250);
+            this.SpawnInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250, 3);
 
             // MovementSpeed Interactable
-            this.SpawnInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250);
+            this.SpawnInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250, 10);
         }
 
         public void CreateEnemy()

@@ -13,28 +13,42 @@ namespace ComputergrafikSpiel.Model.Entity
     public class Interactable : IEntity
     {
         private readonly string texturename;
+        private int incNumber;
+        private PlayerEnum.Stats stats;
 
-        public Interactable(PlayerEnum.Stats stats, float positionX, float positionY)
+        public Interactable(PlayerEnum.Stats stats, float positionX, float positionY, int incNumber)
         {
             switch (stats)
             {
                 case PlayerEnum.Stats.MaxHealth:
                     this.texturename = "MaxHealthIncrease";
+                    this.incNumber = incNumber;
+                    this.stats = stats;
                     break;
                 case PlayerEnum.Stats.Heal:
                     this.texturename = "HealIncrease";
+                    this.incNumber = incNumber;
+                    this.stats = stats;
                     break;
                 case PlayerEnum.Stats.Defense:
                     this.texturename = "DefenseIncrease";
+                    this.incNumber = incNumber;
+                    this.stats = stats;
                     break;
                 case PlayerEnum.Stats.AttackSpeed:
                     this.texturename = "AttackSpeedIncrease";
+                    this.incNumber = incNumber;
+                    this.stats = stats;
                     break;
                 case PlayerEnum.Stats.MovementSpeed:
                     this.texturename = "MovementSpeedIncrease";
+                    this.incNumber = incNumber;
+                    this.stats = stats;
                     break;
                 case PlayerEnum.Stats.Währung:
                     this.texturename = "Währung";
+                    this.incNumber = incNumber;
+                    this.stats = stats;
                     break;
                 default:
                     Console.WriteLine("ENUM STATS DOES NOT EXIST.");
@@ -63,6 +77,11 @@ namespace ComputergrafikSpiel.Model.Entity
 
         public void Update(float dtime)
         {
+        }
+
+        public void PlayerStatsIncrease()
+        {
+            Scene.Scene.Player.IncreasePlayerStats(this.incNumber, this.stats);
         }
     }
 }

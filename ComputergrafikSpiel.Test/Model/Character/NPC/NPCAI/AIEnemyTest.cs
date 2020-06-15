@@ -33,7 +33,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC.NPCAI
         [TestMethod]
         public void AssertThatWhenPlayerIsInRangeEnemyMoves()
         {
-            this.player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.model);
+            this.player = new ComputergrafikSpiel.Model.Character.Player.Player();
             ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.Enemy(10, "Fungus", 25, 1, 4, this.Position);
             ComputergrafikSpiel.Model.Character.NPC.NPCAI.AIEnemy aIEnemy = new ComputergrafikSpiel.Model.Character.NPC.NPCAI.AIEnemy();
             Vector2 Direction = player.Position - enemy.Position;
