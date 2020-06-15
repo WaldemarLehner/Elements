@@ -4,6 +4,7 @@ using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.World.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Scene

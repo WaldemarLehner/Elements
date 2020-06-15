@@ -66,38 +66,19 @@ namespace ComputergrafikSpiel.Model
             Scene.Scene.Current.Update(dTime);
         }
 
-        public bool CreatePlayerOnce(IInputController controller)
-        {
-            if (Scene.Scene.Player != null)
-            {
-                this.weapon = new Weapon(3, 1, 4, 20, this.ColliderManager, 1, this);
-                this.Player = new Player(this.Interactable, this.ColliderManager, this.weapon, this.EnemysList, this);
-                controller.HookPlayer(this.Player);
-                this.Updateables.Add(this.Player);
-                this.RenderablesList.Add(this.Player);
-                return true;
-            }
-
-            return false;
-        }
-
         public void CreateTriggerZone()
         {
-            this.TriggerZone = new Trigger(this.ColliderManager, new Vector2(30, 250));
-            this.Updateables.Add(this.TriggerZone);
-            this.RenderablesList.Add(this.TriggerZone);
+            var trigger = new Trigger(new Vector2(30, 250), ColliderLayer.Layer.Player);
+            Scene.Scene.Current.SpawnEntity(trigger);
             return;
         }
 
-        public bool SpawnHeal(float positionX, float positionY)
+        public void SpawnHeal(float positionX, float positionY)
         {
             // Heal Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Heal, positionX, positionY);
-            this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
-
-            return Scene.Scene.CreatePlayer(player);
+            var inter = new Interactable(PlayerEnum.Stats.Heal, positionX, positionY, 1);
+            this.Interactable.Add(PlayerEnum.Stats.Heal, inter);
+            Scene.Scene.Current.SpawnEntity(inter);
         }
 
         public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY, int incNumber)
@@ -132,8 +113,7 @@ namespace ComputergrafikSpiel.Model
             for (int i = 0; i < projectileCreationCount; i++)
             {
                 Projectile projectile = new Projectile(attackDamage, position, direction, bulletTTL, bulletSize, colliderManager, this, enemyList);
-                this.Updateables.Add(projectile);
-                this.RenderablesList.Add(projectile);
+                Scene.Scene.Current.SpawnEntity(projectile);
             }
         }
     }

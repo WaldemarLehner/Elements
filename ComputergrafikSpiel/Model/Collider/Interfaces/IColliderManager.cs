@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Collider.Interfaces

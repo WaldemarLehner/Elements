@@ -11,18 +11,16 @@ using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.Weapon
 {
-    internal class Weapon : IWeapon
+    public class Weapon : IWeapon
     {
-        internal Weapon(float firerate, int projectileCCount, float bulletTTL, float bulletSize, IColliderManager colliderManager, int attackDamage, IModel model)
+        internal Weapon(float firerate, int projectileCCount, float bulletTTL, float bulletSize, int attackDamage)
         {
             this.Firerate = firerate;
             this.ProjectileCreationCount = projectileCCount;
             this.BulletTTL = bulletTTL;
             this.BulletSize = bulletSize;
-            this.ColliderManager = colliderManager;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Bullet);
             this.AttackDamage = attackDamage;
-            this.Model = model;
         }
 
         // most likely temporary
@@ -57,7 +55,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public void Shoot(Vector2 position, Vector2 direction, ICollection<INonPlayerCharacter> enemyList)
         {
-            this.Model.CreateProjectile(this.AttackDamage, this.ProjectileCreationCount, position, direction, this.BulletTTL, this.BulletSize, this.ColliderManager, enemyList);
+           // @Gerald this.Model.CreateProjectile(this.AttackDamage, this.ProjectileCreationCount, position, direction, this.BulletTTL, this.BulletSize, this.ColliderManager, enemyList);
         }
 
         // has to be changed for shotgun/semi-automatic. For this it will always be as if the projectile count is 1

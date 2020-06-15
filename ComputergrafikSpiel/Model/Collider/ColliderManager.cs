@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
@@ -26,6 +27,8 @@ namespace ComputergrafikSpiel.Model.Collider
         /// That way checking collision takes O(1) for static objects.
         /// </summary>
         private readonly Dictionary<Tuple<int, int>, ICollidable> collidableTiles;
+
+        private readonly Dictionary<Tuple<int, int>, ITrigger> collidableTriggers;
 
         internal ColliderManager(int tileSize)
         {

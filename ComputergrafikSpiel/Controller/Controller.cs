@@ -23,7 +23,6 @@ namespace ComputergrafikSpiel.Controller
             // Wird später von der Szene geladen, bei Rundenende
             (this.Model as Model.Model).CreateTriggerZone();
             (this.Model as Model.Model).CreateRoundEndInteractables();
-            this.Model.CreatePlayerOnce(this.InputController);
             (this.Model as Model.Model).CreateEnemy();
         }
 

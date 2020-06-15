@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using System.Linq;
-using System.Windows.Forms;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
-using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.Model.Scene;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -39,9 +33,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
-            this.EquipedWeapon = weapon;
+            //TODO: this.EquipedWeapon = weapon;
             this.AttackCooldownCurrnent = 0;
-            this.ColliderManager = colliderManager;
+            this.ColliderManager = Scene.Scene.Current.ColliderManager;
             this.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
@@ -86,7 +80,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
-        public IWeapon EquipedWeapon { get; }
+        public IWeapon EquipedWeapon { get; private set; }
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Vector2 mouseCursorCoordinates)
@@ -102,7 +96,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 {
                     if (this.EquipedWeapon != null && this.AttackCooldownCurrnent <= 0)
                     {
-                        this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, this.enemyList);
+                        this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, new List<INonPlayerCharacter>());
                         this.AttackCooldownCurrnent = this.AttackCooldown;
                     }
                 }
@@ -214,7 +208,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             this.AttackCooldownCurrnent -= dtime + this.AttackSpeed;
 
-            this.ColliderManager.HandleTriggerCollisions(this);
+            this.ColliderManager.HandleTriggerCollisions(this as IPlayer);
         }
 
         public void OnInc(EventArgs e)
@@ -235,6 +229,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void OnMove(EventArgs e)
         {
             this.CharacterMove?.Invoke(this, e);
+        }
+
+        public void Equip(Weapon.Weapon weapon)
+        {
+            this.EquipedWeapon = weapon;
         }
     }
 }

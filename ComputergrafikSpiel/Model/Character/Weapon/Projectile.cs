@@ -24,7 +24,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             // name of texture to be determined
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
             this.ColliderManager = colliderManager;
             this.ColliderManager.AddEntityCollidable(this);
             this.Model = model;
@@ -74,7 +74,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.ProjectileCollisionManager();
             if (this.TTL <= 0)
             {
-                this.Model.DestroyObject(null, this, null);
+                // @Gerald this.Model.DestroyObject(null, this, null);
             }
         }
 
@@ -89,7 +89,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
                 {
                     if (collidableToCheck == tileCollidable.Value)
                     {
-                        this.Model.DestroyObject(null, this, null);
+                        // @Gerald this.Model.DestroyObject(null, this, null);
                     }
                 }
 
@@ -98,7 +98,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
                     if (collidableToCheck == enemyCollidable)
                     {
                         enemyCollidable.TakingDamage(this.AttackDamage);
-                        this.Model.DestroyObject(null, this, null);
+                        // @Gerald this.Model.DestroyObject(null, this, null);
                     }
                 }
             }

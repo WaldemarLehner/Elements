@@ -17,7 +17,5 @@ namespace ComputergrafikSpiel.Model.Interfaces
         IEnumerable<IRenderable> Renderables { get; }
 
         void Update(float dTime);
-
-        bool CreatePlayerOnce(IInputController controller);
     }
 }

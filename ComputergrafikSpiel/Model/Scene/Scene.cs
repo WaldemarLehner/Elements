@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.World.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Scene
@@ -97,6 +99,7 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Player = player;
                 Scene.Current.ColliderManager.AddEntityCollidable(player);
+                Scene.Player.Equip(new Weapon(3, 1, 4, 20, 1));
                 return true;
             }
 

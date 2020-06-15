@@ -146,9 +146,11 @@
     <Compile Include="Model\RotationHelper.cs" />
     <Compile Include="Model\Scene\Scene.cs" />
     <Compile Include="Model\World\Interfaces\IWorldObstacle.cs" />
+    <Compile Include="Model\World\IWorldScene.cs" />
     <Compile Include="Model\World\Obstacles\RockObstacle.cs" />
     <Compile Include="Model\World\Obstacles\StumpObstacle.cs" />
     <Compile Include="Model\World\TileDefinitions.cs" />
+    <Compile Include="Model\World\CollidableWorldTile.cs"/>
     <Compile Include="Model\Entity\Interactable.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />
@@ -167,7 +169,6 @@
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITextureLoader.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITextWriter.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITileTexture.cs" />
-    <Compile Include="Model\RotationHelper.cs" />
     <Compile Include="Model\Scene\IScene.cs" />
     <Compile Include="Model\Triggers\Interfaces\ITrigger.cs" />
     <Compile Include="Model\Triggers\Trigger.cs" />

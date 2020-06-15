@@ -17,5 +17,6 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
         void TakingDamage(int damage);
 
         void IncreasePlayerStats(int incNumber, PlayerEnum.Stats incstats);
+        void Equip(Weapon.Weapon weapon);
     }
 }
