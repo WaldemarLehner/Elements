@@ -100,7 +100,6 @@ namespace ComputergrafikSpiel.View.Renderer
 
         private void RenderRenderableLayered(IRenderableLayeredTextures renderable)
         {
-            //return;
             // Make Rectangle out of Renderable
             var renderableRectangle = new Rectangle(renderable, true);
             var texture = renderable.Texture.Item2;
