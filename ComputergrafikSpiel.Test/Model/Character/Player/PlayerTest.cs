@@ -85,5 +85,26 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.Währung);
             Assert.AreNotEqual(Währung, player.Währung);
         }
+
+        /*
+        [DataTestMethod]
+        [DataRow(0)]
+        public void AssertThatCooldownIsSetCorrectlyAndAttackingCorrectlySetsTheCooldown(float initialCountdownTime)
+        {
+            ComputergrafikSpiel.Model.Character.Weapon.Weapon weapon = new ComputergrafikSpiel.Model.Character.Weapon.Weapon(3, 1, 4, 20, this.ColliderManager, 1, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, weapon, this.EnemysList, this.model);
+
+            Assert.AreEqual(initialCountdownTime, player.AttackCooldownCurrnent);
+
+            List<PlayerEnum.PlayerActions> testActions = new List<PlayerEnum.PlayerActions>();
+            testActions.Add(PlayerEnum.PlayerActions.Attack);
+            player.Position = new Vector2(0, 0);
+            Vector2 testMouseCoordinates = new Vector2(0, 0);
+
+            player.PlayerControl(testActions, testMouseCoordinates);
+
+            Assert.AreEqual(player.AttackCooldown, player.AttackCooldownCurrnent);
+        }
+        */
     }
 }

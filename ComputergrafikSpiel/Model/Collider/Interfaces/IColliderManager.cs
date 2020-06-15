@@ -10,21 +10,31 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
 
         IReadOnlyDictionary<Tuple<int, int>, ICollidable> CollidableTileDictionary { get; }
 
+        IReadOnlyDictionary<Tuple<int, int>, ITrigger> CollidableTriggerDictionary { get; }
+
         void AddEntityCollidable(ICollidable collidable);
 
         void AddWorldTileCollidable(int x, int y, ICollidable collidable);
+
+        void AddTriggerCollidable(int x, int y, ITrigger trigger);
 
         void RemoveEntityCollidable(ICollidable collidable);
 
         void RemoveWorldTileCollidable(int x, int y);
 
+        void RemoveTriggerCollidable(int x, int y);
+
         void ClearAll();
+
+        void ClearTriggerColliders();
 
         void ClearWorldTileColliders();
 
         void ClearEntityColliders();
 
         IReadOnlyCollection<ICollidable> GetCollisions(ICollidable collidable);
+
+        void HandleTriggerCollisions(IPlayer player);
 
         IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray);
 

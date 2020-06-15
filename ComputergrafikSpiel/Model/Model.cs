@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Drawing.Text;
 using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.Character.Weapon;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
@@ -12,12 +16,17 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.World;
+using ComputergrafikSpiel.Model.Triggers;
+using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
 {
     internal class Model : IModel
     {
+        // temporary
+        private IWeapon weapon;
+
         internal Model()
         {
             /*
@@ -61,11 +70,32 @@ namespace ComputergrafikSpiel.Model
         {
             if (Scene.Scene.Player != null)
             {
-                return false;
+                this.weapon = new Weapon(3, 1, 4, 20, this.ColliderManager, 1, this);
+                this.Player = new Player(this.Interactable, this.ColliderManager, this.weapon, this.EnemysList, this);
+                controller.HookPlayer(this.Player);
+                this.Updateables.Add(this.Player);
+                this.RenderablesList.Add(this.Player);
+                return true;
             }
 
-            var player = new Player();
-            controller.HookPlayer(player);
+            return false;
+        }
+
+        public void CreateTriggerZone()
+        {
+            this.TriggerZone = new Trigger(this.ColliderManager, new Vector2(30, 250));
+            this.Updateables.Add(this.TriggerZone);
+            this.RenderablesList.Add(this.TriggerZone);
+            return;
+        }
+
+        public bool SpawnHeal(float positionX, float positionY)
+        {
+            // Heal Interactable
+            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Heal, positionX, positionY);
+            this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncInteractables);
+            this.Updateables.Add(this.IncInteractables);
+            this.RenderablesList.Add(this.IncInteractables);
 
             return Scene.Scene.CreatePlayer(player);
         }
@@ -95,6 +125,16 @@ namespace ComputergrafikSpiel.Model
         public void CreateEnemy()
         {
                 Scene.Scene.Current.CreateNPC(new Enemy(10, "Fungus", 20, 1, 2, new Vector2(300, 200)));
+        }
+
+        public void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList)
+        {
+            for (int i = 0; i < projectileCreationCount; i++)
+            {
+                Projectile projectile = new Projectile(attackDamage, position, direction, bulletTTL, bulletSize, colliderManager, this, enemyList);
+                this.Updateables.Add(projectile);
+                this.RenderablesList.Add(projectile);
+            }
         }
     }
 }
