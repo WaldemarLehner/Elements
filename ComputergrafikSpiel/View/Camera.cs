@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.View.Exceptions;
 using ComputergrafikSpiel.View.Helpers;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
@@ -21,6 +23,14 @@ namespace ComputergrafikSpiel.View
         /// <param name="right">The x-Coordinate defining the right bound in geometry-Coordinates.</param>
         internal Camera(float top, float bottom, float left, float right)
         {
+            this.Update(top, bottom, left, right);
+            Scene.ChangeScene += Scene_ChangeScene;
+        }
+
+        private void Scene_ChangeScene(object sender, EventArgs e)
+        {
+            var scene = sender as Scene;
+            var (top, bottom, left, right) = scene.World.WorldSceneBounds;
             this.Update(top, bottom, left, right);
         }
 
@@ -170,14 +180,27 @@ namespace ComputergrafikSpiel.View
             }
         }
 
-        private void DrawPrimitive(ICollection<(Vector2 vert, Vector2 tex)> data, PrimitiveType primitiveType)
+        private void DrawPrimitive(IEnumerable<(Vector2 vert, Vector2 tex)> data, PrimitiveType primitiveType)
         {
             GL.Begin(primitiveType);
+
+            var d = data.ToArray();
+            TextureCoordinates coords = new TextureCoordinates(d[3].tex, d[0].tex, d[1].tex, d[2].tex);
+
+            if (!coords.IsXYAligned)
+            {
+                if (true) ;
+            }
+
+            Console.WriteLine("------------");
             foreach (var (vert, tex) in data)
             {
+                Console.Write((vert, tex) + "   ");
                 GL.Vertex2(vert);
                 GL.TexCoord2(tex);
             }
+
+            Console.WriteLine("------------");
 
             GL.End();
         }

@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System.Drawing.Text;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
@@ -21,6 +22,10 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
         public Vector2 BottomLeft { get; }
 
         public Vector2 BottomRight { get; }
+        public bool IsXYAligned => this.XAlign && this.YAlign;
+
+        private bool XAlign => TopLeft.X == BottomLeft.X && TopRight.X == BottomRight.X;
+        private bool YAlign => BottomLeft.Y == BottomRight.Y && TopLeft.Y == TopRight.Y;
 
         public (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) AsTuple()
         {

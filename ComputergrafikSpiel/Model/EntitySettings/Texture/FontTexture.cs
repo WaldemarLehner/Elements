@@ -67,7 +67,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             this.currentKey = key;
         }
 
-        public TextureCoordinates GetTexCoordsOfIndex(int index) => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? TextureCoordinates.Error;
+        public TextureCoordinates GetTexCoordsOfIndex(int index) => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? throw new Exception();
 
         private (int x, int y) GetTileIndexFromIndex(int i)
         {

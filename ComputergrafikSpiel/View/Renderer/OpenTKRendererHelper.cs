@@ -18,7 +18,7 @@ namespace ComputergrafikSpiel.View.Renderer
             var rect = new Rectangle(renderable, true);
             var vertsWorldSpace = new Vector2[] { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
 
-            RenderItemDebug(renderer, vertsWorldSpace, new Color4(buf[0], buf[1], buf[2], 0xFF));
+            RenderItemDebug(renderer, vertsWorldSpace, new Color4(buf[0], buf[1], buf[2], 0x10));
 
             if (renderable.DebugData != null)
             {
@@ -53,7 +53,11 @@ namespace ComputergrafikSpiel.View.Renderer
 
             GL.Color4(color);
             GL.Begin(PrimitiveType.LineLoop);
-            vertsNDC.ForEach(v => GL.Vertex2(v));
+            foreach (var vert in vertsNDC)
+            {
+                GL.Vertex2(vert);
+            }
+
             GL.End();
             GL.Color4(Color4.White);
         }

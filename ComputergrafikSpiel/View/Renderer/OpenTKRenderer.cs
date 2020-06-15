@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.Interfaces;
@@ -47,7 +48,7 @@ namespace ComputergrafikSpiel.View.Renderer
             }
 
             // Clear the Screen
-            GL.ClearColor(new Color4(150, 150, 150, 255));
+            GL.ClearColor(new Color4(0x13,0x0e,0x1c,0xff));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Render each IRenderable, in their order from 1st to last.
@@ -55,7 +56,7 @@ namespace ComputergrafikSpiel.View.Renderer
             {
                 if (entry is IRenderableLayeredTextures)
                 {
-                    this.RenderRenderable(entry as IRenderableLayeredTextures);
+                    this.RenderRenderableLayered(entry as IRenderableLayeredTextures);
                 }
                 else
                 {
@@ -97,11 +98,13 @@ namespace ComputergrafikSpiel.View.Renderer
             GL.Viewport(0, 0, screenWidth, screenHeight);
         }
 
-        private void RenderRenderable(IRenderableLayeredTextures renderable)
+        private void RenderRenderableLayered(IRenderableLayeredTextures renderable)
         {
+            //return;
+            // Make Rectangle out of Renderable
+            var renderableRectangle = new Rectangle(renderable, true);
             var texture = renderable.Texture.Item2;
             var layers = renderable.Texture.Item1;
-            var renderableRect = new Rectangle(renderable, true);
 
             // Check if Texture Data is already stored, if not, add Texture
             if (!this.TextureData.ContainsKey(texture.FilePath))
@@ -110,14 +113,22 @@ namespace ComputergrafikSpiel.View.Renderer
             }
 
             // Get the bounds of the Renderable and check if it can be skipped
-            if (!this.IsDrawNeeded(renderableRect))
+            if (!this.IsDrawNeeded(renderableRectangle))
             {
                 return;
             }
 
+            if (layers.Any(e => !e.IsXYAligned))
+            {
+                if (true) ;
+            }
+
+            var renderableRect = new Rectangle(renderable, true);
+
             this.TextureData[texture.FilePath].Enable();
             foreach (var layer in layers)
             {
+                var debug = new TextureCoordinates(new Vector2(0, 1), new Vector2(.2f, 1), new Vector2(.2f, .75f), new Vector2(.0f, .75f));
                 this.RenderRectangle(renderableRect, layer);
             }
 

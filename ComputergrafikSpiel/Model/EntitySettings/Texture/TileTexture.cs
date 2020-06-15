@@ -31,7 +31,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public TextureCoordinates TextureCoordinates { get; }
 
-        public TextureCoordinates GetTexCoordsOfIndex(int index) => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? TextureCoordinates.Error;
+        public TextureCoordinates GetTexCoordsOfIndex(int index) => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? throw new Exception();
 
         public void Update(float dtime)
         {

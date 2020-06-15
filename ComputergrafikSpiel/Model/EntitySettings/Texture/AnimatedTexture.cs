@@ -70,7 +70,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
         /// <summary>
         /// Gets the Texture Coordinates for the current frame to be drawn. Order is: TL, TR, BR, BL.
         /// </summary>
-        public TextureCoordinates TextureCoordinates => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, this.GetCurrentTileIndex()) ?? TextureCoordinates.Error;
+        public TextureCoordinates TextureCoordinates => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, this.GetCurrentTileIndex()) ?? throw new Exception();
 
         /// <summary>
         /// Gets or sets the current Animation's playtime. If 0, no animation is played and the current frame is frozen.
@@ -147,7 +147,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public TextureCoordinates GetTexCoordsOfIndex(int index)
         {
-            return TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? TextureCoordinates.Error;
+            return TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? throw new Exception();
         }
 
         private int GetCurrentTileIndex()

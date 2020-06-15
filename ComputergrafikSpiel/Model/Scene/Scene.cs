@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -44,23 +40,13 @@ namespace ComputergrafikSpiel.Model.Scene
             }
         }
 
-        public void SpawnEntity(IEntity entity)
-        {
-            this.EntitiesList.Add(entity);
-        }
-
-        public void RemoveEntity(IEntity entity)
-        {
-            this.EntitiesList.Remove(entity);
-        }
+        public static event EventHandler ChangeScene;
 
         public static Scene Current { get; private set; } = null;
 
         public static IPlayer Player { get; private set; } = null;
 
         public IColliderManager ColliderManager { get; }
-
-        private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
         public IEnumerable<IEntity> Entities => this.EntitiesList;
 
@@ -74,11 +60,13 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IWorldScene World { get; }
 
-        private List<INonPlayerCharacter> NPCList = new List<INonPlayerCharacter>();
-
-        public IEnumerable<INonPlayerCharacter> NPCs => this.NPCList;
+        public IEnumerable<INonPlayerCharacter> NPCs => this.NpcList;
 
         public IEnumerable<Interactable> Interactables => from entity in this.Entities where entity is Interactable select entity as Interactable;
+
+        private List<INonPlayerCharacter> NpcList { get; } = new List<INonPlayerCharacter>();
+
+        private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
         public static bool CreatePlayer(IPlayer player)
         {
@@ -90,6 +78,16 @@ namespace ComputergrafikSpiel.Model.Scene
             }
 
             return false;
+        }
+
+        public void SpawnEntity(IEntity entity)
+        {
+            this.EntitiesList.Add(entity);
+        }
+
+        public void RemoveEntity(IEntity entity)
+        {
+            this.EntitiesList.Remove(entity);
         }
 
         public void SetAsActive()
@@ -107,6 +105,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
             Scene.Current.Disable();
             Scene.Current = this;
+            ChangeScene.Invoke(this, null);
         }
 
         public void Disable()
@@ -127,12 +126,11 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Player.Update(dtime);
             }
-            if (true) ;
         }
 
         public void CreateNPC(INonPlayerCharacter npc)
         {
-            this.NPCList.Add(npc);
+            this.NpcList.Add(npc);
             if (npc is ICollidable)
             {
                 this.ColliderManager.AddEntityCollidable(npc as ICollidable);
@@ -149,7 +147,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.World.WorldTilesEnumerable,
                     this.World.Obstacles,
-                    this.NPCs,
+                   
                 };
 
                 foreach (var entry in renderables)
@@ -158,6 +156,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 }
 
                 enumerable.Add(Scene.Player);
+                enumerable.AddRange(this.NPCs);
                 return enumerable;
             }
         }

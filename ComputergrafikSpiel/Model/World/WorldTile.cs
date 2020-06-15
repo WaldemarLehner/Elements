@@ -26,6 +26,7 @@ namespace ComputergrafikSpiel.Model.World
             foreach (var tex in textureLayers)
             {
                 var coord = TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this.TileTexture, (int)tex);
+
                 if (coord == null)
                 {
                     continue;

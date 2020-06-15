@@ -17,7 +17,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             var (x, y) = tileNull ?? (-1, -1); // Null Operation will never be reached
 
             // Tuple: TopLeft, TopRight, BottomRight, BottomLeft coordinated range from 0 to 1.
-            float left = x / tex.XRows;
+            float left = x / (float)tex.XRows;
             float right = left + (1 / (float)tex.XRows);
 
             float bottom = (tex.YRows - y - 1) / (float)tex.YRows;
@@ -39,8 +39,8 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
                 return null;
             }
 
-            int x = currentIndex % tex.YRows;
-            int y = currentIndex / tex.YRows;
+            int x = currentIndex % tex.XRows;
+            int y = currentIndex / tex.XRows;
             return (x, y);
         }
     }

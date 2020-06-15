@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Model.World.Interfaces;
 
 namespace ComputergrafikSpiel.Model.World
@@ -33,7 +32,17 @@ namespace ComputergrafikSpiel.Model.World
 
         public IEnumerable<IWorldTile> WorldTilesEnumerable { get; }
 
-        public (float top, float bottom, float left, float right) WorldSceneBounds => (this.SceneDefinition.TileCount.y * this.SceneDefinition.TileSize, 0f, 0f, this.SceneDefinition.TileCount.x * this.SceneDefinition.TileSize);
+        public (float top, float bottom, float left, float right) WorldSceneBounds
+        {
+            get
+            {
+                return (
+                    (this.SceneDefinition.TileCount.y + 4) * this.SceneDefinition.TileSize,
+                    0,
+                    0,
+                    (this.SceneDefinition.TileCount.x + 4) * this.SceneDefinition.TileSize);
+            }
+        }
 
         IEnumerable<IWorldObstacle> IWorldScene.Obstacles => this.Obstacles;
     }

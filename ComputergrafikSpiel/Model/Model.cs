@@ -28,7 +28,7 @@ namespace ComputergrafikSpiel.Model
             this.EnemysList = new List<INonPlayerCharacter>();
             */
 
-            var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .3f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
+            var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             new Scene.Scene(worldScene);
         }
 
@@ -73,14 +73,7 @@ namespace ComputergrafikSpiel.Model
         public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY)
         {
             // Heal Interactable
-            this.IncInteractables = new Interactable(stat, positionX, positionY);
-            Scene.Scene.Current.SpawnEntity(this.IncInteractables);
-        }
-
-        public void SpawnCurrency(float positionX, float positionY)
-        {
-            // Währung Interactable
-            Scene.Scene.Current.SpawnEntity(new Interactable(PlayerEnum.Stats.Währung, positionX, positionY));
+            Scene.Scene.Current.SpawnEntity(new Interactable(stat, positionX, positionY));
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
