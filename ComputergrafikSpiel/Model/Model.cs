@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing.Text;
-using System.Linq;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
@@ -14,10 +9,8 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.Model.Scene;
-using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.Triggers;
-using ComputergrafikSpiel.Model.Triggers.Interfaces;
+using ComputergrafikSpiel.Model.World;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
@@ -39,6 +32,7 @@ namespace ComputergrafikSpiel.Model
 
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             new Scene.Scene(worldScene);
+
         }
 
         public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
@@ -47,15 +41,7 @@ namespace ComputergrafikSpiel.Model
 
         public IEnumerable<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
 
-        private IEntity IncInteractables { get; set; } = null;
-
-        private INonPlayerCharacter Enemys { get; set; } = null;
-
-        private ICollection<INonPlayerCharacter> EnemysList { get; set; } = null;
-
         private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = null;
-
-        private IColliderManager ColliderManager { get; set; }
 
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.

@@ -33,10 +33,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
-            //TODO: this.EquipedWeapon = weapon;
             this.AttackCooldownCurrnent = 0;
-            this.ColliderManager = Scene.Scene.Current.ColliderManager;
-            this.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
+            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player
@@ -62,7 +60,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float MovementSpeed { get; set; } = 50;
 
-        public int Währung { get; set; } = 0;
+        public int Money { get; set; } = 0;
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
@@ -73,8 +71,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
         public ITexture Texture { get; }
-
-        public IColliderManager ColliderManager { get; }
 
         public ICollider Collider { get; set; }
 
@@ -184,7 +180,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             // Währung wird an der Stelle gespawnt, an der der Gegner gestorben ist
             else if (stats == PlayerEnum.Stats.Währung)
             {
-                this.Währung += incNumber;
+                this.Money += incNumber;
             }
 
             this.OnInc(EventArgs.Empty);
@@ -199,7 +195,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
                 // Dient nur zu Testzwecken
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", this.MaxHealth, this.CurrentHealth, this.Defense, this.AttackSpeed, this.MovementSpeed, this.Währung);
+                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", this.MaxHealth, this.CurrentHealth, this.Defense, this.AttackSpeed, this.MovementSpeed, this.Money);
             }
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;
@@ -208,7 +204,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             this.AttackCooldownCurrnent -= dtime + this.AttackSpeed;
 
-            this.ColliderManager.HandleTriggerCollisions(this as IPlayer);
+            Scene.Scene.Current.ColliderManager.HandleTriggerCollisions(this);
         }
 
         public void OnInc(EventArgs e)

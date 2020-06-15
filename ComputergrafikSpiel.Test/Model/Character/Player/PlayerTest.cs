@@ -4,6 +4,8 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
+using ComputergrafikSpiel.Model.World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
 using System.Collections.Generic;
@@ -16,6 +18,9 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         private ICollection<INonPlayerCharacter> EnemysList { get; set; } = new List<INonPlayerCharacter>();
         private IColliderManager ColliderManager { get; set; } = new ColliderManager(32);
         private IModel model { get; set; } = null;
+
+        private Scene scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene());
+
 
         private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = new Dictionary<PlayerEnum.Stats, IEntity>();
 
@@ -70,7 +75,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             int Defense = player.Defense;
             float AttackSpeed = player.AttackSpeed;
             float MovementSpeed = player.MovementSpeed;
-            int Währung = player.Währung;
+            int Währung = player.Money;
 
             player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.MaxHealth);
             Assert.AreNotEqual(MaxHealth, player.MaxHealth);
@@ -83,7 +88,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.MovementSpeed);
             Assert.AreNotEqual(MovementSpeed, player.MovementSpeed);
             player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.Währung);
-            Assert.AreNotEqual(Währung, player.Währung);
+            Assert.AreNotEqual(Währung, player.Money);
         }
 
         /*

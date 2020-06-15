@@ -79,7 +79,11 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(entry);
                 }
 
-                enumerable.Add(Scene.Player);
+                if (Scene.Player != null)
+                {
+                    enumerable.Add(Scene.Player);
+                }
+
                 enumerable.AddRange(this.NPCs);
                 return enumerable;
             }
@@ -97,7 +101,7 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             if (Scene.Player == null)
             {
-                Scene.Player = player;
+                Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
                 Scene.Current.ColliderManager.AddEntityCollidable(player);
                 Scene.Player.Equip(new Weapon(3, 1, 4, 20, 1));
                 return true;
@@ -108,7 +112,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void SpawnEntity(IEntity entity)
         {
-            this.EntitiesList.Add(entity);
+            this.EntitiesList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
         }
 
         public void RemoveEntity(IEntity entity)
@@ -156,7 +160,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void CreateNPC(INonPlayerCharacter npc)
         {
-            this.NpcList.Add(npc);
+            this.NpcList.Add(npc ?? throw new ArgumentNullException(nameof(npc)));
             if (npc is ICollidable)
             {
                 this.ColliderManager.AddEntityCollidable(npc as ICollidable);
