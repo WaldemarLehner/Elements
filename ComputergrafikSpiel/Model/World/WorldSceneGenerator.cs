@@ -31,7 +31,7 @@ namespace ComputergrafikSpiel.Model.World
                 for (int y = 0; y < yMax; y++)
                 {
                     var type = tileResult[x, y];
-                    var neighbor = TileHelper.GetSurroundingTile(in tileResult, (x, y), (xMax, yMax));
+                    var neighbor = TileHelper.GetSurroundingTile(tileResult, (x, y), (xMax, yMax));
                     if (TileHelper.IsWalkable(type))
                     {
                         tiles[x, y] = new WorldTile(this.WorldSceneDefinition.TileSize, (x, y), type, neighbor);

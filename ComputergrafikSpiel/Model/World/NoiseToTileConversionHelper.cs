@@ -8,7 +8,7 @@ namespace ComputergrafikSpiel.Model.World
     {
         internal static TileDefinitions.Type[,] ConvertNoiseToTiles(float[,] noiseTiles, (int weight, TileDefinitions.Type type)[] noiseMapping)
         {
-            (float lowerBound, TileDefinitions.Type type)[] map = NoiseToTileConversionHelper.GenerateMapping(noiseMapping);
+            (float lowerBound, TileDefinitions.Type type)[] map = NoiseToTileConversionHelper.GenerateMapping(ref noiseMapping);
             var returnArray = new TileDefinitions.Type[noiseTiles.GetLength(0) + 4, noiseTiles.GetLength(1) + 4];
             for (int x = 0; x < noiseTiles.GetLength(0); x++)
             {
@@ -97,7 +97,7 @@ namespace ComputergrafikSpiel.Model.World
                 returnArray[upperX + 1, upperY + 1] = TileDefinitions.Type.WallTrim;
         }
 
-        private static (float lowerBound, TileDefinitions.Type type)[] GenerateMapping((int weight, TileDefinitions.Type type)[] noiseMapping)
+        private static (float lowerBound, TileDefinitions.Type type)[] GenerateMapping(ref (int weight, TileDefinitions.Type type)[] noiseMapping)
         {
             var weightSum = noiseMapping.Sum(e => e.weight);
             int sum = 0;
@@ -121,7 +121,7 @@ namespace ComputergrafikSpiel.Model.World
             return returnList.ToArray();
         }
 
-        private static TileDefinitions.Type GetTileFromNoise(float value, in (float lowerBound, TileDefinitions.Type type)[] mappings)
+        private static TileDefinitions.Type GetTileFromNoise(float value, (float lowerBound, TileDefinitions.Type type)[] mappings)
         {
             int firstIndexLargerValue = 0;
             for (; firstIndexLargerValue < mappings.Length; firstIndexLargerValue++)
