@@ -9,6 +9,6 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
 
         void UpdatePointer(char key);
 
-        Tuple<int, int> GetTileOfKey(char key);
+        (int x, int y) GetTileOfKey(char key);
     }
 }

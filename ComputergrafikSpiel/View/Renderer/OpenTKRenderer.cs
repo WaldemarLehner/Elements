@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.View.Helpers;
 using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
@@ -18,12 +18,9 @@ namespace ComputergrafikSpiel.View.Renderer
 
         internal OpenTKRenderer(IModel model, ICamera camera)
         {
-            _ = model ?? throw new ArgumentNullException(nameof(model));
+            this.model = model ?? throw new ArgumentNullException(nameof(model));
             _ = model.Renderables ?? throw new ArgumentNullException(nameof(model.Renderables));
-            _ = camera ?? throw new ArgumentNullException(nameof(camera));
-
-            this.model = model;
-            this.Camera = camera;
+            this.Camera = camera ?? throw new ArgumentNullException(nameof(camera));
             this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
             this.Debug = true;
@@ -48,45 +45,29 @@ namespace ComputergrafikSpiel.View.Renderer
                 return;
             }
 
-            // this.textureShader.Use();
-
             // Clear the Screen
-            GL.ClearColor(new Color4(150, 150, 150, 255));
+            GL.ClearColor(new Color4(0x13, 0x0e, 0x1c, 0xff));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             // Render each IRenderable, in their order from 1st to last.
             foreach (var entry in this.RenderablesEnumerator)
             {
-                this.RenderRenderable(entry);
+                if (entry is IRenderableLayeredTextures)
+                {
+                    this.RenderRenderableLayered(entry as IRenderableLayeredTextures);
+                }
+                else
+                {
+                    this.RenderRenderable(entry);
+                }
             }
 
             if (this.Debug)
             {
-                var rand = new Random(13456);
                 foreach (var entry in this.RenderablesEnumerator)
                 {
-                    byte[] buf = new byte[3];
-                    rand.NextBytes(buf);
-                    this.RenderRenderableDebug(entry, new Color4(buf[0], buf[1], buf[2], 0xFF));
-                    if (entry.DebugData != null)
-                    {
-                        foreach (var debugData in entry.DebugData)
-                        {
-                            Color4 color;
-                            if (debugData.color == null)
-                            {
-                                var randBytes = new byte[3];
-                                rand.NextBytes(randBytes);
-                                color = new Color4(randBytes[0], randBytes[1], randBytes[2], 0xFF);
-                            }
-                            else
-                            {
-                                color = debugData.color;
-                            }
-
-                            this.RenderRenderableDebug(debugData.vertices, color);
-                        }
-                    }
+                    var rand = new Random(13456);
+                    OpenTKRendererHelper.RenderRenderableDebug(this, entry, rand);
                 }
             }
         }
@@ -115,29 +96,40 @@ namespace ComputergrafikSpiel.View.Renderer
             GL.Viewport(0, 0, screenWidth, screenHeight);
         }
 
-        private void RenderRenderableDebug(Vector2[] vertsWorldSpace, Color4 color)
+        private void RenderRenderableLayered(IRenderableLayeredTextures renderable)
         {
-            var vertsNDC = new List<Vector2>();
+            // Make Rectangle out of Renderable
+            var renderableRectangle = new Rectangle(renderable, true);
+            var texture = renderable.Texture.Item2;
+            var layers = renderable.Texture.Item1;
 
-            foreach (var vert in vertsWorldSpace)
+            // Check if Texture Data is already stored, if not, add Texture
+            if (!this.TextureData.ContainsKey(texture.FilePath))
             {
-                var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.Camera.AspectRatio, this.Screen.width / (float)this.Screen.height);
-                vertsNDC.Add(CameraCoordinateConversionHelper.WorldToNDC(vert, multipliers, this.Camera));
+                this.TextureData[texture.FilePath] = new TextureData(texture);
             }
 
-            GL.Color4(color);
-            GL.Begin(PrimitiveType.LineLoop);
-            vertsNDC.ForEach(v => GL.Vertex2(v));
-            GL.End();
-            GL.Color4(Color4.White);
-        }
+            // Get the bounds of the Renderable and check if it can be skipped
+            if (!this.IsDrawNeeded(renderableRectangle))
+            {
+                return;
+            }
 
-        private void RenderRenderableDebug(IRenderable entry, Color4 color)
-        {
-            var rect = new Rectangle(entry, true);
-            var vertsWorldSpace = new Vector2[] { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
+            if (layers.Any(e => !e.IsXYAligned))
+            {
+                if (true) ;
+            }
 
-            this.RenderRenderableDebug(vertsWorldSpace, color);
+            var renderableRect = new Rectangle(renderable, true);
+
+            this.TextureData[texture.FilePath].Enable();
+            foreach (var layer in layers)
+            {
+                var debug = new TextureCoordinates(new Vector2(0, 1), new Vector2(.2f, 1), new Vector2(.2f, .75f), new Vector2(.0f, .75f));
+                this.RenderRectangle(renderableRect, layer);
+            }
+
+            this.TextureData[texture.FilePath].Disable();
         }
 
         private void RenderRenderable(IRenderable renderable)
@@ -151,20 +143,23 @@ namespace ComputergrafikSpiel.View.Renderer
                 this.TextureData[renderable.Texture.FilePath] = new TextureData(renderable.Texture);
             }
 
-            GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
             // Get the bounds of the Renderable and check if it can be skipped
             if (!this.IsDrawNeeded(renderableRectangle))
             {
                 return;
             }
 
-            var texCoords = renderable.Texture.TextureCoordinates;
             this.TextureData[renderable.Texture.FilePath].Enable();
-            this.Camera.DrawRectangle(renderableRectangle, texCoords, this.Screen);
+            this.RenderRectangle(renderableRectangle, renderable.Texture.TextureCoordinates);
             this.TextureData[renderable.Texture.FilePath].Disable();
+        }
+
+        private void RenderRectangle(Rectangle rect, TextureCoordinates texCoords)
+        {
+            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            this.Camera.DrawRectangle(rect, texCoords, this.Screen);
             GL.Disable(EnableCap.Texture2D);
             GL.Disable(EnableCap.Blend);
         }

@@ -59,6 +59,9 @@
     <Reference Include="OpenTK, Version=3.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.2\lib\net20\OpenTK.dll</HintPath>
     </Reference>
+    <Reference Include="SimplexNoise, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimplexNoise.2.0.0\lib\net472\SimplexNoise.dll</HintPath>
+    </Reference>
     <Reference Include="SixLabors.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SixLabors.Core.1.0.0-beta0008\lib\netstandard2.0\SixLabors.Core.dll</HintPath>
     </Reference>
@@ -115,6 +118,8 @@
     <Compile Include="Model\Character\Weapon\Weapon.cs" />
     <Compile Include="Model\Collider\CircleOffsetCollider.cs" />
     <Compile Include="Model\Character\ICharacter.cs" />
+    <Compile Include="Model\Collider\ColliderLayer.cs" />
+    <Compile Include="Model\Collider\CollisionDetectionHelper.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollidable.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollider.cs" />
     <Compile Include="Model\Collider\ColliderManager.cs" />
@@ -122,6 +127,7 @@
     <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
     <Compile Include="Model\Collider\Interfaces\IRay.cs" />
     <Compile Include="Model\Collider\Ray.cs" />
+    <Compile Include="Model\Collider\RectangleOffsetCollider.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IEntity.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IUiRenderable.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
@@ -132,8 +138,20 @@
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TileTextureConstructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
+    <Compile Include="Model\EntitySettings\Texture\TextureCoordinates.cs" />
     <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
-    <Compile Include="Model\Entity\CreateInteractable.cs" />
+    <Compile Include="Model\EntitySettings\Texture\TexturePointerCalculationHelper.cs" />
+    <Compile Include="Model\EntitySettings\Texture\TileTexture.cs" />
+    <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
+    <Compile Include="Model\RotationHelper.cs" />
+    <Compile Include="Model\Scene\Scene.cs" />
+    <Compile Include="Model\World\Interfaces\IWorldObstacle.cs" />
+    <Compile Include="Model\World\IWorldScene.cs" />
+    <Compile Include="Model\World\Obstacles\RockObstacle.cs" />
+    <Compile Include="Model\World\Obstacles\StumpObstacle.cs" />
+    <Compile Include="Model\World\TileDefinitions.cs" />
+    <Compile Include="Model\World\CollidableWorldTile.cs"/>
+    <Compile Include="Model\Entity\Interactable.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\ITransformable.cs" />
@@ -151,14 +169,19 @@
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITextureLoader.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITextWriter.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\ITileTexture.cs" />
-    <Compile Include="Model\RotationHelper.cs" />
     <Compile Include="Model\Scene\IScene.cs" />
     <Compile Include="Model\Triggers\Interfaces\ITrigger.cs" />
     <Compile Include="Model\Triggers\Trigger.cs" />
     <Compile Include="Model\World\Interfaces\IWorldSceneDefinition.cs" />
-    <Compile Include="Model\World\Interfaces\IWorldGenerator.cs" />
+    <Compile Include="Model\World\Interfaces\IWorldSceneGenerator.cs" />
     <Compile Include="Model\World\Interfaces\IWorldTileCollidable.cs" />
     <Compile Include="Model\World\Interfaces\IWorldTile.cs" />
+    <Compile Include="Model\World\NoiseToTileConversionHelper.cs" />
+    <Compile Include="Model\World\TileHelper.cs" />
+    <Compile Include="Model\World\WorldScene.cs" />
+    <Compile Include="Model\World\WorldSceneDefinition.cs" />
+    <Compile Include="Model\World\WorldSceneGenerator.cs" />
+    <Compile Include="Model\World\WorldTile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Camera.cs" />
@@ -174,6 +197,7 @@
     <Compile Include="View\Interfaces\IView.cs" />
     <Compile Include="View\Renderer\OpenTKRenderer.cs" />
     <Compile Include="View\Rectangle.cs" />
+    <Compile Include="View\Renderer\OpenTKRendererHelper.cs" />
     <Compile Include="View\Renderer\TextureData.cs" />
     <Compile Include="View\Shader\Shader.cs" />
     <Compile Include="View\View.cs" />

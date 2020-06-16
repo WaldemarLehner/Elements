@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
@@ -8,7 +9,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
     internal class AnimatedTexture<T> : IAnimatedMappedTexture<T>
     {
-        public AnimatedTexture(ITextureContructor textureContructor, ITileTextureContructor tiletextureContructor, ICollection<Tuple<T, IAnimation>> animations)
+        public AnimatedTexture(ITextureContructor textureContructor, ITileTextureContructor tiletextureContructor, ICollection<(T, IAnimation)> animations)
         {
             _ = textureContructor ?? throw new ArgumentNullException(nameof(textureContructor));
             _ = tiletextureContructor ?? throw new ArgumentNullException(nameof(tiletextureContructor));
@@ -58,7 +59,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public int YRows { get; private set; }
 
-        public Tuple<int, int> Pointer => (this.CurrentAnimation == null) ? null : this.GetPointer();
+        public (int x, int y) Pointer => (this.CurrentAnimation == null) ? (-1, -1) : TexturePointerCalculationHelper.GetPointer(this, this.GetCurrentTileIndex()) ?? (-1, -1);
 
         public int Width { get; private set; }
 
@@ -69,7 +70,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
         /// <summary>
         /// Gets the Texture Coordinates for the current frame to be drawn. Order is: TL, TR, BR, BL.
         /// </summary>
-        public (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) TextureCoordinates => this.GetCurrentTextureCoordinates();
+        public TextureCoordinates TextureCoordinates => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, this.GetCurrentTileIndex()) ?? throw new Exception();
 
         /// <summary>
         /// Gets or sets the current Animation's playtime. If 0, no animation is played and the current frame is frozen.
@@ -144,23 +145,9 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             }
         }
 
-        private (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) GetCurrentTextureCoordinates()
+        public TextureCoordinates GetTexCoordsOfIndex(int index)
         {
-            var tile = this.Pointer;
-
-            // Tuple: TopLeft, TopRight, BottomRight, BottomLeft coordinated range from 0 to 1.
-            float left = tile.Item1 / this.XRows;
-            float right = left + (1 / (float)this.XRows);
-
-            float bottom = (this.YRows - tile.Item2 - 1) / (float)this.YRows;
-            float top = bottom + (1 / (float)this.YRows);
-
-            Vector2 tl = new Vector2(left, top);
-            Vector2 tr = new Vector2(right, top);
-            Vector2 bl = new Vector2(left, bottom);
-            Vector2 br = new Vector2(right, bottom);
-
-            return (tl, tr, br, bl);
+            return TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? throw new Exception();
         }
 
         private int GetCurrentTileIndex()
@@ -171,19 +158,6 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             }
 
             return this.CurrentAnimation.GetCurrentFrameIndex(this.CurrentAnimationPlayTime);
-        }
-
-        private Tuple<int, int> GetPointer()
-        {
-            var currentIndex = this.GetCurrentTileIndex();
-            if (currentIndex == -1)
-            {
-                return null;
-            }
-
-            int x = currentIndex % this.YRows;
-            int y = currentIndex / this.YRows;
-            return new Tuple<int, int>(x, y);
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using System;
+using ComputergrafikSpiel.Model;
+using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.View.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
@@ -19,11 +22,14 @@ namespace ComputergrafikSpiel.Controller
             this.Model = model;
             this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
 
+            
+            var player = new Player();
+            Scene.CreatePlayer(player);
+            this.InputController.HookPlayer(player);
             // Wird später von der Szene geladen, bei Rundenende
-            this.Model.CreateTriggerZone();
-            this.Model.CreateRoundEndInteractables();
-            this.Model.CreatePlayerOnce(this.InputController);
-            this.Model.CreateEnemy();
+            (this.Model as Model.Model).CreateTriggerZone();
+            (this.Model as Model.Model).CreateRoundEndInteractables();
+            (this.Model as Model.Model).CreateEnemy();
         }
 
         public IInputController InputController { get; private set; }

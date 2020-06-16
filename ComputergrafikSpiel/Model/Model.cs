@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing.Text;
-using System.Linq;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
@@ -15,7 +10,7 @@ using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Triggers;
-using ComputergrafikSpiel.Model.Triggers.Interfaces;
+using ComputergrafikSpiel.Model.World;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
@@ -27,36 +22,26 @@ namespace ComputergrafikSpiel.Model
 
         internal Model()
         {
+            /*
             this.RenderablesList = new List<IRenderable>();
             this.Updateables = new List<IUpdateable>();
             this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
             this.ColliderManager = new ColliderManager(32);
             this.EnemysList = new List<INonPlayerCharacter>();
+            */
+
+            var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
+            new Scene.Scene(worldScene);
+
         }
 
-        public IEnumerable<IRenderable> Renderables => this.RenderablesList;
+        public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
 
-        public (float top, float bottom, float left, float right) CurrentSceneBounds => (500, 0, 0, 800);
+        public (float top, float bottom, float left, float right) CurrentSceneBounds => Scene.Scene.Current.World.WorldSceneBounds;
 
         public IEnumerable<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
 
-        private List<IRenderable> RenderablesList { get; } = new List<IRenderable>();
-
-        private List<IUpdateable> Updateables { get; } = new List<IUpdateable>();
-
-        private IPlayer Player { get; set; } = null;
-
-        private ITrigger TriggerZone { get; set; } = null;
-
-        private IEntity IncInteractables { get; set; } = null;
-
-        private INonPlayerCharacter Enemys { get; set; } = null;
-
-        private ICollection<INonPlayerCharacter> EnemysList { get; set; } = null;
-
         private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = null;
-
-        private IColliderManager ColliderManager { get; set; }
 
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
@@ -64,134 +49,49 @@ namespace ComputergrafikSpiel.Model
         /// <param name="dTime">Time between two Update Calls in Seconds.</param>
         public void Update(float dTime)
         {
-            if (this.Updateables != null)
-            {
-                foreach (var entry in this.Updateables.Reverse<IUpdateable>())
-                {
-                    entry.Update(dTime);
-                }
-            }
-        }
-
-        public bool CreatePlayerOnce(IInputController controller)
-        {
-            if (this.Player == null)
-            {
-                this.weapon = new Weapon(3, 1, 4, 20, this.ColliderManager, 1, this);
-                this.Player = new Player(this.Interactable, this.ColliderManager, this.weapon, this.EnemysList, this);
-                controller.HookPlayer(this.Player);
-                this.Updateables.Add(this.Player);
-                this.RenderablesList.Add(this.Player);
-                return true;
-            }
-
-            return false;
+            Scene.Scene.Current.Update(dTime);
         }
 
         public void CreateTriggerZone()
         {
-            this.TriggerZone = new Trigger(this.ColliderManager, new Vector2(30, 250));
-            this.Updateables.Add(this.TriggerZone);
-            this.RenderablesList.Add(this.TriggerZone);
+            var trigger = new Trigger(new Vector2(30, 250), ColliderLayer.Layer.Player);
+            Scene.Scene.Current.SpawnEntity(trigger);
             return;
         }
 
-        public bool SpawnHeal(float positionX, float positionY)
+        public void SpawnHeal(float positionX, float positionY)
         {
             // Heal Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Heal, positionX, positionY);
-            this.Interactable.Add(PlayerEnum.Stats.Heal, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
-
-            return false;
+            var inter = new Interactable(PlayerEnum.Stats.Heal, positionX, positionY, 1);
+            this.Interactable.Add(PlayerEnum.Stats.Heal, inter);
+            Scene.Scene.Current.SpawnEntity(inter);
         }
 
-        public bool SpawnWährung(float positionX, float positionY)
+        public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY, int incNumber)
         {
-            // Währung Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Währung, positionX, positionY);
-            this.Interactable.Add(PlayerEnum.Stats.Währung, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
-
-            return false;
+            // Heal Interactable
+            Scene.Scene.Current.SpawnEntity(new Interactable(stat, positionX, positionY, incNumber));
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
-        public bool CreateRoundEndInteractables()
+        public void CreateRoundEndInteractables()
         {
             // MaxHealth Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MaxHealth, 250, 250);
-            this.Interactable.Add(PlayerEnum.Stats.MaxHealth, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
+            this.SpawnInteractable(PlayerEnum.Stats.MaxHealth, 250, 250, 1);
 
             // Defense Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.Defense, 350, 250);
-            this.Interactable.Add(PlayerEnum.Stats.Defense, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
+            this.SpawnInteractable(PlayerEnum.Stats.Defense, 350, 250, 2);
 
             // AttackSpeed Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250);
-            this.Interactable.Add(PlayerEnum.Stats.AttackSpeed, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
+            this.SpawnInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250, 3);
 
             // MovementSpeed Interactable
-            this.IncInteractables = new CreateInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250);
-            this.Interactable.Add(PlayerEnum.Stats.MovementSpeed, this.IncInteractables);
-            this.Updateables.Add(this.IncInteractables);
-            this.RenderablesList.Add(this.IncInteractables);
-
-            return false;
+            this.SpawnInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250, 10);
         }
 
-        public bool CreateEnemy()
+        public void CreateEnemy()
         {
-            // return false;
-            if (this.Enemys == null)
-            {
-                this.Enemys = new Enemy(3, "Fungus", 20, 0, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 200));
-                this.Updateables.Add(this.Enemys);
-                this.RenderablesList.Add(this.Enemys);
-                this.EnemysList.Add(this.Enemys);
-                return true;
-                this.Enemys = new Enemy(10, "WaterDrop", 35, 0, 2, this.Player, this.ColliderManager, this.EnemysList, new Vector2(300, 400));
-                this.Updateables.Add(this.Enemys);
-                this.RenderablesList.Add(this.Enemys);
-                this.EnemysList.Add(this.Enemys);
-                return true;
-            }
-
-            return false;
-        }
-
-        // Somehow the Object will not be destroyed entirely. It will just dissapear.
-        public void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc)
-        {
-            if (player != null)
-            {
-                this.ColliderManager.RemoveEntityCollidable(player.Collider.CollidableParent);
-                this.Updateables.Remove(player);
-                this.RenderablesList.Remove(player);
-                player = null;
-            }
-            else if (entity != null)
-            {
-                this.ColliderManager.RemoveEntityCollidable(entity.Collider.CollidableParent);
-                this.Updateables.Remove(entity);
-                this.RenderablesList.Remove(entity);
-                entity = null;
-            }
-            else if (npc != null)
-            {
-                this.ColliderManager.RemoveEntityCollidable(entity.Collider.CollidableParent);
-                this.Updateables.Remove(npc);
-                this.RenderablesList.Remove(npc);
-                npc = null;
-            }
+                Scene.Scene.Current.CreateNPC(new Enemy(10, "Fungus", 20, 1, 2, new Vector2(300, 200)));
         }
 
         public void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList)
@@ -199,8 +99,7 @@ namespace ComputergrafikSpiel.Model
             for (int i = 0; i < projectileCreationCount; i++)
             {
                 Projectile projectile = new Projectile(attackDamage, position, direction, bulletTTL, bulletSize, colliderManager, this, enemyList);
-                this.Updateables.Add(projectile);
-                this.RenderablesList.Add(projectile);
+                Scene.Scene.Current.SpawnEntity(projectile);
             }
         }
     }

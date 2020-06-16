@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
+using System.Linq;
+using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.View.Exceptions;
 using ComputergrafikSpiel.View.Helpers;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
@@ -23,6 +24,7 @@ namespace ComputergrafikSpiel.View
         internal Camera(float top, float bottom, float left, float right)
         {
             this.Update(top, bottom, left, right);
+            Scene.ChangeScene += this.Scene_ChangeScene;
         }
 
         public IRenderer Parent { get; private set; }
@@ -81,7 +83,7 @@ namespace ComputergrafikSpiel.View
             return true;
         }
 
-        public void DrawRectangle(Rectangle vertices, (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) texCoords, (int width, int height) screen)
+        public void DrawRectangle(Rectangle vertices, TextureCoordinates texCoords, (int width, int height) screen)
         {
             var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.AspectRatio, screen.width / (float)screen.height);
             (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVertices = this.GenerateNDCVertices(vertices, multipliers);
@@ -124,15 +126,22 @@ namespace ComputergrafikSpiel.View
         }
 
         // WARN: TODO: For some reason having the "correct" Tex Coords results in orientation, namely 90deg clockwise. This is why they had to be swapped
-        private ICollection<(Vector2 vert, Vector2 tex)> GenerateNDCVertex_TexCollection((Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVert, (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) tex)
+        private ICollection<(Vector2 vert, Vector2 tex)> GenerateNDCVertex_TexCollection((Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVert, TextureCoordinates tex)
         {
             return new List<(Vector2 vert, Vector2 tex)>()
             {
-                (ndcVert.TL, tex.TR),
-                (ndcVert.TR, tex.BR),
-                (ndcVert.BR, tex.BL),
-                (ndcVert.BL, tex.TL),
+                (ndcVert.TL, tex.TopRight),
+                (ndcVert.TR, tex.BottomRight),
+                (ndcVert.BR, tex.BottomLeft),
+                (ndcVert.BL, tex.TopLeft),
             };
+        }
+
+        private void Scene_ChangeScene(object sender, EventArgs e)
+        {
+            var scene = sender as Scene;
+            var (top, bottom, left, right) = scene.World.WorldSceneBounds;
+            this.Update(top, bottom, left, right);
         }
 
         private void ConstructorCheckWorldCoordinatesBounds(Vector2 screenSpaceCoord, (int w, int h) screen)
@@ -171,15 +180,27 @@ namespace ComputergrafikSpiel.View
             }
         }
 
-        private void DrawPrimitive(ICollection<(Vector2 vert, Vector2 tex)> data, PrimitiveType primitiveType)
+        private void DrawPrimitive(IEnumerable<(Vector2 vert, Vector2 tex)> data, PrimitiveType primitiveType)
         {
             GL.Begin(primitiveType);
+
+            var d = data.ToArray();
+            TextureCoordinates coords = new TextureCoordinates(d[3].tex, d[0].tex, d[1].tex, d[2].tex);
+
+            if (!coords.IsXYAligned)
+            {
+                if (true) ;
+            }
+
+            // Console.WriteLine("------------");
             foreach (var (vert, tex) in data)
             {
+                // Console.Write((vert, tex) + "   ");
                 GL.Vertex2(vert);
                 GL.TexCoord2(tex);
             }
 
+            // Console.WriteLine("------------");
             GL.End();
         }
     }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Triggers.Interfaces;
@@ -13,18 +12,15 @@ namespace ComputergrafikSpiel.Model.Triggers
 {
     internal class Trigger : ITrigger
     {
-        public Trigger(IColliderManager colliderManager, Vector2 position)
+        public Trigger(Vector2 position, ColliderLayer.Layer activators)
         {
             // radius may have to be changed
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16);
-            this.ColliderManager = colliderManager;
-            this.ColliderManager.AddTriggerCollidable((int)position.X, (int)position.Y, this);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, activators);
+            Scene.Scene.Current.ColliderManager.AddTriggerCollidable((int)position.X, (int)position.Y, this);
             this.Position = position;
             this.Texture = new TextureLoader().LoadTexture("Door/TreeBranchesDoor");
             this.Scale = new Vector2(32, 32);
         }
-
-        public IColliderManager ColliderManager { get; }
 
         public ICollider Collider { get; }
 

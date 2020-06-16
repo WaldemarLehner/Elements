@@ -9,5 +9,13 @@
         bool DoorLeft { get; }
 
         bool DoorRight { get; }
+
+        (int x, int y) TileCount { get; }
+
+        float NoiseScale { get; }
+
+        (int weight, TileDefinitions.Type type)[] NoiseDefinition { get; }
+
+        int TileSize { get; }
     }
 }

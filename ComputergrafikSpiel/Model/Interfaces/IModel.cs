@@ -8,7 +8,7 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Interfaces
 {
-    internal interface IModel
+    public interface IModel
     {
         (float top, float bottom, float left, float right) CurrentSceneBounds { get; }
 
@@ -17,20 +17,5 @@ namespace ComputergrafikSpiel.Model.Interfaces
         IEnumerable<IRenderable> Renderables { get; }
 
         void Update(float dTime);
-
-        bool CreatePlayerOnce(IInputController controller);
-
-        bool SpawnHeal(float positionX, float positionY);
-
-        bool SpawnWährung(float positionX, float positionY);
-
-        bool CreateRoundEndInteractables();
-
-        bool CreateEnemy();
-
-        void DestroyObject(IPlayer player, IEntity entity, INonPlayerCharacter npc);
-
-        void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList);
-        void CreateTriggerZone();
     }
 }

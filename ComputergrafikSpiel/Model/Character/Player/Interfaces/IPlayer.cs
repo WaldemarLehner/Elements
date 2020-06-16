@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ComputergrafikSpiel.Controller.Input;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
@@ -16,6 +15,8 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 
         void TakingDamage(int damage);
 
-        void IncreasePlayerStats(int incNumber, IReadOnlyList<PlayerEnum.Stats> incstats);
+        void IncreasePlayerStats(int incNumber, PlayerEnum.Stats incstats);
+
+        void Equip(Weapon.Weapon weapon);
     }
 }

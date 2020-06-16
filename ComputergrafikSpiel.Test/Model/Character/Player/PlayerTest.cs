@@ -4,6 +4,8 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
+using ComputergrafikSpiel.Model.World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
 using System.Collections.Generic;
@@ -17,6 +19,9 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         private IColliderManager ColliderManager { get; set; } = new ColliderManager(32);
         private IModel model { get; set; } = null;
 
+        private Scene scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene());
+
+
         private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = new Dictionary<PlayerEnum.Stats, IEntity>();
 
         [DataTestMethod]
@@ -24,19 +29,15 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(-1)]
         public void AssertThatPlayerTakingDamageThrowsArgumentNotPositiveGreaterZeroException(int damage)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             Assert.ThrowsException<ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => player.TakingDamage(damage));
         }
 
         [TestMethod]
         public void AssertThatPlayerIncreaseStatsThrowsArgumentPositiveGreaterZeroException()
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
-            List<PlayerEnum.Stats> stats = new List<PlayerEnum.Stats>();
-            stats.Add(PlayerEnum.Stats.Defense);
-            stats.Add(PlayerEnum.Stats.MaxHealth);
-            stats.Add(PlayerEnum.Stats.MovementSpeed);
-            Assert.ThrowsException < ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => player.IncreasePlayerStats(-1, stats));
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
+            Assert.ThrowsException < ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => player.IncreasePlayerStats(-1, PlayerEnum.Stats.AttackSpeed));
         }
 
         [DataTestMethod]
@@ -44,7 +45,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(4, 3)]
         public void AssertThatLessDefenseThanDamageMakesDamage(int damage, int defense)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             int Health = player.CurrentHealth;
             player.Defense = defense;
             player.TakingDamage(damage);
@@ -56,7 +57,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(3, 6)]
         public void AssertThatMoreDefenseThanDamageMakesNoDamage(int damage, int defense)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             int Health = player.CurrentHealth;
             player.Defense = defense;
             player.TakingDamage(damage);
@@ -68,29 +69,26 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         [DataRow(2)]
         public void AssertThatIncreasingPlayerStatsIncreaseRightStats(int incNumber)
         {
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player(this.Interactable, this.ColliderManager, null, this.EnemysList, this.model);
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             int MaxHealth = player.MaxHealth;
             int Currenthealth = player.CurrentHealth;
             int Defense = player.Defense;
             float AttackSpeed = player.AttackSpeed;
             float MovementSpeed = player.MovementSpeed;
-            int Währung = player.Währung;
+            int Währung = player.Money;
 
-            List<PlayerEnum.Stats> stats = new List<PlayerEnum.Stats>();
-            stats.Add(PlayerEnum.Stats.MaxHealth);
-            stats.Add(PlayerEnum.Stats.Heal);
-            stats.Add(PlayerEnum.Stats.Defense);
-            stats.Add(PlayerEnum.Stats.AttackSpeed);
-            stats.Add(PlayerEnum.Stats.MovementSpeed);
-            stats.Add(PlayerEnum.Stats.Währung);
-
-            player.IncreasePlayerStats(incNumber, stats);
+            player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.MaxHealth);
             Assert.AreNotEqual(MaxHealth, player.MaxHealth);
+            player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.Heal);
             Assert.AreNotEqual(Currenthealth, player.CurrentHealth);
+            player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.Defense);
             Assert.AreNotEqual(Defense, player.Defense);
+            player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.AttackSpeed);
             Assert.AreNotEqual(AttackSpeed, player.AttackSpeed);
+            player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.MovementSpeed);
             Assert.AreNotEqual(MovementSpeed, player.MovementSpeed);
-            Assert.AreNotEqual(Währung, player.Währung);
+            player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.Währung);
+            Assert.AreNotEqual(Währung, player.Money);
         }
 
         /*

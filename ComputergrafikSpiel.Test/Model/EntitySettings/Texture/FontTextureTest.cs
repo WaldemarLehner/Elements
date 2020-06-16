@@ -21,14 +21,14 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             };
 
             ITileTextureContructor tileTextureContructor = new TileTextureConstructor(4, 4);
-            List<Tuple<char, int>> mappings = new List<Tuple<char, int>>
+            List<(char, int)> mappings = new List<(char, int)>
             {
-                new Tuple<char, int>('a',0),
-                new Tuple<char, int>('b',1),
-                new Tuple<char, int>('c',2),
-                new Tuple<char, int>('d',3),
-                new Tuple<char, int>('e',4),
-                new Tuple<char, int>('f',5),
+                ('a',0),
+                ('b',1),
+                ('c',2),
+                ('d',3),
+                ('e',4),
+                ('f',5),
             };
 
 
@@ -47,14 +47,14 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             };
 
             ITileTextureContructor tileTextureContructor = new TileTextureConstructor(4, 4);
-            List<Tuple<char, int>> mappings = new List<Tuple<char, int>>
+            List<(char, int)> mappings = new List<(char, int)>
             {
-                new Tuple<char, int>('a',0),
-                new Tuple<char, int>('b',1),
-                new Tuple<char, int>('c',2),
-                new Tuple<char, int>('d',3),
-                new Tuple<char, int>('e',4),
-                new Tuple<char, int>('f',5),
+                ('a',0),
+                ('b',1),
+                ('c',2),
+                ('d',3),
+                ('e',4),
+                ('f',5),
             };
 
             IMappedTileFont fontTexture = new FontTexture(textureContructor, tileTextureContructor, mappings);
@@ -69,18 +69,18 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             //Update Pointer to "a" -> internal index is 0
             fontTexture.UpdatePointer('a');
             var pointer = fontTexture.Pointer;
-            Assert.AreEqual(0, pointer.Item1);
-            Assert.AreEqual(0, pointer.Item2);
+            Assert.AreEqual(0, pointer.x);
+            Assert.AreEqual(0, pointer.y);
             fontTexture.UpdatePointer('c');
             pointer = fontTexture.Pointer;
-            Assert.AreEqual(2, pointer.Item1);
-            Assert.AreEqual(0, pointer.Item2);
+            Assert.AreEqual(2, pointer.x);
+            Assert.AreEqual(0, pointer.y);
             fontTexture.UpdatePointer('f');
             pointer = fontTexture.Pointer;
-            Assert.AreEqual(1, pointer.Item1);
-            Assert.AreEqual(1, pointer.Item2);
+            Assert.AreEqual(1, pointer.x);
+            Assert.AreEqual(1, pointer.y);
 
-            Assert.IsNull(fontTexture.GetTileOfKey('o')); // Unused char
+            Assert.AreEqual((-1,-1),fontTexture.GetTileOfKey('o')); // Unused char
         }
         [TestMethod]
         public void AssertThatGettingTextureCoordinatesAreCorrect()
@@ -92,25 +92,25 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             };
 
             ITileTextureContructor tileTextureContructor = new TileTextureConstructor(4, 4);
-            List<Tuple<char, int>> mappings = new List<Tuple<char, int>>
+            List<(char, int)> mappings = new List<(char, int)>
             {
-                new Tuple<char, int>('a',0),
-                new Tuple<char, int>('b',1),
-                new Tuple<char, int>('c',2),
-                new Tuple<char, int>('d',3),
-                new Tuple<char, int>('e',4),
-                new Tuple<char, int>('f',5),
+                ('a',0),
+                ('b',1),
+                ('c',2),
+                ('d',3),
+                ('e',4),
+                ('f',5),
             };
 
             IMappedTileFont fontTexture = new FontTexture(textureContructor, tileTextureContructor, mappings);
 
-            var aPtr = fontTexture.GetTileOfKey('a');
+            var (x, y) = fontTexture.GetTileOfKey('a');
             fontTexture.UpdatePointer('a');
-            Assert.AreEqual(aPtr.Item1, fontTexture.Pointer.Item1);
-            Assert.AreEqual(aPtr.Item2, fontTexture.Pointer.Item2);
+            Assert.AreEqual(x, fontTexture.Pointer.x);
+            Assert.AreEqual(y, fontTexture.Pointer.y);
 
-            Assert.AreEqual(0, aPtr.Item1);
-            Assert.AreEqual(0, aPtr.Item2);
+            Assert.AreEqual(0, x);
+            Assert.AreEqual(0, y);
 
             /// a is stored in the most top left part of the picture. Coordinates
             /// range from 0 to 1, having the bottom left corner as their origin.
@@ -119,18 +119,18 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             /// (0,  .75)   ; (.25,     .75)
             var texCoords = fontTexture.TextureCoordinates;
             // Top Left
-            Assert.AreEqual(0, texCoords.Item1.X);
-            Assert.AreEqual(1, texCoords.Item1.Y);
+            Assert.AreEqual(0, texCoords.TopLeft.X);
+            Assert.AreEqual(1, texCoords.TopLeft.Y);
             // Top Right
-            Assert.AreEqual(.25, texCoords.Item2.X);
-            Assert.AreEqual(1, texCoords.Item2.Y);
+            Assert.AreEqual(.25, texCoords.TopRight.X);
+            Assert.AreEqual(1, texCoords.TopRight.Y);
             //Bottom Right
-            Assert.AreEqual(.25, texCoords.Item3.X);
-            Assert.AreEqual(.75, texCoords.Item3.Y);
+            Assert.AreEqual(.25, texCoords.BottomRight.X);
+            Assert.AreEqual(.75, texCoords.BottomRight.Y);
 
             //Bottom Left
-            Assert.AreEqual(0, texCoords.Item4.X);
-            Assert.AreEqual(.75, texCoords.Item4.Y);
+            Assert.AreEqual(0, texCoords.BottomLeft.X);
+            Assert.AreEqual(.75, texCoords.BottomLeft.Y);
             
 
         }

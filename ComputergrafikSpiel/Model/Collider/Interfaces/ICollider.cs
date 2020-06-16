@@ -8,6 +8,8 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
 
         float MaximumDistanceFromPosition { get; }
 
+        ColliderLayer.Layer Layer { get; }
+
         bool DidCollideWith(ICollider otherCollider);
 
         float MinimalDistanceTo(ICollider otherCollider);

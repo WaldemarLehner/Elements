@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using System.Linq;
-using System.Windows.Forms;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.Entity;
-using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
-using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.Player
 {
-    internal class Player : IPlayer
+    public class Player : IPlayer
     {
         private readonly List<PlayerEnum.PlayerActions> playerActionList;
         private readonly PlayerAttackSystem playerAttackSystem;
@@ -27,26 +21,20 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerInteractionSystem playerInteractionSystem;
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
-        private ICollection<INonPlayerCharacter> enemyList;
-        private IModel model;
 
-        public Player(IReadOnlyDictionary<PlayerEnum.Stats, IEntity> interactable, IColliderManager colliderManager, IWeapon weapon, ICollection<INonPlayerCharacter> enemys, IModel model)
+        public Player()
         {
-            this.model = model;
-            this.enemyList = enemys;
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
             this.Scale = new Vector2(32, 32);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
-            this.playerInteractionSystem = new PlayerInteractionSystem(interactable, model);
+            this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
-            this.EquipedWeapon = weapon;
             this.AttackCooldownCurrnent = 0;
-            this.ColliderManager = colliderManager;
-            this.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
+            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player
@@ -72,7 +60,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float MovementSpeed { get; set; } = 50;
 
-        public int Währung { get; set; } = 0;
+        public int Money { get; set; } = 0;
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
@@ -84,13 +72,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public ITexture Texture { get; }
 
-        public IColliderManager ColliderManager { get; }
-
         public ICollider Collider { get; set; }
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
-        public IWeapon EquipedWeapon { get; }
+        public IWeapon EquipedWeapon { get; private set; }
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Vector2 mouseCursorCoordinates)
@@ -106,7 +92,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 {
                     if (this.EquipedWeapon != null && this.AttackCooldownCurrnent <= 0)
                     {
-                        this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, this.enemyList);
+                        this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, new List<INonPlayerCharacter>());
                         this.AttackCooldownCurrnent = this.AttackCooldown;
                     }
                 }
@@ -153,55 +139,51 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
         }
 
-        public void IncreasePlayerStats(int incNumber, IReadOnlyList<PlayerEnum.Stats> incstats)
+        public void IncreasePlayerStats(int incNumber, PlayerEnum.Stats stats)
         {
-            Console.WriteLine(incNumber);
             if (incNumber <= 0)
             {
                 throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(incNumber));
             }
 
-            foreach (PlayerEnum.Stats stats in incstats)
+            /*Interactable MaxHealth: Bei Rundenende kann das Maximalleben um eins erhöht werden
+            -> Überprüfung das bisheriges Leben auch auf Max ist*/
+            if (stats == PlayerEnum.Stats.MaxHealth)
             {
-                /*Interactable MaxHealth: Bei Rundenende kann das Maximalleben um eins erhöht werden
-                -> Überprüfung das bisheriges Leben auch auf Max ist*/
-                if (stats == PlayerEnum.Stats.MaxHealth)
-                {
-                    this.MaxHealth++;
-                }
-
-                // Leben wird um eins erhöht
-                else if (stats == PlayerEnum.Stats.Heal && this.CurrentHealth < this.MaxHealth)
-                {
-                    this.CurrentHealth++;
-                }
-
-                // Defense wird erhöht
-                else if (stats == PlayerEnum.Stats.Defense)
-                {
-                    this.Defense += incNumber;
-                }
-
-                // AttackSpeed wird erhöht
-                else if (stats == PlayerEnum.Stats.AttackSpeed)
-                {
-                    this.AttackSpeed += incNumber;
-                }
-
-                // MovementSpeed wird erhöht
-                else if (stats == PlayerEnum.Stats.MovementSpeed)
-                {
-                    this.MovementSpeed += incNumber;
-                }
-
-                // Währung wird an der Stelle gespawnt, an der der Gegner gestorben ist
-                else if (stats == PlayerEnum.Stats.Währung)
-                {
-                    this.Währung += incNumber;
-                }
-
-                this.OnInc(EventArgs.Empty);
+                    this.MaxHealth += incNumber;
             }
+
+            // Leben wird um eins erhöht
+            else if (stats == PlayerEnum.Stats.Heal && this.CurrentHealth < this.MaxHealth)
+            {
+                    this.CurrentHealth += incNumber;
+            }
+
+            // Defense wird erhöht
+            else if (stats == PlayerEnum.Stats.Defense)
+            {
+                this.Defense += incNumber;
+            }
+
+            // AttackSpeed wird erhöht
+            else if (stats == PlayerEnum.Stats.AttackSpeed)
+            {
+                this.AttackSpeed += incNumber;
+            }
+
+            // MovementSpeed wird erhöht
+            else if (stats == PlayerEnum.Stats.MovementSpeed)
+            {
+                this.MovementSpeed += incNumber;
+            }
+
+            // Währung wird an der Stelle gespawnt, an der der Gegner gestorben ist
+            else if (stats == PlayerEnum.Stats.Währung)
+            {
+                this.Money += incNumber;
+            }
+
+            this.OnInc(EventArgs.Empty);
         }
 
         public void Update(float dtime)
@@ -213,7 +195,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
                 // Dient nur zu Testzwecken
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", this.MaxHealth, this.CurrentHealth, this.Defense, this.AttackSpeed, this.MovementSpeed, this.Währung);
+                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", this.MaxHealth, this.CurrentHealth, this.Defense, this.AttackSpeed, this.MovementSpeed, this.Money);
             }
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;
@@ -222,7 +204,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             this.AttackCooldownCurrnent -= dtime + this.AttackSpeed;
 
-            this.ColliderManager.HandleTriggerCollisions(this);
+            Scene.Scene.Current.ColliderManager.HandleTriggerCollisions(this);
         }
 
         public void OnInc(EventArgs e)
@@ -243,6 +225,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void OnMove(EventArgs e)
         {
             this.CharacterMove?.Invoke(this, e);
+        }
+
+        public void Equip(Weapon.Weapon weapon)
+        {
+            this.EquipedWeapon = weapon;
         }
     }
 }
