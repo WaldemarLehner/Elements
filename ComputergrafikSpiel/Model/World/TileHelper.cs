@@ -160,7 +160,7 @@ namespace ComputergrafikSpiel.Model.World
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1025:Code should not contain multiple whitespace in a row", Justification = "better visibility")]
-        internal static TileDefinitions.SurroundingTiles GetSurroundingTile(in TileDefinitions.Type[,] tileResult, (int x, int y) index, (int x, int y) maxLen)
+        internal static TileDefinitions.SurroundingTiles GetSurroundingTile(TileDefinitions.Type[,] tileResult, (int x, int y) index, (int x, int y) maxLen)
         {
             int x = index.x;
             int y = index.y;

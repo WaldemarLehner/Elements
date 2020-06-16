@@ -192,16 +192,15 @@ namespace ComputergrafikSpiel.View
                 if (true) ;
             }
 
-            Console.WriteLine("------------");
+            // Console.WriteLine("------------");
             foreach (var (vert, tex) in data)
             {
-                Console.Write((vert, tex) + "   ");
+                // Console.Write((vert, tex) + "   ");
                 GL.Vertex2(vert);
                 GL.TexCoord2(tex);
             }
 
-            Console.WriteLine("------------");
-
+            // Console.WriteLine("------------");
             GL.End();
         }
     }
