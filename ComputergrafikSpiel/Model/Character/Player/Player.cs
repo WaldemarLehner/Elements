@@ -23,14 +23,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
         private Vector2 mousePosition = Vector2.Zero;
-        private Vector2 scale;
+        private readonly Vector2 scale;
 
         public Player()
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
-            this.scale = new Vector2(-32, 32);
+            this.scale = new Vector2(32, 32);
             this.Scale = this.scale;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall);
             this.playerAttackSystem = new PlayerAttackSystem();
@@ -195,7 +195,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
-            //this.LookAt(this.mousePosition);
+            this.LookAt(this.mousePosition);
             if (this.run)
             {
                 this.Position += this.directionXY * this.MovementSpeed * dtime * 2;
@@ -240,6 +240,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.EquipedWeapon = weapon;
         }
 
-        public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.scale *= new Vector2(-1, 1) : this.scale;
+        public void LookAt(Vector2 vec) => this.Scale = (this.Position.X > vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
     }
 }

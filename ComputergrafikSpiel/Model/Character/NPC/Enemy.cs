@@ -15,7 +15,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public class Enemy : INonPlayerCharacter
     {
-        private Vector2 scale;
+        private readonly Vector2 scale;
 
         public Enemy(int maxHealth, string texture, float movementSpeed, int defense, int attackDamage, Vector2 startPosition)
         {
@@ -124,7 +124,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.GiveDamageToPlayer();
         }
 
-        public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.scale *= new Vector2(-1, 1) : this.scale;
+        public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
 
         private void GiveDamageToPlayer()
         {

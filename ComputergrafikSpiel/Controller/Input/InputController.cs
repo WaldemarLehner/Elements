@@ -92,10 +92,10 @@ namespace ComputergrafikSpiel.Controller.Input
             // Gives the Player a IReadOnlyList of pressed Actions
             if (this.playerControl != null)
             {
-                if (this.pressedActions.Count != 0)
-                {
+                //if (this.pressedActions.Count != 0)
+                //{
                     this.playerControl.PlayerControl(this.pressedActions, (Vector2)this.mouseCursor.WorldCoordinates);
-                }
+                //}
             }
         }
     }
