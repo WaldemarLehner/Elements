@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
@@ -14,6 +15,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public class Enemy : INonPlayerCharacter
     {
+        private readonly Vector2 scale;
+
         public Enemy(int maxHealth, string texture, float movementSpeed, int defense, int attackDamage, Vector2 startPosition)
         {
             this.AttackDamage = attackDamage;
@@ -22,7 +25,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.Defense = defense;
             this.Texture = new TextureLoader().LoadTexture("Enemy/" + texture);
             this.Position = startPosition;
-            this.Scale = new Vector2(16, 16);
+            this.scale = new Vector2(16, 16);
+            this.Scale = this.scale;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player | ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Wall);
             this.NPCController = new AIEnemy();
         }
@@ -55,13 +59,16 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
-        public Vector2 Scale { get; } = Vector2.One * 20;
+        public Vector2 Scale { get; set; } = Vector2.One * 20;
 
         public int AttackDamage { get; set; }
+
+        public bool TextureWasMirrored { get; set; } = false;
 
         private Vector2 Direction { get; set; }
 
         private IPlayer Player { get; }
+
 
         public void OnDeath(EventArgs e)
         {
@@ -108,12 +115,16 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void Update(float dtime)
         {
+            this.LookAt(Scene.Scene.Player.Position);
+
             this.Direction = this.NPCController.EnemyAIMovement(this);
 
             this.Position += this.Direction * this.MovementSpeed * dtime;
 
             this.GiveDamageToPlayer();
         }
+
+        public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
 
         private void GiveDamageToPlayer()
         {
