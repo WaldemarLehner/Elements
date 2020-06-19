@@ -38,7 +38,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC.NPCAI
             ComputergrafikSpiel.Model.Character.NPC.NPCAI.AIEnemy aIEnemy = new ComputergrafikSpiel.Model.Character.NPC.NPCAI.AIEnemy();
             Vector2 Direction = player.Position - enemy.Position;
             Direction.Normalize();
-            Vector2 DirectionAfter = aIEnemy.EnemyAIMovement(enemy);
+            Vector2 DirectionAfter = aIEnemy.EnemyAIMovement(enemy, 0.2f);
             Assert.AreEqual(Direction, DirectionAfter);
 
         }

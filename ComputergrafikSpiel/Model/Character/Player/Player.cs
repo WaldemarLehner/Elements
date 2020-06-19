@@ -34,7 +34,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
             this.AttackCooldownCurrnent = 0;
-            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player
