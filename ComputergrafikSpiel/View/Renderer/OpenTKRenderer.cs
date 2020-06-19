@@ -123,7 +123,7 @@ namespace ComputergrafikSpiel.View.Renderer
             var renderableRect = new Rectangle(renderable, true);
 
             this.TextureData[texture.FilePath].Enable();
-            foreach (var layer in layers)
+            foreach (var layer in layers.Skip(1))
             {
                 var debug = new TextureCoordinates(new Vector2(0, 1), new Vector2(.2f, 1), new Vector2(.2f, .75f), new Vector2(.0f, .75f));
                 this.RenderRectangle(renderableRect, layer);
