@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.World.Interfaces;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
@@ -19,7 +24,7 @@ namespace ComputergrafikSpiel.Model.Scene
         private bool initialized = false;
         private bool active = false;
 
-        public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null)
+        public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
         {
             this.World = worldScene ?? throw new ArgumentNullException(nameof(worldScene));
             this.TopScene = top;
@@ -34,6 +39,9 @@ namespace ComputergrafikSpiel.Model.Scene
                 Scene.Current = this;
             }
 
+            var tex = background ?? new TextureLoader().LoadTexture("Wall/Wall_single");
+            this.Background = new BackgroundRenderable(tex, Vector2.One * worldScene.SceneDefinition.TileSize / 2f, Vector2.One * worldScene.SceneDefinition.TileSize / 2, OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat);
+
             this.ColliderManager = new ColliderManager(this.World.SceneDefinition.TileSize);
 
             foreach (var tile in from t in this.World.WorldTilesEnumerable where t is IWorldTileCollidable select t)
@@ -47,6 +55,8 @@ namespace ComputergrafikSpiel.Model.Scene
         public static Scene Current { get; private set; } = null;
 
         public static IPlayer Player { get; private set; } = null;
+
+        public IRenderableBackground Background { get; private set; }
 
         public IColliderManager ColliderManager { get; }
 
@@ -67,7 +77,7 @@ namespace ComputergrafikSpiel.Model.Scene
             get
             {
                 List<IRenderable> enumerable = new List<IRenderable>();
-
+                enumerable.Add(this.Background);
                 var renderables = new IEnumerable<IRenderable>[]
                 {
                     this.World.WorldTilesEnumerable,

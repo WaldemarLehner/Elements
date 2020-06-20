@@ -8,7 +8,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers
     /// <summary>
     /// Parameters required to create an object of <see cref="EntitySettings.Texture.Interfaces.ITexture"/>.
     /// </summary>
-    internal class TextureContructor : ITextureContructor
+    public class TextureContructor : ITextureContructor
     {
         internal TextureContructor(int width, int height, string filepath)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
@@ -23,7 +24,7 @@ namespace ComputergrafikSpiel.View.Renderer
             this.Camera = camera ?? throw new ArgumentNullException(nameof(camera));
             this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
-            this.Debug = true;
+            this.Debug = false;
         }
 
         public bool Active { get; private set; } = true;
@@ -56,10 +57,15 @@ namespace ComputergrafikSpiel.View.Renderer
                 {
                     this.RenderRenderableLayered(entry as IRenderableLayeredTextures);
                 }
+                else if (entry is IRenderableBackground)
+                {
+                    this.RenderBackground(entry as IRenderableBackground);
+                }
                 else
                 {
                     this.RenderRenderable(entry);
                 }
+
             }
 
             if (this.Debug)
@@ -70,6 +76,24 @@ namespace ComputergrafikSpiel.View.Renderer
                     OpenTKRendererHelper.RenderRenderableDebug(this, entry, rand);
                 }
             }
+        }
+
+        private void RenderBackground(IRenderableBackground renderableBackground)
+        {
+            var alignedItem = new Rectangle(renderableBackground);
+            this.CreateTextureDataIfNeeded(renderableBackground.Texture, renderableBackground.WrapMode);
+
+            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            this.TextureData[renderableBackground.Texture.FilePath].Enable();
+            this.Camera.DrawAsBackground(alignedItem, this.Screen);
+            this.TextureData[renderableBackground.Texture.FilePath].Disable();
+
+            GL.Disable(EnableCap.Texture2D);
+            GL.Disable(EnableCap.Blend);
+  
         }
 
         public void Resize(int screenWidth, int screenHeight)
@@ -103,11 +127,7 @@ namespace ComputergrafikSpiel.View.Renderer
             var texture = renderable.Texture.Item2;
             var layers = renderable.Texture.Item1;
 
-            // Check if Texture Data is already stored, if not, add Texture
-            if (!this.TextureData.ContainsKey(texture.FilePath))
-            {
-                this.TextureData[texture.FilePath] = new TextureData(texture);
-            }
+            this.CreateTextureDataIfNeeded(texture, TextureWrapMode.Repeat);
 
             // Get the bounds of the Renderable and check if it can be skipped
             if (!this.IsDrawNeeded(renderableRectangle))
@@ -132,16 +152,22 @@ namespace ComputergrafikSpiel.View.Renderer
             this.TextureData[texture.FilePath].Disable();
         }
 
+        private void CreateTextureDataIfNeeded(ITexture texture, TextureWrapMode wrapMode = TextureWrapMode.MirroredRepeat)
+        {
+            // Check if Texture Data is already stored, if not, add Texture
+            if (!this.TextureData.ContainsKey(texture.FilePath))
+            {
+                this.TextureData[texture.FilePath] = new TextureData(texture, wrapMode);
+            }
+        }
+
         private void RenderRenderable(IRenderable renderable)
         {
             // Make Rectangle out of Renderable
             var renderableRectangle = new Rectangle(renderable, true);
 
             // Check if Texture Data is already stored, if not, add Texture
-            if (!this.TextureData.ContainsKey(renderable.Texture.FilePath))
-            {
-                this.TextureData[renderable.Texture.FilePath] = new TextureData(renderable.Texture);
-            }
+            this.CreateTextureDataIfNeeded(renderable.Texture);
 
             // Get the bounds of the Renderable and check if it can be skipped
             if (!this.IsDrawNeeded(renderableRectangle))

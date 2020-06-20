@@ -39,5 +39,7 @@ namespace ComputergrafikSpiel.View.Interfaces
         Vector2 NDCToWorld(Vector2 pointNDC);
 
         void DrawRectangle(Rectangle vertices, TextureCoordinates texCoords, (int width, int height) screen);
+
+        void DrawAsBackground(Rectangle alignedItem, (int width, int height) screen);
     }
 }

@@ -11,6 +11,8 @@ namespace ComputergrafikSpiel.Model.Scene
 {
     public interface IScene : IUpdateable
     {
+        IRenderableBackground Background { get; }
+
         IColliderManager ColliderManager { get; }
 
         IEnumerable<IEntity> Entities { get; }
