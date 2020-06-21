@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.View.Exceptions;
 using ComputergrafikSpiel.View.Helpers;
@@ -92,6 +93,18 @@ namespace ComputergrafikSpiel.View
             this.DrawPrimitive(vertTexPair, PrimitiveType.Quads);
         }
 
+        public void DrawAsBackground(Rectangle alignedItem, (int width, int height) screen)
+        {
+            var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(this.AspectRatio, screen.width / (float)screen.height);
+            (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVertices = this.GenerateNDCVertices(alignedItem, multipliers);
+
+            // Map Vertex-Coordinates as TextureCoordinate Inverse
+            var vertTexCoords = this.CalculateBackgroundVertTexTuple(ndcVertices);
+
+            var position = (vertTexCoords.TL, vertTexCoords.TR, vertTexCoords.BR, vertTexCoords.BL);
+            this.DrawPrimitive(this.GenerateNDCVertex_TexCollection(position, vertTexCoords.coords), PrimitiveType.Quads);
+        }
+
         /// <summary>
         /// Converts a <see cref="Vector2"/> from Screen Space to World Space.
         /// </summary>
@@ -116,6 +129,27 @@ namespace ComputergrafikSpiel.View
             this.Right = right;
         }
 
+        private (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL, TextureCoordinates coords) CalculateBackgroundVertTexTuple((Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVertices)
+        {
+            float width = Math.Abs(ndcVertices.TL.X - ndcVertices.TR.X);
+            float height = Math.Abs(ndcVertices.TL.Y - ndcVertices.BL.Y);
+
+            var xCount = (int)(2 / width) + 5;
+            var yCount = (int)(2 / height) + 5;
+
+            Vector2 anker = new Vector2(ndcVertices.TL.X % width, ndcVertices.TL.Y % height);
+
+            var xHalf = (float)Math.Ceiling((double)xCount / 2f);
+            var yHalf = (float)Math.Ceiling((double)yCount / 2f);
+
+            var tl = new Vector2(-xHalf * width, yHalf * height) + anker;
+            var tr = new Vector2(xHalf * width, yHalf * height) + anker;
+            var br = new Vector2(xHalf * width, -yHalf * height) + anker;
+            var bl = new Vector2(-xHalf * width, -yHalf * height) + anker;
+            var tex = new TextureCoordinates(new Vector2(-xHalf, yHalf), new Vector2(xHalf, yHalf), new Vector2(xHalf, -yHalf), new Vector2(-xHalf, -yHalf));
+            return (tl, tr, br, bl, tex);
+        }
+
         private (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) GenerateNDCVertices(Rectangle worldSpaceVerts, (float x, float y) multipliers)
         {
             return (
@@ -125,15 +159,14 @@ namespace ComputergrafikSpiel.View
                 CameraCoordinateConversionHelper.WorldToNDC(worldSpaceVerts.BottomLeft, multipliers, this));
         }
 
-        // WARN: TODO: For some reason having the "correct" Tex Coords results in orientation, namely 90deg clockwise. This is why they had to be swapped
         private ICollection<(Vector2 vert, Vector2 tex)> GenerateNDCVertex_TexCollection((Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVert, TextureCoordinates tex)
         {
             return new List<(Vector2 vert, Vector2 tex)>()
             {
-                (ndcVert.TL, tex.TopRight),
-                (ndcVert.TR, tex.BottomRight),
-                (ndcVert.BR, tex.BottomLeft),
-                (ndcVert.BL, tex.TopLeft),
+                (ndcVert.TL, tex.TopLeft),
+                (ndcVert.TR, tex.TopRight),
+                (ndcVert.BR, tex.BottomRight),
+                (ndcVert.BL, tex.BottomLeft),
             };
         }
 
@@ -183,24 +216,13 @@ namespace ComputergrafikSpiel.View
         private void DrawPrimitive(IEnumerable<(Vector2 vert, Vector2 tex)> data, PrimitiveType primitiveType)
         {
             GL.Begin(primitiveType);
-
-            var d = data.ToArray();
-            TextureCoordinates coords = new TextureCoordinates(d[3].tex, d[0].tex, d[1].tex, d[2].tex);
-
-            if (!coords.IsXYAligned)
-            {
-                if (true) ;
-            }
-
-            // Console.WriteLine("------------");
             foreach (var (vert, tex) in data)
             {
                 // Console.Write((vert, tex) + "   ");
-                GL.Vertex2(vert);
                 GL.TexCoord2(tex);
+                GL.Vertex2(vert);
             }
 
-            // Console.WriteLine("------------");
             GL.End();
         }
     }
