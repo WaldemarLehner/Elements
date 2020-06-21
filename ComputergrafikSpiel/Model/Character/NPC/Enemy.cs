@@ -117,7 +117,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         {
             this.LookAt(Scene.Scene.Player.Position);
 
-            this.Direction = this.NPCController.EnemyAIMovement(this);
+            this.Direction = this.NPCController.EnemyAIMovement(this, dtime);
 
             this.OnMove(EventArgs.Empty);
 
