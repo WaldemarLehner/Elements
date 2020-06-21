@@ -1,5 +1,8 @@
 ﻿using ComputergrafikSpiel.Model.Character.Player;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
+using System.Collections.Generic;
 
 namespace ComputergrafikSpiel.Test.Model.Character.Player
 {
@@ -73,6 +76,25 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             Assert.AreNotEqual(Währung, player.Money);
         }
 
+        [TestMethod]
+        public void AssertThatPlayerTextureIsFlippedCorrectlyDependingOnMouseLocation()
+        {
+            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
+            player.Position = new Vector2(5, 5);
+            Vector2 mousePosition = new Vector2(0, 0);
+            player.LookAt(mousePosition);
+            Assert.AreEqual(player.Scale.X, -32);
+
+            // make sure it is not flipped again
+            player.LookAt(mousePosition);
+            Assert.AreEqual(player.Scale.X, -32);
+
+            // make sure it is flipped back
+            mousePosition = new Vector2(10, 0);
+            player.LookAt(mousePosition);
+            Assert.AreEqual(player.Scale.X, 32);
+        }
+
         /*
         [DataTestMethod]
         [DataRow(0)]
@@ -93,5 +115,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             Assert.AreEqual(player.AttackCooldown, player.AttackCooldownCurrnent);
         }
         */
+
+
     }
 }

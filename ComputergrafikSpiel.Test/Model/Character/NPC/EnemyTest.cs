@@ -64,5 +64,23 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
             Assert.AreNotEqual(MovementSpeed, enemy.MovementSpeed);
             Assert.AreNotEqual(AttackDamage, enemy.AttackDamage);
         }
+
+        [TestMethod]
+        public void AssertThatEnemyTextureIsFlippedCorrectlyDependingPlayerLocation()
+        {
+            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.Enemy(10, "Fungus", 25, 3, 4, this.Position);
+            Vector2 playerLocation = new Vector2(300, 0);
+            enemy.LookAt(playerLocation);
+            Assert.AreEqual(enemy.Scale.X, -16);
+
+            // make sure it is not flipped again
+            enemy.LookAt(playerLocation);
+            Assert.AreEqual(enemy.Scale.X, -16);
+
+            // make sure it is flipped back
+            playerLocation = new Vector2(100, 0);
+            enemy.LookAt(playerLocation);
+            Assert.AreEqual(enemy.Scale.X, 16);
+        }
     }
 }

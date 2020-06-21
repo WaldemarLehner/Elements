@@ -60,12 +60,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public Vector2 RotationAnker { get; set; }
 
-        // should this be multiplied by bullet size instead?
         public Vector2 Scale { get; }
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
-        // does this work?
+
         public void Update(float dtime)
         {
             this.Position += this.Direction * dtime;
