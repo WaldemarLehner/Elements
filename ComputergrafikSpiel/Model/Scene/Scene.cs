@@ -42,7 +42,7 @@ namespace ComputergrafikSpiel.Model.Scene
             var tex = background ?? new TextureLoader().LoadTexture("Wall/Wall_single");
             this.Background = new BackgroundRenderable(tex, Vector2.One * worldScene.SceneDefinition.TileSize / 2f, Vector2.One * worldScene.SceneDefinition.TileSize / 2, OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat);
 
-            this.ColliderManager = new ColliderManager(this.World.SceneDefinition.TileSize);
+           
 
             foreach (var tile in from t in this.World.WorldTilesEnumerable where t is IWorldTileCollidable select t)
             {
@@ -58,7 +58,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IRenderableBackground Background { get; private set; }
 
-        public IColliderManager ColliderManager { get; }
+        public IColliderManager ColliderManager { get; private set; }
 
         public IEnumerable<IEntity> Entities => this.EntitiesList;
 
@@ -88,6 +88,8 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     enumerable.AddRange(entry);
                 }
+
+                enumerable.AddRange(this.Entities);
 
                 if (Scene.Player != null)
                 {
@@ -123,11 +125,19 @@ namespace ComputergrafikSpiel.Model.Scene
         public void SpawnEntity(IEntity entity)
         {
             this.EntitiesList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
+            if (entity is ICollidable)
+            {
+                this.ColliderManager.AddEntityCollidable(entity);
+            }
         }
 
         public void RemoveEntity(IEntity entity)
         {
             this.EntitiesList.Remove(entity);
+            if (entity is ICollidable)
+            {
+                this.ColliderManager.RemoveEntityCollidable(entity);
+            }
         }
 
         public void SetAsActive()
@@ -177,10 +187,17 @@ namespace ComputergrafikSpiel.Model.Scene
             }
         }
 
-        private void Initialize()
+        private bool Initialize()
         {
+            if (this.initialized)
+            {
+                return false;
+            }
+
+            this.ColliderManager = new ColliderManager(this.World.SceneDefinition.TileSize);
             this.initialized = true;
-            // TODO:
+            this.SpawnEntity(new Interactable(PlayerEnum.Stats.Heal, 100, 100, 3));
+            return true;
         }
     }
 }

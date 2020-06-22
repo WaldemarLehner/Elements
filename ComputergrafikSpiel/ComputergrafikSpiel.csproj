@@ -267,7 +267,9 @@
     <Content Include="Content\Images\StatIncrease\DefenseIncrease.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\StatIncrease\HealIncrease.png" />
+    <Content Include="Content\Images\StatIncrease\HealIncrease.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\StatIncrease\MaxHealthIncrease.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
