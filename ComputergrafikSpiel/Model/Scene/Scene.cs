@@ -95,6 +95,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 }
 
                 enumerable.AddRange(this.NPCs);
+                enumerable.AddRange(this.Entities);
                 return enumerable;
             }
         }
@@ -123,6 +124,10 @@ namespace ComputergrafikSpiel.Model.Scene
         public void SpawnEntity(IEntity entity)
         {
             this.EntitiesList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
+            if (entity is ICollidable)
+            {
+                this.ColliderManager.AddEntityCollidable(entity as ICollidable);
+            }
         }
 
         public void RemoveEntity(IEntity entity)
