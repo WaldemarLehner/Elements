@@ -23,8 +23,9 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
             {
                 inc.PlayerStatsIncrease();
 
-                // TODO: Destroy Object
+                Scene.Scene.Current.RemoveEntity(inc);
             }
+
             // TODO: Interaction Blacksmith?!
         }
     }

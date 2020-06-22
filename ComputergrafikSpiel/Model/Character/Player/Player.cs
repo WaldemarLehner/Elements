@@ -141,8 +141,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
-
-                // this.model.DestroyObject(this, null, null);
             }
         }
 
