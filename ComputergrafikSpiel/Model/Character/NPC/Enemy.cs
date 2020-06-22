@@ -101,6 +101,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             if (this.CurrentHealth <= 0)
             {
+                Scene.Scene.Current.RemoveEntity(this);
                 this.OnDeath(EventArgs.Empty);
             }
         }

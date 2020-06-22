@@ -89,13 +89,12 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(entry);
                 }
 
+                enumerable.AddRange(this.NPCs);
+                enumerable.AddRange(this.Entities);
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
                 }
-
-                enumerable.AddRange(this.NPCs);
-                enumerable.AddRange(this.Entities);
                 return enumerable;
             }
         }
@@ -128,11 +127,16 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.ColliderManager.AddEntityCollidable(entity as ICollidable);
             }
+
         }
 
         public void RemoveEntity(IEntity entity)
         {
             this.EntitiesList.Remove(entity);
+            if (entity is ICollidable)
+            {
+                this.ColliderManager.RemoveEntityCollidable(entity as ICollidable);
+            }
         }
 
         public void SetAsActive()
