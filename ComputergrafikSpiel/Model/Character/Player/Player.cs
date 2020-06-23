@@ -113,7 +113,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Dash)
                 {
-                    this.playerMovementSystem.PlayerDash();
+                    this.playerMovementSystem.PlayerDash(this);
                 }
             }
 
