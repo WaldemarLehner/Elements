@@ -31,7 +31,6 @@ namespace ComputergrafikSpiel.Model.Scene
             this.LeftScene = left;
             this.RightScene = right;
             this.BottomScene = bottom;
-
             if (Scene.Current == null)
             {
                 this.active = true;
@@ -154,7 +153,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
             Scene.Current.Disable();
             Scene.Current = this;
-            ChangeScene.Invoke(this, null);
+            //TODO: Throws null ChangeScene.Invoke(this, null);
         }
 
         public void Disable()

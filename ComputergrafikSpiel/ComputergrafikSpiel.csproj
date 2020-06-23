@@ -195,6 +195,7 @@
     <Compile Include="View\Helpers\IRenderableHelper.cs" />
     <Compile Include="View\Helpers\RotationHelper.cs" />
     <Compile Include="View\Interfaces\ICamera.cs" />
+    <Compile Include="View\Renderer\DebugMask.cs" />
     <Compile Include="View\Renderer\Interfaces\IRenderer.cs" />
     <Compile Include="View\Interfaces\IView.cs" />
     <Compile Include="View\Renderer\OpenTKRenderer.cs" />

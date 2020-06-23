@@ -24,14 +24,14 @@ namespace ComputergrafikSpiel.View.Renderer
             this.Camera = camera ?? throw new ArgumentNullException(nameof(camera));
             this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
-            this.Debug = false;
+            this.Debug = DebugMask.Mask.DebugData;
         }
 
         public bool Active { get; private set; } = true;
 
         public ICamera Camera { get; private set; }
 
-        public bool Debug { get; set; } = false;
+        public DebugMask.Mask Debug { get; set; }
 
         public (int width, int height) Screen { get; private set; }
 
@@ -68,12 +68,12 @@ namespace ComputergrafikSpiel.View.Renderer
 
             }
 
-            if (this.Debug)
+            if (this.Debug != 0)
             {
                 foreach (var entry in this.RenderablesEnumerator)
                 {
                     var rand = new Random(13456);
-                    OpenTKRendererHelper.RenderRenderableDebug(this, entry, rand);
+                    OpenTKRendererHelper.RenderRenderableDebug(this, entry, rand, this.Debug);
                 }
             }
         }
