@@ -46,14 +46,14 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
         {
             this.setMovementspeedToValueBefore = player.MovementSpeed;
             Console.WriteLine("DAshh");
-            player.MovementSpeed = 700;
+            player.MovementSpeed = 1400;
             this.ReduceSpeedAfterDash(player);
             return;
         }
 
         public async Task ReduceSpeedAfterDash(Player player)
         {
-            await Task.Delay(20);
+            await Task.Delay(2);
             player.MovementSpeed = this.setMovementspeedToValueBefore;
             return;
         }
