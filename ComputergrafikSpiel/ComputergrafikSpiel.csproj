@@ -129,9 +129,11 @@
     <Compile Include="Model\Collider\Ray.cs" />
     <Compile Include="Model\Collider\RectangleOffsetCollider.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IEntity.cs" />
+    <Compile Include="Model\EntitySettings\Interfaces\IRenderableBackground.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IUiRenderable.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
+    <Compile Include="Model\EntitySettings\Texture\BackgroundRenderable.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\Interfaces\ITextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\Interfaces\ITileTextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TextureContructor.cs" />
@@ -150,7 +152,7 @@
     <Compile Include="Model\World\Obstacles\RockObstacle.cs" />
     <Compile Include="Model\World\Obstacles\StumpObstacle.cs" />
     <Compile Include="Model\World\TileDefinitions.cs" />
-    <Compile Include="Model\World\CollidableWorldTile.cs"/>
+    <Compile Include="Model\World\CollidableWorldTile.cs" />
     <Compile Include="Model\Entity\Interactable.cs" />
     <Compile Include="Model\Interfaces\IModel.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IPositionable.cs" />
@@ -193,6 +195,7 @@
     <Compile Include="View\Helpers\IRenderableHelper.cs" />
     <Compile Include="View\Helpers\RotationHelper.cs" />
     <Compile Include="View\Interfaces\ICamera.cs" />
+    <Compile Include="View\Renderer\DebugMask.cs" />
     <Compile Include="View\Renderer\Interfaces\IRenderer.cs" />
     <Compile Include="View\Interfaces\IView.cs" />
     <Compile Include="View\Renderer\OpenTKRenderer.cs" />
@@ -294,6 +297,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\WallTipTileSet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Wall\Wall_single.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

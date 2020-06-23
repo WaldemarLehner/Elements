@@ -27,7 +27,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.Position = startPosition;
             this.scale = new Vector2(16, 16);
             this.Scale = this.scale;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player | ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Wall);
+            var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, collisionMask);
             this.NPCController = new AIEnemy();
         }
 
@@ -51,7 +52,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public ITexture Texture { get; } = null;
 
-        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new (Color4 color, Vector2[] vertices)[] { this.Collider.DebugData };
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
@@ -101,6 +102,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             if (this.CurrentHealth <= 0)
             {
+                Scene.Scene.Current.RemoveEntity(this);
                 this.OnDeath(EventArgs.Empty);
             }
         }

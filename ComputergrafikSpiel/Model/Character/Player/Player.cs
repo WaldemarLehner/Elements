@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using ComputergrafikSpiel.Controller.Input;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
@@ -32,12 +32,15 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Position = new Vector2(50, 50);
             this.scale = new Vector2(32, 32);
             this.Scale = this.scale;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall);
+            var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall;
+            this.Collider = new CircleOffsetCollider(this, new Vector2(0, -19f), 10, collisionLayer);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
-            this.AttackCooldownCurrnent = 0;
+            this.AttackCooldownCurrent = 0;
+            this.DashCooldownCurrent = 0;
+            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player
@@ -59,9 +62,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float AttackCooldown { get; } = 100;
 
-        public float AttackCooldownCurrnent { get; set; }
+        public float AttackCooldownCurrent { get; set; }
 
-        public float MovementSpeed { get; set; } = 50;
+        public float DashCooldown { get; } = 4;
+
+        public float DashCooldownCurrent { get; set; }
+
+        public float MovementSpeed { get; set; } = 100;
 
         public int Money { get; set; } = 0;
 
@@ -77,7 +84,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public ICollider Collider { get; set; }
 
-        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new (Color4 color, Vector2[] vertices)[] { this.Collider.DebugData };
 
         public IWeapon EquipedWeapon { get; private set; }
 
@@ -96,10 +103,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    if (this.EquipedWeapon != null && this.AttackCooldownCurrnent <= 0)
+                    if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
                     {
                         this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, new List<INonPlayerCharacter>());
-                        this.AttackCooldownCurrnent = this.AttackCooldown;
+                        this.AttackCooldownCurrent = this.AttackCooldown;
                     }
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
@@ -112,7 +119,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Dash)
                 {
-                    this.playerMovementSystem.PlayerDash();
+                    if (this.DashCooldownCurrent <= 0)
+                    {
+                        this.playerMovementSystem.PlayerDash(this);
+                        this.DashCooldownCurrent = this.DashCooldown;
+                    }
                 }
             }
 
@@ -140,8 +151,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
-
-                // this.model.DestroyObject(this, null, null);
             }
         }
 
@@ -197,7 +206,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.LookAt(this.mousePosition);
             if (this.run)
             {
-                this.Position += this.directionXY * this.MovementSpeed * dtime * 2;
+                this.Position += this.directionXY * this.MovementSpeed * dtime / 2;
                 this.run = false;
 
                 // Dient nur zu Testzwecken
@@ -209,7 +218,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             this.directionXY = Vector2.Zero;
 
-            this.AttackCooldownCurrnent -= dtime + this.AttackSpeed;
+            this.AttackCooldownCurrent -= dtime + this.AttackSpeed;
+
+            this.DashCooldownCurrent -= dtime;
 
             Scene.Scene.Current.ColliderManager.HandleTriggerCollisions(this);
         }

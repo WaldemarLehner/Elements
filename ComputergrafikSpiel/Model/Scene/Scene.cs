@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.World.Interfaces;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
@@ -19,20 +24,22 @@ namespace ComputergrafikSpiel.Model.Scene
         private bool initialized = false;
         private bool active = false;
 
-        public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null)
+        public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
         {
             this.World = worldScene ?? throw new ArgumentNullException(nameof(worldScene));
             this.TopScene = top;
             this.LeftScene = left;
             this.RightScene = right;
             this.BottomScene = bottom;
-
             if (Scene.Current == null)
             {
                 this.active = true;
                 this.Initialize();
                 Scene.Current = this;
             }
+
+            var tex = background ?? new TextureLoader().LoadTexture("Wall/Wall_single");
+            this.Background = new BackgroundRenderable(tex, Vector2.One * worldScene.SceneDefinition.TileSize / 2f, Vector2.One * worldScene.SceneDefinition.TileSize / 2, OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat);
 
             this.ColliderManager = new ColliderManager(this.World.SceneDefinition.TileSize);
 
@@ -47,6 +54,8 @@ namespace ComputergrafikSpiel.Model.Scene
         public static Scene Current { get; private set; } = null;
 
         public static IPlayer Player { get; private set; } = null;
+
+        public IRenderableBackground Background { get; private set; }
 
         public IColliderManager ColliderManager { get; }
 
@@ -67,7 +76,7 @@ namespace ComputergrafikSpiel.Model.Scene
             get
             {
                 List<IRenderable> enumerable = new List<IRenderable>();
-
+                enumerable.Add(this.Background);
                 var renderables = new IEnumerable<IRenderable>[]
                 {
                     this.World.WorldTilesEnumerable,
@@ -79,12 +88,12 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(entry);
                 }
 
+                enumerable.AddRange(this.NPCs);
+                enumerable.AddRange(this.Entities);
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
                 }
-
-                enumerable.AddRange(this.NPCs);
                 return enumerable;
             }
         }
@@ -113,11 +122,20 @@ namespace ComputergrafikSpiel.Model.Scene
         public void SpawnEntity(IEntity entity)
         {
             this.EntitiesList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
+            if (entity is ICollidable)
+            {
+                this.ColliderManager.AddEntityCollidable(entity as ICollidable);
+            }
+
         }
 
         public void RemoveEntity(IEntity entity)
         {
             this.EntitiesList.Remove(entity);
+            if (entity is ICollidable)
+            {
+                this.ColliderManager.RemoveEntityCollidable(entity as ICollidable);
+            }
         }
 
         public void SetAsActive()
@@ -135,7 +153,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
             Scene.Current.Disable();
             Scene.Current = this;
-            ChangeScene.Invoke(this, null);
+            //TODO: Throws null ChangeScene.Invoke(this, null);
         }
 
         public void Disable()
