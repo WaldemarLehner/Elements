@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ComputergrafikSpiel.Controller.Input;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;

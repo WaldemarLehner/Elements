@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ComputergrafikSpiel.Controller.Input;
 using OpenTK;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using ComputergrafikSpiel.Model;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
