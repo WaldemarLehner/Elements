@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 {
     internal class PlayerMovementSystem
     {
+        float setMovementspeedToValueBefore;
+
         // Determines in which direction the player moves
         public Vector2 SetPlayerDirection(IReadOnlyList<PlayerEnum.PlayerActions> movement)
         {
@@ -39,9 +42,20 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
             return dir.Normalized();
         }
 
-        public void PlayerDash()
+        public void PlayerDash(Player player)
         {
-             //
+            this.setMovementspeedToValueBefore = player.MovementSpeed;
+            Console.WriteLine("DAshh");
+            player.MovementSpeed = 400;
+            this.ReduceSpeedAfterDash(player);
+            return;
+        }
+
+        public async Task ReduceSpeedAfterDash(Player player)
+        {
+            await Task.Delay(100);
+            player.MovementSpeed = this.setMovementspeedToValueBefore;
+            return;
         }
     }
 }
