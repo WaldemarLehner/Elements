@@ -71,11 +71,13 @@ namespace ComputergrafikSpiel.Controller.Input
                         this.lockedDashKey = true;
                     }
                 }
-                else if (keyboardState.IsKeyUp(Key.F))
+
+                if (keyboardState.IsKeyUp(Key.F))
                 {
                     this.lockedInteractKey = false;
                 }
-                else if (keyboardState.IsKeyUp(Key.Space))
+
+                if (keyboardState.IsKeyUp(Key.Space))
                 {
                     this.lockedDashKey = false;
                 }
