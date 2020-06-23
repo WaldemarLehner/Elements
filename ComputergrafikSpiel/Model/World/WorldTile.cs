@@ -38,7 +38,7 @@ namespace ComputergrafikSpiel.Model.World
 
         public (int x, int y) GridPosition { get; }
 
-        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new List<(Color4 color, Vector2[] vertices)>();
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
         public Vector2 Position { get; }
 

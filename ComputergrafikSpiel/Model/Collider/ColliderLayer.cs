@@ -14,6 +14,7 @@ namespace ComputergrafikSpiel.Model.Collider
             Enemy =  0b00000010,
             Bullet = 0b00000100,
             Wall =   0b00001000,
+            Water =  0b00010000,
         }
 
         /// <summary>

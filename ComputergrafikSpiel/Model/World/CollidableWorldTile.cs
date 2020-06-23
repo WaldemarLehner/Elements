@@ -16,10 +16,10 @@ namespace ComputergrafikSpiel.Model.World
         {
             this.Size = size;
             this.GridPosition = gridPos;
-            this.Position = (new Vector2(this.GridPosition.x, this.GridPosition.y) * this.Size) + (Vector2.One * this.Size / 2f);
+            this.Position = (new Vector2(this.GridPosition.x, this.GridPosition.y) * this.Size) + (Vector2.One * (this.Size / 2f));
             this.TileType = type;
             ColliderLayer.Layer collisionLayer = TileHelper.GetCollisionLayers(type);
-            this.Collider = new RectangleOffsetCollider(this, Vector2.Zero, size / 2f, collisionLayer);
+            this.Collider = new RectangleOffsetCollider(this, Vector2.Zero, size / 4f, collisionLayer);
 
             this.TileTexture = new WorldTileTextureLoader().LoadTexture(type);
             TileDefinitions.TextureSubType[] textureLayers = TileHelper.HasTileTypeTrims(type) ? TileHelper.GetTexturesTransitionable(neighbors) : new TileDefinitions.TextureSubType[] { TileDefinitions.TextureSubType.Filled };
@@ -42,7 +42,7 @@ namespace ComputergrafikSpiel.Model.World
 
         public (IEnumerable<TextureCoordinates>, ITileTexture) Texture => (this.Coordinates, this.TileTexture);
 
-        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4 color, Vector2[] vertices)>();
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new (Color4 color, Vector2[] vertices)[] { this.Collider.DebugData };
 
         public Vector2 Position { get; }
 

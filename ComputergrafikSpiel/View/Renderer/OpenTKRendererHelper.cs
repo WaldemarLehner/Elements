@@ -11,32 +11,39 @@ namespace ComputergrafikSpiel.View.Renderer
 {
     internal static class OpenTKRendererHelper
     {
-        internal static void RenderRenderableDebug(IRenderer renderer, IRenderable renderable, Random rand)
+        internal static void RenderRenderableDebug(IRenderer renderer, IRenderable renderable, Random rand, DebugMask.Mask mask)
         {
             byte[] buf = new byte[3];
             rand.NextBytes(buf);
-            var rect = new Rectangle(renderable, true);
-            var vertsWorldSpace = new Vector2[] { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
 
-            RenderItemDebug(renderer, vertsWorldSpace, new Color4(buf[0], buf[1], buf[2], 0x10));
-
-            if (renderable.DebugData != null)
+            if ((mask & DebugMask.Mask.TextureBoundingBox) != 0)
             {
-                foreach (var debugData in renderable.DebugData)
-                {
-                    Color4 color;
-                    if (debugData.color == null)
-                    {
-                        var randBytes = new byte[3];
-                        rand.NextBytes(randBytes);
-                        color = new Color4(randBytes[0], randBytes[1], randBytes[2], 0xFF);
-                    }
-                    else
-                    {
-                        color = debugData.color;
-                    }
+                var rect = new Rectangle(renderable, true);
+                var vertsWorldSpace = new Vector2[] { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
 
-                    RenderItemDebug(renderer, debugData.vertices, color);
+                RenderItemDebug(renderer, vertsWorldSpace, new Color4(buf[0], buf[1], buf[2], 0x10));
+            }
+
+            if ((mask & DebugMask.Mask.DebugData) != 0)
+            {
+                if (renderable.DebugData != null)
+                {
+                    foreach (var debugData in renderable.DebugData)
+                    {
+                        Color4 color;
+                        if (debugData.color == null)
+                        {
+                            var randBytes = new byte[3];
+                            rand.NextBytes(randBytes);
+                            color = new Color4(randBytes[0], randBytes[1], randBytes[2], 0xFF);
+                        }
+                        else
+                        {
+                            color = debugData.color;
+                        }
+
+                        RenderItemDebug(renderer, debugData.vertices, color);
+                    }
                 }
             }
         }
@@ -52,7 +59,7 @@ namespace ComputergrafikSpiel.View.Renderer
             }
 
             GL.Color4(color);
-            GL.Begin(PrimitiveType.LineLoop);
+            GL.Begin(PrimitiveType.LineStrip);
             foreach (var vert in vertsNDC)
             {
                 GL.Vertex2(vert);
