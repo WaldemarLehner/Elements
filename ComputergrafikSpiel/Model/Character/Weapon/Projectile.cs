@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -36,6 +35,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             Vector2 directionNormalized = Vector2.Normalize(direction);
             this.Rotation = RotationHelper.GetRotationBetweenTwoVectorsRadians(positionForRotation, directionNormalized);
             this.RotationAnker = position;
+            Scene.Scene.Current.SpawnEntity(this);
         }
 
         public int AttackDamage { get; }
@@ -74,6 +74,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             if (this.TTL <= 0)
             {
                 // @Gerald this.Model.DestroyObject(null, this, null);
+                Scene.Scene.Current.RemoveEntity(this);
             }
         }
 

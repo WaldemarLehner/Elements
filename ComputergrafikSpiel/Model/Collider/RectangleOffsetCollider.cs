@@ -1,6 +1,7 @@
 ﻿using System;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Collider
 {
@@ -35,6 +36,20 @@ namespace ComputergrafikSpiel.Model.Collider
         };
 
         public (float top, float bottom, float left, float right) Bounds => (this.Position.Y + this.size.height, this.Position.Y - this.size.height, this.Position.X - this.size.width, this.Position.X + this.size.width);
+
+        public (Color4 color, Vector2[] verts) DebugData => (new Color4(0, 255, 0, 255), this.GetDebugData());
+
+        private Vector2[] GetDebugData()
+        {
+            return new Vector2[]
+            {
+                new Vector2(this.Bounds.left, this.Bounds.top),
+                new Vector2(this.Bounds.right, this.Bounds.top),
+                new Vector2(this.Bounds.right, this.Bounds.bottom),
+                new Vector2(this.Bounds.left, this.Bounds.bottom),
+                new Vector2(this.Bounds.left, this.Bounds.top),
+            };
+        }
 
         public bool DidCollideWith(ICollider otherCollider) => CollisionDetectionHelper.DidCollideWith(this, otherCollider);
 
