@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ComputergrafikSpiel.Controller.Input;
 using OpenTK;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 {
@@ -54,7 +55,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 
         public async Task ReduceSpeedAfterDash(Player player)
         {
-            await Task.Delay(10);
+            await Task.Delay(20);
             player.MovementSpeed = this.setMovementspeedToValueBefore;
             return;
         }

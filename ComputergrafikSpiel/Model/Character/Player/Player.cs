@@ -37,7 +37,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
-            this.AttackCooldownCurrnent = 0;
+            this.AttackCooldownCurrent = 0;
+            this.DashCooldownCurrent = 0;
             Scene.Scene.Current.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
@@ -60,9 +61,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float AttackCooldown { get; } = 100;
 
-        public float AttackCooldownCurrnent { get; set; }
+        public float AttackCooldownCurrent { get; set; }
 
-        public float MovementSpeed { get; set; } = 50;
+        public float DashCooldown { get; } = 4;
+
+        public float DashCooldownCurrent { get; set; }
+
+        public float MovementSpeed { get; set; } = 100;
 
         public int Money { get; set; } = 0;
 
@@ -97,10 +102,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    if (this.EquipedWeapon != null && this.AttackCooldownCurrnent <= 0)
+                    if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
                     {
                         this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, new List<INonPlayerCharacter>());
-                        this.AttackCooldownCurrnent = this.AttackCooldown;
+                        this.AttackCooldownCurrent = this.AttackCooldown;
                     }
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Interaction)
@@ -113,7 +118,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Dash)
                 {
-                    this.playerMovementSystem.PlayerDash(this);
+                    if (this.DashCooldownCurrent <= 0)
+                    {
+                        this.playerMovementSystem.PlayerDash(this);
+                        this.DashCooldownCurrent = this.DashCooldown;
+                    }
                 }
             }
 
@@ -196,7 +205,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.LookAt(this.mousePosition);
             if (this.run)
             {
-                this.Position += this.directionXY * this.MovementSpeed * dtime * 2;
+                this.Position += this.directionXY * this.MovementSpeed * dtime / 2;
                 this.run = false;
 
                 // Dient nur zu Testzwecken
@@ -208,7 +217,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             this.directionXY = Vector2.Zero;
 
-            this.AttackCooldownCurrnent -= dtime + this.AttackSpeed;
+            this.AttackCooldownCurrent -= dtime + this.AttackSpeed;
+
+            this.DashCooldownCurrent -= dtime;
 
             Scene.Scene.Current.ColliderManager.HandleTriggerCollisions(this);
         }
