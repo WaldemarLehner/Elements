@@ -9,7 +9,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         internal static MockCircleCollidable CreateCollidableWithCollider(Vector2 position, float radius)
         {
             var collidable = new MockCircleCollidable(position);
-            var collider = new CircleOffsetCollider(collidable, Vector2.Zero, radius,  (ColliderLayer.Layer)~0);
+            var collider = new CircleOffsetCollider(collidable, Vector2.Zero, radius, ColliderLayer.Layer.Player,  (ColliderLayer.Layer)~0);
             collidable.CircleCollider = collider;
 
             return collidable;

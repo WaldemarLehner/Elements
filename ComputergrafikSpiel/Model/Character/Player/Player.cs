@@ -34,8 +34,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Position = new Vector2(50, 50);
             this.scale = new Vector2(32, 32);
             this.Scale = this.scale;
-            var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall;
-            this.Collider = new CircleOffsetCollider(this, new Vector2(0, -19f), 10, collisionLayer);
+            var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Interactable | ColliderLayer.Layer.Trigger;
+            this.Collider = new CircleOffsetCollider(this, new Vector2(0, -19f), 10, ColliderLayer.Layer.Player, collisionLayer);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem();

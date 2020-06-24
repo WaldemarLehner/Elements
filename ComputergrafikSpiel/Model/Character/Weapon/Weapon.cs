@@ -19,7 +19,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.ProjectileCreationCount = projectileCCount;
             this.BulletTTL = bulletTTL;
             this.BulletSize = bulletSize;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Bullet);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Bullet);
             this.AttackDamage = attackDamage;
         }
 
