@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
@@ -71,11 +69,13 @@ namespace ComputergrafikSpiel.Controller.Input
                         this.lockedDashKey = true;
                     }
                 }
-                else if (keyboardState.IsKeyUp(Key.F))
+
+                if (keyboardState.IsKeyUp(Key.F))
                 {
                     this.lockedInteractKey = false;
                 }
-                else if (keyboardState.IsKeyUp(Key.Space))
+
+                if (keyboardState.IsKeyUp(Key.Space))
                 {
                     this.lockedDashKey = false;
                 }

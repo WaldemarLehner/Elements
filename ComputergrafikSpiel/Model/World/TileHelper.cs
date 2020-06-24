@@ -130,7 +130,6 @@ namespace ComputergrafikSpiel.Model.World
                     textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
                 }
             }
-
             else
             {
                 if(n.Right && n.Left && !n.Top && !n.Bottom)
