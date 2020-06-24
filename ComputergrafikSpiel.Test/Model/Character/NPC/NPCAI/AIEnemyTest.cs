@@ -17,7 +17,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC.NPCAI
             scene.SetAsActive();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod, Ignore("somehow Ray needs an Instance from another class, which why here comes a SystemNullReferenceException")]
         public void AssertThatWhenPlayerIsInRangeEnemyMoves()
         {
             CreateNewScene();
