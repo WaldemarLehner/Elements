@@ -13,11 +13,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
     [TestClass]
     public class EnemyTest
     {
-        private IColliderManager ColliderManager { get; set; } = new ColliderManager(32);
-
         private Vector2 Position = new Vector2(200, 200);
-
-        private ICollection<INonPlayerCharacter> EnemysList { get; set; } = new List<INonPlayerCharacter>();
 
         private static void CreateNewScene()
         {
