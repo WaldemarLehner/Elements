@@ -1,14 +1,12 @@
 ﻿using ComputergrafikSpiel.Model.Character.Player;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using System.Collections.Generic;
-
 namespace ComputergrafikSpiel.Test.Model.Character.Player
 {
     [TestClass]
     public class PlayerTest
     {
+        // TODO -> Player is not shown in code coverage
         [DataTestMethod]
         [DataRow(0)]
         [DataRow(-1)]
