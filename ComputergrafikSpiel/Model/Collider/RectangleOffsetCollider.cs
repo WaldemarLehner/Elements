@@ -11,15 +11,16 @@ namespace ComputergrafikSpiel.Model.Collider
 
         private Vector2 offset;
 
-        internal RectangleOffsetCollider(ICollidable parent, Vector2 offset, float radius, ColliderLayer.Layer layer)
+        internal RectangleOffsetCollider(ICollidable parent, Vector2 offset, float radius, ColliderLayer.Layer self, ColliderLayer.Layer collidesWith)
         {
             this.CollidableParent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.offset = offset;
             this.size = (radius * 2, radius * 2);
-            this.Layer = layer;
+            this.CollidesWith = collidesWith;
+            this.OwnLayer = self;
         }
 
-        public ColliderLayer.Layer Layer { get; }
+        public ColliderLayer.Layer CollidesWith { get; }
 
         public ICollidable CollidableParent { get; }
 
@@ -38,6 +39,8 @@ namespace ComputergrafikSpiel.Model.Collider
         public (float top, float bottom, float left, float right) Bounds => (this.Position.Y + this.size.height, this.Position.Y - this.size.height, this.Position.X - this.size.width, this.Position.X + this.size.width);
 
         public (Color4 color, Vector2[] verts) DebugData => (new Color4(0, 255, 0, 255), this.GetDebugData());
+
+        public ColliderLayer.Layer OwnLayer { get; }
 
         private Vector2[] GetDebugData()
         {

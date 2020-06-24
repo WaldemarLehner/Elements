@@ -57,7 +57,7 @@ namespace ComputergrafikSpiel.Model.Entity
 
             this.Position = new Vector2(positionX, positionY);
             this.Scale = new Vector2(10, 10);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player);
             this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/" + this.texturename);
         }
 

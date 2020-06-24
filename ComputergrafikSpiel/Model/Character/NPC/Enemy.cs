@@ -28,7 +28,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.scale = new Vector2(16, 16);
             this.Scale = this.scale;
             var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, collisionMask);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player, collisionMask);
             this.NPCController = new AIEnemy();
         }
 
