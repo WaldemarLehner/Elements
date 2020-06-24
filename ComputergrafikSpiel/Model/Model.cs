@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
@@ -15,7 +16,7 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.Model
 {
-    internal class Model : IModel
+    public class Model : IModel
     {
         // temporary
         private IWeapon weapon;
@@ -31,7 +32,7 @@ namespace ComputergrafikSpiel.Model
             */
 
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
-            new Scene.Scene(worldScene);
+            new Scene.Scene(worldScene, this);
 
         }
 
@@ -88,9 +89,15 @@ namespace ComputergrafikSpiel.Model
             this.SpawnInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250, 10);
         }
 
-        public void CreateEnemy()
+        public void CreateRandomEnemy(int min, int max)
         {
-                Scene.Scene.Current.CreateNPC(new Enemy(10, "Fungus", 20, 1, 2, new Vector2(300, 200)));
+            Random random = new Random();
+            string[] texture = { "Fungus", "WaterDrop" };
+            for (int i = random.Next(min, max); i > 0; i--)
+            {
+                var randomTexture = texture[random.Next(0, texture.Length)];
+                Scene.Scene.Current.CreateNPC(new Enemy(10, randomTexture, 20, 1, 2, new Vector2(random.Next(0, 600), random.Next(0, 600))));
+            }
         }
 
         public void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList)

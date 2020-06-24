@@ -24,13 +24,14 @@ namespace ComputergrafikSpiel.Model.Scene
         private bool initialized = false;
         private bool active = false;
 
-        public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
+        public Scene(IWorldScene worldScene, IModel model, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
         {
             this.World = worldScene ?? throw new ArgumentNullException(nameof(worldScene));
             this.TopScene = top;
             this.LeftScene = left;
             this.RightScene = right;
             this.BottomScene = bottom;
+            this.Model = model;
             if (Scene.Current == null)
             {
                 this.active = true;
@@ -54,6 +55,8 @@ namespace ComputergrafikSpiel.Model.Scene
         public static Scene Current { get; private set; } = null;
 
         public static IPlayer Player { get; private set; } = null;
+
+        public IModel Model { get; }
 
         public IRenderableBackground Background { get; private set; }
 
@@ -94,6 +97,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     enumerable.Add(Scene.Player);
                 }
+
                 return enumerable;
             }
         }
@@ -126,7 +130,6 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.ColliderManager.AddEntityCollidable(entity as ICollidable);
             }
-
         }
 
         public void RemoveEntity(IEntity entity)
@@ -135,6 +138,24 @@ namespace ComputergrafikSpiel.Model.Scene
             if (entity is ICollidable)
             {
                 this.ColliderManager.RemoveEntityCollidable(entity as ICollidable);
+            }
+        }
+
+        public void RemoveNPC(INonPlayerCharacter npc)
+        {
+            this.NpcList.Remove(npc);
+            if (npc is ICollidable)
+            {
+                this.ColliderManager.RemoveEntityCollidable(npc as ICollidable);
+            }
+        }
+
+        public void CreateNPC(INonPlayerCharacter npc)
+        {
+            this.NpcList.Add(npc ?? throw new ArgumentNullException(nameof(npc)));
+            if (npc is ICollidable)
+            {
+                this.ColliderManager.AddEntityCollidable(npc as ICollidable);
             }
         }
 
@@ -174,14 +195,11 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Player.Update(dtime);
             }
-        }
 
-        public void CreateNPC(INonPlayerCharacter npc)
-        {
-            this.NpcList.Add(npc ?? throw new ArgumentNullException(nameof(npc)));
-            if (npc is ICollidable)
+            // Spawn Interactable when all enemies are dead
+            if (this.EntitiesList.Count == 0)
             {
-                this.ColliderManager.AddEntityCollidable(npc as ICollidable);
+                (this.Model as Model).CreateRoundEndInteractables();
             }
         }
 

@@ -29,6 +29,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
         IWorldScene World { get; }
 
+        IModel Model { get; }
+
         void SetAsActive();
 
         void Disable();
