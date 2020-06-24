@@ -16,6 +16,7 @@ using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.World.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
@@ -94,9 +95,15 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     enumerable.Add(Scene.Player);
                 }
+
                 return enumerable;
             }
         }
+
+        /// <summary>
+        /// Gets A list of debug data that can be drawn. This will be cleared on each draw.
+        /// </summary>
+        public List<(Color4 color, Vector2[] verts)> IndependentDebugData { get; } = new List<(Color4 color, Vector2[] verts)>();
 
         public IEnumerable<INonPlayerCharacter> NPCs => this.NpcList;
 

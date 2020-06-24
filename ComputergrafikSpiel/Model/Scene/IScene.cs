@@ -6,6 +6,8 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.World.Interfaces;
+using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
@@ -26,6 +28,8 @@ namespace ComputergrafikSpiel.Model.Scene
         IScene BottomScene { get; }
 
         IEnumerable<INonPlayerCharacter> NPCs { get; }
+
+        List<(Color4 color, Vector2[] verts)> IndependentDebugData { get; }
 
         IWorldScene World { get; }
 
