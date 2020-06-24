@@ -17,7 +17,7 @@ namespace ComputergrafikSpiel.Model.World.Obstacles
         {
             this.Position = position;
             this.scale = scale;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, scale / 2f, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, scale / 2f, ColliderLayer.Layer.Wall, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player);
             this.Texture = new TextureLoader().LoadTexture("Obstacle/Stump");
         }
 

@@ -19,7 +19,8 @@ namespace ComputergrafikSpiel.Model.World
             this.Position = (new Vector2(this.GridPosition.x, this.GridPosition.y) * this.Size) + (Vector2.One * (this.Size / 2f));
             this.TileType = type;
             ColliderLayer.Layer collisionLayer = TileHelper.GetCollisionLayers(type);
-            this.Collider = new RectangleOffsetCollider(this, Vector2.Zero, size / 4f, collisionLayer);
+            var self = (type == TileDefinitions.Type.Wall || type == TileDefinitions.Type.WallTrim) ? ColliderLayer.Layer.Wall : ColliderLayer.Layer.Water;
+            this.Collider = new RectangleOffsetCollider(this, Vector2.Zero, size / 4f, self, collisionLayer);
 
             this.TileTexture = new WorldTileTextureLoader().LoadTexture(type);
             TileDefinitions.TextureSubType[] textureLayers = TileHelper.HasTileTypeTrims(type) ? TileHelper.GetTexturesTransitionable(neighbors) : new TileDefinitions.TextureSubType[] { TileDefinitions.TextureSubType.Filled };

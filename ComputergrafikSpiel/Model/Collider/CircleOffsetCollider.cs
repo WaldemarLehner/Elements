@@ -10,7 +10,7 @@ namespace ComputergrafikSpiel.Model.Collider
     {
         private Vector2 offset;
 
-        internal CircleOffsetCollider(ICollidable parent, Vector2 offset, float radius, ColliderLayer.Layer layer)
+        internal CircleOffsetCollider(ICollidable parent, Vector2 offset, float radius,ColliderLayer.Layer self, ColliderLayer.Layer collidesWith)
         {
             this.CollidableParent = parent ?? throw new ArgumentNullException(nameof(parent));
             if (radius <= 0)
@@ -20,10 +20,11 @@ namespace ComputergrafikSpiel.Model.Collider
 
             this.Radius = radius;
             this.offset = offset;
-            this.Layer = layer;
+            this.OwnLayer = self;
+            this.CollidesWith = collidesWith;
         }
 
-        public ColliderLayer.Layer Layer { get; }
+        public ColliderLayer.Layer CollidesWith { get; }
 
         public float Radius { get; }
 
@@ -39,11 +40,17 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public (Color4 color, Vector2[] verts) DebugData => (new Color4(0, 255, 0, 255), this.GenerateDebugVerts());
 
+        public ColliderLayer.Layer OwnLayer { get; }
+
+        public bool DidCollideWith(ICollider otherCollider) => CollisionDetectionHelper.DidCollideWith(this, otherCollider);
+
+        public float MinimalDistanceTo(ICollider otherCollider) => CollisionDetectionHelper.MinDistanceBetween(this, otherCollider);
+
         private Vector2[] GenerateDebugVerts()
         {
             const int resolution = 15;
             var degree = 0f;
-            Vector2[] verts = new Vector2[resolution+1];
+            Vector2[] verts = new Vector2[resolution + 1];
             for (int i = 0; i < resolution; i++)
             {
                 float x = (float)Math.Cos(degree);
@@ -57,9 +64,5 @@ namespace ComputergrafikSpiel.Model.Collider
             verts[resolution] = verts[0];
             return verts;
         }
-
-        public bool DidCollideWith(ICollider otherCollider) => CollisionDetectionHelper.DidCollideWith(this, otherCollider);
-
-        public float MinimalDistanceTo(ICollider otherCollider) => CollisionDetectionHelper.MinDistanceBetween(this, otherCollider);
     }
 }
