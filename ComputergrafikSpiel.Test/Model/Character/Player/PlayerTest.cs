@@ -1,13 +1,30 @@
-﻿using ComputergrafikSpiel.Model.Character.Player;
+﻿using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+using ComputergrafikSpiel.Model.Character.Player;
+using ComputergrafikSpiel.Model.Collider;
+using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
+using ComputergrafikSpiel.Model.World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
-
+using OpenTK.Graphics.OpenGL;
+using System.Collections.Generic;
 
 namespace ComputergrafikSpiel.Test.Model.Character.Player
 {
     [TestClass]
     public class PlayerTest
     {
+        private ICollection<INonPlayerCharacter> EnemysList { get; set; } = new List<INonPlayerCharacter>();
+        private IColliderManager ColliderManager { get; set; } = new ColliderManager(32);
+        private IModel model { get; set; } = null;
+
+        private Scene scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene());
+
+
+        private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = new Dictionary<PlayerEnum.Stats, IEntity>();
+
         [DataTestMethod]
         [DataRow(0)]
         [DataRow(-1)]
