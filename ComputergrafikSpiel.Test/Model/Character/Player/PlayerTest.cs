@@ -1,12 +1,13 @@
 ﻿using ComputergrafikSpiel.Model.Character.Player;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
+
+
 namespace ComputergrafikSpiel.Test.Model.Character.Player
 {
     [TestClass]
     public class PlayerTest
     {
-        // TODO -> Player is not shown in code coverage
         [DataTestMethod]
         [DataRow(0)]
         [DataRow(-1)]
@@ -20,7 +21,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         public void AssertThatPlayerIncreaseStatsThrowsArgumentPositiveGreaterZeroException()
         {
             ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
-            Assert.ThrowsException < ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => player.IncreasePlayerStats(-1, PlayerEnum.Stats.AttackSpeed));
+            Assert.ThrowsException<ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => player.IncreasePlayerStats(-1, PlayerEnum.Stats.AttackSpeed));
         }
 
         [DataTestMethod]
