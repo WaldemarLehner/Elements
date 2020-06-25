@@ -121,7 +121,7 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
                 Scene.Current.ColliderManager.AddEntityCollidable(player);
-                Scene.Player.Equip(new Weapon(3, 1, 4, 20, 5));
+                Scene.Player.Equip(new Weapon(3, 1, 4, 15, 5));
                 return true;
             }
 
