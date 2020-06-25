@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
-    internal class Texture : ITexture
+    public class Texture : ITexture
     {
         public Texture(TextureContructor contructor)
         {

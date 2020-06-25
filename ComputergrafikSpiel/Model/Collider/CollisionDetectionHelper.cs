@@ -28,6 +28,11 @@ namespace ComputergrafikSpiel.Model.Collider
 
         internal static bool DidCollideWith(ICollider collider1, ICollider collider2)
         {
+            if (!ColliderLayer.CanCollide(collider1.CollidesWith, collider2.OwnLayer))
+            {
+                return false;
+            }
+
             if (collider1 is CircleOffsetCollider && collider2 is CircleOffsetCollider)
             {
                 return MinDistanceBetween(collider1 as CircleOffsetCollider, collider2 as CircleOffsetCollider) <= 0;

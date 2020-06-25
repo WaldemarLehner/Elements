@@ -14,6 +14,9 @@ namespace ComputergrafikSpiel.Model.Collider
             Enemy =  0b00000010,
             Bullet = 0b00000100,
             Wall =   0b00001000,
+            Water =  0b00010000,
+            Interactable = 0b00100000,
+            Trigger = 0b01000000,
         }
 
         /// <summary>
@@ -22,9 +25,10 @@ namespace ComputergrafikSpiel.Model.Collider
         /// <param name="source">source Collider's Layer Flags.</param>
         /// <param name="destination">destination Collider's Layer Flags.</param>
         /// <returns>If Colliders can Collide.</returns>
-        internal bool CanCollide(Layer source, Layer destination)
+        public static bool CanCollide(Layer source, Layer destination)
         {
             return (source & destination) > 0;
         }
+
     }
 }

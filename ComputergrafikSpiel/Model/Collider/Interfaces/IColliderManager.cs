@@ -40,6 +40,6 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
 
         IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray);
 
-        IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray, Vector2 position);
+        IReadOnlyCollection<ICollidable> GetRayCollisionsSorted(IRay ray, Vector2 position);
     }
 }

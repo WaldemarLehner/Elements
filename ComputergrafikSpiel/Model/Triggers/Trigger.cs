@@ -15,7 +15,7 @@ namespace ComputergrafikSpiel.Model.Triggers
         public Trigger(Vector2 position, ColliderLayer.Layer activators)
         {
             // radius may have to be changed
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, activators);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, ColliderLayer.Layer.Trigger, activators);
             Scene.Scene.Current.ColliderManager.AddTriggerCollidable((int)position.X, (int)position.Y, this);
             this.Position = position;
             this.Texture = new TextureLoader().LoadTexture("Door/TreeBranchesDoor");

@@ -69,14 +69,13 @@ namespace ComputergrafikSpiel.Model
 
         public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY, int incNumber)
         {
-            // Heal Interactable
             Scene.Scene.Current.SpawnEntity(new Interactable(stat, positionX, positionY, incNumber));
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
         public void CreateRoundEndInteractables()
         {
-            // MaxHealth Interactable
+            // MaxHealth
             this.SpawnInteractable(PlayerEnum.Stats.MaxHealth, 250, 250, 1);
 
             // Defense Interactable
@@ -91,7 +90,8 @@ namespace ComputergrafikSpiel.Model
 
         public void CreateEnemy()
         {
-                Scene.Scene.Current.CreateNPC(new Enemy(10, "Fungus", 20, 1, 2, new Vector2(300, 200)));
+            Scene.Scene.Current.CreateNPC(new Enemy(10, "Fungus", 20, 1, 2, new Vector2(300, 200)));
+            Scene.Scene.Current.CreateNPC(new Enemy(10, "WaterDrop", 20, 1, 2, new Vector2(400, 300)));
         }
     }
 }

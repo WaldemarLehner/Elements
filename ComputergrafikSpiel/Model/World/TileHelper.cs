@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing.Text;
 using ComputergrafikSpiel.Model.Collider;
 
 namespace ComputergrafikSpiel.Model.World
@@ -17,6 +18,9 @@ namespace ComputergrafikSpiel.Model.World
 
         internal static TileDefinitions.TextureSubType[] GetTexturesTransitionable(TileDefinitions.SurroundingTiles n)
         {
+            bool cornerTL = false, cornerTR = false, cornerBL = false, cornerBR = false;
+
+
             n.RemoveUnneccesary();
             if (n.Count == 0)
             {
@@ -33,60 +37,64 @@ namespace ComputergrafikSpiel.Model.World
             // Check TopRight
             if (!n.Top && !n.Right)
             {
-                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopRight);
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomRight);
+                cornerBR = true;
             }
             else if (n.Top && !n.TopRight && n.Right)
             {
-                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopRight);
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomRight);
             }
 
             // Check TopLeft
             if (!n.Top && !n.Left)
             {
-                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopLeft);
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomLeft);
+                cornerBL = true;
             }
             else if (n.Top && n.Left && !n.TopLeft)
             {
-                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopLeft);
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomLeft);
             }
 
             // Check BottomRight
             if (!n.Bottom && !n.Right)
             {
-                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomRight);
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopRight);
+                cornerTR = true;
             }
             else if (n.Bottom && !n.BottomRight && n.Right)
             {
-                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomRight);
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopRight);
             }
 
             // Check BottomLeft
             if (!n.Bottom && !n.Left)
             {
-                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomLeft);
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopLeft);
+                cornerTL = true;
             }
             else if (n.Bottom && n.Left && !n.BottomLeft)
             {
-                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomLeft);
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopLeft);
             }
 
             // Check Edges
-            if (!n.Top && n.Bottom)
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeTop);
-            }
-
-            if (!n.Bottom && n.Top)
+            if (!n.Top && n.Bottom && !(cornerBL || cornerBR))
             {
                 textures.Add(TileDefinitions.TextureSubType.EdgeBottom);
             }
 
-            if (!n.Left && n.Right)
+            if (!n.Bottom && n.Top && !(cornerTL || cornerTR))
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeTop);
+            }
+
+            if (!n.Left && n.Right && !(cornerTL || cornerBL))
             {
                 textures.Add(TileDefinitions.TextureSubType.EdgeLeft);
             }
 
-            if (!n.Right && n.Left)
+            if (!n.Right && n.Left && !(cornerTR || cornerBR))
             {
                 textures.Add(TileDefinitions.TextureSubType.EdgeRight);
             }
@@ -104,11 +112,11 @@ namespace ComputergrafikSpiel.Model.World
                 }
                 else if (n.Top)
                 {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndBottom);
+                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndTop);
                 }
                 else if (n.Bottom)
                 {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndTop);
+                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndBottom);
                 }
             }
             else if (n.Count == 2)
@@ -121,6 +129,18 @@ namespace ComputergrafikSpiel.Model.World
                 {
                     textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
                 }
+            }
+            else
+            {
+                if(n.Right && n.Left && !n.Top && !n.Bottom)
+                {
+                    textures.Add(TileDefinitions.TextureSubType.NarrowHorizontal);
+                }
+                if (!n.Right && !n.Left && n.Top && n.Bottom)
+                {
+                    textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
+                }
+
             }
 
             return textures.ToArray();

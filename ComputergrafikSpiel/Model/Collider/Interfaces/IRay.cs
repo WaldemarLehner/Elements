@@ -15,5 +15,7 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
         ColliderLayer.Layer Layer { get; }
 
         float MinimalDistanceTo(Vector2 tileCenter);
+
+        bool DidCollideWith(ICollider collider);
     }
 }
