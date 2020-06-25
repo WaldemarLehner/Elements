@@ -5,6 +5,7 @@ using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Collider
 {
@@ -146,10 +147,12 @@ namespace ComputergrafikSpiel.Model.Collider
         {
             var @static = this.GetRayCollisionsWithStatic(ray);
             var @dynamic = this.GetRayCollisionsWithDynamic(ray);
-            return Enumerable.Union(@static, dynamic).ToList();
+            var union = Enumerable.Union(@static, dynamic).ToList();
+            Scene.Scene.Current.IndependentDebugData.Add((new Color4(255, 0, 0, 255), new Vector2[] { ray.Position, ray.Position + (ray.Direction.Normalized() * ray.MaxDistance) }));
+            return union;
         }
 
-        public IReadOnlyCollection<ICollidable> GetRayCollisions(IRay ray, Vector2 position)
+        public IReadOnlyCollection<ICollidable> GetRayCollisionsSorted(IRay ray, Vector2 position)
         {
             var unsorted = this.GetRayCollisions(ray);
             return (from entry in unsorted orderby Vector2.DistanceSquared(position, entry.Collider.Position) ascending select entry).ToList();
@@ -178,8 +181,7 @@ namespace ComputergrafikSpiel.Model.Collider
             // currently slow with O(n), will have to be optimized later on
             foreach (KeyValuePair<Tuple<int, int>, ICollidable> tile in this.collidableTiles)
             {
-                // compare min distance of the Tile's position and Ray with the "radius" of the tile
-                if (tile.Value.Collider.MaximumDistanceFromPosition >= ray.MinimalDistanceTo(tile.Value.Position))
+                if (ray.DidCollideWith(tile.Value.Collider))
                 {
                     collidedCollidables.Add(tile.Value);
                 }
@@ -194,7 +196,7 @@ namespace ComputergrafikSpiel.Model.Collider
             foreach (var entity in this.collidableEntities)
             {
                 // compare min distance of the Entity's position and Ray with the "radius" of the Entity
-                if (entity.Collider.MaximumDistanceFromPosition >= ray.MinimalDistanceTo(entity.Position))
+                if (ray.DidCollideWith(entity.Collider))
                 {
                     collidedCollidables.Add(entity);
                 }

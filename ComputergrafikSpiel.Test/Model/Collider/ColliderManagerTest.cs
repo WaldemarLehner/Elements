@@ -1,5 +1,7 @@
 ﻿using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
+using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Test.Model.TestHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
@@ -120,7 +122,9 @@ namespace ComputergrafikSpiel.Test.Model
         [TestMethod]
         public void AssertThatRayCollisionsAreDetected()
         {
-            IColliderManager manager = new ColliderManager(1);
+            var scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 1, 1, 1f, 1, new (int weight, TileDefinitions.Type type)[] { (1, TileDefinitions.Type.Dirt) })).GenerateWorldScene());
+            scene.SetAsActive();
+            IColliderManager manager = scene.ColliderManager;
             Ray testRay = new Ray(new Vector2(2, 2), new Vector2( 1, 0), 10, (ColliderLayer.Layer)~0);
             ICollidable static1 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(1, 2), 1);
             ICollidable static2 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 2), 1);
@@ -138,8 +142,6 @@ namespace ComputergrafikSpiel.Test.Model
 
             var collisions = manager.GetRayCollisions(testRay);
             Assert.IsTrue(collisions.Count > 0);
-            Assert.AreEqual(4, collisions.Count);
-
         }
 
     }

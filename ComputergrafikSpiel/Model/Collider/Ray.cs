@@ -33,6 +33,8 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public ColliderLayer.Layer Layer { get; }
 
+        public bool DidCollideWith(ICollider collider) => RayCollisionDetectionHelper.DidRayCollide(this, collider);
+
         public float MinimalDistanceTo(Vector2 tileCenter)
         {
             float distance;

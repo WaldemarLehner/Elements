@@ -9,6 +9,7 @@ namespace ComputergrafikSpiel.View.Renderer
         {
             TextureBoundingBox = 0b01,
             DebugData = 0b10,
+            IndependentDebugData = 0b100,
         }
     }
 }
