@@ -65,7 +65,7 @@ namespace ComputergrafikSpiel.Model.Collider
         internal static bool DidRayColliderRectangleCollider(IRay ray, RectangleOffsetCollider collider)
         {
 
-            
+
 
             var (top, bottom, left, right) = collider.Bounds;
 
@@ -74,7 +74,7 @@ namespace ComputergrafikSpiel.Model.Collider
             var topX = ray.EvalY(top);
             var bottomX = ray.EvalY(bottom);
 
-            
+
 
             if (leftY > top && rightY > top)
             {

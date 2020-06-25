@@ -63,6 +63,7 @@
     <Compile Include="Controller\Input\InputControllerTest.cs" />
     <Compile Include="Model\Character\NPC\EnemyTest.cs" />
     <Compile Include="Model\Character\NPC\NPCAI\AIEnemyTest.cs" />
+    <Compile Include="Model\Character\Weapon\WeaponTest.cs" />
     <Compile Include="Model\Collider\CircleOffsetColliderTest.cs" />
     <Compile Include="Model\Collider\ColliderManagerTest.cs" />
     <Compile Include="Model\Collider\RayTest.cs" />
@@ -90,9 +91,7 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\Character\Weapon\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\ComputergrafikSpiel\ComputergrafikSpiel.csproj">
       <Project>{4dd39e41-d26c-4ead-b828-fb639191d9a1}</Project>

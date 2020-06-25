@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using ComputergrafikSpiel.Model.Character;
+using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
@@ -119,7 +121,7 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
                 Scene.Current.ColliderManager.AddEntityCollidable(player);
-                Scene.Player.Equip(new Weapon(3, 1, 4, 20, 1));
+                Scene.Player.Equip(new Weapon(3, 1, 4, 20, 5));
                 return true;
             }
 
@@ -133,11 +135,15 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.ColliderManager.AddEntityCollidable(entity as ICollidable);
             }
-
         }
 
         public void RemoveEntity(IEntity entity)
         {
+            if (entity is Enemy)
+            {
+                this.NpcList.Remove((INonPlayerCharacter)entity ?? throw new ArgumentNullException(nameof(entity)));
+            }
+
             this.EntitiesList.Remove(entity);
             if (entity is ICollidable)
             {
@@ -160,7 +166,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
             Scene.Current.Disable();
             Scene.Current = this;
-            //TODO: Throws null ChangeScene.Invoke(this, null);
+
+            // TODO: Throws null ChangeScene.Invoke(this, null);
         }
 
         public void Disable()
@@ -195,6 +202,7 @@ namespace ComputergrafikSpiel.Model.Scene
         private void Initialize()
         {
             this.initialized = true;
+
             // TODO:
         }
     }

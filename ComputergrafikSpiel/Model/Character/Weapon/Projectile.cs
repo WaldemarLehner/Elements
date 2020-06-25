@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -21,7 +22,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.TTL = ttl;
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize,ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
             this.ColliderManager = colliderManager;
             this.ColliderManager.AddEntityCollidable(this);
             this.Scale = Vector2.One * bulletSize;
@@ -56,7 +57,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
-
         public void Update(float dtime)
         {
             this.Position += this.Direction * dtime;
@@ -84,7 +84,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
                     }
                 }
 
-                foreach (var enemyCollidable in Scene.Scene.Current.NPCs)
+                foreach (var enemyCollidable in Scene.Scene.Current.NPCs.ToList())
                 {
                     if (collidableToCheck == enemyCollidable)
                     {

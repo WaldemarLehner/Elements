@@ -21,7 +21,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.BulletSize = bulletSize;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Bullet);
             this.AttackDamage = attackDamage;
-            // this.Model = model;
         }
 
         // most likely temporary
@@ -56,8 +55,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         {
             for (int i = 0; i < this.ProjectileCreationCount; i++)
             {
-                Projectile projectile = new Projectile(this.AttackDamage, Scene.Scene.Player.Position, direction, this.BulletTTL, this.BulletSize, Scene.Scene.Current.ColliderManager);
-                Scene.Scene.Current.SpawnEntity(projectile);
+                new Projectile(this.AttackDamage, Scene.Scene.Player.Position, direction, this.BulletTTL, this.BulletSize, Scene.Scene.Current.ColliderManager);
             }
         }
 

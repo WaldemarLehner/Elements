@@ -32,7 +32,6 @@ namespace ComputergrafikSpiel.Model
 
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             new Scene.Scene(worldScene);
-
         }
 
         public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;

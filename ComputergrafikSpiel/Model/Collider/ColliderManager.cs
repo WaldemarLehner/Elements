@@ -131,7 +131,6 @@ namespace ComputergrafikSpiel.Model.Collider
             return collidedCollidables;
         }
 
-
         public void HandleTriggerCollisions(IPlayer player)
         {
             foreach (var trigger in this.collidableTriggers)

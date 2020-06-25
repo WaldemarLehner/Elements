@@ -10,7 +10,7 @@ namespace ComputergrafikSpiel.Model.Collider
     {
         private Vector2 offset;
 
-        internal CircleOffsetCollider(ICollidable parent, Vector2 offset, float radius,ColliderLayer.Layer self, ColliderLayer.Layer collidesWith)
+        internal CircleOffsetCollider(ICollidable parent, Vector2 offset, float radius, ColliderLayer.Layer self, ColliderLayer.Layer collidesWith)
         {
             this.CollidableParent = parent ?? throw new ArgumentNullException(nameof(parent));
             if (radius <= 0)
