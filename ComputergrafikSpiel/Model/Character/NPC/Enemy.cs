@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -14,6 +15,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public class Enemy : INonPlayerCharacter
     {
+        private readonly Vector2 scale;
+
         public Enemy(int maxHealth, string texture, float movementSpeed, int defense, int attackDamage, Vector2 startPosition)
         {
             this.AttackDamage = attackDamage;
@@ -22,8 +25,10 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.Defense = defense;
             this.Texture = new TextureLoader().LoadTexture("Enemy/" + texture);
             this.Position = startPosition;
-            this.Scale = new Vector2(16, 16);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player | ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Wall);
+            this.scale = new Vector2(16, 16);
+            this.Scale = this.scale;
+            var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Enemy, collisionMask);
             this.NPCController = new AIEnemy();
         }
 
@@ -47,7 +52,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public ITexture Texture { get; } = null;
 
-        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new (Color4 color, Vector2[] vertices)[] { this.Collider.DebugData };
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
@@ -55,13 +60,16 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
-        public Vector2 Scale { get; } = Vector2.One * 20;
+        public Vector2 Scale { get; set; } = Vector2.One * 20;
 
         public int AttackDamage { get; set; }
 
+        public bool TextureWasMirrored { get; set; } = false;
+
         private Vector2 Direction { get; set; }
 
-        private IPlayer Player { get; }
+        private float AttackCooldown { get; set; } = 0;
+
 
         public void OnDeath(EventArgs e)
         {
@@ -94,6 +102,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             if (this.CurrentHealth <= 0)
             {
+                Scene.Scene.Current.RemoveEntity(this);
                 this.OnDeath(EventArgs.Empty);
             }
         }
@@ -108,21 +117,33 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void Update(float dtime)
         {
-            this.Direction = this.NPCController.EnemyAIMovement(this);
+            this.LookAt(Scene.Scene.Player.Position);
+
+            this.Direction = this.NPCController.EnemyAIMovement(this, dtime);
+
+            this.OnMove(EventArgs.Empty);
 
             this.Position += this.Direction * this.MovementSpeed * dtime;
 
-            this.GiveDamageToPlayer();
+            this.AttackCooldown -= dtime;
+            if (this.AttackCooldown <= 0)
+            {
+                this.GiveDamageToPlayer();
+            }
         }
+
+        public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
 
         private void GiveDamageToPlayer()
         {
-            return;
-            if (this.Collider.DidCollideWith(this.Player.Collider))
+            var collidables = Scene.Scene.Current.ColliderManager.GetCollisions(this);
+
+            foreach (var player in from i in collidables where i is Player.Player select i as Player.Player)
             {
+                this.AttackCooldown = 2;
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Spieler wurde getroffen!\n");
-                this.Player.TakingDamage(this.AttackDamage);
+                Scene.Scene.Player.TakingDamage(this.AttackDamage);
             }
         }
     }

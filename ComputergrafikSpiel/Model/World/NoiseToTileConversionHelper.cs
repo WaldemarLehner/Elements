@@ -9,7 +9,7 @@ namespace ComputergrafikSpiel.Model.World
         internal static TileDefinitions.Type[,] ConvertNoiseToTiles(float[,] noiseTiles, (int weight, TileDefinitions.Type type)[] noiseMapping)
         {
             (float lowerBound, TileDefinitions.Type type)[] map = NoiseToTileConversionHelper.GenerateMapping(ref noiseMapping);
-            var returnArray = new TileDefinitions.Type[noiseTiles.GetLength(0) + 4, noiseTiles.GetLength(1) + 4];
+            var returnArray = new TileDefinitions.Type[noiseTiles.GetLength(0) + 2, noiseTiles.GetLength(1) + 2];
             for (int x = 0; x < noiseTiles.GetLength(0); x++)
             {
                 for (int y = 0; y < noiseTiles.GetLength(1); y++)
@@ -17,7 +17,7 @@ namespace ComputergrafikSpiel.Model.World
                     // Simplex produces a range from 0..255.
                     noiseTiles[x, y] /= 255;
                     var tile = NoiseToTileConversionHelper.GetTileFromNoise(noiseTiles[x, y], map);
-                    returnArray[x + 2, y + 2] = tile;
+                    returnArray[x + 1, y + 1] = tile;
                 }
             }
 
@@ -67,34 +67,30 @@ namespace ComputergrafikSpiel.Model.World
 
         private static void AddBorder(ref TileDefinitions.Type[,] returnArray)
         {
-            // Border Bounds (NOT Trim Bounds)
-            int upperX = returnArray.GetLength(0) - 2;
-            int upperY = returnArray.GetLength(1) - 2;
-            int lowerX = 1, lowerY = 1;
+            // Border Bounds 
+            int upperX = returnArray.GetLength(0) - 1;
+            int upperY = returnArray.GetLength(1) - 1;
+            int lowerX = 0, lowerY = 0;
 
             // Horizontals
             for (int x = lowerX; x < upperX; x++)
             {
-                returnArray[x, lowerY] = TileDefinitions.Type.Wall;
-                returnArray[x, upperY] = TileDefinitions.Type.Water;
-                returnArray[x, lowerY - 1] = TileDefinitions.Type.WallTrim;
-                returnArray[x, upperY + 1] = TileDefinitions.Type.WallTrim;
+                returnArray[x, lowerY] = TileDefinitions.Type.WallTrim;
+                returnArray[x, upperY] = TileDefinitions.Type.WallTrim;
             }
 
             // Verticals
             for (int y = lowerY; y < upperY; y++)
             {
-                returnArray[lowerX, y] = TileDefinitions.Type.Wall;
-                returnArray[upperX, y] = TileDefinitions.Type.Wall;
-                returnArray[lowerX - 1, y] = TileDefinitions.Type.WallTrim;
-                returnArray[upperX + 1, y] = TileDefinitions.Type.WallTrim;
+                returnArray[lowerX, y] = TileDefinitions.Type.WallTrim;
+                returnArray[upperX, y] = TileDefinitions.Type.WallTrim;
             }
 
             // Corners
-            returnArray[lowerX - 1, lowerY - 1] =
-                returnArray[lowerX - 1, upperY + 1] =
-                returnArray[upperX + 1, lowerY - 1] =
-                returnArray[upperX + 1, upperY + 1] = TileDefinitions.Type.WallTrim;
+            returnArray[lowerX, lowerY] =
+                returnArray[lowerX, upperY] =
+                returnArray[upperX, lowerY] =
+                returnArray[upperX, upperY] = TileDefinitions.Type.WallTrim;
         }
 
         private static (float lowerBound, TileDefinitions.Type type)[] GenerateMapping(ref (int weight, TileDefinitions.Type type)[] noiseMapping)

@@ -56,8 +56,8 @@ namespace ComputergrafikSpiel.Model.Entity
             }
 
             this.Position = new Vector2(positionX, positionY);
-            this.Scale = new Vector2(20, 20);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player);
+            this.Scale = new Vector2(10, 10);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player);
             this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/" + this.texturename);
         }
 
@@ -71,9 +71,9 @@ namespace ComputergrafikSpiel.Model.Entity
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
-        public Vector2 Scale { get; } = Vector2.One * 20;
+        public Vector2 Scale { get; }
 
-        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new (Color4 color, Vector2[] vertices)[] { this.Collider.DebugData };
 
         public void Update(float dtime)
         {

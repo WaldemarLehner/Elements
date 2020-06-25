@@ -1,4 +1,6 @@
 ﻿using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Collider.Interfaces
 {
@@ -8,7 +10,11 @@ namespace ComputergrafikSpiel.Model.Collider.Interfaces
 
         float MaximumDistanceFromPosition { get; }
 
-        ColliderLayer.Layer Layer { get; }
+        ColliderLayer.Layer OwnLayer { get; }
+
+        ColliderLayer.Layer CollidesWith { get; }
+
+        (Color4 color, Vector2[] verts) DebugData { get; }
 
         bool DidCollideWith(ICollider otherCollider);
 

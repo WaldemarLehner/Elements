@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -24,7 +23,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             // name of texture to be determined
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize,ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
             this.ColliderManager = colliderManager;
             this.ColliderManager.AddEntityCollidable(this);
             this.Model = model;
@@ -36,6 +35,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             Vector2 directionNormalized = Vector2.Normalize(direction);
             this.Rotation = RotationHelper.GetRotationBetweenTwoVectorsRadians(positionForRotation, directionNormalized);
             this.RotationAnker = position;
+            Scene.Scene.Current.SpawnEntity(this);
         }
 
         public int AttackDamage { get; }
@@ -60,12 +60,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public Vector2 RotationAnker { get; set; }
 
-        // should this be multiplied by bullet size instead?
         public Vector2 Scale { get; }
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
-        // does this work?
+
         public void Update(float dtime)
         {
             this.Position += this.Direction * dtime;
@@ -75,6 +74,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             if (this.TTL <= 0)
             {
                 // @Gerald this.Model.DestroyObject(null, this, null);
+                Scene.Scene.Current.RemoveEntity(this);
             }
         }
 
