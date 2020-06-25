@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
@@ -7,6 +8,8 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
     public interface IPlayer : ICharacter
     {
         event EventHandler PlayerInc;
+
+        IWeapon EquipedWeapon { get; }
 
         // Receives a enum list of pressed player actions -> MoveUp, MoveDown, MoveLeft, MoveRight, Dash, Attack, Interaction
         void PlayerControl(List<PlayerEnum.PlayerActions> pressedActions, Vector2 mouseControlerCooridantes);

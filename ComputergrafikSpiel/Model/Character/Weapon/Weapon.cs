@@ -21,6 +21,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.BulletSize = bulletSize;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Bullet);
             this.AttackDamage = attackDamage;
+            // this.Model = model;
         }
 
         // most likely temporary
@@ -33,8 +34,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         public float BulletTTL { get; }
 
         public float BulletSize { get; }
-
-        public IColliderManager ColliderManager { get; }
 
         public ICollider Collider { get; set; }
 
@@ -53,19 +52,14 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public ITexture Texture { get; }
 
-        public void Shoot(Vector2 position, Vector2 direction, ICollection<INonPlayerCharacter> enemyList)
+        public void CreateProjectile(Vector2 direction)
         {
-           // @Gerald this.Model.CreateProjectile(this.AttackDamage, this.ProjectileCreationCount, position, direction, this.BulletTTL, this.BulletSize, this.ColliderManager, enemyList);
-        }
-
-        // has to be changed for shotgun/semi-automatic. For this it will always be as if the projectile count is 1
-        /* public void CreateProjectile(Vector2 position, Vector2 direction)
-        {
-            for (int i = 0; i <= this.ProjectileCreationCount; i++)
+            for (int i = 0; i < this.ProjectileCreationCount; i++)
             {
-                new Projectile(position, direction, this.BulletTTL, this.BulletSize, this.ColliderManager);
+                Projectile projectile = new Projectile(this.AttackDamage, Scene.Scene.Player.Position, direction, this.BulletTTL, this.BulletSize, Scene.Scene.Current.ColliderManager);
+                Scene.Scene.Current.SpawnEntity(projectile);
             }
-        } */
+        }
 
         public void Update(float dtime)
         {

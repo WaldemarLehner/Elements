@@ -78,7 +78,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public IWeapon EquipedWeapon { get; private set; }
 
-        // Look wich action was handed over and call corresponding method
+        // Look which action was handed over and call corresponding method
         public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Vector2 mouseCursorCoordinates)
         {
             foreach (PlayerEnum.PlayerActions playerAction in actions)
@@ -92,7 +92,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 {
                     if (this.EquipedWeapon != null && this.AttackCooldownCurrnent <= 0)
                     {
-                        this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, new List<INonPlayerCharacter>());
+                        this.playerAttackSystem.PlayerAttack(mouseCursorCoordinates);
                         this.AttackCooldownCurrnent = this.AttackCooldown;
                     }
                 }

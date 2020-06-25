@@ -11,13 +11,12 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 {
     internal class PlayerAttackSystem
     {
-        public void PlayerAttack(IPlayer player, IWeapon weapon, Vector2 mouseCursorCooridnates, ICollection<INonPlayerCharacter> enemyList)
+        public void PlayerAttack(Vector2 mouseCursorCooridnates)
         {
-            Vector2 direction = Vector2.Normalize(Vector2.Subtract(mouseCursorCooridnates, player.Position));
+            Vector2 direction = Vector2.Normalize(Vector2.Subtract(mouseCursorCooridnates, Scene.Scene.Player.Position));
 
-            // could be changed to bulletspeed instead of a set number?
             direction = Vector2.Multiply(direction, 300);
-            weapon.Shoot(player.Position, direction, enemyList);
+            Scene.Scene.Player.EquipedWeapon.CreateProjectile(direction);
         }
     }
 }
