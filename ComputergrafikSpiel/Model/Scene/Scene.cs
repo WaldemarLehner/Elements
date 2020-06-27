@@ -26,6 +26,7 @@ namespace ComputergrafikSpiel.Model.Scene
     {
         private bool initialized = false;
         private bool active = false;
+        private bool lockInc;
 
         public Scene(IWorldScene worldScene, IModel model, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
         {
@@ -35,6 +36,7 @@ namespace ComputergrafikSpiel.Model.Scene
             this.RightScene = right;
             this.BottomScene = bottom;
             this.Model = model;
+            this.lockInc = false;
             if (Scene.Current == null)
             {
                 this.active = true;
@@ -51,6 +53,8 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.ColliderManager.AddWorldTileCollidable(tile.GridPosition.x, tile.GridPosition.y, tile as IWorldTileCollidable);
             }
+
+            this.SpawningEnemies();
         }
 
         public static event EventHandler ChangeScene;
@@ -124,7 +128,7 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
                 Scene.Current.ColliderManager.AddEntityCollidable(player);
-                Scene.Player.Equip(new Weapon(3, 1, 4, 15, 5));
+                Scene.Player.Equip(new Weapon(3, 1, 4, 12, 5));
                 return true;
             }
 
@@ -145,21 +149,13 @@ namespace ComputergrafikSpiel.Model.Scene
             if (entity is Enemy)
             {
                 this.NpcList.Remove((INonPlayerCharacter)entity ?? throw new ArgumentNullException(nameof(entity)));
+                Console.WriteLine("Number of NPC: " + this.NpcList.Count);
             }
 
             this.EntitiesList.Remove(entity);
             if (entity is ICollidable)
             {
                 this.ColliderManager.RemoveEntityCollidable(entity as ICollidable);
-            }
-        }
-
-        public void RemoveNPC(INonPlayerCharacter npc)
-        {
-            this.NpcList.Remove(npc);
-            if (npc is ICollidable)
-            {
-                this.ColliderManager.RemoveEntityCollidable(npc as ICollidable);
             }
         }
 
@@ -211,17 +207,32 @@ namespace ComputergrafikSpiel.Model.Scene
             }
 
             // Spawn Interactable when all enemies are dead
-            if (this.EntitiesList.Count == 0)
+            if (this.NpcList.Count == 0 && !this.lockInc)
             {
                 (this.Model as Model).CreateRoundEndInteractables();
+                (this.Model as Model).CreateTriggerZone();
+                this.lockInc = true;
             }
+        }
+
+        public void OnChangeScene()
+        {
+            (this.Model as Model).CreateNewScene(this);
         }
 
         private void Initialize()
         {
-            this.initialized = true;
+            if (this.initialized == true)
+            {
+                return;
+            }
 
-            // TODO:
+            this.initialized = true;
+        }
+
+        private void SpawningEnemies()
+        {
+            (this.Model as Model).CreateRandomEnemy(2, 5);
         }
     }
 }

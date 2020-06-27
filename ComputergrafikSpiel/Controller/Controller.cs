@@ -24,9 +24,6 @@ namespace ComputergrafikSpiel.Controller
             var player = new Player();
             Scene.CreatePlayer(player);
             this.InputController.HookPlayer(player);
-
-            (this.Model as Model.Model).CreateTriggerZone();
-            (this.Model as Model.Model).CreateRandomEnemy(3, 4);
         }
 
         public IInputController InputController { get; private set; }

@@ -83,5 +83,10 @@ namespace ComputergrafikSpiel.Model.Entity
         {
             Scene.Scene.Player.IncreasePlayerStats(this.incNumber, this.stats);
         }
+
+        public void RemoveInteractable()
+        {
+            Scene.Scene.Current.RemoveEntity(this);
+        }
     }
 }

@@ -23,16 +23,7 @@ namespace ComputergrafikSpiel.Model
 
         internal Model()
         {
-            /*
-            this.RenderablesList = new List<IRenderable>();
-            this.Updateables = new List<IUpdateable>();
-            this.Interactable = new Dictionary<PlayerEnum.Stats, IEntity>();
-            this.ColliderManager = new ColliderManager(32);
-            this.EnemysList = new List<INonPlayerCharacter>();
-            */
-
-            var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
-            new Scene.Scene(worldScene, this);
+            this.CreateNewScene(null);
         }
 
         public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
@@ -54,9 +45,16 @@ namespace ComputergrafikSpiel.Model
 
         public void CreateTriggerZone()
         {
-            var trigger = new Trigger(new Vector2(30, 250), ColliderLayer.Layer.Player);
+            var trigger = new Trigger(new Vector2(16, 272), ColliderLayer.Layer.Player);
             Scene.Scene.Current.SpawnEntity(trigger);
             return;
+        }
+
+        public void CreateNewScene(Scene.Scene scene)
+        {
+            scene = null;
+            var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
+            new Scene.Scene(worldScene, this);
         }
 
         public void SpawnHeal(float positionX, float positionY)
@@ -97,11 +95,11 @@ namespace ComputergrafikSpiel.Model
                 var randomTexture = texture[random.Next(0, texture.Length)];
                 if (randomTexture == "Fungus")
                 {
-                    Scene.Scene.Current.CreateNPC(new Enemy(20, randomTexture, 25, 2, 3, new Vector2(random.Next(0, 600), random.Next(0, 600))));
+                    Scene.Scene.Current.CreateNPC(new Enemy(20, randomTexture, 25, 2, 3, new Vector2(random.Next(50, 500), random.Next(50, 500))));
                 }
                 else if (randomTexture == "WaterDrop")
                 {
-                    Scene.Scene.Current.CreateNPC(new Enemy(10, randomTexture, 80, 0, 1, new Vector2(random.Next(0, 600), random.Next(0, 600))));
+                    Scene.Scene.Current.CreateNPC(new Enemy(10, randomTexture, 80, 0, 1, new Vector2(random.Next(50, 500), random.Next(50, 500))));
                 }
             }
         }
