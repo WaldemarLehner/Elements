@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -68,7 +68,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         private Vector2 Direction { get; set; }
 
-        private IPlayer Player { get; }
+        private float AttackCooldown { get; set; } = 0;
 
 
         public void OnDeath(EventArgs e)
@@ -119,23 +119,31 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         {
             this.LookAt(Scene.Scene.Player.Position);
 
-            this.Direction = this.NPCController.EnemyAIMovement(this);
+            this.Direction = this.NPCController.EnemyAIMovement(this, dtime);
+
+            this.OnMove(EventArgs.Empty);
 
             this.Position += this.Direction * this.MovementSpeed * dtime;
 
-            this.GiveDamageToPlayer();
+            this.AttackCooldown -= dtime;
+            if (this.AttackCooldown <= 0)
+            {
+                this.GiveDamageToPlayer();
+            }
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
 
         private void GiveDamageToPlayer()
         {
-            return;
-            if (this.Collider.DidCollideWith(this.Player.Collider))
+            var collidables = Scene.Scene.Current.ColliderManager.GetCollisions(this);
+
+            foreach (var player in from i in collidables where i is Player.Player select i as Player.Player)
             {
+                this.AttackCooldown = 2;
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Spieler wurde getroffen!\n");
-                this.Player.TakingDamage(this.AttackDamage);
+                Scene.Scene.Player.TakingDamage(this.AttackDamage);
             }
         }
     }
