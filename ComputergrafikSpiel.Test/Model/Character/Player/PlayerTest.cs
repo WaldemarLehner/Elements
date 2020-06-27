@@ -20,7 +20,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
         private IColliderManager ColliderManager { get; set; } = new ColliderManager(32);
         private IModel model { get; set; } = null;
 
-        private Scene scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene());
+        //private Scene scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene());
 
 
         private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = new Dictionary<PlayerEnum.Stats, IEntity>();

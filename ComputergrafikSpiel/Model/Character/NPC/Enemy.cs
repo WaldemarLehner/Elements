@@ -28,7 +28,15 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.scale = new Vector2(16, 16);
             this.Scale = this.scale;
             var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player, collisionMask);
+            if (texture == "Fungus")
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 17, ColliderLayer.Layer.Player, collisionMask);
+            }
+            else
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Player, collisionMask);
+            }
+
             this.NPCController = new AIEnemy();
         }
 
@@ -69,7 +77,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         private Vector2 Direction { get; set; }
 
         private float AttackCooldown { get; set; } = 0;
-
 
         public void OnDeath(EventArgs e)
         {

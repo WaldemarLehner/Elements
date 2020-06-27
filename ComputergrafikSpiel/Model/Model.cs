@@ -33,7 +33,6 @@ namespace ComputergrafikSpiel.Model
 
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             new Scene.Scene(worldScene, this);
-
         }
 
         public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
@@ -96,7 +95,14 @@ namespace ComputergrafikSpiel.Model
             for (int i = random.Next(min, max); i > 0; i--)
             {
                 var randomTexture = texture[random.Next(0, texture.Length)];
-                Scene.Scene.Current.CreateNPC(new Enemy(10, randomTexture, 20, 1, 2, new Vector2(random.Next(0, 600), random.Next(0, 600))));
+                if (randomTexture == "Fungus")
+                {
+                    Scene.Scene.Current.CreateNPC(new Enemy(20, randomTexture, 25, 2, 3, new Vector2(random.Next(0, 600), random.Next(0, 600))));
+                }
+                else if (randomTexture == "WaterDrop")
+                {
+                    Scene.Scene.Current.CreateNPC(new Enemy(10, randomTexture, 80, 0, 1, new Vector2(random.Next(0, 600), random.Next(0, 600))));
+                }
             }
         }
 
