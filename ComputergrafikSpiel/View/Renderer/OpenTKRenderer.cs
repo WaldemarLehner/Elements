@@ -5,6 +5,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
@@ -24,7 +25,7 @@ namespace ComputergrafikSpiel.View.Renderer
             this.Camera = camera ?? throw new ArgumentNullException(nameof(camera));
             this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
-            this.Debug = DebugMask.Mask.DebugData;
+            this.Debug = DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData;
         }
 
         public bool Active { get; private set; } = true;
@@ -74,6 +75,16 @@ namespace ComputergrafikSpiel.View.Renderer
                 {
                     var rand = new Random(13456);
                     OpenTKRendererHelper.RenderRenderableDebug(this, entry, rand, this.Debug);
+                }
+
+                if ((this.Debug & DebugMask.Mask.IndependentDebugData) != 0)
+                {
+                    foreach (var entry in Scene.Current.IndependentDebugData)
+                    {
+                        OpenTKRendererHelper.RenderItemDebug(this, entry.verts, entry.color);
+                    }
+
+                    Scene.Current.IndependentDebugData.Clear();
                 }
             }
         }

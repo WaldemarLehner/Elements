@@ -127,6 +127,7 @@
     <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
     <Compile Include="Model\Collider\Interfaces\IRay.cs" />
     <Compile Include="Model\Collider\Ray.cs" />
+    <Compile Include="Model\Collider\RayCollisionDetectionHelper.cs" />
     <Compile Include="Model\Collider\RectangleOffsetCollider.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IEntity.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRenderableBackground.cs" />

@@ -18,9 +18,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon.Interfaces
 
         int AttackDamage { get; }
 
-        IColliderManager ColliderManager { get; }
-
-        void Shoot(Vector2 position, Vector2 direction, ICollection<INonPlayerCharacter> enemyList);
+        void CreateProjectile(Vector2 direction);
 
         // void CreateProjectile(Vector2 position, Vector2 direction);
 

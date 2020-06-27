@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -13,21 +14,16 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Projectile : IEntity
     {
-        internal Projectile(int attackDamage, Vector2 position, Vector2 direction, float ttl, float bulletSize, IColliderManager colliderManager, IModel model, ICollection<INonPlayerCharacter> enemyList)
+        internal Projectile(int attackDamage, Vector2 position, Vector2 direction, float ttl, float bulletSize)
         {
             this.AttackDamage = attackDamage;
             this.Position = position;
             this.Direction = direction;
             this.TTL = ttl;
-
-            // name of texture to be determined
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize,ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
-            this.ColliderManager = colliderManager;
-            this.ColliderManager.AddEntityCollidable(this);
-            this.Model = model;
-            this.EnemyList = enemyList;
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize/2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
+            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this);
             this.Scale = Vector2.One * bulletSize;
 
             // rotation calculation
@@ -39,12 +35,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         }
 
         public int AttackDamage { get; }
-
-        public ICollection<INonPlayerCharacter> EnemyList { get; }
-
-        public IModel Model { get; }
-
-        public IColliderManager ColliderManager { get; }
 
         public float TTL { get; set; }
 
@@ -64,7 +54,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
-
         public void Update(float dtime)
         {
             this.Position += this.Direction * dtime;
@@ -73,7 +62,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.ProjectileCollisionManager();
             if (this.TTL <= 0)
             {
-                // @Gerald this.Model.DestroyObject(null, this, null);
                 Scene.Scene.Current.RemoveEntity(this);
             }
         }
@@ -81,24 +69,24 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         public void ProjectileCollisionManager()
         {
             IReadOnlyCollection<ICollidable> bulletCollisions = new List<ICollidable>();
-            bulletCollisions = this.ColliderManager.GetCollisions(this);
+            bulletCollisions = Scene.Scene.Current.ColliderManager.GetCollisions(this);
 
             foreach (var collidableToCheck in bulletCollisions)
             {
-                foreach (var tileCollidable in this.ColliderManager.CollidableTileDictionary)
+                foreach (var tileCollidable in Scene.Scene.Current.ColliderManager.CollidableTileDictionary)
                 {
                     if (collidableToCheck == tileCollidable.Value)
                     {
-                        // @Gerald this.Model.DestroyObject(null, this, null);
+                        Scene.Scene.Current.RemoveEntity(this);
                     }
                 }
 
-                foreach (var enemyCollidable in this.EnemyList)
+                foreach (var enemyCollidable in Scene.Scene.Current.NPCs.ToList())
                 {
                     if (collidableToCheck == enemyCollidable)
                     {
                         enemyCollidable.TakingDamage(this.AttackDamage);
-                        // @Gerald this.Model.DestroyObject(null, this, null);
+                        Scene.Scene.Current.RemoveEntity(this);
                     }
                 }
             }

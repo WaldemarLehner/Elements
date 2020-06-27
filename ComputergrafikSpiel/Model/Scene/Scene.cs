@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using ComputergrafikSpiel.Model.Character;
+using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
@@ -16,6 +18,7 @@ using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.World.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
@@ -102,6 +105,11 @@ namespace ComputergrafikSpiel.Model.Scene
             }
         }
 
+        /// <summary>
+        /// Gets A list of debug data that can be drawn. This will be cleared on each draw.
+        /// </summary>
+        public List<(Color4 color, Vector2[] verts)> IndependentDebugData { get; } = new List<(Color4 color, Vector2[] verts)>();
+
         public IEnumerable<INonPlayerCharacter> NPCs => this.NpcList;
 
         public IEnumerable<Interactable> Interactables => from entity in this.Entities where entity is Interactable select entity as Interactable;
@@ -116,7 +124,7 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
                 Scene.Current.ColliderManager.AddEntityCollidable(player);
-                Scene.Player.Equip(new Weapon(3, 1, 4, 20, 1));
+                Scene.Player.Equip(new Weapon(3, 1, 4, 15, 5));
                 return true;
             }
 
@@ -134,6 +142,11 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void RemoveEntity(IEntity entity)
         {
+            if (entity is Enemy)
+            {
+                this.NpcList.Remove((INonPlayerCharacter)entity ?? throw new ArgumentNullException(nameof(entity)));
+            }
+
             this.EntitiesList.Remove(entity);
             if (entity is ICollidable)
             {
@@ -174,7 +187,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
             Scene.Current.Disable();
             Scene.Current = this;
-            //TODO: Throws null ChangeScene.Invoke(this, null);
+
+            // TODO: Throws null ChangeScene.Invoke(this, null);
         }
 
         public void Disable()
@@ -206,6 +220,7 @@ namespace ComputergrafikSpiel.Model.Scene
         private void Initialize()
         {
             this.initialized = true;
+
             // TODO:
         }
     }
