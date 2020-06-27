@@ -29,6 +29,5 @@ namespace ComputergrafikSpiel.Model.Collider
         {
             return (source & destination) > 0;
         }
-
     }
 }

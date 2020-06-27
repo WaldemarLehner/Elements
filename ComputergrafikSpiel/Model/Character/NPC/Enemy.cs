@@ -21,6 +21,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         {
             this.AttackDamage = attackDamage;
             this.MaxHealth = maxHealth;
+            this.CurrentHealth = maxHealth;
             this.MovementSpeed = movementSpeed;
             this.Defense = defense;
             this.Texture = new TextureLoader().LoadTexture("Enemy/" + texture);
@@ -69,7 +70,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         private Vector2 Direction { get; set; }
 
         private float AttackCooldown { get; set; } = 0;
-
 
         public void OnDeath(EventArgs e)
         {

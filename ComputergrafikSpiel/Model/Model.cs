@@ -32,7 +32,6 @@ namespace ComputergrafikSpiel.Model
 
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             new Scene.Scene(worldScene);
-
         }
 
         public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
@@ -92,15 +91,6 @@ namespace ComputergrafikSpiel.Model
         {
             Scene.Scene.Current.CreateNPC(new Enemy(10, "Fungus", 20, 1, 2, new Vector2(300, 200)));
             Scene.Scene.Current.CreateNPC(new Enemy(10, "WaterDrop", 20, 1, 2, new Vector2(400, 300)));
-        }
-
-        public void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager, ICollection<INonPlayerCharacter> enemyList)
-        {
-            for (int i = 0; i < projectileCreationCount; i++)
-            {
-                Projectile projectile = new Projectile(attackDamage, position, direction, bulletTTL, bulletSize, colliderManager, this, enemyList);
-                Scene.Scene.Current.SpawnEntity(projectile);
-            }
         }
     }
 }

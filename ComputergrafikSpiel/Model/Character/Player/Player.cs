@@ -20,10 +20,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerAttackSystem playerAttackSystem;
         private readonly PlayerMovementSystem playerMovementSystem;
         private readonly PlayerInteractionSystem playerInteractionSystem;
+        private readonly Vector2 scale;
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
         private Vector2 mousePosition = Vector2.Zero;
-        private readonly Vector2 scale;
 
         public Player()
         {
@@ -58,7 +58,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public int Defense { get; set; } = 1;
 
-        public float AttackSpeed { get; set; } = 2;
+        public float AttackSpeed { get; set; } = 1;
 
         public float AttackCooldown { get; } = 100;
 
@@ -105,7 +105,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 {
                     if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
                     {
-                        this.playerAttackSystem.PlayerAttack(this, this.EquipedWeapon, mouseCursorCoordinates, new List<INonPlayerCharacter>());
+                        this.playerAttackSystem.PlayerAttack(mouseCursorCoordinates);
                         this.AttackCooldownCurrent = this.AttackCooldown;
                     }
                 }
