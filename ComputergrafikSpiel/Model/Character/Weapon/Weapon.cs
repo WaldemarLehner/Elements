@@ -55,7 +55,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         {
             for (int i = 0; i < this.ProjectileCreationCount; i++)
             {
-                new Projectile(this.AttackDamage, Scene.Scene.Player.Position, direction, this.BulletTTL, this.BulletSize, Scene.Scene.Current.ColliderManager);
+                new Projectile(this.AttackDamage, Scene.Scene.Player.Position, direction, this.BulletTTL, this.BulletSize);
             }
         }
 

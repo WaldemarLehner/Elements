@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Projectile : IEntity
     {
-        internal Projectile(int attackDamage, Vector2 position, Vector2 direction, float ttl, float bulletSize, IColliderManager colliderManager)
+        internal Projectile(int attackDamage, Vector2 position, Vector2 direction, float ttl, float bulletSize)
         {
             this.AttackDamage = attackDamage;
             this.Position = position;
@@ -23,8 +23,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize/2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
-            this.ColliderManager = colliderManager;
-            this.ColliderManager.AddEntityCollidable(this);
+            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this);
             this.Scale = Vector2.One * bulletSize;
 
             // rotation calculation
@@ -36,8 +35,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         }
 
         public int AttackDamage { get; }
-
-        public IColliderManager ColliderManager { get; }
 
         public float TTL { get; set; }
 
@@ -72,11 +69,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         public void ProjectileCollisionManager()
         {
             IReadOnlyCollection<ICollidable> bulletCollisions = new List<ICollidable>();
-            bulletCollisions = this.ColliderManager.GetCollisions(this);
+            bulletCollisions = Scene.Scene.Current.ColliderManager.GetCollisions(this);
 
             foreach (var collidableToCheck in bulletCollisions)
             {
-                foreach (var tileCollidable in this.ColliderManager.CollidableTileDictionary)
+                foreach (var tileCollidable in Scene.Scene.Current.ColliderManager.CollidableTileDictionary)
                 {
                     if (collidableToCheck == tileCollidable.Value)
                     {
