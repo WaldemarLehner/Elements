@@ -16,7 +16,6 @@ namespace ComputergrafikSpiel.Model.Triggers
         {
             // radius may have to be changed
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, ColliderLayer.Layer.Trigger, activators);
-            Scene.Scene.Current.ColliderManager.AddTriggerCollidable((int)position.X, (int)position.Y, this);
             this.Position = position;
             this.Texture = new TextureLoader().LoadTexture("Door/TreeBranchesDoor");
             this.Scale = new Vector2(16, 16);
@@ -39,7 +38,6 @@ namespace ComputergrafikSpiel.Model.Triggers
 
         public void TriggerCollisionFunction()
         {
-            // will be changed once scenes are implemented
             Scene.Scene.Current.OnChangeScene();
         }
 

@@ -31,7 +31,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             Vector2 directionNormalized = Vector2.Normalize(direction);
             this.Rotation = RotationHelper.GetRotationBetweenTwoVectorsRadians(positionForRotation, directionNormalized);
             this.RotationAnker = position;
-            Scene.Scene.Current.SpawnEntity(this);
+            Scene.Scene.Current.SpawnObject(this);
         }
 
         public int AttackDamage { get; }
@@ -62,7 +62,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.ProjectileCollisionManager();
             if (this.TTL <= 0)
             {
-                Scene.Scene.Current.RemoveEntity(this);
+                Scene.Scene.Current.RemoveObject(this);
             }
         }
 
@@ -77,7 +77,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
                 {
                     if (collidableToCheck == tileCollidable.Value)
                     {
-                        Scene.Scene.Current.RemoveEntity(this);
+                        Scene.Scene.Current.RemoveObject(this);
                     }
                 }
 
@@ -86,7 +86,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
                     if (collidableToCheck == enemyCollidable)
                     {
                         enemyCollidable.TakingDamage(this.AttackDamage);
-                        Scene.Scene.Current.RemoveEntity(this);
+                        Scene.Scene.Current.RemoveObject(this);
                     }
                 }
             }

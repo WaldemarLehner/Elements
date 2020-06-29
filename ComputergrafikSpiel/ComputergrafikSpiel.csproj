@@ -147,7 +147,9 @@
     <Compile Include="Model\EntitySettings\Texture\TileTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
     <Compile Include="Model\RotationHelper.cs" />
+    <Compile Include="Model\Scene\ISceneManager.cs" />
     <Compile Include="Model\Scene\Scene.cs" />
+    <Compile Include="Model\Scene\SceneManager.cs" />
     <Compile Include="Model\World\Interfaces\IWorldObstacle.cs" />
     <Compile Include="Model\World\IWorldScene.cs" />
     <Compile Include="Model\World\Obstacles\RockObstacle.cs" />

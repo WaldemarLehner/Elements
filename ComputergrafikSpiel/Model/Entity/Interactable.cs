@@ -86,7 +86,7 @@ namespace ComputergrafikSpiel.Model.Entity
 
         public void RemoveInteractable()
         {
-            Scene.Scene.Current.RemoveEntity(this);
+            Scene.Scene.Current.RemoveObject(this);
         }
     }
 }

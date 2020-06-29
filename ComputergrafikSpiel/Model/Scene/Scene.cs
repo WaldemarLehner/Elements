@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows.Forms;
-using ComputergrafikSpiel.Model.Character;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
@@ -15,6 +11,8 @@ using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Triggers;
+using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using ComputergrafikSpiel.Model.World.Interfaces;
 using OpenTK;
@@ -26,7 +24,7 @@ namespace ComputergrafikSpiel.Model.Scene
     {
         private bool initialized = false;
         private bool active = false;
-        private bool lockInc;
+        private bool lockInc = false;
 
         public Scene(IWorldScene worldScene, IModel model, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
         {
@@ -36,13 +34,11 @@ namespace ComputergrafikSpiel.Model.Scene
             this.RightScene = right;
             this.BottomScene = bottom;
             this.Model = model;
-            this.lockInc = false;
-            if (Scene.Current == null)
-            {
-                this.active = true;
-                this.Initialize();
-                Scene.Current = this;
-            }
+
+            // If Scene.Current == null wurde gelöscht
+            this.lockInc = true;
+            this.Initialize();
+            Scene.Current = this;
 
             var tex = background ?? new TextureLoader().LoadTexture("Wall/Wall_single");
             this.Background = new BackgroundRenderable(tex, Vector2.One * worldScene.SceneDefinition.TileSize / 2f, Vector2.One * worldScene.SceneDefinition.TileSize / 2, OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat);
@@ -59,7 +55,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public static event EventHandler ChangeScene;
 
-        public static Scene Current { get; private set; } = null;
+        public static Scene Current { get; set; } = null;
 
         public static IPlayer Player { get; private set; } = null;
 
@@ -70,6 +66,8 @@ namespace ComputergrafikSpiel.Model.Scene
         public IColliderManager ColliderManager { get; }
 
         public IEnumerable<IEntity> Entities => this.EntitiesList;
+
+        public IEnumerable<ITrigger> Trigger => this.TriggerList;
 
         public IScene TopScene { get; }
 
@@ -100,6 +98,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
                 enumerable.AddRange(this.NPCs);
                 enumerable.AddRange(this.Entities);
+                enumerable.AddRange(this.Trigger);
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
@@ -122,6 +121,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
         private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
+        private List<ITrigger> TriggerList { get; } = new List<ITrigger>();
+
         public static bool CreatePlayer(IPlayer player)
         {
             if (Scene.Player == null)
@@ -135,36 +136,61 @@ namespace ComputergrafikSpiel.Model.Scene
             return false;
         }
 
-        public void SpawnEntity(IEntity entity)
+        public void SpawnTrigger(ITrigger trigger)
         {
-            this.EntitiesList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
+            this.TriggerList.Add(trigger ?? throw new ArgumentNullException(nameof(trigger)));
+
+            if (trigger is ICollidable)
+            {
+                this.ColliderManager.AddTriggerCollidable((int)trigger.Position.X, (int)trigger.Position.Y, trigger);
+            }
+        }
+
+        public void RemoveTrigger(ITrigger trigger)
+        {
+            this.TriggerList.Remove(trigger ?? throw new ArgumentNullException(nameof(trigger)));
+
+            if (trigger is ICollidable)
+            {
+                this.ColliderManager.RemoveTriggerCollidable((int)trigger.Position.X, (int)trigger.Position.Y);
+            }
+        }
+
+        public void SpawnObject(IEntity entity)
+        {
+            if (entity is Enemy)
+            {
+                this.NpcList.Add((INonPlayerCharacter)entity ?? throw new ArgumentNullException(nameof(entity)));
+            }
+            else
+            {
+                this.EntitiesList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
+            }
+
             if (entity is ICollidable)
             {
                 this.ColliderManager.AddEntityCollidable(entity as ICollidable);
             }
         }
 
-        public void RemoveEntity(IEntity entity)
+        public void RemoveObject(IEntity entity)
         {
             if (entity is Enemy)
             {
                 this.NpcList.Remove((INonPlayerCharacter)entity ?? throw new ArgumentNullException(nameof(entity)));
-                Console.WriteLine("Number of NPC: " + this.NpcList.Count);
+            }
+            else if (entity is Trigger)
+            {
+                this.TriggerList.Remove((ITrigger)entity ?? throw new ArgumentNullException(nameof(entity)));
+            }
+            else
+            {
+                this.EntitiesList.Remove(entity ?? throw new ArgumentNullException(nameof(entity)));
             }
 
-            this.EntitiesList.Remove(entity);
             if (entity is ICollidable)
             {
                 this.ColliderManager.RemoveEntityCollidable(entity as ICollidable);
-            }
-        }
-
-        public void CreateNPC(INonPlayerCharacter npc)
-        {
-            this.NpcList.Add(npc ?? throw new ArgumentNullException(nameof(npc)));
-            if (npc is ICollidable)
-            {
-                this.ColliderManager.AddEntityCollidable(npc as ICollidable);
             }
         }
 
@@ -175,16 +201,18 @@ namespace ComputergrafikSpiel.Model.Scene
                 return;
             }
 
-            if (!this.initialized)
+            if (this.initialized)
             {
                 this.Initialize();
                 this.ColliderManager.AddEntityCollidable(Scene.Player);
+                Console.WriteLine("Add new Player Collider");
             }
 
-            Scene.Current.Disable();
+            // Scene.Current.Disable();
             Scene.Current = this;
+            this.active = true;
 
-            // TODO: Throws null ChangeScene.Invoke(this, null);
+            ChangeScene?.Invoke(this, null);
         }
 
         public void Disable()
@@ -192,6 +220,7 @@ namespace ComputergrafikSpiel.Model.Scene
             if (Scene.Player != null)
             {
                 this.ColliderManager.RemoveEntityCollidable(Scene.Player);
+                Console.WriteLine("Remove old Player Collider");
             }
 
             this.active = false;
@@ -207,17 +236,27 @@ namespace ComputergrafikSpiel.Model.Scene
             }
 
             // Spawn Interactable when all enemies are dead
-            if (this.NpcList.Count == 0 && !this.lockInc)
+            if (this.NpcList.Count == 0 && this.lockInc)
             {
                 (this.Model as Model).CreateRoundEndInteractables();
                 (this.Model as Model).CreateTriggerZone();
-                this.lockInc = true;
+                this.lockInc = false;
             }
         }
 
         public void OnChangeScene()
         {
-            (this.Model as Model).CreateNewScene(this);
+            foreach (var trigger in this.TriggerList.ToList())
+            {
+                this.RemoveTrigger(trigger);
+            }
+
+            foreach (var interactable in from i in this.EntitiesList.ToList() where i is Interactable select i as Interactable)
+            {
+                this.RemoveObject(interactable);
+            }
+
+            (this.Model as Model).SceneManager.LoadNewScene();
         }
 
         private void Initialize()
@@ -227,12 +266,13 @@ namespace ComputergrafikSpiel.Model.Scene
                 return;
             }
 
+            Console.WriteLine("Initialized");
             this.initialized = true;
         }
 
         private void SpawningEnemies()
         {
-            (this.Model as Model).CreateRandomEnemy(2, 5);
+            (this.Model as Model).CreateRandomEnemy(1, 1);
         }
     }
 }

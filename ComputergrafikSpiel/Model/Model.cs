@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
-using ComputergrafikSpiel.Model.Character.Weapon;
-using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
-using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
@@ -18,13 +15,13 @@ namespace ComputergrafikSpiel.Model
 {
     public class Model : IModel
     {
-        // temporary
-        private IWeapon weapon;
-
         internal Model()
         {
-            this.CreateNewScene(null);
+            this.SceneManager = new Scene.SceneManager(this);
+            this.SceneManager.InitializeFirstScene();
         }
+
+        public ISceneManager SceneManager { get; }
 
         public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
 
@@ -45,16 +42,24 @@ namespace ComputergrafikSpiel.Model
 
         public void CreateTriggerZone()
         {
-            var trigger = new Trigger(new Vector2(16, 272), ColliderLayer.Layer.Player);
-            Scene.Scene.Current.SpawnEntity(trigger);
+            Vector2[] positions =
+            {
+                new Vector2(16, 272),
+                new Vector2(368, 16),
+                new Vector2(368, 528),
+                new Vector2(688, 272),
+            };
+            for (int i = 0; i < positions.Length; i++)
+            {
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[i], ColliderLayer.Layer.Player));
+            }
+
             return;
         }
 
-        public void CreateNewScene(Scene.Scene scene)
+        public void CreateNewScene()
         {
-            scene = null;
-            var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
-            new Scene.Scene(worldScene, this);
+
         }
 
         public void SpawnHeal(float positionX, float positionY)
@@ -62,12 +67,12 @@ namespace ComputergrafikSpiel.Model
             // Heal Interactable
             var inter = new Interactable(PlayerEnum.Stats.Heal, positionX, positionY, 1);
             this.Interactable.Add(PlayerEnum.Stats.Heal, inter);
-            Scene.Scene.Current.SpawnEntity(inter);
+            Scene.Scene.Current.SpawnObject(inter);
         }
 
         public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY, int incNumber)
         {
-            Scene.Scene.Current.SpawnEntity(new Interactable(stat, positionX, positionY, incNumber));
+            Scene.Scene.Current.SpawnObject(new Interactable(stat, positionX, positionY, incNumber));
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
@@ -95,11 +100,11 @@ namespace ComputergrafikSpiel.Model
                 var randomTexture = texture[random.Next(0, texture.Length)];
                 if (randomTexture == "Fungus")
                 {
-                    Scene.Scene.Current.CreateNPC(new Enemy(20, randomTexture, 25, 2, 3, new Vector2(random.Next(50, 500), random.Next(50, 500))));
+                    Scene.Scene.Current.SpawnObject(new Enemy(20, randomTexture, 25, 2, 3, new Vector2(random.Next(50, 500), random.Next(50, 500))));
                 }
                 else if (randomTexture == "WaterDrop")
                 {
-                    Scene.Scene.Current.CreateNPC(new Enemy(10, randomTexture, 80, 0, 1, new Vector2(random.Next(50, 500), random.Next(50, 500))));
+                    Scene.Scene.Current.SpawnObject(new Enemy(10, randomTexture, 80, 0, 1, new Vector2(random.Next(50, 500), random.Next(50, 500))));
                 }
             }
         }

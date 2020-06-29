@@ -133,7 +133,7 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public void HandleTriggerCollisions(IPlayer player)
         {
-            foreach (var trigger in this.collidableTriggers)
+            foreach (var trigger in this.collidableTriggers.ToList())
             {
                 if (player.Collider.DidCollideWith(trigger.Value.Collider))
                 {

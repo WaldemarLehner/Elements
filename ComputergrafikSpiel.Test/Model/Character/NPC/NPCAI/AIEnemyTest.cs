@@ -24,7 +24,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC.NPCAI
             ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
             Scene.CreatePlayer(player);
             ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.Enemy(10, "Fungus", 25, 1, 4, this.Position);
-            Scene.Current.CreateNPC(enemy);
+            Scene.Current.SpawnObject(enemy);
             ComputergrafikSpiel.Model.Character.NPC.NPCAI.AIEnemy aIEnemy = new ComputergrafikSpiel.Model.Character.NPC.NPCAI.AIEnemy();
             this.Direction = Scene.Player.Position - enemy.Position;
             Direction.Normalize();
