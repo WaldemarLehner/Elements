@@ -1,20 +1,37 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+# Project: Elements
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+Bei Project: Elements handelt es sich um einen 2D Infinite-Runner. Das Ziel ist es von Raum zu Raum gehen und alle Gegner zu besiegen. Nach dem Bestehen eines Raumes darf der Spieler sich ein Power-Up auswählen.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+![Screenshot](https://i.imgur.com/jzWjCHu.png)
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+# Steuerung
+
+Gespielt wird mit Maus und Tastatur.
+
+Mit der Maus wird die Schussposition angezeigt, mit Links-Klick wird geschossen.
+
+Mit WASD wird der Spieler bewegt,
+
+Mit Shift wird gesprintet.
+
+Mit Space wird ein Dash ausgeführt.
+
+Mit F wird interagiert.
+
+# Projektaufbau
+
+Das Projekt ist nach dem typischen MVC-Pattern aufgebaut.
+
+## Model
+
+Im Model sind alle Definitionen, sowie die Logik aller Spielelemente aufzufinden.
+Eine wichtige Komponente ist dabei die Szene. Diese wird vom View aufgerufen.
+
+## View
+
+Im View wird der Renderer implementiert. Wird verwenden OpenToolkit, ein C#-Wrapper um openGL. Die View beinhaltet zudem Hilfsfunktionen wie bspw. Berechnungen zur Transformation von Welt-Koordinaten in Normalisierte Koordinaten.
+
+## Controller
+
+Der Controller beinhaltet Logik zum Erfassen von Maus und Tastatur. Der Controller ruft das Model und die View auf.
