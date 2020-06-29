@@ -34,10 +34,11 @@ namespace ComputergrafikSpiel.Model.Scene
             this.RightScene = right;
             this.BottomScene = bottom;
 
-            // If Scene.Current == null wurde gelöscht
-            this.lockInc = true;
-            this.Initialize();
-            Scene.Current = this;
+            if (Scene.Current == null)
+            {
+                this.Initialize();
+                Scene.Current = this;
+            }
 
             var tex = background ?? new TextureLoader().LoadTexture("Wall/Wall_single");
             this.Background = new BackgroundRenderable(tex, Vector2.One * worldScene.SceneDefinition.TileSize / 2f, Vector2.One * worldScene.SceneDefinition.TileSize / 2, OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat);
@@ -125,7 +126,6 @@ namespace ComputergrafikSpiel.Model.Scene
             if (Scene.Player == null)
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
-                Scene.Current.ColliderManager.AddEntityCollidable(player);
                 Scene.Player.Equip(new Weapon(3, 1, 4, 12, 50));
                 return true;
             }
@@ -200,30 +200,25 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             if (this.active)
             {
+                Console.WriteLine("Scene already active");
                 return;
             }
 
-            if (this.initialized)
-            {
-                this.Initialize();
-                this.ColliderManager.AddEntityCollidable(Scene.Player);
-            }
-
-            // Scene.Current.Disable();
             Scene.Current = this;
             this.active = true;
 
-            ChangeScene?.Invoke(this, null);
+            Scene.Current.ColliderManager.AddEntityCollidable(Scene.Player);
         }
 
         public void Disable()
         {
             if (Scene.Player != null)
             {
-                this.ColliderManager.RemoveEntityCollidable(Scene.Player);
+                Scene.Current.ColliderManager.RemoveEntityCollidable(Scene.Player);
             }
 
             this.active = false;
+            Scene.Current = null;
         }
 
         public void Update(float dtime)
@@ -261,7 +256,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void SpawningEnemies()
         {
-            (this.Model as Model).CreateRandomEnemy(2, 6);
+            (this.Model as Model).CreateRandomEnemy(2, 5);
         }
 
         private void Initialize()
@@ -271,7 +266,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 return;
             }
 
-            Console.WriteLine("Initialized");
+            this.lockInc = true;
             this.initialized = true;
         }
     }

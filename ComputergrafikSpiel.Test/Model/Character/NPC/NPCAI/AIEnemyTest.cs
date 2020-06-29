@@ -8,7 +8,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC.NPCAI
     [TestClass]
     public class AIEnemyTest
     {
-        private Vector2 Position = new Vector2(100, 100);
+        private Vector2 Position = new Vector2(60, 60);
 
         private Vector2 Direction;
         private static void CreateNewScene()
@@ -17,8 +17,8 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC.NPCAI
             scene.SetAsActive();
         }
 
-        [TestMethod, Ignore("somehow Ray needs an Instance from another class, which why here comes a SystemNullReferenceException")]
-        public void AssertThatWhenPlayerIsInRangeEnemyMoves()
+        [TestMethod]
+        public void AssertThatWhenPlayerIsNotInRangeEnemyMovesRandom()
         {
             CreateNewScene();
             ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
@@ -29,7 +29,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC.NPCAI
             this.Direction = Scene.Player.Position - enemy.Position;
             Direction.Normalize();
             Vector2 DirectionAfter = aIEnemy.EnemyAIMovement(enemy, 0.2f);
-            Assert.AreEqual(Direction, DirectionAfter);
+            Assert.AreNotEqual(this.Direction, DirectionAfter);
         }
     }
 }

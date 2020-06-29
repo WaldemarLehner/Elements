@@ -40,7 +40,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
             this.AttackCooldownCurrent = 0;
             this.DashCooldownCurrent = 0;
-            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player

@@ -38,6 +38,8 @@ namespace ComputergrafikSpiel.Model.Collider
                 throw new ArgumentOutOfRangeException(nameof(tileSize), "Argument needs to be positive");
             }
 
+            Console.WriteLine("new ColliderManager");
+
             this.tileSize = tileSize;
             this.collidableEntities = new List<ICollidable>();
             this.collidableTiles = new Dictionary<Tuple<int, int>, ICollidable>();

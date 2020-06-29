@@ -17,8 +17,8 @@ namespace ComputergrafikSpiel.Model.Scene
             Scene.Current.Disable();
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             var newScene = new Scene(worldScene);
-            newScene.SetAsActive();
             newScene.GiveModeltoScene(this.Model);
+            newScene.SetAsActive();
             newScene.SpawningEnemies();
         }
 
@@ -27,7 +27,7 @@ namespace ComputergrafikSpiel.Model.Scene
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             var initScene = new Scene(worldScene);
             initScene.GiveModeltoScene(this.Model);
-            initScene.SpawningEnemies();
+            initScene.SetAsActive();
         }
     }
 }
