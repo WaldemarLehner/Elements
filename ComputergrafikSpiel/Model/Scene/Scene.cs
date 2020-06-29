@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
@@ -77,6 +76,8 @@ namespace ComputergrafikSpiel.Model.Scene
         public IScene BottomScene { get; }
 
         public IWorldScene World { get; }
+
+        public bool LockPlayerAttack => (this.Model as Model).FirstScene;
 
         public IEnumerable<IRenderable> Renderables
         {
@@ -270,12 +271,6 @@ namespace ComputergrafikSpiel.Model.Scene
         public void SpawningEnemies()
         {
             (this.Model as Model).CreateRandomEnemy(2, 5);
-        }
-
-        // Shall be deleted later
-        public bool LockPlayerAttackInFirstScene()
-        {
-            return (this.Model as Model).FirstScene;
         }
 
         private void Initialize()
