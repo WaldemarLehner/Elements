@@ -15,9 +15,14 @@ namespace ComputergrafikSpiel.Model.Entity
         private readonly string texturename;
         private int incNumber;
         private PlayerEnum.Stats stats;
+        public bool singleDelete = false;
 
         public Interactable(PlayerEnum.Stats stats, float positionX, float positionY, int incNumber)
         {
+            this.Scale = new Vector2(10, 10);
+            this.Position = new Vector2(positionX, positionY);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player);
+
             switch (stats)
             {
                 case PlayerEnum.Stats.MaxHealth:
@@ -29,6 +34,8 @@ namespace ComputergrafikSpiel.Model.Entity
                     this.texturename = "HealIncrease";
                     this.incNumber = incNumber;
                     this.stats = stats;
+                    this.Scale = new Vector2(5, 5);
+                    this.singleDelete = true;
                     break;
                 case PlayerEnum.Stats.Defense:
                     this.texturename = "DefenseIncrease";
@@ -49,15 +56,14 @@ namespace ComputergrafikSpiel.Model.Entity
                     this.texturename = "Währung";
                     this.incNumber = incNumber;
                     this.stats = stats;
+                    this.Scale = new Vector2(5, 5);
+                    this.singleDelete = true;
                     break;
                 default:
                     Console.WriteLine("ENUM STATS DOES NOT EXIST.");
                     break;
             }
 
-            this.Position = new Vector2(positionX, positionY);
-            this.Scale = new Vector2(10, 10);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player);
             this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/" + this.texturename);
         }
 

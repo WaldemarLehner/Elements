@@ -26,14 +26,13 @@ namespace ComputergrafikSpiel.Model.Scene
         private bool active = false;
         private bool lockInc = false;
 
-        public Scene(IWorldScene worldScene, IModel model, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
+        public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
         {
             this.World = worldScene ?? throw new ArgumentNullException(nameof(worldScene));
             this.TopScene = top;
             this.LeftScene = left;
             this.RightScene = right;
             this.BottomScene = bottom;
-            this.Model = model;
 
             // If Scene.Current == null wurde gelöscht
             this.lockInc = true;
@@ -49,8 +48,6 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.ColliderManager.AddWorldTileCollidable(tile.GridPosition.x, tile.GridPosition.y, tile as IWorldTileCollidable);
             }
-
-            this.SpawningEnemies();
         }
 
         public static event EventHandler ChangeScene;
@@ -59,7 +56,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public static IPlayer Player { get; private set; } = null;
 
-        public IModel Model { get; }
+        public IModel Model { get; private set; }
 
         public IRenderableBackground Background { get; private set; }
 
@@ -129,11 +126,16 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
                 Scene.Current.ColliderManager.AddEntityCollidable(player);
-                Scene.Player.Equip(new Weapon(3, 1, 4, 12, 5));
+                Scene.Player.Equip(new Weapon(3, 1, 4, 12, 50));
                 return true;
             }
 
             return false;
+        }
+
+        public void GiveModeltoScene(IModel model)
+        {
+            this.Model = model ?? throw new ArgumentNullException(nameof(model));
         }
 
         public void SpawnTrigger(ITrigger trigger)
@@ -205,7 +207,6 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.Initialize();
                 this.ColliderManager.AddEntityCollidable(Scene.Player);
-                Console.WriteLine("Add new Player Collider");
             }
 
             // Scene.Current.Disable();
@@ -220,7 +221,6 @@ namespace ComputergrafikSpiel.Model.Scene
             if (Scene.Player != null)
             {
                 this.ColliderManager.RemoveEntityCollidable(Scene.Player);
-                Console.WriteLine("Remove old Player Collider");
             }
 
             this.active = false;
@@ -259,6 +259,11 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).SceneManager.LoadNewScene();
         }
 
+        public void SpawningEnemies()
+        {
+            (this.Model as Model).CreateRandomEnemy(2, 6);
+        }
+
         private void Initialize()
         {
             if (this.initialized == true)
@@ -268,11 +273,6 @@ namespace ComputergrafikSpiel.Model.Scene
 
             Console.WriteLine("Initialized");
             this.initialized = true;
-        }
-
-        private void SpawningEnemies()
-        {
-            (this.Model as Model).CreateRandomEnemy(1, 1);
         }
     }
 }

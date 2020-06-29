@@ -122,7 +122,7 @@ namespace ComputergrafikSpiel.Test.Model
         [TestMethod]
         public void AssertThatRayCollisionsAreDetected()
         {
-            var scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 1, 1, 1f, 1, new (int weight, TileDefinitions.Type type)[] { (1, TileDefinitions.Type.Dirt) })).GenerateWorldScene());
+            var scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 1, 1, 1f, 1, new (int weight, TileDefinitions.Type type)[] { (1, TileDefinitions.Type.Dirt) })).GenerateWorldScene(), null);
             scene.SetAsActive();
             IColliderManager manager = scene.ColliderManager;
             Ray testRay = new Ray(new Vector2(2, 2), new Vector2( 1, 0), 10, (ColliderLayer.Layer)~0);

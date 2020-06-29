@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
+using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -110,6 +111,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             if (this.CurrentHealth <= 0)
             {
+                this.DropLootOrHeal(100);
                 Scene.Scene.Current.RemoveObject(this);
                 this.OnDeath(EventArgs.Empty);
             }
@@ -152,6 +154,23 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Spieler wurde getroffen!\n");
                 Scene.Scene.Player.TakingDamage(this.AttackDamage);
+            }
+        }
+
+        private void DropLootOrHeal(int chance)
+        {
+            Random random = new Random();
+            if (random.Next(0, 100) <= chance)
+            {
+                var whichOne = random.Next(0, 5);
+                if (whichOne <= 2)
+                {
+                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Heal, this.Position.X, this.Position.Y, 1);
+                }
+                else
+                {
+                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Währung, this.Position.X, this.Position.Y, 1);
+                }
             }
         }
     }

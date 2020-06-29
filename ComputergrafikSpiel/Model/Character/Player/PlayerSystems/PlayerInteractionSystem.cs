@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 
@@ -18,11 +19,18 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
             {
                 inc.PlayerStatsIncrease();
 
-                var allinteractable = Scene.Scene.Current.Entities.ToList();
-
-                foreach (var interactable in from i in allinteractable where i is Interactable select i as Interactable)
+                if (inc.singleDelete)
                 {
-                    interactable.RemoveInteractable();
+                    inc.RemoveInteractable();
+                }
+                else
+                {
+                    var allinteractable = Scene.Scene.Current.Entities.ToList();
+
+                    foreach (var interactable in from i in allinteractable where i is Interactable select i as Interactable)
+                    {
+                        interactable.RemoveInteractable();
+                    }
                 }
             }
 

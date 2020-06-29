@@ -17,7 +17,7 @@ namespace ComputergrafikSpiel.Model
     {
         internal Model()
         {
-            this.SceneManager = new Scene.SceneManager(this);
+            this.SceneManager = new SceneManager(this);
             this.SceneManager.InitializeFirstScene();
         }
 
@@ -28,8 +28,6 @@ namespace ComputergrafikSpiel.Model
         public (float top, float bottom, float left, float right) CurrentSceneBounds => Scene.Scene.Current.World.WorldSceneBounds;
 
         public IEnumerable<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
-
-        private Dictionary<PlayerEnum.Stats, IEntity> Interactable { get; set; } = null;
 
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
@@ -55,19 +53,6 @@ namespace ComputergrafikSpiel.Model
             }
 
             return;
-        }
-
-        public void CreateNewScene()
-        {
-
-        }
-
-        public void SpawnHeal(float positionX, float positionY)
-        {
-            // Heal Interactable
-            var inter = new Interactable(PlayerEnum.Stats.Heal, positionX, positionY, 1);
-            this.Interactable.Add(PlayerEnum.Stats.Heal, inter);
-            Scene.Scene.Current.SpawnObject(inter);
         }
 
         public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY, int incNumber)
