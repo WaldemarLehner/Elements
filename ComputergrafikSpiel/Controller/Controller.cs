@@ -24,10 +24,6 @@ namespace ComputergrafikSpiel.Controller
             var player = new Player();
             Scene.CreatePlayer(player);
             this.InputController.HookPlayer(player);
-
-            (this.Model as Model.Model).CreateTriggerZone();
-            (this.Model as Model.Model).CreateRoundEndInteractables();
-            (this.Model as Model.Model).CreateEnemy();
         }
 
         public IInputController InputController { get; private set; }

@@ -38,6 +38,8 @@ namespace ComputergrafikSpiel.Model.Collider
                 throw new ArgumentOutOfRangeException(nameof(tileSize), "Argument needs to be positive");
             }
 
+            Console.WriteLine("new ColliderManager");
+
             this.tileSize = tileSize;
             this.collidableEntities = new List<ICollidable>();
             this.collidableTiles = new Dictionary<Tuple<int, int>, ICollidable>();
@@ -133,7 +135,7 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public void HandleTriggerCollisions(IPlayer player)
         {
-            foreach (var trigger in this.collidableTriggers)
+            foreach (var trigger in this.collidableTriggers.ToList())
             {
                 if (player.Collider.DidCollideWith(trigger.Value.Collider))
                 {

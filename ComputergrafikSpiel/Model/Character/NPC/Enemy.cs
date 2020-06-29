@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
+using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -29,7 +30,15 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.scale = new Vector2(16, 16);
             this.Scale = this.scale;
             var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Enemy, collisionMask);
+            if (texture == "Fungus")
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 17, ColliderLayer.Layer.Enemy, collisionMask);
+            }
+            else
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Enemy, collisionMask);
+            }
+
             this.NPCController = new AIEnemy();
         }
 
@@ -102,7 +111,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             if (this.CurrentHealth <= 0)
             {
-                Scene.Scene.Current.RemoveEntity(this);
+                this.DropLootOrHeal(50);
+                Scene.Scene.Current.RemoveObject(this);
                 this.OnDeath(EventArgs.Empty);
             }
         }
@@ -144,6 +154,23 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Spieler wurde getroffen!\n");
                 Scene.Scene.Player.TakingDamage(this.AttackDamage);
+            }
+        }
+
+        private void DropLootOrHeal(int chance)
+        {
+            Random random = new Random();
+            if (random.Next(0, 100) <= chance)
+            {
+                var whichOne = random.Next(0, 5);
+                if (whichOne <= 2)
+                {
+                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Heal, this.Position.X, this.Position.Y, 1);
+                }
+                else
+                {
+                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Währung, this.Position.X, this.Position.Y, 1);
+                }
             }
         }
     }

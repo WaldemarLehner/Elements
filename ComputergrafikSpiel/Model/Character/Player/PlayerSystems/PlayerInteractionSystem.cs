@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
-using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
-using ComputergrafikSpiel.Model.Interfaces;
 
 namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 {
@@ -23,7 +19,22 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
             {
                 inc.PlayerStatsIncrease();
 
-                Scene.Scene.Current.RemoveEntity(inc);
+                if (inc.SingleDelete)
+                {
+                    inc.RemoveInteractable();
+                }
+                else
+                {
+                    var allinteractable = Scene.Scene.Current.Entities.ToList();
+
+                    foreach (var interactable in from i in allinteractable where i is Interactable select i as Interactable)
+                    {
+                        if (interactable.DeleteAll)
+                        {
+                            interactable.RemoveInteractable();
+                        }
+                    }
+                }
             }
 
             // TODO: Interaction Blacksmith?!

@@ -30,17 +30,16 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 50);
-            this.scale = new Vector2(32, 32);
+            this.scale = new Vector2(24, 24);
             this.Scale = this.scale;
             var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Interactable | ColliderLayer.Layer.Trigger;
-            this.Collider = new CircleOffsetCollider(this, new Vector2(0, -19f), 10, ColliderLayer.Layer.Player, collisionLayer);
+            this.Collider = new CircleOffsetCollider(this, new Vector2(0, -15f), 10, ColliderLayer.Layer.Player, collisionLayer);
             this.playerAttackSystem = new PlayerAttackSystem();
             this.playerMovementSystem = new PlayerMovementSystem();
             this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
             this.AttackCooldownCurrent = 0;
             this.DashCooldownCurrent = 0;
-            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this.Collider.CollidableParent);
         }
 
         // Define Player
@@ -103,7 +102,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
+                    if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0 && !Scene.Scene.Current.LockPlayerAttack)
                     {
                         this.playerAttackSystem.PlayerAttack(mouseCursorCoordinates);
                         this.AttackCooldownCurrent = this.AttackCooldown;

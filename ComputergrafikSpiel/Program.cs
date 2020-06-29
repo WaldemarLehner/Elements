@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel
         {
             IModel model = new Model.Model();
             IView view = new View.View(model);
-            Controller.Controller controller = new Controller.Controller(view, model, 800, 600, "Test");
+            Controller.Controller controller = new Controller.Controller(view, model, 800, 600, "Project: Elements");
             controller.Run(60f, 0f);
         }
     }
