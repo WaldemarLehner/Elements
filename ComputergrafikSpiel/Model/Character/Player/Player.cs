@@ -102,7 +102,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
                 else if (playerAction == PlayerEnum.PlayerActions.Attack)
                 {
-                    if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
+                    if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0 && !Scene.Scene.Current.LockPlayerAttackInFirstScene())
                     {
                         this.playerAttackSystem.PlayerAttack(mouseCursorCoordinates);
                         this.AttackCooldownCurrent = this.AttackCooldown;
