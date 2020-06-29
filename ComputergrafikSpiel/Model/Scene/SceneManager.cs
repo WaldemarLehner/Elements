@@ -1,5 +1,6 @@
 ﻿using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
+using System.Runtime.CompilerServices;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
@@ -14,6 +15,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void LoadNewScene()
         {
+            (this.Model as Model).FirstScene = false;
             Scene.Current.Disable();
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             var newScene = new Scene(worldScene);
@@ -26,6 +28,7 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             var initScene = new Scene(worldScene);
+            (this.Model as Model).FirstScene = true;
             initScene.GiveModeltoScene(this.Model);
             initScene.SetAsActive();
         }

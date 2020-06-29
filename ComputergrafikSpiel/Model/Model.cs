@@ -8,7 +8,6 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
-using ComputergrafikSpiel.Model.World;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
@@ -21,7 +20,9 @@ namespace ComputergrafikSpiel.Model
             this.SceneManager.InitializeFirstScene();
         }
 
-        public ISceneManager SceneManager { get; }
+        public bool FirstScene { get; set; }
+
+        public ISceneManager SceneManager { get; set; }
 
         public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
 

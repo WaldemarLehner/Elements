@@ -111,7 +111,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             if (this.CurrentHealth <= 0)
             {
-                this.DropLootOrHeal(100);
+                this.DropLootOrHeal(50);
                 Scene.Scene.Current.RemoveObject(this);
                 this.OnDeath(EventArgs.Empty);
             }

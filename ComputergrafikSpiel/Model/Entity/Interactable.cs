@@ -15,8 +15,8 @@ namespace ComputergrafikSpiel.Model.Entity
         private readonly string texturename;
         private int incNumber;
         private PlayerEnum.Stats stats;
-        public bool singleDelete = false;
-
+        public bool SingleDelete = false;
+        public bool DeleteAll = false;
         public Interactable(PlayerEnum.Stats stats, float positionX, float positionY, int incNumber)
         {
             this.Scale = new Vector2(10, 10);
@@ -29,35 +29,39 @@ namespace ComputergrafikSpiel.Model.Entity
                     this.texturename = "MaxHealthIncrease";
                     this.incNumber = incNumber;
                     this.stats = stats;
+                    this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.Heal:
                     this.texturename = "HealIncrease";
                     this.incNumber = incNumber;
                     this.stats = stats;
                     this.Scale = new Vector2(5, 5);
-                    this.singleDelete = true;
+                    this.SingleDelete = true;
                     break;
                 case PlayerEnum.Stats.Defense:
                     this.texturename = "DefenseIncrease";
                     this.incNumber = incNumber;
                     this.stats = stats;
+                    this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.AttackSpeed:
                     this.texturename = "AttackSpeedIncrease";
                     this.incNumber = incNumber;
                     this.stats = stats;
+                    this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.MovementSpeed:
                     this.texturename = "MovementSpeedIncrease";
                     this.incNumber = incNumber;
                     this.stats = stats;
+                    this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.Währung:
                     this.texturename = "Währung";
                     this.incNumber = incNumber;
                     this.stats = stats;
                     this.Scale = new Vector2(5, 5);
-                    this.singleDelete = true;
+                    this.SingleDelete = true;
                     break;
                 default:
                     Console.WriteLine("ENUM STATS DOES NOT EXIST.");

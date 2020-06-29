@@ -19,7 +19,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
             {
                 inc.PlayerStatsIncrease();
 
-                if (inc.singleDelete)
+                if (inc.SingleDelete)
                 {
                     inc.RemoveInteractable();
                 }
@@ -29,7 +29,10 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 
                     foreach (var interactable in from i in allinteractable where i is Interactable select i as Interactable)
                     {
-                        interactable.RemoveInteractable();
+                        if (interactable.DeleteAll)
+                        {
+                            interactable.RemoveInteractable();
+                        }
                     }
                 }
             }

@@ -126,7 +126,7 @@ namespace ComputergrafikSpiel.Model.Scene
             if (Scene.Player == null)
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
-                Scene.Player.Equip(new Weapon(3, 1, 4, 12, 50));
+                Scene.Player.Equip(new Weapon(3, 1, 4, 12, 5));
                 return true;
             }
 
@@ -204,10 +204,14 @@ namespace ComputergrafikSpiel.Model.Scene
                 return;
             }
 
+            if (this.initialized)
+            {
+                this.Initialize();
+                Scene.Current.ColliderManager.AddEntityCollidable(Scene.Player);
+            }
+
             Scene.Current = this;
             this.active = true;
-
-            Scene.Current.ColliderManager.AddEntityCollidable(Scene.Player);
         }
 
         public void Disable()
@@ -233,8 +237,16 @@ namespace ComputergrafikSpiel.Model.Scene
             // Spawn Interactable when all enemies are dead
             if (this.NpcList.Count == 0 && this.lockInc)
             {
-                (this.Model as Model).CreateRoundEndInteractables();
-                (this.Model as Model).CreateTriggerZone();
+                if ((this.Model as Model).FirstScene)
+                {
+                    (this.Model as Model).CreateTriggerZone();
+                }
+                else
+                {
+                    (this.Model as Model).CreateRoundEndInteractables();
+                    (this.Model as Model).CreateTriggerZone();
+                }
+
                 this.lockInc = false;
             }
         }
