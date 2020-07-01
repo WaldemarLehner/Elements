@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing.Text;
+using System.Security.Cryptography.X509Certificates;
 using ComputergrafikSpiel.Model.Collider;
+using SixLabors.ImageSharp.Processing.Processors.Transforms;
 
 namespace ComputergrafikSpiel.Model.World
 {
@@ -16,11 +18,27 @@ namespace ComputergrafikSpiel.Model.World
             return false;
         }
 
+        internal static bool IsTileWalkableBorder((int x, int y) tileIndex, (int x, int y) maxArrayIndex)
+        {
+            // Outer layer.
+            if (tileIndex.x == 0 || tileIndex.x == maxArrayIndex.x || tileIndex.y == 0 || tileIndex.y == maxArrayIndex.y)
+            {
+                return false;
+            }
+
+            // Inner layer.
+            if (tileIndex.x > 1 && tileIndex.x < maxArrayIndex.x - 1 && tileIndex.y > 1 && tileIndex.y < maxArrayIndex.y - 1)
+            {
+                return false;
+            }
+
+            // All that remains is the ring.
+            return true;
+        }
+
         internal static TileDefinitions.TextureSubType[] GetTexturesTransitionable(TileDefinitions.SurroundingTiles n)
         {
             bool cornerTL = false, cornerTR = false, cornerBL = false, cornerBR = false;
-
-
             n.RemoveUnneccesary();
             if (n.Count == 0)
             {

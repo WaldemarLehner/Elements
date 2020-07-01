@@ -49,6 +49,11 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.ColliderManager.AddWorldTileCollidable(tile.GridPosition.x, tile.GridPosition.y, tile as IWorldTileCollidable);
             }
+
+            foreach (var obstacle in this.World.Obstacles)
+            {
+                this.ColliderManager.AddEntityCollidable(obstacle);
+            }
         }
 
         public static event EventHandler ChangeScene;
@@ -245,7 +250,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 }
                 else
                 {
-                    (this.Model as Model).CreateRoundEndInteractables();
+                    (this.Model as Model).OnSceneCompleted(this.World);
                     (this.Model as Model).CreateTriggerZone();
                 }
 
@@ -268,9 +273,9 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).SceneManager.LoadNewScene();
         }
 
-        public void SpawningEnemies()
+        public void SpawningEnemies(IWorldScene scene)
         {
-            (this.Model as Model).CreateRandomEnemy(2, 5);
+            (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene);
         }
 
         private void Initialize()

@@ -16,6 +16,8 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         IEnumerable<IRenderable> Renderables { get; }
 
+        int Level { get; }
+
         void Update(float dTime);
 
         // void CreateProjectile(int attackDamage, int projectileCreationCount, Vector2 position, Vector2 direction, float bulletTTL, float bulletSize, IColliderManager colliderManager);
