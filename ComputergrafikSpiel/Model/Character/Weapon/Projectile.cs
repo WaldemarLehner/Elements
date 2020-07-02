@@ -14,10 +14,10 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Projectile : IEntity
     {
-        internal Projectile(int attackDamage, Vector2 position, Vector2 direction, float ttl, float bulletSize)
+        internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize)
         {
             this.AttackDamage = attackDamage;
-            this.Position = position;
+            this.Position = new Vector2 (Scene.Scene.Player.Position.X, Scene.Scene.Player.Position.Y - 10);
             this.Direction = direction;
             this.TTL = ttl;
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
@@ -30,7 +30,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             Vector2 positionForRotation = new Vector2(1, 0);
             Vector2 directionNormalized = Vector2.Normalize(direction);
             this.Rotation = RotationHelper.GetRotationBetweenTwoVectorsRadians(positionForRotation, directionNormalized);
-            this.RotationAnker = position;
+            this.RotationAnker = Scene.Scene.Player.Position;
             Scene.Scene.Current.SpawnObject(this);
         }
 

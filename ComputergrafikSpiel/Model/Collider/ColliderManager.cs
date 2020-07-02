@@ -54,6 +54,7 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public void AddEntityCollidable(ICollidable collidable)
         {
+            // is this needed for anything?
             if(collidable == null)
             {
                 int x = 0;
@@ -120,6 +121,7 @@ namespace ComputergrafikSpiel.Model.Collider
                 var collidableToCheck = this.collidableTiles[position];
                 if (collidable.Collider.DidCollideWith(collidableToCheck.Collider) && collidable.Collider != collidableToCheck.Collider)
                 {
+                    Console.WriteLine("tile hit");
                     collidedCollidables.Add(collidableToCheck);
                 }
             }

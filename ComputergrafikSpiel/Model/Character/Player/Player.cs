@@ -6,6 +6,7 @@ using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
@@ -29,7 +30,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         {
             this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
-            this.Position = new Vector2(50, 50);
+            this.Position = new Vector2(50, 65);
             this.scale = new Vector2(24, 24);
             this.Scale = this.scale;
             var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Interactable | ColliderLayer.Layer.Trigger;
@@ -55,7 +56,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public int CurrentHealth { get; set; }
 
-        public int Defense { get; set; } = 1;
+        public int Defense { get; set; } = 0;
 
         public float AttackSpeed { get; set; } = 1;
 
@@ -221,7 +222,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             this.directionXY = Vector2.Zero;
 
-            //this.CollisionPrevention();
+            this.CollisionPrevention();
 
             this.AttackCooldownCurrent -= dtime + this.AttackSpeed;
 
@@ -259,9 +260,15 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void CollisionPrevention()
         {
-            if (Scene.Scene.Current.ColliderManager.GetCollisions(this).Count > 0)
+            IReadOnlyCollection<ICollidable> collisions = Scene.Scene.Current.ColliderManager.GetCollisions(this);
+
+            foreach (ICollidable collision in collisions)
             {
-                this.Position = this.LastPosition;
+                if (collision.Collider.OwnLayer != ColliderLayer.Layer.Interactable)
+                {
+                    this.Position = this.LastPosition;
+                    return;
+                }
             }
 
             return;

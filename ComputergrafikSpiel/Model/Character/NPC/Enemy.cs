@@ -139,32 +139,32 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             this.Position += this.Direction * this.MovementSpeed * dtime;
 
-            this.CollisionPrevention();
-
             this.AttackCooldown -= dtime;
 
             if (this.AttackCooldown <= 0)
             {
                 this.GiveDamageToPlayer();
             }
+
+            this.CollisionPrevention();
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
 
         public void CollisionPrevention()
         {
-            /*foreach (var collision in Scene.Scene.Current.ColliderManager.GetCollisions(this))
-            {
-                if (collision.GetType == )
-            }
-            */
-            if (Scene.Scene.Current.ColliderManager.GetCollisions(this).Count > 0)
-            {
-                this.Position = this.LastPosition;
-                this.Direction = Vector2.Multiply(this.Direction, -1);
-            }
 
-            return;
+            IReadOnlyCollection<ICollidable> collisions = Scene.Scene.Current.ColliderManager.GetCollisions(this);
+
+            foreach (ICollidable collision in collisions)
+            {
+                if (collision.Collider.OwnLayer != ColliderLayer.Layer.Bullet)
+                {
+                    this.Position = this.LastPosition;
+                    this.Direction = this.NPCController.EnemyAIMovement(this, 4);
+                    return;
+                }
+            }
         }
 
         private void GiveDamageToPlayer()
