@@ -81,6 +81,7 @@ namespace ComputergrafikSpiel.Test.Model
             Assert.AreEqual(collidable, collidable.Collider.CollidableParent);
         }
 
+        /*
         [TestMethod]
         public void AssertThatGettingAffectedTilesWorksCorrectly()
         {
@@ -99,6 +100,7 @@ namespace ComputergrafikSpiel.Test.Model
         {
             manager.AddWorldTileCollidable(x, y, MockCircleCollidable.CreateCollidableWithCollider(new Vector2(x, y), 1));
         }
+        */
 
         [TestMethod]
         public void AssertThatTouchingCollidersAreDetected()
