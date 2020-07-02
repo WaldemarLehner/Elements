@@ -25,7 +25,7 @@ namespace ComputergrafikSpiel.View.Renderer
             this.Camera = camera ?? throw new ArgumentNullException(nameof(camera));
             this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
-            this.Debug = DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData;
+            this.Debug = 0; // DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData;
         }
 
         public bool Active { get; private set; } = true;
@@ -82,6 +82,11 @@ namespace ComputergrafikSpiel.View.Renderer
                     foreach (var entry in Scene.Current.IndependentDebugData)
                     {
                         OpenTKRendererHelper.RenderItemDebug(this, entry.verts, entry.color);
+                    }
+
+                    foreach (var entry in Scene.Current.ColliderManager.CollidableEntitiesCollection)
+                    {
+                        OpenTKRendererHelper.RenderItemDebug(this, entry.Collider.DebugData.verts, new Color4(255, 0, 0, 255));
                     }
 
                     Scene.Current.IndependentDebugData.Clear();

@@ -15,7 +15,7 @@ namespace ComputergrafikSpiel.Model.Collider
                 throw new ArgumentOutOfRangeException("Direction can't be 0,0");
             }
 
-            this.Direction = direction;
+            this.Direction = direction.Normalized();
 
             if (maxDis <= 0)
             {

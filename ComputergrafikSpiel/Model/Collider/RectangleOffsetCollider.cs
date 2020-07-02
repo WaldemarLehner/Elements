@@ -24,7 +24,7 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public ICollidable CollidableParent { get; }
 
-        public float MaximumDistanceFromPosition => (float)Math.Sqrt(.5f * (this.size.height + this.size.width));
+        public float MaximumDistanceFromPosition => Vector2.Distance(Vector2.Zero, new Vector2(this.size.width, this.size.height) / 2f);
 
         public Vector2 Position => this.CollidableParent.Position + this.offset;
 

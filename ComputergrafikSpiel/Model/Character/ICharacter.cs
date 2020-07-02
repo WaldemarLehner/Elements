@@ -19,6 +19,8 @@ namespace ComputergrafikSpiel.Model.Character
 
         int Defense { get; }
 
+        Vector2 LastPosition { get; set; }
+
         bool TextureWasMirrored { get; set; }
 
         void OnDeath(EventArgs e);
@@ -28,5 +30,7 @@ namespace ComputergrafikSpiel.Model.Character
         void OnMove(EventArgs e);
 
         void LookAt(Vector2 vec);
+
+        void CollisionPrevention();
     }
 }

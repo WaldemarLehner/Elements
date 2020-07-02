@@ -63,6 +63,11 @@ namespace ComputergrafikSpiel.Model.World
                     returnArray[upperX, y] = TileDefinitions.Type.Grass;
                 }
             }
+
+            if (!TileHelper.IsWalkable(returnArray[upperX, upperY]))
+            {
+                returnArray[upperX, upperY] = TileDefinitions.Type.Grass;
+            }
         }
 
         private static void AddBorder(ref TileDefinitions.Type[,] returnArray)
