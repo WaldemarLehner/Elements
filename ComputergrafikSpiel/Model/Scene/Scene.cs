@@ -211,11 +211,16 @@ namespace ComputergrafikSpiel.Model.Scene
                 return;
             }
 
-            if (this.initialized)
+            if (!this.initialized)
             {
                 this.Initialize();
+            }
+
+            if(Scene.Player != null)
+            {
                 Scene.Current.ColliderManager.AddEntityCollidable(Scene.Player);
             }
+            
 
             Scene.Current = this;
             this.active = true;

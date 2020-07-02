@@ -72,27 +72,20 @@ namespace ComputergrafikSpiel.Model
         {
             this.level++;
 
-            var upgradesToSelect = new List<(PlayerEnum.Stats, int)>() { (PlayerEnum.Stats.MaxHealth, 1), (PlayerEnum.Stats.Defense, 2), (PlayerEnum.Stats.AttackSpeed, 1), (PlayerEnum.Stats.MovementSpeed, 10) };
-
-            Random random = new Random();
-
-            List<(int x, int y, PlayerEnum.Stats, int)> positions = new List<(int x, int y, PlayerEnum.Stats, int)>();
-            int tileCount = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
-            foreach (var entry in upgradesToSelect)
+            var positions = new (int x, int y)[]
             {
-                var index = FindNextSpawnSlot(random.Next(0, tileCount), world, SpawnMask.Mask.AllowInteractable);
-                if (index == null)
-                {
-                    // No more open slots.
-                    break;
-                }
+                (1, 1),
+                (1, world.SceneDefinition.TileCount.y),
+                (world.SceneDefinition.TileCount.x, 1),
+                (world.SceneDefinition.TileCount.x, world.SceneDefinition.TileCount.y),
+            };
 
-                positions.Add((index.Value.x, index.Value.y, entry.Item1, entry.Item2)); // (0, 0) is never reached.
-            }
-
-            foreach (var entry in positions)
+            var upgradesToSelect = new (PlayerEnum.Stats, int)[] { (PlayerEnum.Stats.MaxHealth, 1), (PlayerEnum.Stats.Defense, 2), (PlayerEnum.Stats.AttackSpeed, 1), (PlayerEnum.Stats.MovementSpeed, 10) };
+            float tileSize = world.SceneDefinition.TileSize;
+            for (int i = 0; i < 4; i++)
             {
-                this.SpawnInteractable(entry.Item3, (entry.x + .5f) * world.SceneDefinition.TileSize, (entry.y + .5f) * world.SceneDefinition.TileSize, entry.Item4);
+                var (x, y) = positions[i];
+                this.SpawnInteractable(upgradesToSelect[i].Item1, (x + .5f) * tileSize, (y + .5f) * tileSize, upgradesToSelect[i].Item2);
             }
         }
 
