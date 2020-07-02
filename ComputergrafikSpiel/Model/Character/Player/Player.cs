@@ -264,14 +264,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             foreach (ICollidable collision in collisions)
             {
-                if (collision.Collider.OwnLayer != ColliderLayer.Layer.Interactable)
+                if (collision.Collider.OwnLayer == ColliderLayer.Layer.Interactable || collision.Collider.OwnLayer == ColliderLayer.Layer.Bullet)
                 {
-                    this.Position = this.LastPosition;
-                    return;
+                    continue;
                 }
-            }
 
-            return;
+                this.Position = this.LastPosition;
+                return;
+            }
         }
     }
 }
