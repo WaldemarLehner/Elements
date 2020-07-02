@@ -89,6 +89,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public bool TextureWasMirrored { get; set; } = false;
 
+        public Vector2 LastPosition { get; set; }
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Vector2 mouseCursorCoordinates)
         {
@@ -202,6 +204,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
+            this.LastPosition = this.Position;
+
             this.LookAt(this.mousePosition);
             if (this.run)
             {
@@ -216,6 +220,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Position += this.directionXY * this.MovementSpeed * dtime;
 
             this.directionXY = Vector2.Zero;
+
+            //this.CollisionPrevention();
 
             this.AttackCooldownCurrent -= dtime + this.AttackSpeed;
 
@@ -250,5 +256,15 @@ namespace ComputergrafikSpiel.Model.Character.Player
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X > vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
+
+        public void CollisionPrevention()
+        {
+            if (Scene.Scene.Current.ColliderManager.GetCollisions(this).Count > 0)
+            {
+                this.Position = this.LastPosition;
+            }
+
+            return;
+        }
     }
 }

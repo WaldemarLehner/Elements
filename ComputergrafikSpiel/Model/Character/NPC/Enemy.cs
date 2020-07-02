@@ -76,6 +76,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public bool TextureWasMirrored { get; set; } = false;
 
+        public Vector2 LastPosition { get; set; }
+
         private Vector2 Direction { get; set; }
 
         private float AttackCooldown { get; set; } = 0;
@@ -127,6 +129,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void Update(float dtime)
         {
+            this.LastPosition = this.Position;
+
             this.LookAt(Scene.Scene.Player.Position);
 
             this.Direction = this.NPCController.EnemyAIMovement(this, dtime);
@@ -135,7 +139,10 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             this.Position += this.Direction * this.MovementSpeed * dtime;
 
+            this.CollisionPrevention();
+
             this.AttackCooldown -= dtime;
+
             if (this.AttackCooldown <= 0)
             {
                 this.GiveDamageToPlayer();
@@ -143,6 +150,22 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
+
+        public void CollisionPrevention()
+        {
+            /*foreach (var collision in Scene.Scene.Current.ColliderManager.GetCollisions(this))
+            {
+                if (collision.GetType == )
+            }
+            */
+            if (Scene.Scene.Current.ColliderManager.GetCollisions(this).Count > 0)
+            {
+                this.Position = this.LastPosition;
+                this.Direction = Vector2.Multiply(this.Direction, -1);
+            }
+
+            return;
+        }
 
         private void GiveDamageToPlayer()
         {
