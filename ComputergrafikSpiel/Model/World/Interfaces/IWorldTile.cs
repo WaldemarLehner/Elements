@@ -8,5 +8,7 @@ namespace ComputergrafikSpiel.Model.World
         (int x, int y) GridPosition { get; }
 
         TileDefinitions.Type TileType { get; }
+
+        SpawnMask.Mask Spawnmask { get; set; }
     }
 }

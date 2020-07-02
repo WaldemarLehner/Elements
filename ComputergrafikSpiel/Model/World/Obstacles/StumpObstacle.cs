@@ -18,14 +18,14 @@ namespace ComputergrafikSpiel.Model.World.Obstacles
             this.Position = position;
             this.scale = scale;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, scale / 2f, ColliderLayer.Layer.Wall, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player);
-            this.Texture = new TextureLoader().LoadTexture("Obstacle/Stump");
+            this.Texture = new TextureLoader().LoadTexture("Obstacle/TreeStump");
         }
 
         public ICollider Collider { get; }
 
         public ITexture Texture { get; }
 
-        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
+        public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new (Color4 color, Vector2[] vertices)[] { this.Collider.DebugData };
 
         public Vector2 Position { get; }
 

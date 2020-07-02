@@ -34,13 +34,13 @@ namespace ComputergrafikSpiel.Model.World
             int upperX = returnArray.GetLength(0) - 2;
             int upperY = returnArray.GetLength(1) - 2;
 
-            for (int x = 2; x < upperX; x++)
+            for (int x = 1; x < upperX; x++)
             {
-                var top = returnArray[x, 2];
+                var top = returnArray[x, 1];
                 var bottom = returnArray[x, upperY];
                 if (!TileHelper.IsWalkable(top))
                 {
-                    returnArray[x, 2] = TileDefinitions.Type.Grass;
+                    returnArray[x, 1] = TileDefinitions.Type.Grass;
                 }
 
                 if (!TileHelper.IsWalkable(bottom))
@@ -49,13 +49,13 @@ namespace ComputergrafikSpiel.Model.World
                 }
             }
 
-            for (int y = 2; y < upperY; y++)
+            for (int y = 1; y < upperY; y++)
             {
-                var left = returnArray[2, y];
+                var left = returnArray[1, y];
                 var right = returnArray[upperX, y];
                 if (!TileHelper.IsWalkable(left))
                 {
-                    returnArray[2, y] = TileDefinitions.Type.Grass;
+                    returnArray[1, y] = TileDefinitions.Type.Grass;
                 }
 
                 if (!TileHelper.IsWalkable(right))

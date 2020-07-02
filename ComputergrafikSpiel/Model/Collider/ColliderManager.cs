@@ -54,6 +54,10 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public void AddEntityCollidable(ICollidable collidable)
         {
+            if(collidable == null)
+            {
+                int x = 0;
+            }
             this.collidableEntities.Add(collidable);
         }
 

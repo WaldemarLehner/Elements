@@ -14,12 +14,13 @@ namespace ComputergrafikSpiel.Model.World
     /// </summary>
     public class WorldTile : IWorldTile
     {
-        internal WorldTile(float size, (int x, int y) gridPos, TileDefinitions.Type type, TileDefinitions.SurroundingTiles neighbors)
+        internal WorldTile(float size, (int x, int y) gridPos, TileDefinitions.Type type, TileDefinitions.SurroundingTiles neighbors, bool allowObstacle = true)
         {
             this.Size = size;
             this.GridPosition = gridPos;
             this.Position = (new Vector2(this.GridPosition.x, this.GridPosition.y) * this.Size) + (Vector2.One * this.Size / 2f);
             this.TileType = type;
+            this.Spawnmask = SpawnMask.Mask.AllowNPC | SpawnMask.Mask.AllowInteractable | (allowObstacle ? SpawnMask.Mask.AllowObstacle : SpawnMask.Mask.Disallow);
             this.TileTexture = new WorldTileTextureLoader().LoadTexture(type);
             TileDefinitions.TextureSubType[] textureLayers = TileHelper.HasTileTypeTrims(type) ? TileHelper.GetTexturesTransitionable(neighbors) : new TileDefinitions.TextureSubType[] { TileDefinitions.TextureSubType.Filled };
 
@@ -43,6 +44,8 @@ namespace ComputergrafikSpiel.Model.World
         public Vector2 Position { get; }
 
         public float Rotation => 0f;
+
+        public SpawnMask.Mask Spawnmask { get; set; }
 
         public Vector2 RotationAnker => this.Position;
 
