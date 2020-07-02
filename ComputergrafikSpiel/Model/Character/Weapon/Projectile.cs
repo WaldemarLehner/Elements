@@ -23,7 +23,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize/2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
-            Scene.Scene.Current.ColliderManager.AddEntityCollidable(this);
             this.Scale = Vector2.One * bulletSize;
 
             // rotation calculation

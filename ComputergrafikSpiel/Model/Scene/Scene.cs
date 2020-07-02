@@ -184,23 +184,33 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void RemoveObject(IEntity entity)
         {
+            if(entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            if (entity is ICollidable)
+            {
+                this.ColliderManager.RemoveEntityCollidable(entity);
+            }
+
             if (entity is Enemy)
             {
-                this.NpcList.Remove((INonPlayerCharacter)entity ?? throw new ArgumentNullException(nameof(entity)));
+                this.NpcList.Remove((INonPlayerCharacter)entity);
             }
             else if (entity is Trigger)
             {
-                this.TriggerList.Remove((ITrigger)entity ?? throw new ArgumentNullException(nameof(entity)));
+                this.TriggerList.Remove((ITrigger)entity);
             }
             else
             {
-                this.EntitiesList.Remove(entity ?? throw new ArgumentNullException(nameof(entity)));
+                if (this.EntitiesList.Contains(entity))
+                {
+                    this.EntitiesList.Remove(entity);
+                }
+                
             }
 
-            if (entity is ICollidable)
-            {
-                this.ColliderManager.RemoveEntityCollidable(entity as ICollidable);
-            }
+            
         }
 
         public void SetAsActive()

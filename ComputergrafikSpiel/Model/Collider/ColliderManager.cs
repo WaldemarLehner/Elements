@@ -6,6 +6,7 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Model.Collider
 {
@@ -167,6 +168,28 @@ namespace ComputergrafikSpiel.Model.Collider
 
         internal IEnumerable<Tuple<int, int>> GetAffectedStaticTiles(Vector2 position, float maxDistance)
         {
+
+            (int x, int y) tileKeys = ((int)(position.X / this.tileSize), (int)(position.Y / this.tileSize));
+            int tileDistance = (int)Math.Ceiling(maxDistance / this.tileSize);
+
+            (int lower, int upper) x = (tileKeys.x - tileDistance, tileKeys.x + tileDistance);
+            (int lower, int upper) y = (tileKeys.y - tileDistance, tileKeys.y + tileDistance);
+            if(x.lower < 0)
+            {
+                x.lower = 0;
+            }
+            if (y.lower < 0)
+            {
+                y.lower = 0;
+            }
+
+            // Manager does not store max index.
+            var boxedKeys = from key
+                            in this.collidableTiles.Keys
+                            where (key.Item1 >= x.lower || key.Item1 <= x.upper) && (key.Item2 >= y.lower || key.Item2 <= y.upper)
+                            select key;
+            return boxedKeys;
+            /*
             // Use Box Distance instead of Radius first, then iterate through that Set to get a subset with fitting Radius
             int minX = (int)Math.Floor((position.X - maxDistance) / this.tileSize);
             int minY = (int)Math.Floor((position.Y - maxDistance) / this.tileSize);
@@ -179,6 +202,7 @@ namespace ComputergrafikSpiel.Model.Collider
                             select key;
 
             return from key in boxedKeys where (Vector2.Distance(position, this.collidableTiles[key].Collider.Position) - this.collidableTiles[key].Collider.MaximumDistanceFromPosition) <= maxDistance select key;
+    */
         }
 
         internal IReadOnlyCollection<ICollidable> GetRayCollisionsWithStatic(IRay ray)
