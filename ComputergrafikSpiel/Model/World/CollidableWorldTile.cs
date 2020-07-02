@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
@@ -18,6 +19,7 @@ namespace ComputergrafikSpiel.Model.World
             this.GridPosition = gridPos;
             this.Position = (new Vector2(this.GridPosition.x, this.GridPosition.y) * this.Size) + (Vector2.One * (this.Size / 2f));
             this.TileType = type;
+            this.Spawnmask = (type == TileDefinitions.Type.Water) ? SpawnMask.Mask.AllowObstacle : SpawnMask.Mask.Disallow;
             ColliderLayer.Layer collisionLayer = TileHelper.GetCollisionLayers(type);
             var self = (type == TileDefinitions.Type.Wall || type == TileDefinitions.Type.WallTrim) ? ColliderLayer.Layer.Wall : ColliderLayer.Layer.Water;
             this.Collider = new RectangleOffsetCollider(this, Vector2.Zero, size / 4f, self, collisionLayer);
@@ -38,6 +40,8 @@ namespace ComputergrafikSpiel.Model.World
         }
 
         public (int x, int y) GridPosition { get; }
+
+        public SpawnMask.Mask Spawnmask { get; set; }
 
         public TileDefinitions.Type TileType { get; }
 

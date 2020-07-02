@@ -19,10 +19,11 @@ namespace ComputergrafikSpiel.Controller
         {
             this.View = view;
             this.Model = model;
-            this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
-
             var player = new Player();
             Scene.CreatePlayer(player);
+            this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
+
+            
             this.InputController.HookPlayer(player);
         }
 

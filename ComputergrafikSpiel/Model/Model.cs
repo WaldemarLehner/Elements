@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting.Activation;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
@@ -8,6 +10,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
+using ComputergrafikSpiel.Model.World;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model
@@ -19,6 +22,7 @@ namespace ComputergrafikSpiel.Model
             this.SceneManager = new SceneManager(this);
             this.SceneManager.InitializeFirstScene();
         }
+        private int level = 1;
 
         public bool FirstScene { get; set; }
 
@@ -27,6 +31,8 @@ namespace ComputergrafikSpiel.Model
         public IEnumerable<IRenderable> Renderables => Scene.Scene.Current.Renderables;
 
         public (float top, float bottom, float left, float right) CurrentSceneBounds => Scene.Scene.Current.World.WorldSceneBounds;
+
+        public int Level => this.level;
 
         public IEnumerable<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
 
@@ -62,37 +68,81 @@ namespace ComputergrafikSpiel.Model
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
-        public void CreateRoundEndInteractables()
+        public void OnSceneCompleted(IWorldScene world)
         {
-            // MaxHealth
-            this.SpawnInteractable(PlayerEnum.Stats.MaxHealth, 250, 250, 1);
+            this.level++;
 
-            // Defense Interactable
-            this.SpawnInteractable(PlayerEnum.Stats.Defense, 350, 250, 2);
+            var positions = new (int x, int y)[]
+            {
+                (1, 1),
+                (1, world.SceneDefinition.TileCount.y),
+                (world.SceneDefinition.TileCount.x, 1),
+                (world.SceneDefinition.TileCount.x, world.SceneDefinition.TileCount.y),
+            };
 
-            // AttackSpeed Interactable
-            this.SpawnInteractable(PlayerEnum.Stats.AttackSpeed, 450, 250, 3);
-
-            // MovementSpeed Interactable
-            this.SpawnInteractable(PlayerEnum.Stats.MovementSpeed, 550, 250, 10);
+            var upgradesToSelect = new (PlayerEnum.Stats, int)[] { (PlayerEnum.Stats.MaxHealth, 1), (PlayerEnum.Stats.Defense, 2), (PlayerEnum.Stats.AttackSpeed, 1), (PlayerEnum.Stats.MovementSpeed, 10) };
+            float tileSize = world.SceneDefinition.TileSize;
+            for (int i = 0; i < 4; i++)
+            {
+                var (x, y) = positions[i];
+                this.SpawnInteractable(upgradesToSelect[i].Item1, (x + .5f) * tileSize, (y + .5f) * tileSize, upgradesToSelect[i].Item2);
+            }
         }
 
-        public void CreateRandomEnemy(int min, int max)
+        public void CreateRandomEnemies(int min, int max, IWorldScene world)
         {
             Random random = new Random();
-            string[] texture = { "Fungus", "WaterDrop" };
-            for (int i = random.Next(min, max); i > 0; i--)
+            int count = random.Next(min, max);
+            int tileCount = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
+            List<(int x, int y)> enemySpawnIndices = new List<(int x, int y)>();
+            foreach (int i in Enumerable.Range(0, count))
             {
+                var index = FindNextSpawnSlot(random.Next(0, tileCount), world, SpawnMask.Mask.AllowNPC);
+                if (index == null)
+                {
+                    // No more open slots.
+                    break;
+                }
+
+                enemySpawnIndices.Add(index ?? (0, 0)); // (0, 0) is never reached.
+            }
+
+            string[] texture = { "Fungus", "WaterDrop" };
+            foreach (var (x, y) in enemySpawnIndices)
+            {
+                var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
                 var randomTexture = texture[random.Next(0, texture.Length)];
                 if (randomTexture == "Fungus")
                 {
-                    Scene.Scene.Current.SpawnObject(new Enemy(20, randomTexture, 25, 2, 3, new Vector2(random.Next(50, 500), random.Next(50, 500))));
+                    Scene.Scene.Current.SpawnObject(new Enemy(20, randomTexture, 25, 2, 3, position));
                 }
                 else if (randomTexture == "WaterDrop")
                 {
-                    Scene.Scene.Current.SpawnObject(new Enemy(10, randomTexture, 80, 0, 1, new Vector2(random.Next(50, 500), random.Next(50, 500))));
+                    Scene.Scene.Current.SpawnObject(new Enemy(10, randomTexture, 80, 0, 1, position));
                 }
             }
+        }
+
+        private static (int x, int y)? FindNextSpawnSlot(int index, IWorldScene world, SpawnMask.Mask mask)
+        {
+            int checkedCount = 0;
+            int maxCheck = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
+            while (checkedCount < maxCheck)
+            {
+                index %= maxCheck;
+                (int x, int y) = (index % world.SceneDefinition.TileCount.x, index / world.SceneDefinition.TileCount.x);
+                if ((world.WorldTiles[x, y].Spawnmask & mask) != 0)
+                {
+                    // This is a Spawn location. flip the bit to mark that a spawn already occured
+                    world.WorldTiles[x, y].Spawnmask ^= mask;
+                    return (x, y);
+                }
+
+                index++;
+                checkedCount++;
+            }
+
+            return null;
         }
     }
 }

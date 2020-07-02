@@ -21,6 +21,8 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public IEnumerable<IRenderable> Renderables => RenderableList;
 
+        public int Level => throw new NotImplementedException();
+
         public bool CreatePlayerOnce(IInputController controller)
         {
             throw new NotImplementedException();

@@ -21,7 +21,7 @@ namespace ComputergrafikSpiel.Model.Scene
             var newScene = new Scene(worldScene);
             newScene.GiveModeltoScene(this.Model);
             newScene.SetAsActive();
-            newScene.SpawningEnemies();
+            newScene.SpawningEnemies(newScene.World);
         }
 
         public void InitializeFirstScene()
