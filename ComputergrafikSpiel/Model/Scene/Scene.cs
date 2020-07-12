@@ -11,6 +11,7 @@ using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay;
 using ComputergrafikSpiel.Model.Triggers;
 using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using ComputergrafikSpiel.Model.World;
@@ -66,6 +67,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IRenderableBackground Background { get; private set; }
 
+        public IEnumerable<IGUIElement[]> UIRenderables => this.GetUIRenderables();
+
         public IColliderManager ColliderManager { get; }
 
         public IEnumerable<IEntity> Entities => this.EntitiesList;
@@ -94,6 +97,9 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.World.WorldTilesEnumerable,
                     this.World.Obstacles,
+                    this.NPCs,
+                    this.Entities,
+                    this.Trigger,
                 };
 
                 foreach (var entry in renderables)
@@ -101,9 +107,6 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(entry);
                 }
 
-                enumerable.AddRange(this.NPCs);
-                enumerable.AddRange(this.Entities);
-                enumerable.AddRange(this.Trigger);
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
@@ -291,6 +294,21 @@ namespace ComputergrafikSpiel.Model.Scene
         public void SpawningEnemies(IWorldScene scene)
         {
             (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene);
+        }
+
+        private IEnumerable<IGUIElement[]> GetUIRenderables()
+        {
+            List<IGUIElement[]> enumables = new List<IGUIElement[]>();
+
+            if (Scene.Player != null)
+            {
+                // Get Player Data
+                (int currentHealth, int maxHealth, int currency) playerData = Player.PlayerData;
+                IGUIElement[] healthIndicator = GUIConstructionHelper.GenerateGuiHealthIndicator(playerData.currentHealth, playerData.maxHealth);
+                enumables.Add(healthIndicator);
+            }
+
+            return enumables;
         }
 
         private void Initialize()

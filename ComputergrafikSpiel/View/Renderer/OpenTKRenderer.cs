@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
@@ -38,6 +40,8 @@ namespace ComputergrafikSpiel.View.Renderer
 
         private IEnumerable<IRenderable> RenderablesEnumerator => this.model.Renderables;
 
+        private IEnumerable<IGUIElement[]> GUIRenderables => this.model.UiRenderables;
+
         private Dictionary<string, TextureData> TextureData { get; set; }
 
         public void Render()
@@ -67,6 +71,16 @@ namespace ComputergrafikSpiel.View.Renderer
                     this.RenderRenderable(entry);
                 }
 
+            }
+
+            // Render the GUI Elements
+            foreach (var entryGroup in this.GUIRenderables)
+            {
+                foreach (var _entry in entryGroup)
+                {
+                    var entry = OpenTKRendererHelper.PopulateMissingDataGUIRenderables(_entry, this);
+                    this.RenderGUIElement(entry as IGUIElement);
+                }
             }
 
             if (this.Debug != 0)
@@ -109,7 +123,6 @@ namespace ComputergrafikSpiel.View.Renderer
 
             GL.Disable(EnableCap.Texture2D);
             GL.Disable(EnableCap.Blend);
-  
         }
 
         public void Resize(int screenWidth, int screenHeight)
@@ -202,6 +215,42 @@ namespace ComputergrafikSpiel.View.Renderer
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             this.Camera.DrawRectangle(rect, texCoords, this.Screen);
+            GL.Disable(EnableCap.Texture2D);
+            GL.Disable(EnableCap.Blend);
+        }
+
+        // see: https://i.imgur.com/2FaoJuX.png
+        private void RenderGUIElement(IGUIElement element)
+        {
+            // Assumes that element has full positional data.
+            var centre = element.Offset;
+
+            // NDC Coordinate Bounds
+            (float bottom, float top, float left, float right) = (centre.Y - element.Size.height ?? 0 / 2f, centre.Y + element.Size.height ?? 0 / 2f, centre.X - element.Size.width ?? 0 / 2f, centre.X + element.Size.width ?? 0 / 2f);
+
+            // Check if Texture Data is already stored, if not, add Texture.
+            this.CreateTextureDataIfNeeded(element.Texture);
+            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            (Vector2 vert, Vector2 tex)[] verTexCoords = new (Vector2 vert, Vector2 tex)[]
+            {
+                (new Vector2(left, top), new Vector2(0,1)),
+                (new Vector2(right, top), Vector2.One),
+                (new Vector2(right, bottom), new Vector2(1,0)),
+                (new Vector2(left, bottom), Vector2.Zero),
+            };
+            this.TextureData[element.Texture.FilePath].Enable();
+            GL.Begin(PrimitiveType.Quads);
+            foreach (var (vert, tex) in verTexCoords)
+            {
+                GL.TexCoord2(tex);
+                GL.Vertex2(vert);
+            }
+
+            GL.End();
+            this.TextureData[element.Texture.FilePath].Disable();
             GL.Disable(EnableCap.Texture2D);
             GL.Disable(EnableCap.Blend);
         }

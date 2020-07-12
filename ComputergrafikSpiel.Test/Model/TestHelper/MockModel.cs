@@ -3,6 +3,7 @@ using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
     {
         public (float top, float bottom, float left, float right) CurrentSceneBounds => (100, 0, 0, 100);
 
-        public List<IUiRenderable> UiRenderableList { get; set; } = new List<IUiRenderable>();
+        public List<IGUINode> UiRenderableList { get; set; } = new List<IGUINode>();
 
-        public IEnumerable<IUiRenderable> UiRenderables => UiRenderableList;
+        public IEnumerable<IGUINode> UiRenderables => UiRenderableList;
 
         public List<IRenderable> RenderableList { get; set; } = new List<IRenderable>();
 

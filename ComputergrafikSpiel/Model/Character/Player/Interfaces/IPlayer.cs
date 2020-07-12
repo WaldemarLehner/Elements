@@ -11,6 +11,8 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 
         IWeapon EquipedWeapon { get; }
 
+        (int currentHealth, int maxHealth, int currency) PlayerData { get; }
+
         // Receives a enum list of pressed player actions -> MoveUp, MoveDown, MoveLeft, MoveRight, Dash, Attack, Interaction
         void PlayerControl(List<PlayerEnum.PlayerActions> pressedActions, Vector2 mouseControlerCooridantes);
 

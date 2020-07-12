@@ -131,7 +131,6 @@
     <Compile Include="Model\Collider\RectangleOffsetCollider.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IEntity.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRenderableBackground.cs" />
-    <Compile Include="Model\EntitySettings\Interfaces\IUiRenderable.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
     <Compile Include="Model\EntitySettings\Texture\BackgroundRenderable.cs" />
@@ -146,6 +145,9 @@
     <Compile Include="Model\EntitySettings\Texture\TexturePointerCalculationHelper.cs" />
     <Compile Include="Model\EntitySettings\Texture\TileTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
+    <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
+    <Compile Include="Model\Overlay\GUIDefinitions.cs" />
+    <Compile Include="Model\Overlay\IGUIElement.cs" />
     <Compile Include="Model\RotationHelper.cs" />
     <Compile Include="Model\Scene\ISceneManager.cs" />
     <Compile Include="Model\Scene\Scene.cs" />
@@ -194,9 +196,7 @@
     <Compile Include="View\Exceptions\ArgumentNotPositiveIntegerGreaterZeroException.cs" />
     <Compile Include="View\Exceptions\ShaderCompileException.cs" />
     <Compile Include="View\Helpers\CameraCoordinateConversionHelper.cs" />
-    <Compile Include="View\Helpers\GLNormalizationHelper.cs" />
     <Compile Include="View\Helpers\ImageToByteHelper.cs" />
-    <Compile Include="View\Helpers\IRenderableHelper.cs" />
     <Compile Include="View\Helpers\RotationHelper.cs" />
     <Compile Include="View\Interfaces\ICamera.cs" />
     <Compile Include="View\Renderer\DebugMask.cs" />

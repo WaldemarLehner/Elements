@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
@@ -91,6 +92,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public bool TextureWasMirrored { get; set; } = false;
 
         public Vector2 LastPosition { get; set; }
+
+        public (int currentHealth, int maxHealth, int currency) PlayerData => (this.CurrentHealth, this.MaxHealth, this.Money);
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Vector2 mouseCursorCoordinates)
