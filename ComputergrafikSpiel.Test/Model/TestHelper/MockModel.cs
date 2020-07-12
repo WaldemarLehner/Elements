@@ -14,9 +14,9 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
     {
         public (float top, float bottom, float left, float right) CurrentSceneBounds => (100, 0, 0, 100);
 
-        public List<IGUINode> UiRenderableList { get; set; } = new List<IGUINode>();
+        public List<IGUIElement[]> UiRenderableList { get; set; } = new List<IGUIElement[]>();
 
-        public IEnumerable<IGUINode> UiRenderables => UiRenderableList;
+        public IEnumerable<IGUIElement[]> UiRenderables => UiRenderableList;
 
         public List<IRenderable> RenderableList { get; set; } = new List<IRenderable>();
 
