@@ -12,8 +12,8 @@ namespace ComputergrafikSpiel.Model.Overlay
 {
     internal static class GUIConstructionHelper
     {
-        private static readonly ITexture HeartFull = new TextureLoader().LoadTexture("debugGrid16x16_directional");
-        private static readonly ITexture HeartEmpty = new TextureLoader().LoadTexture("debugGrid16x16");
+        private static readonly ITexture HeartFull = new TextureLoader().LoadTexture("GUI/Heart");
+        private static readonly ITexture HeartEmpty = new TextureLoader().LoadTexture("GUI/HeartEmpty");
 
         internal static IEnumerable<IRenderable> GenerateGuiHealthIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
