@@ -7,7 +7,7 @@ namespace ComputergrafikSpiel.Model.Overlay
     {
         ITexture Texture { get; }
 
-        Vector2 Offset { get; }
+        Vector2 Offset { get; set; }
 
         (float? width, float? height) Size { get; set; }
 

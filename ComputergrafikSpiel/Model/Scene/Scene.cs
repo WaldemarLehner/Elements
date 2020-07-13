@@ -110,7 +110,10 @@ namespace ComputergrafikSpiel.Model.Scene
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
+                    enumerable.AddRange(GUIConstructionHelper.GenerateGuiHealthIndicator(this.World, Player));
                 }
+
+                
 
                 return enumerable;
             }
@@ -130,6 +133,8 @@ namespace ComputergrafikSpiel.Model.Scene
         private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
         private List<ITrigger> TriggerList { get; } = new List<ITrigger>();
+
+        private List<IRenderable> GUIList { get; } = new List<IRenderable>();
 
         public static bool CreatePlayer(IPlayer player)
         {
@@ -300,13 +305,13 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             List<IGUIElement[]> enumables = new List<IGUIElement[]>();
 
-            if (Scene.Player != null)
+            /*if (Scene.Player != null)
             {
                 // Get Player Data
                 (int currentHealth, int maxHealth, int currency) playerData = Player.PlayerData;
                 IGUIElement[] healthIndicator = GUIConstructionHelper.GenerateGuiHealthIndicator(playerData.currentHealth, playerData.maxHealth);
                 enumables.Add(healthIndicator);
-            }
+            }*/
 
             return enumables;
         }

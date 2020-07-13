@@ -49,7 +49,8 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public Vector2 RotationAnker { get; set; }
 
-        public Vector2 Scale { get; }
+        public Vector2 Scale { get; set; }
+    
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 

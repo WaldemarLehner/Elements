@@ -67,12 +67,18 @@ namespace ComputergrafikSpiel.View
             this.BottomRight = center + new Vector2(+radius, +radius);
         }
 
-        internal Rectangle(IRenderable renderable, bool applyRotation = false)
+        internal Rectangle(IRenderable renderable, bool applyRotation = false, bool overfill = false)
         {
-            this.TopLeft = new Vector2(renderable.Position.X - renderable.Scale.X, renderable.Position.Y +renderable.Scale.Y);
-            this.TopRight = new Vector2(renderable.Position.X + renderable.Scale.X, renderable.Position.Y + renderable.Scale.Y);
-            this.BottomLeft = new Vector2(renderable.Position.X - renderable.Scale.X, renderable.Position.Y - renderable.Scale.Y);
-            this.BottomRight = new Vector2(renderable.Position.X + renderable.Scale.X, renderable.Position.Y - renderable.Scale.Y);
+            var scale = renderable.Scale;
+            if (overfill)
+            {
+                scale *= 1.01f;
+            }
+
+            this.TopLeft = new Vector2(renderable.Position.X - scale.X, renderable.Position.Y + scale.Y);
+            this.TopRight = new Vector2(renderable.Position.X + scale.X, renderable.Position.Y + scale.Y);
+            this.BottomLeft = new Vector2(renderable.Position.X - scale.X, renderable.Position.Y - scale.Y);
+            this.BottomRight = new Vector2(renderable.Position.X + scale.X, renderable.Position.Y - scale.Y);
 
             if (applyRotation)
             {

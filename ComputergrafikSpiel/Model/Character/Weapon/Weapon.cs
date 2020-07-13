@@ -43,7 +43,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
-        public Vector2 Scale => new Vector2(32, 32);
+        public Vector2 Scale { get => new Vector2(32, 32); set => _ = value; }
 
         public int AttackDamage { get; }
 

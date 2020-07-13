@@ -9,7 +9,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         internal static MockCircleCollidable CreateCollidableWithCollider(Vector2 position, float radius)
         {
             var collidable = new MockCircleCollidable(position);
-            var collider = new CircleOffsetCollider(collidable, Vector2.Zero, radius, ColliderLayer.Layer.Player,  ColliderLayer.Layer.Player);
+            var collider = new CircleOffsetCollider(collidable, Vector2.Zero, radius, ColliderLayer.Layer.Player, ColliderLayer.Layer.Player);
             collidable.CircleCollider = collider;
 
             return collidable;
@@ -25,7 +25,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public Vector2 Position { get; private set; }
 
-        public Vector2 Scale => throw new System.NotImplementedException();
+        public Vector2 Scale {get;set;}
 
         public float Rotation => 0f;
 

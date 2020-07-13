@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
+using ComputergrafikSpiel.Model.Character.Player.Interfaces;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.World;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Overlay
 {
@@ -10,41 +15,56 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static readonly ITexture HeartFull = new TextureLoader().LoadTexture("debugGrid16x16_directional");
         private static readonly ITexture HeartEmpty = new TextureLoader().LoadTexture("debugGrid16x16");
 
-        internal static IGUIElement[] GenerateGuiHealthIndicator(int currentHealth, int maxHealth)
+        internal static IEnumerable<IRenderable> GenerateGuiHealthIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
-            List<IGUIElement> healthEntries = new List<IGUIElement>();
-            int fullCount = currentHealth;
-            float itemWidth = maxHealth / .7f;
+            List<IRenderable> healthEntries = new List<IRenderable>();
+            var (currentHealth, maxHealth, _) = player.PlayerData;
 
-            // Clamp vertical value.
-            if (itemWidth > .1f)
+            // Get bounds of GUI Area of Scene.
+            float left = sceneDefinition.WorldSceneBounds.left;
+            float right = sceneDefinition.WorldSceneBounds.right;
+            float top = sceneDefinition.SceneDefinition.TileSize;
+            float bottom = 0f;
+            float centerHeight = (top + bottom) * .5f;
             {
-                itemWidth = .1f;
+                top = (top - centerHeight) * .5f;
+                bottom = (centerHeight - bottom) * .5f;
+            }
+
+            float heartSize = (right - left) / maxHealth;
+            if (heartSize > top - bottom)
+            {
+                heartSize = top - left;
             }
 
             for (int i = 0; i < maxHealth; i++)
             {
-                healthEntries.Add(new GUIElement
+                float xCenter = right - sceneDefinition.SceneDefinition.TileSize + ((i + 0.5f) * heartSize);
+                var entry = new GenericGUIRenderable()
                 {
-                    Offset = new Vector2(-((maxHealth / 2f) - i - 1) * itemWidth, 0),
-                    Size = (itemWidth * .5f, null),
-                    AspectRatio = 1f,
-                    Texture = (i < fullCount) ? HeartFull : HeartEmpty,
-                });
+                    Scale = heartSize / 2 * Vector2.One,
+                    Position = new Vector2(xCenter, centerHeight),
+                    Texture = (i < maxHealth - currentHealth ) ? HeartEmpty : HeartFull,
+                };
+                healthEntries.Add(entry);
             }
 
-            return healthEntries.ToArray();
+            return healthEntries;
         }
 
-        internal class GUIElement : IGUIElement
+        internal class GenericGUIRenderable : IRenderable
         {
             public ITexture Texture { get; set; }
 
-            public Vector2 Offset { get; set; }
+            public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
-            public (float? width, float? height) Size { get; set; }
+            public Vector2 Position { get; set; }
 
-            public float AspectRatio { get; set; }
+            public float Rotation => 0f;
+
+            public Vector2 RotationAnker => this.Position;
+
+            public Vector2 Scale { get; set; }
         }
     }
 }

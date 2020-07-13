@@ -83,13 +83,22 @@ namespace ComputergrafikSpiel.View.Renderer
             if (entry.Size.height == null)
             {
                 // Height Data is missing.
+                float width = entry.Size.width ?? 0; // Not Normalized
+                float height = width / (float)entry.AspectRatio; // Not Normalized
 
-                entry.Size = ((entry.Size.width * aspectRatios.x )/ aspectRatios.y, (entry.Size.width * aspectRatios.x) /  entry.AspectRatio);
+                width *= aspectRatios.x;
+                height *= aspectRatios.y;
+
+                entry.Size = (width, height);
+
+                entry.Offset *= new Vector2(aspectRatios.x, 1);
+
                 return entry;
             }
 
             if (entry.Size.width == null)
             {
+                // Needs fixing.
                 // Width Data is missing.
                 var newWidth = (entry.Size.height * entry.AspectRatio) * aspectRatios.x * .5f;
                 entry.Size = (newWidth, entry.Size.height * aspectRatios.y);

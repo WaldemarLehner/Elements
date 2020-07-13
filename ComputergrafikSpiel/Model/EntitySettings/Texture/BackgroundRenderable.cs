@@ -30,6 +30,6 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public Vector2 RotationAnker => this.Position;
 
-        public Vector2 Scale { get; }
+        public Vector2 Scale { get; set; }
     }
 }

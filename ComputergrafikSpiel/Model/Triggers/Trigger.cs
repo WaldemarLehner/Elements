@@ -30,7 +30,7 @@ namespace ComputergrafikSpiel.Model.Triggers
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
         // may have to be changed with the collider radius
-        public Vector2 Scale { get; } = Vector2.One * 16;
+        public Vector2 Scale { get; set; } = Vector2.One * 16;
 
         public ITexture Texture { get; }
 

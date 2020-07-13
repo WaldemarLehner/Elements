@@ -58,6 +58,7 @@ namespace ComputergrafikSpiel.View.Renderer
             // Render each IRenderable, in their order from 1st to last.
             foreach (var entry in this.RenderablesEnumerator)
             {
+                
                 if (entry is IRenderableLayeredTextures)
                 {
                     this.RenderRenderableLayered(entry as IRenderableLayeredTextures);
@@ -152,7 +153,7 @@ namespace ComputergrafikSpiel.View.Renderer
         private void RenderRenderableLayered(IRenderableLayeredTextures renderable)
         {
             // Make Rectangle out of Renderable
-            var renderableRectangle = new Rectangle(renderable, true);
+            var renderableRectangle = new Rectangle(renderable, true, true);
             var texture = renderable.Texture.Item2;
             var layers = renderable.Texture.Item1;
 
@@ -164,12 +165,7 @@ namespace ComputergrafikSpiel.View.Renderer
                 return;
             }
 
-            if (layers.Any(e => !e.IsXYAligned))
-            {
-                if (true) ;
-            }
-
-            var renderableRect = new Rectangle(renderable, true);
+            var renderableRect = new Rectangle(renderable, true, true);
 
             this.TextureData[texture.FilePath].Enable();
             foreach (var layer in layers)
@@ -193,7 +189,7 @@ namespace ComputergrafikSpiel.View.Renderer
         private void RenderRenderable(IRenderable renderable)
         {
             // Make Rectangle out of Renderable
-            var renderableRectangle = new Rectangle(renderable, true);
+            var renderableRectangle = new Rectangle(renderable, true, true);
 
             // Check if Texture Data is already stored, if not, add Texture
             this.CreateTextureDataIfNeeded(renderable.Texture);

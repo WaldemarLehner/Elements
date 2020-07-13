@@ -38,7 +38,7 @@ namespace ComputergrafikSpiel.Model.World
             {
                 return (
                     (this.SceneDefinition.TileCount.y + (1f / 4f) + 1) * this.SceneDefinition.TileSize,
-                    this.SceneDefinition.TileSize * 3f / 4f,
+                    this.SceneDefinition.TileSize * ((3f / 4f) - 1),
                     this.SceneDefinition.TileSize * 3f / 4f,
                     (this.SceneDefinition.TileCount.x + (1f / 4f) + 1) * this.SceneDefinition.TileSize);
             }
