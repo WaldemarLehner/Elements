@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
@@ -27,7 +25,7 @@ namespace ComputergrafikSpiel.View.Renderer
             this.Camera = camera ?? throw new ArgumentNullException(nameof(camera));
             this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
-            this.Debug = 0; // DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData;
+            this.Debug = DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData;
         }
 
         public bool Active { get; private set; } = true;
@@ -58,7 +56,6 @@ namespace ComputergrafikSpiel.View.Renderer
             // Render each IRenderable, in their order from 1st to last.
             foreach (var entry in this.RenderablesEnumerator)
             {
-                
                 if (entry is IRenderableLayeredTextures)
                 {
                     this.RenderRenderableLayered(entry as IRenderableLayeredTextures);
@@ -71,7 +68,6 @@ namespace ComputergrafikSpiel.View.Renderer
                 {
                     this.RenderRenderable(entry);
                 }
-
             }
 
             // Render the GUI Elements

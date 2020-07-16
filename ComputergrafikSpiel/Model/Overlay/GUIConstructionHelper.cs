@@ -32,6 +32,11 @@ namespace ComputergrafikSpiel.Model.Overlay
             }
 
             float heartSize = (right - left) / maxHealth;
+            if (heartSize < 0)
+            {
+                heartSize *= -1;
+            }
+
             if (heartSize > top - bottom)
             {
                 heartSize = top - left;
@@ -42,9 +47,9 @@ namespace ComputergrafikSpiel.Model.Overlay
                 float xCenter = right - sceneDefinition.SceneDefinition.TileSize + ((i + 0.5f) * heartSize);
                 var entry = new GenericGUIRenderable()
                 {
-                    Scale = heartSize / 2 * Vector2.One,
+                    Scale = new Vector2(1f * heartSize, -1f * heartSize),
                     Position = new Vector2(xCenter, centerHeight),
-                    Texture = (i < maxHealth - currentHealth ) ? HeartEmpty : HeartFull,
+                    Texture = (i < maxHealth - currentHealth) ? HeartEmpty : HeartFull,
                 };
                 healthEntries.Add(entry);
             }
