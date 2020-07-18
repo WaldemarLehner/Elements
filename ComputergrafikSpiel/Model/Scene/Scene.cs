@@ -27,7 +27,7 @@ namespace ComputergrafikSpiel.Model.Scene
         private bool active = false;
         private bool lockInc = false;
 
-        public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture background = null)
+        public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture? background = null)
         {
             this.World = worldScene ?? throw new ArgumentNullException(nameof(worldScene));
             this.TopScene = top;
@@ -110,7 +110,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
-                    enumerable.AddRange(GUIConstructionHelper.GenerateGuiHealthIndicator(this.World, Player));
+                    enumerable.AddRange(GUIConstructionHelper.GenerateGuiIndicator(this.World, Player));
                 }
 
                 

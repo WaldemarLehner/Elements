@@ -154,6 +154,7 @@
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TileTextureConstructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
+    <Compile Include="Model\EntitySettings\Texture\FontTextureMappingHelper.cs" />
     <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
     <Compile Include="Model\EntitySettings\Texture\TextureCoordinates.cs" />
     <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
@@ -254,6 +255,9 @@
     <Content Include="Content\Images\Enemy\WaterDrop.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\Font\vt323.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\Ground\EarthTileSet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -264,9 +268,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\GUI\Heart.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Images\GUI\HeartEmpty.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\PlayerWeapon.png">
