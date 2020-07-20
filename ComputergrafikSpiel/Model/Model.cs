@@ -8,6 +8,7 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
 using ComputergrafikSpiel.Model.World;
@@ -22,6 +23,7 @@ namespace ComputergrafikSpiel.Model
             this.SceneManager = new SceneManager(this);
             this.SceneManager.InitializeFirstScene();
         }
+
         private int level = 1;
 
         public bool FirstScene { get; set; }
@@ -34,7 +36,9 @@ namespace ComputergrafikSpiel.Model
 
         public int Level => this.level;
 
-        public IEnumerable<IUiRenderable> UiRenderables { get; } = new List<IUiRenderable>();
+        public IEnumerable<IGUIElement[]> UiRenderables => Scene.Scene.Current.UIRenderables;
+
+        public IInputState InputState { get; private set; }
 
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
@@ -43,6 +47,12 @@ namespace ComputergrafikSpiel.Model
         public void Update(float dTime)
         {
             Scene.Scene.Current.Update(dTime);
+
+        }
+
+        public void UpdateInput(IInputState inputState)
+        {
+            this.InputState = inputState;
         }
 
         public void CreateTriggerZone()

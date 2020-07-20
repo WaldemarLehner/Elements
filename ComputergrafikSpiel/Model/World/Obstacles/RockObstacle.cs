@@ -33,7 +33,7 @@ namespace ComputergrafikSpiel.Model.World.Obstacles
 
         public Vector2 RotationAnker => this.Position;
 
-        public Vector2 Scale => Vector2.One * this.scale;
+        public Vector2 Scale { get => Vector2.One * this.scale; set => _ = value; }
 
         public void Update(float dtime)
         {

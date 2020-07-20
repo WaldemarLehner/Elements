@@ -49,7 +49,7 @@ namespace ComputergrafikSpiel.Model.World
 
         public Vector2 RotationAnker => this.Position;
 
-        public Vector2 Scale => Vector2.One * this.Size / 2f;
+        public Vector2 Scale { get => Vector2.One * this.Size / 2f; set => _ = value; }
 
         public TileDefinitions.Type TileType { get; }
 

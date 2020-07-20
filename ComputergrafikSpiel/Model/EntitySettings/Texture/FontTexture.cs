@@ -5,12 +5,13 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
-    internal class FontTexture : IMappedTileFont
+    internal struct FontTexture : IMappedTileFont
     {
-        private char currentKey = '\0';
+        private char currentKey;
 
         internal FontTexture(ITextureContructor textureContructor, ITileTextureContructor tileTextureContructor, ICollection<(char key, int index)> mappings)
         {
+            this.currentKey = '\0';
             _ = textureContructor ?? throw new ArgumentNullException(nameof(textureContructor));
             _ = tileTextureContructor ?? throw new ArgumentNullException(nameof(tileTextureContructor));
             _ = mappings ?? throw new ArgumentNullException(nameof(mappings));

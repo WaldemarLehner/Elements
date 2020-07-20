@@ -3,6 +3,7 @@ using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
     {
         public (float top, float bottom, float left, float right) CurrentSceneBounds => (100, 0, 0, 100);
 
-        public List<IUiRenderable> UiRenderableList { get; set; } = new List<IUiRenderable>();
+        public List<IGUIElement[]> UiRenderableList { get; set; } = new List<IGUIElement[]>();
 
-        public IEnumerable<IUiRenderable> UiRenderables => UiRenderableList;
+        public IEnumerable<IGUIElement[]> UiRenderables => UiRenderableList;
 
         public List<IRenderable> RenderableList { get; set; } = new List<IRenderable>();
 
@@ -23,10 +24,8 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public int Level => throw new NotImplementedException();
 
-        public bool CreatePlayerOnce(IInputController controller)
-        {
-            throw new NotImplementedException();
-        }
+        public IInputState InputState => throw new NotImplementedException();
+
 
         public bool CreateEnemy()
         {
@@ -74,6 +73,11 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         }
 
         public void CreateTriggerZone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateInput(IInputState input)
         {
             throw new NotImplementedException();
         }

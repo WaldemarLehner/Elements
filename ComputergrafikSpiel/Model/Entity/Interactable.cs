@@ -81,7 +81,7 @@ namespace ComputergrafikSpiel.Model.Entity
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
-        public Vector2 Scale { get; }
+        public Vector2 Scale { get; set; }
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new (Color4 color, Vector2[] vertices)[] { this.Collider.DebugData };
 

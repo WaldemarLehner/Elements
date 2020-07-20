@@ -60,7 +60,6 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\Input\InputControllerTest.cs" />
     <Compile Include="Model\Character\NPC\EnemyTest.cs" />
     <Compile Include="Model\Character\NPC\NPCAI\AIEnemyTest.cs" />
     <Compile Include="Model\Collider\CircleOffsetColliderTest.cs" />
@@ -74,8 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\CameraCoordinateConversionHelperTest.cs" />
     <Compile Include="View\CameraTest.cs" />
-    <Compile Include="View\Helpers\GLNormalizationHelperTest.cs" />
-    <Compile Include="View\Helpers\IRenderableHelperTest.cs" />
     <Compile Include="View\Helpers\RotationHelperTest.cs" />
     <Compile Include="View\OpenTKRendererTest.cs" />
     <Compile Include="Model\Character\Player\PlayerTest.cs" />
@@ -90,7 +87,9 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controller\Input\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ComputergrafikSpiel\ComputergrafikSpiel.csproj">
       <Project>{4dd39e41-d26c-4ead-b828-fb639191d9a1}</Project>

@@ -4,7 +4,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
-    internal class TileTexture : ITileTexture
+    internal struct TileTexture : ITileTexture
     {
         internal TileTexture(ITextureContructor tex, ITileTextureContructor tileTex)
         {
@@ -15,6 +15,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             this.Width = tex.Width;
             this.Height = tex.Height;
             this.FilePath = tex.FilePath;
+            this.Pointer = (0, 0);
         }
 
         public int XRows { get; }
@@ -29,7 +30,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public string FilePath { get; }
 
-        public TextureCoordinates TextureCoordinates { get; }
+        public TextureCoordinates TextureCoordinates => this.GetTexCoordsOfIndex((this.Pointer.y * this.XRows) + this.Pointer.x);
 
         public TextureCoordinates GetTexCoordsOfIndex(int index) => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this, index) ?? throw new Exception();
 

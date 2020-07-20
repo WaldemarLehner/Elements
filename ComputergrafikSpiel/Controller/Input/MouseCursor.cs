@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace ComputergrafikSpiel.Controller.Input
 {
-    public class MouseCursor
+    public class MouseCursor : IMouseCursor
     {
         public Vector2 WindowNDCCoordinates { get; private set; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
@@ -24,7 +25,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly Vector2 scale;
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
-        private Vector2 mousePosition = Vector2.Zero;
 
         public Player()
         {
@@ -41,6 +41,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
             this.AttackCooldownCurrent = 0;
             this.DashCooldownCurrent = 0;
+            this.inputController = new InputController(InputControllerSettings.Default);
         }
 
         // Define Player
@@ -92,10 +93,22 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public Vector2 LastPosition { get; set; }
 
+        public (int currentHealth, int maxHealth, int currency) PlayerData => (this.CurrentHealth, this.MaxHealth, this.Money);
+
+        private InputController inputController;
+
         // Look wich action was handed over and call corresponding method
-        public void PlayerControl(List<PlayerEnum.PlayerActions> actions, Vector2 mouseCursorCoordinates)
+        public void PlayerControl()
         {
-            this.mousePosition = mouseCursorCoordinates;
+            var inputState = Scene.Scene.Current.Model.InputState;
+
+            if (inputState == null)
+            {
+                return;
+            }
+
+            IEnumerable<PlayerEnum.PlayerActions> actions = this.inputController.GetActions(inputState);
+
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {
                 if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
@@ -107,7 +120,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 {
                     if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0 && !Scene.Scene.Current.LockPlayerAttack)
                     {
-                        this.playerAttackSystem.PlayerAttack(mouseCursorCoordinates);
+                        this.playerAttackSystem.PlayerAttack(inputState.Cursor.WorldCoordinates ?? Vector2.Zero);
                         this.AttackCooldownCurrent = this.AttackCooldown;
                     }
                 }
@@ -206,8 +219,12 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void Update(float dtime)
         {
             this.LastPosition = this.Position;
+            if (Scene.Scene.Current.Model.InputState != null)
+            {
+                this.PlayerControl();
+                this.LookAt(Scene.Scene.Current.Model.InputState.Cursor.WorldCoordinates ?? Vector2.Zero);
+            }
 
-            this.LookAt(this.mousePosition);
             if (this.run)
             {
                 this.Position += this.directionXY * this.MovementSpeed * dtime / 2;

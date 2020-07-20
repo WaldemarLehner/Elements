@@ -55,7 +55,7 @@ namespace ComputergrafikSpiel.Model.World
 
         public Vector2 RotationAnker => this.Position;
 
-        public Vector2 Scale => this.Size / 2 * Vector2.One;
+        public Vector2 Scale { get => this.Size / 2 * Vector2.One; set => _ = value; }
 
         public ICollider Collider { get; }
 

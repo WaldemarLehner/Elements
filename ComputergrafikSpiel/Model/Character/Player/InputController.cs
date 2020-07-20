@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
-using ComputergrafikSpiel.Model.Character.Player;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.View.Renderer.Interfaces;
-using OpenTK;
+﻿using System;
+using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK.Input;
 
-namespace ComputergrafikSpiel.Controller.Input
+namespace ComputergrafikSpiel.Model.Character.Player
 {
-    public class InputController : IInputController
+    public class InputController
     {
         private readonly List<PlayerEnum.PlayerActions> pressedActions;
-        private readonly MouseCursor mouseCursor;
-        private IPlayer playerControl;
         private bool lockedInteractKey = false;
         private bool lockedDashKey = false;
 
@@ -22,29 +18,21 @@ namespace ComputergrafikSpiel.Controller.Input
             this.pressedActions = new List<PlayerEnum.PlayerActions>();
             this.MouseDefinitions = controllersettings.MouseAction;
             this.KeyboardDefinitions = controllersettings.KeyboardAction;
-            this.playerControl = null;
-            this.mouseCursor = new MouseCursor();
         }
 
         private Dictionary<Key, PlayerEnum.PlayerActions> KeyboardDefinitions { get; set; }
 
         private Dictionary<MouseButton, PlayerEnum.PlayerActions> MouseDefinitions { get; set; }
 
-        public void HookPlayer(IPlayer control)
-        {
-            this.playerControl = control;
-        }
-
         // Check if pressed key is a allowed player action
         // Shall be called in OnUpdateFrame()
-        public void PlayerAction(IRenderer renderer, Vector2 cursorNDC)
+        public IEnumerable<PlayerEnum.PlayerActions> GetActions(IInputState state)
         {
             // Clear list for next input
             this.pressedActions.Clear();
 
-            KeyboardState keyboardState = Keyboard.GetState();
-            MouseState mouseState = Mouse.GetState();
-            this.mouseCursor.Update(renderer, cursorNDC);
+            KeyboardState keyboardState = state.KeyboardState;
+            MouseState mouseState = state.MouseState;
 
             foreach (var key in this.KeyboardDefinitions.Keys)
             {
@@ -89,11 +77,7 @@ namespace ComputergrafikSpiel.Controller.Input
                 }
             }
 
-            // Gives the Player a IReadOnlyList of pressed Actions
-            if (this.playerControl != null)
-            {
-                this.playerControl.PlayerControl(this.pressedActions, (Vector2)this.mouseCursor.WorldCoordinates);
-            }
+            return this.pressedActions;
         }
     }
 }

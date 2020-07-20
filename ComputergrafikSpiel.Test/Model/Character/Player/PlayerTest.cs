@@ -117,26 +117,6 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             Assert.AreEqual(player.Scale.X, 24);
         }
 
-        [TestMethod, Ignore("Shall be activated when Scene works 100%")]
-        public void AssertThatCooldownInitializedCorrectlyAndAttackingCorrectlySetsTheCooldown()
-        {
-            ComputergrafikSpiel.Model.Character.Weapon.Weapon weapon = new ComputergrafikSpiel.Model.Character.Weapon.Weapon(3, 1, 4, 20, 2);
-            ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
-            CreateNewScene();
-            player.Equip(weapon);
-            Scene.CreatePlayer(player);
-
-            Assert.AreEqual(0, player.AttackCooldownCurrent);
-
-
-            player.Position = new Vector2(10, 10);
-            Vector2 testMouseCoordinates = new Vector2(20, 0);
-            List<PlayerEnum.PlayerActions> testActions = new List<PlayerEnum.PlayerActions>();
-            testActions.Add(PlayerEnum.PlayerActions.Attack);
-
-            player.PlayerControl(testActions, testMouseCoordinates);
-
-            Assert.AreEqual(player.AttackCooldown, player.AttackCooldownCurrent);
-        }
+       
     }
 }

@@ -15,6 +15,21 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -102,14 +117,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Input\IInputStateGenerationHelper.cs" />
+    <Compile Include="Controller\Input\IMouseCursor.cs" />
     <Compile Include="Controller\Input\InputControllerSettings.cs" />
-    <Compile Include="Controller\Input\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\Input\MouseCursor.cs" />
     <Compile Include="Model\Character\NPC\NPCAI\AIEnemy.cs" />
     <Compile Include="Model\Character\NPC\Enemy.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INonPlayerCharacter.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
+    <Compile Include="Model\Character\Player\InputControllerSettings.cs" />
+    <Compile Include="Model\Character\Player\InputController.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
@@ -124,14 +142,12 @@
     <Compile Include="Model\Collider\Interfaces\ICollider.cs" />
     <Compile Include="Model\Collider\ColliderManager.cs" />
     <Compile Include="Model\Collider\Interfaces\IColliderManager.cs" />
-    <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
     <Compile Include="Model\Collider\Interfaces\IRay.cs" />
     <Compile Include="Model\Collider\Ray.cs" />
     <Compile Include="Model\Collider\RayCollisionDetectionHelper.cs" />
     <Compile Include="Model\Collider\RectangleOffsetCollider.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IEntity.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRenderableBackground.cs" />
-    <Compile Include="Model\EntitySettings\Interfaces\IUiRenderable.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
     <Compile Include="Model\EntitySettings\Texture\BackgroundRenderable.cs" />
@@ -140,12 +156,17 @@
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TextureContructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\ConstructorHelpers\TileTextureConstructor.cs" />
     <Compile Include="Model\EntitySettings\Texture\FontTexture.cs" />
+    <Compile Include="Model\EntitySettings\Texture\FontTextureMappingHelper.cs" />
     <Compile Include="Model\EntitySettings\Texture\Texture.cs" />
     <Compile Include="Model\EntitySettings\Texture\TextureCoordinates.cs" />
     <Compile Include="Model\EntitySettings\Texture\TextureLoader.cs" />
     <Compile Include="Model\EntitySettings\Texture\TexturePointerCalculationHelper.cs" />
     <Compile Include="Model\EntitySettings\Texture\TileTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
+    <Compile Include="Model\Interfaces\IInputState.cs" />
+    <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
+    <Compile Include="Model\Overlay\GUIDefinitions.cs" />
+    <Compile Include="Model\Overlay\IGUIElement.cs" />
     <Compile Include="Model\RotationHelper.cs" />
     <Compile Include="Model\Scene\ISceneManager.cs" />
     <Compile Include="Model\Scene\Scene.cs" />
@@ -194,9 +215,7 @@
     <Compile Include="View\Exceptions\ArgumentNotPositiveIntegerGreaterZeroException.cs" />
     <Compile Include="View\Exceptions\ShaderCompileException.cs" />
     <Compile Include="View\Helpers\CameraCoordinateConversionHelper.cs" />
-    <Compile Include="View\Helpers\GLNormalizationHelper.cs" />
     <Compile Include="View\Helpers\ImageToByteHelper.cs" />
-    <Compile Include="View\Helpers\IRenderableHelper.cs" />
     <Compile Include="View\Helpers\RotationHelper.cs" />
     <Compile Include="View\Interfaces\ICamera.cs" />
     <Compile Include="View\Renderer\DebugMask.cs" />
@@ -239,6 +258,9 @@
     <Content Include="Content\Images\Enemy\WaterDrop.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\Font\vt323.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\Ground\EarthTileSet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -246,6 +268,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Ground\WaterTileSet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\PlayerWeapon.png">
@@ -309,7 +334,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 und x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
