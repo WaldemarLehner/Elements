@@ -24,10 +24,8 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public int Level => throw new NotImplementedException();
 
-        public bool CreatePlayerOnce(IInputController controller)
-        {
-            throw new NotImplementedException();
-        }
+        public IInputState InputState => throw new NotImplementedException();
+
 
         public bool CreateEnemy()
         {
@@ -75,6 +73,11 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         }
 
         public void CreateTriggerZone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateInput(IInputState input)
         {
             throw new NotImplementedException();
         }

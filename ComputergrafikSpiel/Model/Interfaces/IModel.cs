@@ -12,8 +12,12 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         IEnumerable<IRenderable> Renderables { get; }
 
+        IInputState InputState { get; }
+
         int Level { get; }
 
         void Update(float dTime);
+
+        void UpdateInput(IInputState input);
     }
 }

@@ -117,14 +117,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Input\IInputStateGenerationHelper.cs" />
+    <Compile Include="Controller\Input\IMouseCursor.cs" />
     <Compile Include="Controller\Input\InputControllerSettings.cs" />
-    <Compile Include="Controller\Input\InputController.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\Input\MouseCursor.cs" />
     <Compile Include="Model\Character\NPC\NPCAI\AIEnemy.cs" />
     <Compile Include="Model\Character\NPC\Enemy.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INonPlayerCharacter.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
+    <Compile Include="Model\Character\Player\InputControllerSettings.cs" />
+    <Compile Include="Model\Character\Player\InputController.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
@@ -139,7 +142,6 @@
     <Compile Include="Model\Collider\Interfaces\ICollider.cs" />
     <Compile Include="Model\Collider\ColliderManager.cs" />
     <Compile Include="Model\Collider\Interfaces\IColliderManager.cs" />
-    <Compile Include="Model\Character\Player\Interfaces\IInputController.cs" />
     <Compile Include="Model\Collider\Interfaces\IRay.cs" />
     <Compile Include="Model\Collider\Ray.cs" />
     <Compile Include="Model\Collider\RayCollisionDetectionHelper.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="Model\EntitySettings\Texture\TexturePointerCalculationHelper.cs" />
     <Compile Include="Model\EntitySettings\Texture\TileTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
+    <Compile Include="Model\Interfaces\IInputState.cs" />
     <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
     <Compile Include="Model\Overlay\GUIDefinitions.cs" />
     <Compile Include="Model\Overlay\IGUIElement.cs" />

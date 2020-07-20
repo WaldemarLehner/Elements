@@ -38,6 +38,8 @@ namespace ComputergrafikSpiel.Model
 
         public IEnumerable<IGUIElement[]> UiRenderables => Scene.Scene.Current.UIRenderables;
 
+        public IInputState InputState { get; private set; }
+
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
         /// </summary>
@@ -45,6 +47,12 @@ namespace ComputergrafikSpiel.Model
         public void Update(float dTime)
         {
             Scene.Scene.Current.Update(dTime);
+
+        }
+
+        public void UpdateInput(IInputState inputState)
+        {
+            this.InputState = inputState;
         }
 
         public void CreateTriggerZone()

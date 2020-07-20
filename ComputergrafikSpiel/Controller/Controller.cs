@@ -1,4 +1,5 @@
 ﻿using System;
+using ComputergrafikSpiel.Controller.Input;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
@@ -21,13 +22,7 @@ namespace ComputergrafikSpiel.Controller
             this.Model = model;
             var player = new Player();
             Scene.CreatePlayer(player);
-            this.InputController = new Input.InputController(Input.InputControllerSettings.Default);
-
-            
-            this.InputController.HookPlayer(player);
         }
-
-        public IInputController InputController { get; private set; }
 
         internal IView View { get; private set; }
 
@@ -51,8 +46,8 @@ namespace ComputergrafikSpiel.Controller
         // OnUpdateFrame soll den Trigger an Model und Input Controller weiterleiten
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            this.InputController.PlayerAction(this.View.Renderer, this.cursorNDC);
             this.Model.Update((float)e.Time);
+            this.Model.UpdateInput(IInputStateGenerationHelper.GenerateInputState(this.View.Renderer, this.cursorNDC));
             base.OnUpdateFrame(e);
         }
 
