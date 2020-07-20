@@ -48,15 +48,14 @@ namespace ComputergrafikSpiel.Model.Overlay
                 var tex = Font;
                 int texIndex;
                 {
-                    var index = tex.GetTileOfKey(moneyCount[i]);
-                    if (index == (-1, -1))
+                    var (x, y) = tex.GetTileOfKey(moneyCount[i]);
+                    if (x == -1 && y == -1)
                     {
                         continue;
                     }
 
-                    texIndex = (index.y * tex.XRows) + index.x;
+                    texIndex = (y * tex.XRows) + x;
                 }
-
 
                 var position = new Vector2(left + ((i + .5f) * itemSize), (top + bottom) / 2f);
                 var scale = Vector2.One * itemSize / 2f;
