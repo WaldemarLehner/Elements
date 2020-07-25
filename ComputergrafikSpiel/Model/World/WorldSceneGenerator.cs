@@ -60,7 +60,7 @@ namespace ComputergrafikSpiel.Model.World
                             var scale = (this.Random.Next(70, 100) / 200f) * this.WorldSceneDefinition.TileSize;
 
                             // If tile is water, just go w/ a rock
-                            if (tiles[x,y].TileType == TileDefinitions.Type.Water)
+                            if (tiles[x, y].TileType == TileDefinitions.Type.Water)
                             {
                                 obstacles.Add(new RockObstacle(centre, scale));
                             }

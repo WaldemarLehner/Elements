@@ -91,8 +91,10 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             get
             {
-                List<IRenderable> enumerable = new List<IRenderable>();
-                enumerable.Add(this.Background);
+                List<IRenderable> enumerable = new List<IRenderable>
+                {
+                    this.Background,
+                };
                 var renderables = new IEnumerable<IRenderable>[]
                 {
                     this.World.WorldTilesEnumerable,
@@ -113,8 +115,6 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(GUIConstructionHelper.GenerateGuiIndicator(this.World, Player));
                 }
 
-                
-
                 return enumerable;
             }
         }
@@ -133,8 +133,6 @@ namespace ComputergrafikSpiel.Model.Scene
         private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
         private List<ITrigger> TriggerList { get; } = new List<ITrigger>();
-
-        private List<IRenderable> GUIList { get; } = new List<IRenderable>();
 
         public static bool CreatePlayer(IPlayer player)
         {
@@ -192,10 +190,11 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void RemoveObject(IEntity entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
+
             if (entity is ICollidable)
             {
                 this.ColliderManager.RemoveEntityCollidable(entity);
@@ -215,10 +214,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.EntitiesList.Remove(entity);
                 }
-                
             }
-
-            
         }
 
         public void SetAsActive()
@@ -234,11 +230,10 @@ namespace ComputergrafikSpiel.Model.Scene
                 this.Initialize();
             }
 
-            if(Scene.Player != null)
+            if (Scene.Player != null)
             {
                 Scene.Current.ColliderManager.AddEntityCollidable(Scene.Player);
             }
-            
 
             Scene.Current = this;
             this.active = true;

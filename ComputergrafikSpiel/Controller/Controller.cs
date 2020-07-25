@@ -21,6 +21,8 @@ namespace ComputergrafikSpiel.Controller
             this.View = view;
             this.Model = model;
             var player = new Player();
+
+            // this.CursorVisible = false;
             Scene.CreatePlayer(player);
         }
 

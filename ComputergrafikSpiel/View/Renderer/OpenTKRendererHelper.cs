@@ -73,7 +73,7 @@ namespace ComputergrafikSpiel.View.Renderer
 
         internal static IGUIElement PopulateMissingDataGUIRenderables(IGUIElement entry, IRenderer renderer)
         {
-            var aspectRatios = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(renderer);
+            var (aspectX, aspectY) = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(renderer);
 
             if (entry.Size.height == null && entry.Size.width == null)
             {
@@ -86,12 +86,12 @@ namespace ComputergrafikSpiel.View.Renderer
                 float width = entry.Size.width ?? 0; // Not Normalized
                 float height = width / (float)entry.AspectRatio; // Not Normalized
 
-                width *= aspectRatios.x;
-                height *= aspectRatios.y;
+                width *= aspectX;
+                height *= aspectY;
 
                 entry.Size = (width, height);
 
-                entry.Offset *= new Vector2(aspectRatios.x, 1);
+                entry.Offset *= new Vector2(aspectX, 1);
 
                 return entry;
             }
@@ -100,8 +100,8 @@ namespace ComputergrafikSpiel.View.Renderer
             {
                 // Needs fixing.
                 // Width Data is missing.
-                var newWidth = (entry.Size.height * entry.AspectRatio) * aspectRatios.x * .5f;
-                entry.Size = (newWidth, entry.Size.height * aspectRatios.y);
+                var newWidth = (entry.Size.height * entry.AspectRatio) * aspectX * .5f;
+                entry.Size = (newWidth, entry.Size.height * aspectY);
                 return entry;
             }
 

@@ -25,7 +25,7 @@ namespace ComputergrafikSpiel.View.Renderer
             this.Camera = camera ?? throw new ArgumentNullException(nameof(camera));
             this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
-            this.Debug = 0; // DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData;
+            this.Debug = DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData;
         }
 
         public bool Active { get; private set; } = true;
@@ -73,10 +73,10 @@ namespace ComputergrafikSpiel.View.Renderer
             // Render the GUI Elements
             foreach (var entryGroup in this.GUIRenderables)
             {
-                foreach (var _entry in entryGroup)
+                foreach (var entry in entryGroup)
                 {
-                    var entry = OpenTKRendererHelper.PopulateMissingDataGUIRenderables(_entry, this);
-                    this.RenderGUIElement(entry as IGUIElement);
+                    var populatedEntry = OpenTKRendererHelper.PopulateMissingDataGUIRenderables(entry, this);
+                    this.RenderGUIElement(populatedEntry as IGUIElement);
                 }
             }
 
@@ -90,9 +90,9 @@ namespace ComputergrafikSpiel.View.Renderer
 
                 if ((this.Debug & DebugMask.Mask.IndependentDebugData) != 0)
                 {
-                    foreach (var entry in Scene.Current.IndependentDebugData)
+                    foreach (var (color, verts) in Scene.Current.IndependentDebugData)
                     {
-                        OpenTKRendererHelper.RenderItemDebug(this, entry.verts, entry.color);
+                        OpenTKRendererHelper.RenderItemDebug(this, verts, color);
                     }
 
                     foreach (var entry in Scene.Current.ColliderManager.CollidableEntitiesCollection)
@@ -103,23 +103,6 @@ namespace ComputergrafikSpiel.View.Renderer
                     Scene.Current.IndependentDebugData.Clear();
                 }
             }
-        }
-
-        private void RenderBackground(IRenderableBackground renderableBackground)
-        {
-            var alignedItem = new Rectangle(renderableBackground);
-            this.CreateTextureDataIfNeeded(renderableBackground.Texture, renderableBackground.WrapMode);
-
-            GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
-            this.TextureData[renderableBackground.Texture.FilePath].Enable();
-            this.Camera.DrawAsBackground(alignedItem, this.Screen);
-            this.TextureData[renderableBackground.Texture.FilePath].Disable();
-
-            GL.Disable(EnableCap.Texture2D);
-            GL.Disable(EnableCap.Blend);
         }
 
         public void Resize(int screenWidth, int screenHeight)
@@ -146,6 +129,23 @@ namespace ComputergrafikSpiel.View.Renderer
             GL.Viewport(0, 0, screenWidth, screenHeight);
         }
 
+        private void RenderBackground(IRenderableBackground renderableBackground)
+        {
+            var alignedItem = new Rectangle(renderableBackground);
+            this.CreateTextureDataIfNeeded(renderableBackground.Texture, renderableBackground.WrapMode);
+
+            GL.Enable(EnableCap.Texture2D);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            this.TextureData[renderableBackground.Texture.FilePath].Enable();
+            this.Camera.DrawAsBackground(alignedItem, this.Screen);
+            this.TextureData[renderableBackground.Texture.FilePath].Disable();
+
+            GL.Disable(EnableCap.Texture2D);
+            GL.Disable(EnableCap.Blend);
+        }
+
         private void RenderRenderableLayered(IRenderableLayeredTextures renderable)
         {
             // Make Rectangle out of Renderable
@@ -166,7 +166,6 @@ namespace ComputergrafikSpiel.View.Renderer
             this.TextureData[texture.FilePath].Enable();
             foreach (var layer in layers)
             {
-                var debug = new TextureCoordinates(new Vector2(0, 1), new Vector2(.2f, 1), new Vector2(.2f, .75f), new Vector2(.0f, .75f));
                 this.RenderRectangle(renderableRect, layer);
             }
 
@@ -228,9 +227,9 @@ namespace ComputergrafikSpiel.View.Renderer
 
             (Vector2 vert, Vector2 tex)[] verTexCoords = new (Vector2 vert, Vector2 tex)[]
             {
-                (new Vector2(left, top), new Vector2(0,1)),
+                (new Vector2(left, top), new Vector2(0, 1)),
                 (new Vector2(right, top), Vector2.One),
-                (new Vector2(right, bottom), new Vector2(1,0)),
+                (new Vector2(right, bottom), new Vector2(1, 0)),
                 (new Vector2(left, bottom), Vector2.Zero),
             };
             this.TextureData[element.Texture.FilePath].Enable();

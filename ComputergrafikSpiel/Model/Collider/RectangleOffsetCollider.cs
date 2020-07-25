@@ -42,6 +42,10 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public ColliderLayer.Layer OwnLayer { get; }
 
+        public bool DidCollideWith(ICollider otherCollider) => CollisionDetectionHelper.DidCollideWith(this, otherCollider);
+
+        public float MinimalDistanceTo(ICollider otherCollider) => CollisionDetectionHelper.MinDistanceBetween(this, otherCollider);
+
         private Vector2[] GetDebugData()
         {
             return new Vector2[]
@@ -53,9 +57,5 @@ namespace ComputergrafikSpiel.Model.Collider
                 new Vector2(this.Bounds.left, this.Bounds.top),
             };
         }
-
-        public bool DidCollideWith(ICollider otherCollider) => CollisionDetectionHelper.DidCollideWith(this, otherCollider);
-
-        public float MinimalDistanceTo(ICollider otherCollider) => CollisionDetectionHelper.MinDistanceBetween(this, otherCollider);
     }
 }

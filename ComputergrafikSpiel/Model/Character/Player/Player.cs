@@ -23,6 +23,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerMovementSystem playerMovementSystem;
         private readonly PlayerInteractionSystem playerInteractionSystem;
         private readonly Vector2 scale;
+        private readonly InputController inputController;
+
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
 
@@ -94,8 +96,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public Vector2 LastPosition { get; set; }
 
         public (int currentHealth, int maxHealth, int currency) PlayerData => (this.CurrentHealth, this.MaxHealth, this.Money);
-
-        private InputController inputController;
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl()
@@ -208,7 +208,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
 
             // Währung wird an der Stelle gespawnt, an der der Gegner gestorben ist
-            else if (stats == PlayerEnum.Stats.Währung)
+            else if (stats == PlayerEnum.Stats.Money)
             {
                 this.Money += incNumber;
             }

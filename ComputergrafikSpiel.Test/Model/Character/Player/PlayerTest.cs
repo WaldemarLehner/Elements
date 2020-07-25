@@ -94,7 +94,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             Assert.AreNotEqual(AttackSpeed, player.AttackSpeed);
             player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.MovementSpeed);
             Assert.AreNotEqual(MovementSpeed, player.MovementSpeed);
-            player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.Währung);
+            player.IncreasePlayerStats(incNumber, PlayerEnum.Stats.Money);
             Assert.AreNotEqual(Währung, player.Money);
         }
 

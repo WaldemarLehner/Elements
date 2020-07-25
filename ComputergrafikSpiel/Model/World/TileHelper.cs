@@ -150,15 +150,15 @@ namespace ComputergrafikSpiel.Model.World
             }
             else
             {
-                if(n.Right && n.Left && !n.Top && !n.Bottom)
+                if (n.Right && n.Left && !n.Top && !n.Bottom)
                 {
                     textures.Add(TileDefinitions.TextureSubType.NarrowHorizontal);
                 }
+
                 if (!n.Right && !n.Left && n.Top && n.Bottom)
                 {
                     textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
                 }
-
             }
 
             return textures.ToArray();

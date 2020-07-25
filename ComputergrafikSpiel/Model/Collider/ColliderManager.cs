@@ -55,11 +55,6 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public void AddEntityCollidable(ICollidable collidable)
         {
-            // is this needed for anything?
-            if(collidable == null)
-            {
-                int x = 0;
-            }
             this.collidableEntities.Add(collidable);
         }
 
@@ -168,25 +163,26 @@ namespace ComputergrafikSpiel.Model.Collider
 
         internal IEnumerable<Tuple<int, int>> GetAffectedStaticTiles(Vector2 position, float maxDistance)
         {
-
-            (int x, int y) tileKeys = ((int)(position.X / this.tileSize), (int)(position.Y / this.tileSize));
+            (int keyX, int keyY) = ((int)(position.X / this.tileSize), (int)(position.Y / this.tileSize));
             int tileDistance = (int)Math.Ceiling(maxDistance / this.tileSize);
 
-            (int lower, int upper) x = (tileKeys.x - tileDistance, tileKeys.x + tileDistance);
-            (int lower, int upper) y = (tileKeys.y - tileDistance, tileKeys.y + tileDistance);
-            if(x.lower < 0)
+            (int lowerX, int upperX) = (keyX - tileDistance, keyX + tileDistance);
+            (int lowerY, int upperY) = (keyY - tileDistance, keyY + tileDistance);
+
+            if (lowerX < 0)
             {
-                x.lower = 0;
+                lowerX = 0;
             }
-            if (y.lower < 0)
+
+            if (lowerY < 0)
             {
-                y.lower = 0;
+                lowerY = 0;
             }
 
             // Manager does not store max index.
             var boxedKeys = from key
                             in this.collidableTiles.Keys
-                            where (key.Item1 >= x.lower || key.Item1 <= x.upper) && (key.Item2 >= y.lower || key.Item2 <= y.upper)
+                            where (key.Item1 >= lowerX || key.Item1 <= upperX) && (key.Item2 >= lowerY || key.Item2 <= upperY)
                             select key;
             return boxedKeys;
             /*

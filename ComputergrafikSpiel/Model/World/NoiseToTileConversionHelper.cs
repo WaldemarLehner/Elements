@@ -72,19 +72,19 @@ namespace ComputergrafikSpiel.Model.World
 
         private static void AddBorder(ref TileDefinitions.Type[,] returnArray)
         {
-            // Border Bounds 
+            // Border Bounds.
             int upperX = returnArray.GetLength(0) - 1;
             int upperY = returnArray.GetLength(1) - 1;
             int lowerX = 0, lowerY = 0;
 
-            // Horizontals
+            // Horizontals.
             for (int x = lowerX; x < upperX; x++)
             {
                 returnArray[x, lowerY] = TileDefinitions.Type.WallTrim;
                 returnArray[x, upperY] = TileDefinitions.Type.WallTrim;
             }
 
-            // Verticals
+            // Verticals.
             for (int y = lowerY; y < upperY; y++)
             {
                 returnArray[lowerX, y] = TileDefinitions.Type.WallTrim;

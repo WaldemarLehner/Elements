@@ -19,7 +19,7 @@ namespace ComputergrafikSpiel.Model.World
         public static (int weight, TileDefinitions.Type type)[] DefaultMapping => new (int weight, TileDefinitions.Type type)[] { (3, TileDefinitions.Type.Water), (5, TileDefinitions.Type.Grass), (2, TileDefinitions.Type.Dirt) };
 
         public static (int weight, TileDefinitions.Type type)[] FullWaterDebug => new (int weight, TileDefinitions.Type type)[] { (1, TileDefinitions.Type.Water) };
-    
+
         public bool DoorTop { get; private set; }
 
         public bool DoorBottom { get; private set; }

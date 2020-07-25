@@ -99,10 +99,10 @@ namespace ComputergrafikSpiel.View
             (Vector2 TL, Vector2 TR, Vector2 BR, Vector2 BL) ndcVertices = this.GenerateNDCVertices(alignedItem, multipliers);
 
             // Map Vertex-Coordinates as TextureCoordinate Inverse
-            var vertTexCoords = this.CalculateBackgroundVertTexTuple(ndcVertices);
+            var (tl, tr, br, bl, coords) = this.CalculateBackgroundVertTexTuple(ndcVertices);
 
-            var position = (vertTexCoords.TL, vertTexCoords.TR, vertTexCoords.BR, vertTexCoords.BL);
-            this.DrawPrimitive(this.GenerateNDCVertex_TexCollection(position, vertTexCoords.coords), PrimitiveType.Quads);
+            var position = (tl, tr, br, bl);
+            this.DrawPrimitive(this.GenerateNDCVertex_TexCollection(position, coords), PrimitiveType.Quads);
         }
 
         /// <summary>

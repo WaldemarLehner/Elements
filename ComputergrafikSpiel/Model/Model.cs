@@ -24,8 +24,6 @@ namespace ComputergrafikSpiel.Model
             this.SceneManager.InitializeFirstScene();
         }
 
-        private int level = 1;
-
         public bool FirstScene { get; set; }
 
         public ISceneManager SceneManager { get; set; }
@@ -34,7 +32,7 @@ namespace ComputergrafikSpiel.Model
 
         public (float top, float bottom, float left, float right) CurrentSceneBounds => Scene.Scene.Current.World.WorldSceneBounds;
 
-        public int Level => this.level;
+        public int Level { get; private set; } = 1;
 
         public IEnumerable<IGUIElement[]> UiRenderables => Scene.Scene.Current.UIRenderables;
 
@@ -47,7 +45,6 @@ namespace ComputergrafikSpiel.Model
         public void Update(float dTime)
         {
             Scene.Scene.Current.Update(dTime);
-
         }
 
         public void UpdateInput(IInputState inputState)
@@ -80,7 +77,7 @@ namespace ComputergrafikSpiel.Model
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
         public void OnSceneCompleted(IWorldScene world)
         {
-            this.level++;
+            this.Level++;
 
             var positions = new (int x, int y)[]
             {
@@ -105,9 +102,10 @@ namespace ComputergrafikSpiel.Model
             int count = random.Next(min, max);
             int tileCount = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
             List<(int x, int y)> enemySpawnIndices = new List<(int x, int y)>();
-            foreach (int i in Enumerable.Range(0, count))
+            foreach (var index in from int i in Enumerable.Range(0, count)
+                                  let index = FindNextSpawnSlot(random.Next(0, tileCount), world, SpawnMask.Mask.AllowNPC)
+                                  select index)
             {
-                var index = FindNextSpawnSlot(random.Next(0, tileCount), world, SpawnMask.Mask.AllowNPC);
                 if (index == null)
                 {
                     // No more open slots.

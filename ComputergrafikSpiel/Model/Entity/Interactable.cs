@@ -13,10 +13,9 @@ namespace ComputergrafikSpiel.Model.Entity
     public class Interactable : IEntity
     {
         private readonly string texturename;
-        private int incNumber;
-        private PlayerEnum.Stats stats;
-        public bool SingleDelete = false;
-        public bool DeleteAll = false;
+        private readonly int incNumber;
+        private readonly PlayerEnum.Stats stats;
+
         public Interactable(PlayerEnum.Stats stats, float positionX, float positionY, int incNumber)
         {
             this.Scale = new Vector2(10, 10);
@@ -56,7 +55,7 @@ namespace ComputergrafikSpiel.Model.Entity
                     this.stats = stats;
                     this.DeleteAll = true;
                     break;
-                case PlayerEnum.Stats.Währung:
+                case PlayerEnum.Stats.Money:
                     this.texturename = "Währung";
                     this.incNumber = incNumber;
                     this.stats = stats;
@@ -70,6 +69,10 @@ namespace ComputergrafikSpiel.Model.Entity
 
             this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/" + this.texturename);
         }
+
+        public bool SingleDelete { get; private set; } = false;
+
+        public bool DeleteAll { get; private set; } = false;
 
         public ICollider Collider { get; set; }
 

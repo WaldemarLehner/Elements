@@ -128,9 +128,14 @@
     <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
     <Compile Include="Model\Character\Player\InputControllerSettings.cs" />
     <Compile Include="Model\Character\Player\InputController.cs" />
+    <Compile Include="Model\Character\Player\IPlayerState.cs" />
+    <Compile Include="Model\Character\Player\PlayerStateManager.cs" />
+    <Compile Include="Model\Character\Player\PlayerStateOptions.cs" />
+    <Compile Include="Model\Character\Player\PlayerStateOptionsDefaultFunctions.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
+    <Compile Include="Model\Character\Player\PlayerState.cs" />
     <Compile Include="Model\Character\Weapon\Interfaces\IWeapon.cs" />
     <Compile Include="Model\Character\Weapon\Projectile.cs" />
     <Compile Include="Model\Character\Weapon\Weapon.cs" />
@@ -167,6 +172,7 @@
     <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
     <Compile Include="Model\Overlay\GUIDefinitions.cs" />
     <Compile Include="Model\Overlay\IGUIElement.cs" />
+    <Compile Include="Model\Overlay\UpgradeScreen\UpgradeOption.cs" />
     <Compile Include="Model\RotationHelper.cs" />
     <Compile Include="Model\Scene\ISceneManager.cs" />
     <Compile Include="Model\Scene\Scene.cs" />
@@ -233,12 +239,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ComputergrafikSpiel.ruleset" />
-    <None Include="Content\Shaders\basic.frag">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Shaders\basic.vert">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -346,6 +346,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -126,9 +126,9 @@ namespace ComputergrafikSpiel.Model.Overlay
 
             public Vector2 Scale { get; set; }
 
-            internal TextureCoordinates Coordinates { get; set; }
-
             (IEnumerable<TextureCoordinates>, ITileTexture) IRenderableLayeredTextures.Texture => (new TextureCoordinates[] { this.Coordinates }, this.Texture as ITileTexture);
+
+            internal TextureCoordinates Coordinates { get; set; }
         }
     }
 }

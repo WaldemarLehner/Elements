@@ -17,12 +17,12 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize)
         {
             this.AttackDamage = attackDamage;
-            this.Position = new Vector2 (Scene.Scene.Player.Position.X, Scene.Scene.Player.Position.Y - 10);
+            this.Position = new Vector2(Scene.Scene.Player.Position.X, Scene.Scene.Player.Position.Y - 10);
             this.Direction = direction;
             this.TTL = ttl;
             this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize/2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize / 2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
             this.Scale = Vector2.One * bulletSize;
 
             // rotation calculation
@@ -50,7 +50,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         public Vector2 RotationAnker { get; set; }
 
         public Vector2 Scale { get; set; }
-    
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
@@ -68,8 +67,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public void ProjectileCollisionManager()
         {
-            IReadOnlyCollection<ICollidable> bulletCollisions = new List<ICollidable>();
-            bulletCollisions = Scene.Scene.Current.ColliderManager.GetCollisions(this);
+            IReadOnlyCollection<ICollidable> bulletCollisions = Scene.Scene.Current.ColliderManager.GetCollisions(this);
 
             foreach (var collidableToCheck in bulletCollisions)
             {

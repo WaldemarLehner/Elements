@@ -153,7 +153,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void CollisionPrevention()
         {
-
             IReadOnlyCollection<ICollidable> collisions = Scene.Scene.Current.ColliderManager.GetCollisions(this);
 
             foreach (ICollidable collision in collisions)
@@ -192,7 +191,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 }
                 else
                 {
-                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Währung, this.Position.X, this.Position.Y, 1);
+                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Money, this.Position.X, this.Position.Y, 1);
                 }
             }
         }
