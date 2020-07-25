@@ -29,11 +29,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public Scene(IWorldScene worldScene, Scene top = null, Scene bottom = null, Scene left = null, Scene right = null, Texture? background = null)
         {
+            this.ApplySurrounding(top, left, right, bottom);
             this.World = worldScene ?? throw new ArgumentNullException(nameof(worldScene));
-            this.TopScene = top;
-            this.LeftScene = left;
-            this.RightScene = right;
-            this.BottomScene = bottom;
 
             if (Scene.Current == null)
             {
@@ -41,8 +38,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 Scene.Current = this;
             }
 
-            var tex = background ?? new TextureLoader().LoadTexture("Wall/Wall_single");
-            this.Background = new BackgroundRenderable(tex, Vector2.One * worldScene.SceneDefinition.TileSize / 2f, Vector2.One * worldScene.SceneDefinition.TileSize / 2, OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat);
+            this.ApplyBackground(background);
 
             this.ColliderManager = new ColliderManager(this.World.SceneDefinition.TileSize);
 
@@ -67,21 +63,19 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IRenderableBackground Background { get; private set; }
 
-        public IEnumerable<IGUIElement[]> UIRenderables => this.GetUIRenderables();
-
         public IColliderManager ColliderManager { get; }
 
         public IEnumerable<IEntity> Entities => this.EntitiesList;
 
         public IEnumerable<ITrigger> Trigger => this.TriggerList;
 
-        public IScene TopScene { get; }
+        public IScene TopScene { get; private set; }
 
-        public IScene RightScene { get; }
+        public IScene RightScene { get; private set; }
 
-        public IScene LeftScene { get; }
+        public IScene LeftScene { get; private set; }
 
-        public IScene BottomScene { get; }
+        public IScene BottomScene { get; private set; }
 
         public IWorldScene World { get; }
 
@@ -296,19 +290,19 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene);
         }
 
-        private IEnumerable<IGUIElement[]> GetUIRenderables()
+        private void ApplySurrounding(Scene top, Scene left, Scene right, Scene bottom)
         {
-            List<IGUIElement[]> enumables = new List<IGUIElement[]>();
+            this.TopScene = top;
+            this.BottomScene = bottom;
+            this.LeftScene = left;
+            this.RightScene = right;
+        }
 
-            /*if (Scene.Player != null)
-            {
-                // Get Player Data
-                (int currentHealth, int maxHealth, int currency) playerData = Player.PlayerData;
-                IGUIElement[] healthIndicator = GUIConstructionHelper.GenerateGuiHealthIndicator(playerData.currentHealth, playerData.maxHealth);
-                enumables.Add(healthIndicator);
-            }*/
+        private void ApplyBackground(Texture? background)
+        {
+            var tex = background ?? new TextureLoader().LoadTexture("Wall/Wall_single");
+            this.Background = new BackgroundRenderable(tex, Vector2.One * this.World.SceneDefinition.TileSize / 2f, Vector2.One * this.World.SceneDefinition.TileSize / 2, OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat);
 
-            return enumables;
         }
 
         private void Initialize()

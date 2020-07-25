@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics.Tracing;
 using System.IO;
-using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.View.Helpers;
 using OpenTK.Graphics.OpenGL;
@@ -11,7 +9,7 @@ namespace ComputergrafikSpiel.View.Renderer
     /// <summary>
     /// TextureData is a class that stores OpenTK-specific aspects of the Texture, such as handle and so on.
     /// </summary>
-    internal class TextureData
+    public class TextureData
     {
         private readonly byte[] data;
         private readonly int handle;

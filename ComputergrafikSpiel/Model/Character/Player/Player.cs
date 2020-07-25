@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.Entity;
-using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -111,35 +108,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             foreach (PlayerEnum.PlayerActions playerAction in actions)
             {
-                if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
-                {
-                    this.playerActionList.Add(playerAction);
-                    this.OnMove(EventArgs.Empty);
-                }
-                else if (playerAction == PlayerEnum.PlayerActions.Attack)
-                {
-                    if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0 && !Scene.Scene.Current.LockPlayerAttack)
-                    {
-                        this.playerAttackSystem.PlayerAttack(inputState.Cursor.WorldCoordinates ?? Vector2.Zero);
-                        this.AttackCooldownCurrent = this.AttackCooldown;
-                    }
-                }
-                else if (playerAction == PlayerEnum.PlayerActions.Interaction)
-                {
-                    this.playerInteractionSystem.PlayerInteraction(this);
-                }
-                else if (playerAction == PlayerEnum.PlayerActions.Run)
-                {
-                    this.run = true;
-                }
-                else if (playerAction == PlayerEnum.PlayerActions.Dash)
-                {
-                    if (this.DashCooldownCurrent <= 0)
-                    {
-                        this.playerMovementSystem.PlayerDash(this);
-                        this.DashCooldownCurrent = this.DashCooldown;
-                    }
-                }
+                this.HandlePlayerAction(inputState, playerAction);
             }
 
             this.directionXY = this.playerMovementSystem.SetPlayerDirection(this.playerActionList);
@@ -288,6 +257,39 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
                 this.Position = this.LastPosition;
                 return;
+            }
+        }
+
+        private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)
+        {
+            if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
+            {
+                this.playerActionList.Add(playerAction);
+                this.OnMove(EventArgs.Empty);
+            }
+            else if (playerAction == PlayerEnum.PlayerActions.Attack)
+            {
+                if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0 && !Scene.Scene.Current.LockPlayerAttack)
+                {
+                    this.playerAttackSystem.PlayerAttack(inputState.Cursor.WorldCoordinates ?? Vector2.Zero);
+                    this.AttackCooldownCurrent = this.AttackCooldown;
+                }
+            }
+            else if (playerAction == PlayerEnum.PlayerActions.Interaction)
+            {
+                this.playerInteractionSystem.PlayerInteraction(this);
+            }
+            else if (playerAction == PlayerEnum.PlayerActions.Run)
+            {
+                this.run = true;
+            }
+            else if (playerAction == PlayerEnum.PlayerActions.Dash)
+            {
+                if (this.DashCooldownCurrent <= 0)
+                {
+                    this.playerMovementSystem.PlayerDash(this);
+                    this.DashCooldownCurrent = this.DashCooldown;
+                }
             }
         }
     }

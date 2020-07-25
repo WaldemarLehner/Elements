@@ -218,7 +218,6 @@ namespace ComputergrafikSpiel.View
             GL.Begin(primitiveType);
             foreach (var (vert, tex) in data)
             {
-                // Console.Write((vert, tex) + "   ");
                 GL.TexCoord2(tex);
                 GL.Vertex2(vert);
             }

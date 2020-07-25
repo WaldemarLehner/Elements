@@ -1,10 +1,13 @@
-﻿using ComputergrafikSpiel.View.Interfaces;
+﻿using System.Collections.Generic;
+using ComputergrafikSpiel.View.Interfaces;
 
 namespace ComputergrafikSpiel.View.Renderer.Interfaces
 {
     public interface IRenderer
     {
         ICamera Camera { get; }
+
+        Dictionary<string, TextureData> TextureData { get; }
 
         (int width, int height) Screen { get; }
 

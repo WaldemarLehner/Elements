@@ -229,9 +229,9 @@
     <Compile Include="View\Interfaces\IView.cs" />
     <Compile Include="View\Renderer\OpenTKRenderer.cs" />
     <Compile Include="View\Rectangle.cs" />
-    <Compile Include="View\Renderer\OpenTKRendererHelper.cs" />
+    <Compile Include="View\Renderer\OpenTKDebugRenderingHelper.cs" />
+    <Compile Include="View\Renderer\OpenTKRenderingHelper.cs" />
     <Compile Include="View\Renderer\TextureData.cs" />
-    <Compile Include="View\Shader\Shader.cs" />
     <Compile Include="View\View.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\IAnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRenderable.cs" />
