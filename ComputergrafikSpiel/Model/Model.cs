@@ -34,8 +34,6 @@ namespace ComputergrafikSpiel.Model
 
         public int Level { get; private set; } = 1;
 
-        public IEnumerable<IGUIElement[]> UiRenderables => Scene.Scene.Current.UIRenderables;
-
         public IInputState InputState { get; private set; }
 
         /// <summary>
