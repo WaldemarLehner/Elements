@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using ComputergrafikSpiel.Controller.Input;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -7,22 +8,26 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
 using OpenTK.Graphics;
+using MouseCursor = ComputergrafikSpiel.Controller.Input.MouseCursor;
 
 namespace ComputergrafikSpiel.Model.Overlay
 {
     internal static class GUIConstructionHelper
     {
-        private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
+        private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
+        private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 9, y: 9));
 
         internal static IEnumerable<IRenderable> GenerateGuiIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
             var coinData = GUIConstructionHelper.GenerateCoinCount(sceneDefinition, player);
             var healthbar = GUIConstructionHelper.GenerateHealthBar(sceneDefinition, player);
+            var crosshair = GUIConstructionHelper.GenerateCrosshair(sceneDefinition, player);
 
             var renderables = new List<IRenderable>();
             renderables.AddRange(coinData);
             renderables.AddRange(healthbar);
+            renderables.AddRange(crosshair);
             return renderables;
         }
 
@@ -110,6 +115,28 @@ namespace ComputergrafikSpiel.Model.Overlay
             }
 
             return healthEntries;
+        }
+
+        private static List<IRenderable> GenerateCrosshair(IWorldScene sceneDefinition, IPlayer player)
+        {
+            List<IRenderable> crosshairEntries = new List<IRenderable>();
+            MouseCursor mouseCursor = new MouseCursor();
+
+            // Get bounds of GUI Area of Scene.
+            float left = sceneDefinition.WorldSceneBounds.left;
+            float right = sceneDefinition.WorldSceneBounds.right - (sceneDefinition.SceneDefinition.TileSize * 3);
+            float top = sceneDefinition.WorldSceneBounds.top;
+            float bottom = top - sceneDefinition.SceneDefinition.TileSize;
+
+            var entry = new GenericGUIRenderable()
+                {
+                Scale = Vector2.One * .5f,
+                Position = mouseCursor.WindowNDCCoordinates,
+                Texture = Crosshair,
+                };
+            crosshairEntries.Add(entry);
+
+            return crosshairEntries;
         }
 
         private class GenericGUIRenderable : IRenderableLayeredTextures

@@ -69,7 +69,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float DashCooldownCurrent { get; set; }
 
-        public float MovementSpeed { get; set; } = 100;
+        public float MovementSpeed { get; set; } = 60;
 
         public int Money { get; set; } = 0;
 

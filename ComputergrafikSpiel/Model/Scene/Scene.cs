@@ -238,7 +238,6 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 Scene.Current.ColliderManager.AddEntityCollidable(Scene.Player);
             }
-            
 
             Scene.Current = this;
             this.active = true;
