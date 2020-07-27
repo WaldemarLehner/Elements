@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
 
@@ -12,8 +13,8 @@ namespace ComputergrafikSpiel.Controller.Input
 
         public void Update(IRenderer renderer, Vector2 cursorNDC)
         {
+            Cursor.Current = new Cursor("Crosshair.cur");
             _ = renderer ?? throw new ArgumentNullException(nameof(renderer));
-
             // Cursor has origin in top left corner, rest of this program expects bottom left for screen Coordinates
             cursorNDC.Y *= -1;
             this.WindowNDCCoordinates = cursorNDC;
