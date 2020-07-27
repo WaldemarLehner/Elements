@@ -113,8 +113,6 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(GUIConstructionHelper.GenerateGuiIndicator(this.World, Player));
                 }
 
-                
-
                 return enumerable;
             }
         }
@@ -215,10 +213,9 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.EntitiesList.Remove(entity);
                 }
-                
+
             }
 
-            
         }
 
         public void SetAsActive()

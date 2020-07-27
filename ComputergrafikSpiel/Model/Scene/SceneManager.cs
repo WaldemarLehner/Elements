@@ -1,4 +1,5 @@
 ﻿using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Soundtrack;
 using ComputergrafikSpiel.Model.World;
 using System.Runtime.CompilerServices;
 
@@ -6,8 +7,11 @@ namespace ComputergrafikSpiel.Model.Scene
 {
     public class SceneManager : ISceneManager
     {
+        private readonly Soundloader play = new Soundloader();
+
         public SceneManager(IModel model)
         {
+            this.play.StartSafeMusic();
             this.Model = model;
         }
 
@@ -15,6 +19,12 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void LoadNewScene()
         {
+            if (this.play.battleMusicOn == false)
+            {
+                this.play.StartBattleMusic();
+                this.play.battleMusicOn = true;
+            }
+
             (this.Model as Model).FirstScene = false;
             Scene.Current.Disable();
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
