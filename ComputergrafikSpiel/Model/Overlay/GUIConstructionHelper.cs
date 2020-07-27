@@ -17,7 +17,7 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
         // private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 10, y: 10));
-        private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/gameover1", (x: 10, y: 10));
+        private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/gameover1", (x: 2, y: 1));
 
         internal static IEnumerable<IRenderable> GenerateGuiIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
@@ -178,7 +178,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             {
                 float xCenter = (left + right) / 2;
                 float yCenter = (top + bottom) / 2;
-                var texCoords = Heart.GetTexCoordsOfIndex(1); // Für die rechte Hälfte des Bildes.
+                var texCoords = Gameover.GetTexCoordsOfIndex(1); // Für die rechte Hälfte des Bildes.
 
                 var entry = new GenericGUIRenderable()
                 {

@@ -15,7 +15,7 @@ namespace ComputergrafikSpiel.Model.Soundtrack
         public void StartMainThemeMusic()
         {
             this.soundplayer = new SoundPlayer("./Content/Soundtrack/main_theme.wav");
-            this.soundplayer.Play();
+            this.soundplayer.PlayLooping();
         }
 
         public void StartSafeMusic()
@@ -33,13 +33,13 @@ namespace ComputergrafikSpiel.Model.Soundtrack
 
             this.battleMusicOn = true;
             this.soundplayer = new SoundPlayer("./Content/Soundtrack/battle_has_begun.wav");
-            this.soundplayer.Play();
+            this.soundplayer.PlayLooping();
         }
 
         public void StartBossMusic()
         {
             this.soundplayer = new SoundPlayer("./Content/Soundtrack/boss_fight.wav");
-            this.soundplayer.Play();
+            this.soundplayer.PlayLooping();
         }
 
         public void StopMusik()
