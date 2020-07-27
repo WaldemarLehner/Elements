@@ -227,7 +227,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             if (this.run)
             {
-                this.Position += this.directionXY * this.MovementSpeed * dtime / 2;
+                this.Position += this.directionXY * this.MovementSpeed * dtime / 4;
                 this.run = false;
 
                 // Dient nur zu Testzwecken

@@ -11,6 +11,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public SceneManager(IModel model)
         {
+            // Szene wird gestartet, ebenso direkt in der Safe-Zone wird das Lied gespielt
             this.play.StartSafeMusic();
             this.Model = model;
         }
@@ -21,6 +22,7 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             if (this.play.battleMusicOn == false)
             {
+                // Bei Beginn des Schlachtfeldes wird die Battlemusik gestartet
                 this.play.StartBattleMusic();
                 this.play.battleMusicOn = true;
             }

@@ -21,7 +21,7 @@ namespace ComputergrafikSpiel.Model.Soundtrack
         public void StartSafeMusic()
         {
             this.soundplayer = new SoundPlayer("./Content/Soundtrack/safe_zone.wav");
-            this.soundplayer.Play();
+            this.soundplayer.PlayLooping();
         }
 
         public void StartBattleMusic()

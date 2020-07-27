@@ -45,15 +45,15 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
         public void PlayerDash(Player player)
         {
             this.setMovementspeedToValueBefore = player.MovementSpeed;
-            Console.WriteLine("DAshh");
-            player.MovementSpeed = 400;
+            Console.WriteLine("Dashh");
+            player.MovementSpeed = 300;
             this.ReduceSpeedAfterDash(player);
             return;
         }
 
         public async Task ReduceSpeedAfterDash(Player player)
         {
-            await Task.Delay(100);
+            await Task.Delay(50);
             player.MovementSpeed = this.setMovementspeedToValueBefore;
             return;
         }
