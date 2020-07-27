@@ -1,4 +1,5 @@
-﻿using ComputergrafikSpiel.Model.Interfaces;
+﻿using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Soundtrack;
 using ComputergrafikSpiel.Model.World;
 using System.Runtime.CompilerServices;
@@ -29,6 +30,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
             (this.Model as Model).FirstScene = false;
             Scene.Current.Disable();
+            this.SetSceneTexturesToForest(); // Ändert die Texturen zu Wald
             var worldScene = new WorldSceneGenerator(new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             var newScene = new Scene(worldScene);
             newScene.GiveModeltoScene(this.Model);
@@ -43,6 +45,13 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).FirstScene = true;
             initScene.GiveModeltoScene(this.Model);
             initScene.SetAsActive();
+        }
+
+        public void SetSceneTexturesToForest()
+        {
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Forest/WaterTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Forest/EarthTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Forest/Grass";
         }
     }
 }

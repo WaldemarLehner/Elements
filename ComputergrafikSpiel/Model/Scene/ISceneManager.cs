@@ -11,5 +11,7 @@ namespace ComputergrafikSpiel.Model.Scene
         void LoadNewScene();
 
         void InitializeFirstScene();
+
+        void SetSceneTexturesToForest();
     }
 }

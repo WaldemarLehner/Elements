@@ -279,13 +279,22 @@
     <Content Include="Content\Images\Font\vt323.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Ground\EarthTileSet.png">
+    <Content Include="Content\Images\Ground_Forest\EarthTileSet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Ground\Grass.png">
+    <Content Include="Content\Images\Ground_Forest\Grass.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Ground\WaterTileSet.png">
+    <Content Include="Content\Images\Ground_Forest\WaterTileSet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Ground_Safezone\EarthTileSet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Ground_Safezone\Grass.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\Ground_Safezone\WaterTileSet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\GUI\Crosshair_Cursor.png">
