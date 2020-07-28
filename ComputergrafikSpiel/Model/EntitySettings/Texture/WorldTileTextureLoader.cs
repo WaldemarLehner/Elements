@@ -11,13 +11,13 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {
     public class WorldTileTextureLoader : ITextureLoader
     {
-        private static readonly Dictionary<TileDefinitions.Type, string> NameLookUp = new Dictionary<TileDefinitions.Type, string>()
+        public static Dictionary<TileDefinitions.Type, string> NameLookUp = new Dictionary<TileDefinitions.Type, string>()
         {
-            { TileDefinitions.Type.Dirt,  "Ground/EarthTileSet" },
-            { TileDefinitions.Type.WallTrim, "Wall/WallTipTileSet" },
-            { TileDefinitions.Type.Water, "Ground/WaterTileSet" },
-            { TileDefinitions.Type.Grass, "Ground/Grass" },
             { TileDefinitions.Type.Wall, "Wall/Wall" },
+            { TileDefinitions.Type.WallTrim, "Wall/WallTipTileSet" },
+            { TileDefinitions.Type.Water, "Ground_Safezone/WaterTileSet" },
+            { TileDefinitions.Type.Dirt,  "Ground_Safezone/EarthTileSet" },
+            { TileDefinitions.Type.Grass, "Ground_Safezone/Grass" },
         };
 
         public ITileTexture LoadTexture(TileDefinitions.Type type)

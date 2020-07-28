@@ -177,7 +177,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             if (this.run)
             {
-                this.Position += this.directionXY * this.MovementSpeed * dtime / 2;
+                this.Position += this.directionXY * this.MovementSpeed * dtime / 4;
                 this.run = false;
             }
 
@@ -253,6 +253,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 this.playerActionList.Add(playerAction);
                 this.OnMove(EventArgs.Empty);
+                this.playerInteractionSystem.PlayerInteraction(this);
             }
             else if (playerAction == PlayerEnum.PlayerActions.Attack)
             {
@@ -264,7 +265,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
             else if (playerAction == PlayerEnum.PlayerActions.Interaction)
             {
-                this.playerInteractionSystem.PlayerInteraction(this);
+                // this.playerInteractionSystem.PlayerInteraction(this);
             }
             else if (playerAction == PlayerEnum.PlayerActions.Run)
             {

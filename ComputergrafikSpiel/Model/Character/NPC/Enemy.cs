@@ -26,20 +26,28 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.CurrentHealth = maxHealth;
             this.MovementSpeed = movementSpeed;
             this.Defense = defense;
-            this.Texture = new TextureLoader().LoadTexture("Enemy/" + texture);
+            this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Water/" + texture);
             this.Position = startPosition;
-            this.scale = new Vector2(16, 16);
+
             this.Scale = this.scale;
             var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
             if (texture == "Fungus")
             {
                 this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 17, ColliderLayer.Layer.Enemy, collisionMask);
+                this.scale = new Vector2(18, 18);
+            }
+            else if (texture == "Lizard")
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
+                this.scale = new Vector2(24, 24);
             }
             else
             {
                 this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Enemy, collisionMask);
+                this.scale = new Vector2(16, 16);
             }
 
+            this.Scale = this.scale;
             this.NPCController = new AIEnemy();
         }
 
