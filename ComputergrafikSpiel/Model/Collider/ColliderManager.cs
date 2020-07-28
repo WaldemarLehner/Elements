@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ComputergrafikSpiel.Controller;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Soundtrack;
 using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;

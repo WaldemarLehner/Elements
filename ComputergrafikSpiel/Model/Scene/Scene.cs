@@ -213,7 +213,9 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.EntitiesList.Remove(entity);
                 }
+
             }
+
         }
 
         public void SetAsActive()

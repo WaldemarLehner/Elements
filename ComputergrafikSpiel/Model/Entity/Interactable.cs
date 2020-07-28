@@ -23,31 +23,11 @@ namespace ComputergrafikSpiel.Model.Entity
 
             switch (stat)
             {
-                case PlayerEnum.Stats.MaxHealth:
-                    this.texturename = "MaxHealthIncrease";
-                    this.stat = stat;
-                    this.DeleteAll = true;
-                    break;
                 case PlayerEnum.Stats.Heal:
                     this.texturename = "HealIncrease";
                     this.stat = stat;
                     this.Scale = new Vector2(5, 5);
                     this.SingleDelete = true;
-                    break;
-                case PlayerEnum.Stats.Defense:
-                    this.texturename = "DefenseIncrease";
-                    this.stat = stat;
-                    this.DeleteAll = true;
-                    break;
-                case PlayerEnum.Stats.AttackSpeed:
-                    this.texturename = "AttackSpeedIncrease";
-                    this.stat = stat;
-                    this.DeleteAll = true;
-                    break;
-                case PlayerEnum.Stats.MovementSpeed:
-                    this.texturename = "MovementSpeedIncrease";
-                    this.stat = stat;
-                    this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.Money:
                     this.texturename = "Währung";

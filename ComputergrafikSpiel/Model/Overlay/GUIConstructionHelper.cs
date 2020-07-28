@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using ComputergrafikSpiel.Controller.Input;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -6,22 +9,29 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
 using OpenTK.Graphics;
+using MouseCursor = ComputergrafikSpiel.Controller.Input.MouseCursor;
 
 namespace ComputergrafikSpiel.Model.Overlay
 {
     internal static class GUIConstructionHelper
     {
-        private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
+        private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
+        private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 1, y: 1));
+        // private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/gameover", (x: 1, y: 1));
 
         internal static IEnumerable<IRenderable> GenerateGuiIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
             var coinData = GUIConstructionHelper.GenerateCoinCount(sceneDefinition, player);
             var healthbar = GUIConstructionHelper.GenerateHealthBar(sceneDefinition, player);
+            var crosshair = GUIConstructionHelper.GenerateCrosshair(sceneDefinition, player);
+            // var gameover = GUIConstructionHelper.GenerateGameover(sceneDefinition, player);
 
             var renderables = new List<IRenderable>();
             renderables.AddRange(coinData);
             renderables.AddRange(healthbar);
+            renderables.AddRange(crosshair);
+            // renderables.AddRange(gameover);
             return renderables;
         }
 
@@ -120,6 +130,61 @@ namespace ComputergrafikSpiel.Model.Overlay
 
             return healthEntries;
         }
+
+        private static List<IRenderable> GenerateCrosshair(IWorldScene sceneDefinition, IPlayer player)
+        {
+            List<IRenderable> crosshairEntries = new List<IRenderable>();
+
+            float croshairSize = 15;
+            for (int i = 0; i < 1; i++)
+            {
+                var texCoords = Crosshair.GetTexCoordsOfIndex(0); // Get the required texture.
+
+                var entry = new GenericGUIRenderable()
+                {
+                    Scale = Vector2.One * .5f * croshairSize,
+                    Position = Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero,
+                    Texture = Crosshair,
+                    Coordinates = texCoords,
+                };
+                crosshairEntries.Add(entry);
+            }
+
+            return crosshairEntries;
+        }
+
+        /*
+        private static List<IRenderable> GenerateGameover(IWorldScene sceneDefinition, IPlayer player)
+        {
+            List<IRenderable> healthEntries = new List<IRenderable>();
+
+            // Get bounds of GUI Area of Scene.
+            float left = sceneDefinition.WorldSceneBounds.left;
+            float right = sceneDefinition.WorldSceneBounds.right;
+            float top = sceneDefinition.WorldSceneBounds.top;
+            float bottom = sceneDefinition.WorldSceneBounds.bottom;
+
+            float gameoverSize = (right - left) / 2;
+
+            for (int i = 0; i < 1; i++)
+            {
+                float xCenter = (left + right) / 2;
+                float yCenter = (top + bottom) / 2;
+                var texCoords = Gameover.GetTexCoordsOfIndex(0); // Für die rechte Hälfte des Bildes.
+
+                var entry = new GenericGUIRenderable()
+                {
+                    Scale = Vector2.One * .5f * gameoverSize,
+                    Position = new Vector2(xCenter, yCenter),
+                    Texture = Gameover,
+                    Coordinates = texCoords,
+                };
+                healthEntries.Add(entry);
+            }
+
+            return healthEntries;
+        }
+        */
 
         private class GenericGUIRenderable : IRenderableLayeredTextures
         {
