@@ -113,7 +113,7 @@ namespace ComputergrafikSpiel.Model
                 enemySpawnIndices.Add(index ?? (0, 0)); // (0, 0) is never reached.
             }
 
-            string[] texture = { "Fungus", "WaterDrop" };
+            string[] texture = { "Fungus", "WaterDrop", "Crab", "Lizard" };
             foreach (var (x, y) in enemySpawnIndices)
             {
                 var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
@@ -125,6 +125,14 @@ namespace ComputergrafikSpiel.Model
                 else if (randomTexture == "WaterDrop")
                 {
                     Scene.Scene.Current.SpawnObject(new Enemy(10, randomTexture, 80, 0, 1, position));
+                }
+                else if (randomTexture == "Crab")
+                {
+                    Scene.Scene.Current.SpawnObject(new Enemy(5, randomTexture, 100, 0, 1, position));
+                }
+                else if (randomTexture == "Lizard")
+                {
+                    Scene.Scene.Current.SpawnObject(new Enemy(15, randomTexture, 50, 1, 3, position));
                 }
             }
         }
