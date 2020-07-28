@@ -17,6 +17,8 @@ namespace ComputergrafikSpiel.View
 
         public IRenderer Renderer => this.OpenTKRenderer;
 
+        public Dictionary<string, TextureData> TextureData => this.Renderer.TextureData;
+
         public ICamera Camera => this.Renderer.Camera;
 
         public OpenTKRenderer OpenTKRenderer { get; private set; }

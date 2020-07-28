@@ -3,6 +3,7 @@
     public class PlayerEnum
     {
         // Player Actions as Enums => Look @ InputControllerSettings for corresponding keys
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:Enumeration items should be documented", Justification = "self-explanatory")]
         public enum PlayerActions
         {
             MoveUp,
@@ -15,6 +16,7 @@
             Dash,
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:Enumeration items should be documented", Justification = "self-explanatory")]
         public enum Stats
         {
             MaxHealth,
@@ -22,13 +24,7 @@
             Defense,
             AttackSpeed,
             MovementSpeed,
-            Währung,
-        }
-
-        public enum Weapon
-        {
-            Bow,
-            Sword,
+            Money,
         }
     }
 }

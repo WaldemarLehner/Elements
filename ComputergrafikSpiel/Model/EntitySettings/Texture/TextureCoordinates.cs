@@ -14,6 +14,8 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 
         public static TextureCoordinates Error => GetErrorTexCoords();
 
+        public static TextureCoordinates Default => new TextureCoordinates(new Vector2(0, 1), Vector2.One, new Vector2(1, 0), Vector2.Zero);
+
         public Vector2 TopLeft { get; }
 
         public Vector2 TopRight { get; }

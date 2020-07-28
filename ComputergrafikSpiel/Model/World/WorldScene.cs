@@ -37,7 +37,7 @@ namespace ComputergrafikSpiel.Model.World
             get
             {
                 var top = (this.SceneDefinition.TileCount.y + (1f / 4f) + 2) * this.SceneDefinition.TileSize;
-                var bottom = this.SceneDefinition.TileSize * (3f / 4f );
+                var bottom = this.SceneDefinition.TileSize * (3f / 4f);
                 var left = this.SceneDefinition.TileSize * 3f / 4f;
                 var right = (this.SceneDefinition.TileCount.x + (1f / 4f) + 1) * this.SceneDefinition.TileSize;
                 return (top, bottom, left, right);

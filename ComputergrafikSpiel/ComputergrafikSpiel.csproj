@@ -132,9 +132,15 @@
     <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
     <Compile Include="Model\Character\Player\InputControllerSettings.cs" />
     <Compile Include="Model\Character\Player\InputController.cs" />
+    <Compile Include="Model\Character\Player\IPlayerState.cs" />
+    <Compile Include="Model\Character\Player\IPlayerStateManager.cs" />
+    <Compile Include="Model\Character\Player\PlayerStateManager.cs" />
+    <Compile Include="Model\Character\Player\PlayerStateOptions.cs" />
+    <Compile Include="Model\Character\Player\PlayerStateOptionsDefaultFunctions.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerAttackSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerMovementSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerSystems\PlayerInteractionSystem.cs" />
+    <Compile Include="Model\Character\Player\PlayerState.cs" />
     <Compile Include="Model\Character\Weapon\Interfaces\IWeapon.cs" />
     <Compile Include="Model\Character\Weapon\Projectile.cs" />
     <Compile Include="Model\Character\Weapon\Weapon.cs" />
@@ -169,8 +175,11 @@
     <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
     <Compile Include="Model\Interfaces\IInputState.cs" />
     <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
-    <Compile Include="Model\Overlay\GUIDefinitions.cs" />
     <Compile Include="Model\Overlay\IGUIElement.cs" />
+    <Compile Include="Model\Overlay\UpgradeScreen\UpgradeOption.cs" />
+    <Compile Include="Model\Overlay\UpgradeScreen\UpgradeScreen.cs" />
+    <Compile Include="Model\Overlay\UpgradeScreen\UpgradeScreenButton.cs" />
+    <Compile Include="Model\Overlay\UpgradeScreen\UpgradeScreenButtonTextureLookupGenerator.cs" />
     <Compile Include="Model\RotationHelper.cs" />
     <Compile Include="Model\Scene\ISceneManager.cs" />
     <Compile Include="Model\Scene\Scene.cs" />
@@ -234,9 +243,9 @@
     <Compile Include="View\Interfaces\IView.cs" />
     <Compile Include="View\Renderer\OpenTKRenderer.cs" />
     <Compile Include="View\Rectangle.cs" />
-    <Compile Include="View\Renderer\OpenTKRendererHelper.cs" />
+    <Compile Include="View\Renderer\OpenTKDebugRenderingHelper.cs" />
+    <Compile Include="View\Renderer\OpenTKRenderingHelper.cs" />
     <Compile Include="View\Renderer\TextureData.cs" />
-    <Compile Include="View\Shader\Shader.cs" />
     <Compile Include="View\View.cs" />
     <Compile Include="Model\EntitySettings\Texture\Interfaces\IAnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRenderable.cs" />
@@ -247,12 +256,6 @@
     </None>
     <None Include="App.config" />
     <None Include="ComputergrafikSpiel.ruleset" />
-    <None Include="Content\Shaders\basic.frag">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Content\Shaders\basic.vert">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -306,10 +309,21 @@
     <Content Include="Content\Images\GUI\gameover1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\GUI\Buttons\Button.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\GUI\Heart.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Icon\elements_icon.ico" />
+    <Content Include="Content\Images\GUI\Upgrades\ExtraHeart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Upgrades\FireRate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Upgrades\MovementSpeed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\PlayerWeapon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -385,6 +399,9 @@
     <EmbeddedResource Include="Crosshair.cur">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="Content\Images\GUI\Upgrades\Coin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -397,17 +414,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="WMPLib">
-      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,53 +7,6 @@ namespace ComputergrafikSpiel.View
 {
     public struct Rectangle
     {
-        internal Rectangle(Vector2 topLeft, Vector2 bottomRight)
-        {
-            this.TopLeft = topLeft;
-            this.BottomRight = bottomRight;
-            this.TopRight = new Vector2(topLeft.Y, bottomRight.X);
-            this.BottomLeft = new Vector2(topLeft.X, bottomRight.Y);
-
-            if (this.TopLeft.X == this.TopRight.X)
-            {
-                throw new ArgumentException("The provided Rectangle has a width of 0");
-            }
-
-            if (this.TopLeft.Y == this.BottomLeft.Y)
-            {
-                throw new ArgumentException("The provided Rectangle has a height of 0");
-            }
-
-            // Swap the values if needed.
-            if (this.TopLeft.X > this.TopRight.X)
-            {
-                var temp = this.TopLeft;
-                this.TopLeft = this.TopRight;
-                this.TopRight = temp;
-            }
-
-            if (this.BottomLeft.X > this.BottomRight.X)
-            {
-                var temp = this.BottomLeft;
-                this.BottomLeft = this.BottomRight;
-                this.BottomRight = temp;
-            }
-
-            if (this.TopLeft.Y < this.BottomLeft.Y)
-            {
-                var temp = this.BottomLeft;
-                this.BottomLeft = this.TopLeft;
-                this.TopLeft = temp;
-            }
-
-            if (this.TopRight.Y < this.BottomRight.Y)
-            {
-                var temp = this.BottomRight;
-                this.BottomRight = this.TopRight;
-                this.TopRight = temp;
-            }
-        }
-
         internal Rectangle(Vector2 center, float radius)
         {
             if (radius <= 0)

@@ -37,7 +37,6 @@ namespace ComputergrafikSpiel.Model.Collider
             Vector2 rayPositionCirclePositionDifference = ray.Position - colliderPosition;
             Vector2 rayDirection = ray.Direction.Normalized();
 
-
             var constantScalar = (rayPositionCirclePositionDifference * rayDirection).Scalar();
             var variableScalar = (rayDirection * rayDirection).Scalar();
 
@@ -64,17 +63,12 @@ namespace ComputergrafikSpiel.Model.Collider
 
         internal static bool DidRayColliderRectangleCollider(IRay ray, RectangleOffsetCollider collider)
         {
-
-
-
             var (top, bottom, left, right) = collider.Bounds;
 
             var leftY = ray.EvalX(left);
             var rightY = ray.EvalX(right);
             var topX = ray.EvalY(top);
             var bottomX = ray.EvalY(bottom);
-
-
 
             if (leftY > top && rightY > top)
             {
@@ -107,7 +101,6 @@ namespace ComputergrafikSpiel.Model.Collider
             {
                 return false;
             }
-
 
             return true;
         }

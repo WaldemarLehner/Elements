@@ -2,7 +2,6 @@
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Soundtrack;
 using ComputergrafikSpiel.Model.World;
-using System.Runtime.CompilerServices;
 
 namespace ComputergrafikSpiel.Model.Scene
 {

@@ -37,13 +37,7 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static List<IRenderable> GenerateCoinCount(IWorldScene sceneDefinition, IPlayer player)
         {
             // Get bounds of GUI Area of Scene.
-            float left = sceneDefinition.WorldSceneBounds.right - (sceneDefinition.SceneDefinition.TileSize * 3);
-            float right = sceneDefinition.WorldSceneBounds.right;
-            float top = sceneDefinition.WorldSceneBounds.top;
-            float bottom = top - sceneDefinition.SceneDefinition.TileSize;
-
-            float width = right - left;
-            float height = top - bottom;
+            (float top, float bottom, float left, _, float width, float height) = GenerateCoinGUIBounds(sceneDefinition.SceneDefinition.TileSize, sceneDefinition.WorldSceneBounds);
 
             string moneyCount = player.PlayerData.currency.ToString() + "$";
             int renderablesCount = moneyCount.Length;
@@ -54,30 +48,46 @@ namespace ComputergrafikSpiel.Model.Overlay
             for (int i = 0; i < renderablesCount; i++)
             {
                 var tex = Font;
-                int texIndex;
+                int? texIndex = GetTexIndex(tex, moneyCount[i]);
+                if (texIndex == null)
                 {
-                    var (x, y) = tex.GetTileOfKey(moneyCount[i]);
-                    if (x == -1 && y == -1)
-                    {
-                        continue;
-                    }
-
-                    texIndex = (y * tex.XRows) + x;
+                    continue;
                 }
 
-                var position = new Vector2(left + ((i + .5f) * itemSize), (top + bottom) / 2f);
-                var scale = Vector2.One * itemSize / 2f;
                 var entry = new GenericGUIRenderable()
                 {
-                    Scale = scale,
-                    Position = position,
+                    Scale = Vector2.One * itemSize / 2f,
+                    Position = new Vector2(left + ((i + .5f) * itemSize), (top + bottom) / 2f),
                     Texture = tex,
-                    Coordinates = tex.GetTexCoordsOfIndex(texIndex),
+                    Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
                 };
                 renderables.Add(entry);
             }
 
             return renderables;
+        }
+
+        private static (float top, float bottom, float left, float right, float width, float height) GenerateCoinGUIBounds(int tileSize, (float top, float bottom, float left, float right) worldSceneBounds)
+        {
+            float left = worldSceneBounds.right - (tileSize * 3);
+            float right = worldSceneBounds.right;
+            float top = worldSceneBounds.top;
+            float bottom = top - tileSize;
+            float width = right - left;
+            float height = top - bottom;
+
+            return (top, bottom, left, right, width, height);
+        }
+
+        private static int? GetTexIndex(IMappedTileFont tex, char v)
+        {
+            var (x, y) = tex.GetTileOfKey(v);
+            if (x == -1 && y == -1)
+            {
+                return null;
+            }
+
+            return (y * tex.XRows) + x;
         }
 
         private static List<IRenderable> GenerateHealthBar(IWorldScene sceneDefinition, IPlayer player)
@@ -99,7 +109,7 @@ namespace ComputergrafikSpiel.Model.Overlay
 
             if (heartSize > top - bottom)
             {
-                heartSize = top - bottom; ///////////
+                heartSize = top - bottom;
             }
 
             for (int i = 0; i < maxHealth; i++)
@@ -207,9 +217,9 @@ namespace ComputergrafikSpiel.Model.Overlay
 
             public Vector2 Scale { get; set; }
 
-            internal TextureCoordinates Coordinates { get; set; }
-
             (IEnumerable<TextureCoordinates>, ITileTexture) IRenderableLayeredTextures.Texture => (new TextureCoordinates[] { this.Coordinates }, this.Texture as ITileTexture);
+
+            internal TextureCoordinates Coordinates { get; set; }
         }
     }
 }
