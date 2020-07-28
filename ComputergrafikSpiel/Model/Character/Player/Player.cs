@@ -5,6 +5,7 @@ using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
@@ -90,6 +91,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public (int currentHealth, int maxHealth, int currency) PlayerData => (this.CurrentHealth, this.MaxHealth, this.Money);
 
+        public float BloodColorHue => 0f;
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl()
         {
@@ -124,6 +127,16 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
             }
+
+            // Spawn particles
+            EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
+            opt.Count = 25;
+            opt.PointOfEmmision = this.Position;
+            opt.Direction = Vector2.One;
+            opt.DirectionDeviation = 180;
+            opt.Hue = (this.BloodColorHue, this.BloodColorHue);
+            StaticParticleEmmiter.EmitOnce(opt);
+
         }
 
         public void TakeHeal()
@@ -149,10 +162,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 this.Position += this.directionXY * this.MovementSpeed * dtime / 2;
                 this.run = false;
-
-                // Dient nur zu Testzwecken
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", this.MaxHealth, this.CurrentHealth, this.Defense, this.AttackSpeed, this.MovementSpeed, this.Money);
             }
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;
@@ -245,7 +254,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 if (this.DashCooldownCurrent <= 0)
                 {
-                    this.playerMovementSystem.PlayerDash(this);
+                    this.playerMovementSystem.PlayerDash();
                     this.DashCooldownCurrent = this.DashCooldown;
                 }
             }

@@ -7,6 +7,7 @@ using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
@@ -49,6 +50,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public event EventHandler CharacterMove;
 
         public int CurrentHealth { get; set; }
+
+        public float BloodColorHue => 34f;
 
         public INPCController NPCController { get; }
 
@@ -114,6 +117,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             if (this.CurrentHealth <= 0)
             {
                 this.DropLootOrHeal(50);
+                EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
+                opt.Count = 50;
+                opt.PointOfEmmision = this.Position;
+                opt.Direction = Vector2.One;
+                opt.DirectionDeviation = 180;
+                opt.Hue = (this.BloodColorHue, this.BloodColorHue);
+                StaticParticleEmmiter.EmitOnce(opt);
                 Scene.Scene.Current.RemoveObject(this);
                 this.OnDeath(EventArgs.Empty);
             }
@@ -175,7 +185,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 this.AttackCooldown = 2;
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Spieler wurde getroffen!\n");
-                //Scene.Scene.Player.TakingDamage(this.AttackDamage);
                 Scene.Scene.Player.TakingDamage();
             }
         }
@@ -188,11 +197,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 var whichOne = random.Next(0, 5);
                 if (whichOne <= 2)
                 {
-                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Heal, this.Position.X, this.Position.Y, 1);
+                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Heal, this.Position.X, this.Position.Y);
                 }
                 else
                 {
-                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Money, this.Position.X, this.Position.Y, 1);
+                    (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Money, this.Position.X, this.Position.Y);
                 }
             }
         }

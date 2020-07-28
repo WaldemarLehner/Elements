@@ -93,6 +93,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.World.WorldTilesEnumerable,
                     this.World.Obstacles,
+                    this.Particles,
                     this.NPCs,
                     this.Entities,
                     this.Trigger,
@@ -132,6 +133,8 @@ namespace ComputergrafikSpiel.Model.Scene
         private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
         private List<ITrigger> TriggerList { get; } = new List<ITrigger>();
+
+        private List<IParticle> Particles { get; } = new List<IParticle>();
 
         public static bool CreatePlayer(IPlayer player)
         {
@@ -216,6 +219,19 @@ namespace ComputergrafikSpiel.Model.Scene
             }
         }
 
+        public void SpawnParticle(IParticle particle) => this.Particles.Add(particle ?? throw new ArgumentNullException(nameof(particle)));
+
+        public bool RemoveParticle(IParticle particle)
+        {
+            if (!this.Particles.Contains(particle))
+            {
+                return false;
+            }
+
+            this.Particles.Remove(particle);
+            return true;
+        }
+
         public void SetAsActive()
         {
             if (this.active)
@@ -273,6 +289,11 @@ namespace ComputergrafikSpiel.Model.Scene
 
                 this.lockInc = false;
             }
+
+            for (int i = this.Particles.Count - 1; i >= 0; i--)
+            {
+                this.Particles[i].Update(dtime);
+            }
         }
 
         public void OnChangeScene()
@@ -307,7 +328,6 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             var tex = background ?? new TextureLoader().LoadTexture("Wall/Wall_single");
             this.Background = new BackgroundRenderable(tex, Vector2.One * this.World.SceneDefinition.TileSize / 2f, Vector2.One * this.World.SceneDefinition.TileSize / 2, OpenTK.Graphics.OpenGL.TextureWrapMode.Repeat);
-
         }
 
         private void Initialize()

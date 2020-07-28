@@ -73,7 +73,7 @@ namespace ComputergrafikSpiel.Model
             return;
         }
 
-        public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY, int incNumber)
+        public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY)
         {
             Scene.Scene.Current.SpawnObject(new Interactable(stat, positionX, positionY));
         }
@@ -86,12 +86,13 @@ namespace ComputergrafikSpiel.Model
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
             var topV = new Vector2((left + right) * .5f,  top);
             var width = (right - left) * .5f;
-            Action<PlayerEnum.Stats> callback = (PlayerEnum.Stats stat) =>
+            void Callback(PlayerEnum.Stats stat)
             {
                 Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
                 this.UpgradeScreen = null;
-            };
-            this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: callback);
+            }
+
+            this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
         }
 
         public void CreateRandomEnemies(int min, int max, IWorldScene world)

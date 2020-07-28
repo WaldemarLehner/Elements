@@ -58,6 +58,10 @@ namespace ComputergrafikSpiel.View.Renderer
                 {
                     OpenTKRenderingHelper.RenderBackground(this, entry as IRenderableBackground);
                 }
+                else if (entry is IParticle)
+                {
+                    OpenTKRenderingHelper.RenderParticle(this, entry as IParticle);
+                }
                 else
                 {
                     OpenTKRenderingHelper.RenderRenderable(this, entry);

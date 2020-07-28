@@ -16,9 +16,9 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
             return $"{nameText} {upgradeText}";
         }
 
-        private static object GetUpgradeText(float valueBefore, float improvement, float valueAfter)
+        private static string GetUpgradeText(float valueBefore, float improvement, float valueAfter)
         {
-            return $"{valueBefore.Truncate()}+{improvement.Truncate()}>{valueAfter.Truncate()}";
+            return $"{valueBefore.Truncate()} > {valueAfter.Truncate()} ";
         }
 
         private static string Truncate(this float value) => string.Format("{0:0.00}", value);

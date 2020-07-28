@@ -3,12 +3,14 @@ using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
+using Spectrum;
 
 namespace ComputergrafikSpiel.Model.Character.Weapon
 {
@@ -85,6 +87,15 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
                     {
                         enemyCollidable.TakingDamage(this.AttackDamage);
                         Scene.Scene.Current.RemoveObject(this);
+
+                        // Spawn particles
+                        EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
+                        opt.PointOfEmmision = enemyCollidable.Position;
+                        opt.Direction = this.Direction.Normalized();
+                        opt.Hue = (enemyCollidable.BloodColorHue, enemyCollidable.BloodColorHue);
+                        StaticParticleEmmiter.EmitOnce(opt);
+
+
                     }
                 }
             }

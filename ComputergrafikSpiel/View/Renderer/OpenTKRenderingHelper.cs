@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.View.Helpers;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View.Renderer
@@ -68,6 +71,30 @@ namespace ComputergrafikSpiel.View.Renderer
 
             GL.Disable(EnableCap.Texture2D);
             GL.Disable(EnableCap.Blend);
+        }
+
+        internal static void RenderParticle(IRenderer renderer, IParticle particle)
+        {
+            var color = new Color4(particle.Color.r, particle.Color.g, particle.Color.b, byte.MaxValue);
+            var vertsNDC = new List<Vector2>();
+            var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(renderer.Camera.AspectRatio, renderer.Screen.width / (float)renderer.Screen.height);
+            var rect = new Rectangle(particle);
+            var vertsWorldSpace = new Vector2[] { rect.TopLeft, rect.TopRight, rect.BottomRight, rect.BottomLeft };
+
+            foreach (var vert in vertsWorldSpace)
+            {
+                vertsNDC.Add(CameraCoordinateConversionHelper.WorldToNDC(vert, multipliers, renderer.Camera));
+            }
+
+            GL.Color4(color);
+            GL.Begin(PrimitiveType.Quads);
+            foreach (var vert in vertsNDC)
+            {
+                GL.Vertex2(vert);
+            }
+
+            GL.End();
+            GL.Color4(Color4.White);
         }
 
         private static void CreateTextureDataIfNeeded(IRenderer renderer, ITexture texture, TextureWrapMode wrapMode = TextureWrapMode.MirroredRepeat)
