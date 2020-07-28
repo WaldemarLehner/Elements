@@ -4,7 +4,7 @@ using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 
 namespace ComputergrafikSpiel.Model.Character.Player
 {
-    internal class PlayerStateManager
+    internal class PlayerStateManager : IPlayerStateManager
     {
         private readonly PlayerStateOptions options;
         private PlayerState current;
@@ -12,13 +12,47 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         internal PlayerStateManager(PlayerStateOptions opt)
         {
+            this.current = new PlayerState(0, 5, 5, 1, 1f);
             this.options = opt ?? throw new ArgumentNullException(nameof(opt));
             this.currentLevel = (0, 0, 0);
         }
 
-        internal IPlayerState Current => this.current;
+        public IPlayerState Current => this.current;
 
-        internal IEnumerable<UpgradeOption> GetUpgradeOptions(uint level)
+        public bool Heal()
+        {
+            if (this.current.Health < this.current.MaxHealth)
+            {
+                this.current.Health++;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void AddCoin(uint count)
+        {
+            this.current.Currency += count;
+        }
+
+        public void Hurt(ref bool died)
+        {
+            if (this.current.Health > 0)
+            {
+                this.current.Health--;
+            }
+
+            if (this.current.Health == 0)
+            {
+                died = true;
+            }
+            else
+            {
+                died = false;
+            }
+        }
+
+        public IList<UpgradeOption> GetUpgradeOptions(uint level)
         {
             List<UpgradeOption> options = new List<UpgradeOption>();
             var heartPrice = this.options.ExtraHeartPriceFunction(this.currentLevel.maxhealth);

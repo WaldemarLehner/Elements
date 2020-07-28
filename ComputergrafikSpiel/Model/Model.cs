@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Activation;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.Model.Overlay;
+using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
 using ComputergrafikSpiel.Model.World;
@@ -34,6 +33,8 @@ namespace ComputergrafikSpiel.Model
 
         public int Level { get; private set; } = 1;
 
+        public UpgradeScreen UpgradeScreen { get; private set; }
+
         public IInputState InputState { get; private set; }
 
         /// <summary>
@@ -42,6 +43,11 @@ namespace ComputergrafikSpiel.Model
         /// <param name="dTime">Time between two Update Calls in Seconds.</param>
         public void Update(float dTime)
         {
+            if (this.UpgradeScreen != null)
+            {
+                this.UpgradeScreen.Update(dTime);
+            }
+
             Scene.Scene.Current.Update(dTime);
         }
 
@@ -69,7 +75,7 @@ namespace ComputergrafikSpiel.Model
 
         public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY, int incNumber)
         {
-            Scene.Scene.Current.SpawnObject(new Interactable(stat, positionX, positionY, incNumber));
+            Scene.Scene.Current.SpawnObject(new Interactable(stat, positionX, positionY));
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
@@ -77,21 +83,15 @@ namespace ComputergrafikSpiel.Model
         {
             this.Level++;
 
-            var positions = new (int x, int y)[]
+            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
+            var topV = new Vector2((left + right) * .5f,  top);
+            var width = (right - left) * .5f;
+            Action<PlayerEnum.Stats> callback = (PlayerEnum.Stats stat) =>
             {
-                (1, 1),
-                (1, world.SceneDefinition.TileCount.y),
-                (world.SceneDefinition.TileCount.x, 1),
-                (world.SceneDefinition.TileCount.x, world.SceneDefinition.TileCount.y),
+                Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
+                this.UpgradeScreen = null;
             };
-
-            var upgradesToSelect = new (PlayerEnum.Stats, int)[] { (PlayerEnum.Stats.MaxHealth, 1), (PlayerEnum.Stats.Defense, 2), (PlayerEnum.Stats.AttackSpeed, 1), (PlayerEnum.Stats.MovementSpeed, 10) };
-            float tileSize = world.SceneDefinition.TileSize;
-            for (int i = 0; i < 4; i++)
-            {
-                var (x, y) = positions[i];
-                this.SpawnInteractable(upgradesToSelect[i].Item1, (x + .5f) * tileSize, (y + .5f) * tileSize, upgradesToSelect[i].Item2);
-            }
+            this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: callback);
         }
 
         public void CreateRandomEnemies(int min, int max, IWorldScene world)

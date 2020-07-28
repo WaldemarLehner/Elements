@@ -109,6 +109,11 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(GUIConstructionHelper.GenerateGuiIndicator(this.World, Player));
                 }
 
+                if (this.Model.UpgradeScreen != null)
+                {
+                    enumerable.AddRange(this.Model.UpgradeScreen.Renderables);
+                }
+
                 return enumerable;
             }
         }

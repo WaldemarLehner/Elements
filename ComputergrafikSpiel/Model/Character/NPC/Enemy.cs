@@ -175,7 +175,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 this.AttackCooldown = 2;
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Spieler wurde getroffen!\n");
-                Scene.Scene.Player.TakingDamage(this.AttackDamage);
+                //Scene.Scene.Player.TakingDamage(this.AttackDamage);
+                Scene.Scene.Player.TakingDamage();
             }
         }
 

@@ -7,7 +7,7 @@ namespace ComputergrafikSpiel.Controller.Input
 {
     internal static class IInputStateGenerationHelper
     {
-        internal static IInputState GenerateInputState(IRenderer renderer, Vector2 cursorNDC)
+        internal static IInputState GenerateInputState(IRenderer renderer, Vector2 cursorNDC, bool isFocused)
         {
             var cursor = new MouseCursor();
             cursor.Update(renderer, cursorNDC);
@@ -16,6 +16,7 @@ namespace ComputergrafikSpiel.Controller.Input
                 MouseState = Mouse.GetCursorState(),
                 KeyboardState = Keyboard.GetState(),
                 Cursor = cursor,
+                IsWindowFocused = isFocused,
             };
         }
 
@@ -26,6 +27,8 @@ namespace ComputergrafikSpiel.Controller.Input
             public KeyboardState KeyboardState { get; set; }
 
             public IMouseCursor Cursor { get; set; }
+
+            public bool IsWindowFocused { get; set; }
         }
     }
 }

@@ -129,6 +129,7 @@
     <Compile Include="Model\Character\Player\InputControllerSettings.cs" />
     <Compile Include="Model\Character\Player\InputController.cs" />
     <Compile Include="Model\Character\Player\IPlayerState.cs" />
+    <Compile Include="Model\Character\Player\IPlayerStateManager.cs" />
     <Compile Include="Model\Character\Player\PlayerStateManager.cs" />
     <Compile Include="Model\Character\Player\PlayerStateOptions.cs" />
     <Compile Include="Model\Character\Player\PlayerStateOptionsDefaultFunctions.cs" />
@@ -170,9 +171,11 @@
     <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
     <Compile Include="Model\Interfaces\IInputState.cs" />
     <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
-    <Compile Include="Model\Overlay\GUIDefinitions.cs" />
     <Compile Include="Model\Overlay\IGUIElement.cs" />
     <Compile Include="Model\Overlay\UpgradeScreen\UpgradeOption.cs" />
+    <Compile Include="Model\Overlay\UpgradeScreen\UpgradeScreen.cs" />
+    <Compile Include="Model\Overlay\UpgradeScreen\UpgradeScreenButton.cs" />
+    <Compile Include="Model\Overlay\UpgradeScreen\UpgradeScreenButtonTextureLookupGenerator.cs" />
     <Compile Include="Model\RotationHelper.cs" />
     <Compile Include="Model\Scene\ISceneManager.cs" />
     <Compile Include="Model\Scene\Scene.cs" />
@@ -270,7 +273,19 @@
     <Content Include="Content\Images\Ground\WaterTileSet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\GUI\Buttons\Button.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\GUI\Heart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Upgrades\ExtraHeart.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Upgrades\FireRate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Upgrades\MovementSpeed.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\PlayerWeapon.png">
@@ -331,6 +346,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Wall\Wall_single.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Upgrades\Coin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

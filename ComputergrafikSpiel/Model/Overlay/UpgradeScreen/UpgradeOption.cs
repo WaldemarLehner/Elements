@@ -2,7 +2,7 @@
 
 namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
 {
-    internal struct UpgradeOption
+    public struct UpgradeOption
     {
         public UpgradeOption(PlayerEnum.Stats stat, float valueBefore, float valueAfter, uint price)
         {

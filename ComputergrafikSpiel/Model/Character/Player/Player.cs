@@ -8,6 +8,7 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -16,31 +17,25 @@ namespace ComputergrafikSpiel.Model.Character.Player
     public class Player : IPlayer
     {
         private readonly List<PlayerEnum.PlayerActions> playerActionList;
-        private readonly PlayerAttackSystem playerAttackSystem;
-        private readonly PlayerMovementSystem playerMovementSystem;
-        private readonly PlayerInteractionSystem playerInteractionSystem;
+        private readonly PlayerAttackSystem playerAttackSystem = new PlayerAttackSystem();
+        private readonly PlayerMovementSystem playerMovementSystem = new PlayerMovementSystem();
+        private readonly PlayerInteractionSystem playerInteractionSystem = new PlayerInteractionSystem();
+        private readonly PlayerStateManager playerStateManager = new PlayerStateManager(PlayerStateOptions.Default);
         private readonly Vector2 scale;
-        private readonly InputController inputController;
+        private readonly InputController inputController = new InputController(InputControllerSettings.Default);
 
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
 
         public Player()
         {
-            this.CurrentHealth = this.MaxHealth;
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 65);
             this.scale = new Vector2(24, 24);
             this.Scale = this.scale;
             var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Interactable | ColliderLayer.Layer.Trigger;
             this.Collider = new CircleOffsetCollider(this, new Vector2(0, -15f), 10, ColliderLayer.Layer.Player, collisionLayer);
-            this.playerAttackSystem = new PlayerAttackSystem();
-            this.playerMovementSystem = new PlayerMovementSystem();
-            this.playerInteractionSystem = new PlayerInteractionSystem();
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
-            this.AttackCooldownCurrent = 0;
-            this.DashCooldownCurrent = 0;
-            this.inputController = new InputController(InputControllerSettings.Default);
         }
 
         // Define Player
@@ -52,25 +47,26 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public event EventHandler PlayerInc;
 
-        public int MaxHealth { get; set; } = 5;
+        public int MaxHealth => (int)this.playerStateManager.Current.MaxHealth;
 
-        public int CurrentHealth { get; set; }
+        public int CurrentHealth => (int)this.playerStateManager.Current.Health;
 
+        [Obsolete]
         public int Defense { get; set; } = 0;
 
-        public float AttackSpeed { get; set; } = 1;
+        public float AttackSpeed => this.playerStateManager.Current.Firerate;
 
         public float AttackCooldown { get; } = 100;
 
-        public float AttackCooldownCurrent { get; set; }
+        public float AttackCooldownCurrent { get; set; } = 0;
 
         public float DashCooldown { get; } = 4;
 
-        public float DashCooldownCurrent { get; set; }
+        public float DashCooldownCurrent { get; set; } = 0;
 
-        public float MovementSpeed { get; set; } = 100;
+        public float MovementSpeed => 60f * this.playerStateManager.Current.MovementSpeed;
 
-        public int Money { get; set; } = 0;
+        public int Money => (int)this.playerStateManager.Current.Currency;
 
         public Vector2 Position { get; set; } = Vector2.Zero;
 
@@ -99,7 +95,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         {
             var inputState = Scene.Scene.Current.Model.InputState;
 
-            if (inputState == null)
+            if (inputState == null || Scene.Scene.Current.Model.UpgradeScreen != null || !inputState.IsWindowFocused)
             {
                 return;
             }
@@ -116,21 +112,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
         }
 
         // Needs EventHandler from Npc who hits player
-        public void TakingDamage(int damage)
+        public void TakingDamage()
         {
-            if (damage <= 0)
-            {
-                throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(damage));
-            }
+            bool died = false;
 
-            if (this.Defense < damage)
-            {
-                damage -= this.Defense;
-                this.CurrentHealth -= damage;
-                this.OnHit(EventArgs.Empty);
-            }
+            this.playerStateManager.Hurt(ref died);
 
-            if (this.CurrentHealth <= 0)
+            if (died)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
@@ -138,51 +126,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
         }
 
-        public void IncreasePlayerStats(int incNumber, PlayerEnum.Stats stats)
+        public void TakeHeal()
         {
-            if (incNumber <= 0)
-            {
-                throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(incNumber));
-            }
+            this.playerStateManager.Heal();
+        }
 
-            /*Interactable MaxHealth: Bei Rundenende kann das Maximalleben um eins erhöht werden
-            -> Überprüfung das bisheriges Leben auch auf Max ist*/
-            if (stats == PlayerEnum.Stats.MaxHealth)
-            {
-                    this.MaxHealth += incNumber;
-            }
-
-            // Leben wird um eins erhöht
-            else if (stats == PlayerEnum.Stats.Heal && this.CurrentHealth < this.MaxHealth)
-            {
-                    this.CurrentHealth += incNumber;
-            }
-
-            // Defense wird erhöht
-            else if (stats == PlayerEnum.Stats.Defense)
-            {
-                this.Defense += incNumber;
-            }
-
-            // AttackSpeed wird erhöht
-            else if (stats == PlayerEnum.Stats.AttackSpeed)
-            {
-                this.AttackSpeed += incNumber;
-            }
-
-            // MovementSpeed wird erhöht
-            else if (stats == PlayerEnum.Stats.MovementSpeed)
-            {
-                this.MovementSpeed += incNumber;
-            }
-
-            // Währung wird an der Stelle gespawnt, an der der Gegner gestorben ist
-            else if (stats == PlayerEnum.Stats.Money)
-            {
-                this.Money += incNumber;
-            }
-
-            this.OnInc(EventArgs.Empty);
+        public void TakeMoney()
+        {
+            this.playerStateManager.AddCoin(1);
         }
 
         public void Update(float dtime)
@@ -258,6 +209,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 this.Position = this.LastPosition;
                 return;
             }
+        }
+
+        public IList<UpgradeOption> GetOptions(uint level) => this.playerStateManager.GetUpgradeOptions(level);
+
+        public void SelectOption(PlayerEnum.Stats stat, uint level)
+        {
+            this.playerStateManager.Apply(stat, level);
         }
 
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)

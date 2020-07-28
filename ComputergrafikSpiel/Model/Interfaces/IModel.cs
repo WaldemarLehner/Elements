@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 
 namespace ComputergrafikSpiel.Model.Interfaces
 {
@@ -12,6 +13,8 @@ namespace ComputergrafikSpiel.Model.Interfaces
         IInputState InputState { get; }
 
         int Level { get; }
+
+        UpgradeScreen UpgradeScreen { get; }
 
         void Update(float dTime);
 

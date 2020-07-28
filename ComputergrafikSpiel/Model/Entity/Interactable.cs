@@ -13,52 +13,45 @@ namespace ComputergrafikSpiel.Model.Entity
     public class Interactable : IEntity
     {
         private readonly string texturename;
-        private readonly int incNumber;
-        private readonly PlayerEnum.Stats stats;
+        private readonly PlayerEnum.Stats stat;
 
-        public Interactable(PlayerEnum.Stats stats, float positionX, float positionY, int incNumber)
+        public Interactable(PlayerEnum.Stats stat, float positionX, float positionY)
         {
             this.Scale = new Vector2(10, 10);
             this.Position = new Vector2(positionX, positionY);
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player);
 
-            switch (stats)
+            switch (stat)
             {
                 case PlayerEnum.Stats.MaxHealth:
                     this.texturename = "MaxHealthIncrease";
-                    this.incNumber = incNumber;
-                    this.stats = stats;
+                    this.stat = stat;
                     this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.Heal:
                     this.texturename = "HealIncrease";
-                    this.incNumber = incNumber;
-                    this.stats = stats;
+                    this.stat = stat;
                     this.Scale = new Vector2(5, 5);
                     this.SingleDelete = true;
                     break;
                 case PlayerEnum.Stats.Defense:
                     this.texturename = "DefenseIncrease";
-                    this.incNumber = incNumber;
-                    this.stats = stats;
+                    this.stat = stat;
                     this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.AttackSpeed:
                     this.texturename = "AttackSpeedIncrease";
-                    this.incNumber = incNumber;
-                    this.stats = stats;
+                    this.stat = stat;
                     this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.MovementSpeed:
                     this.texturename = "MovementSpeedIncrease";
-                    this.incNumber = incNumber;
-                    this.stats = stats;
+                    this.stat = stat;
                     this.DeleteAll = true;
                     break;
                 case PlayerEnum.Stats.Money:
                     this.texturename = "Währung";
-                    this.incNumber = incNumber;
-                    this.stats = stats;
+                    this.stat = stat;
                     this.Scale = new Vector2(5, 5);
                     this.SingleDelete = true;
                     break;
@@ -67,7 +60,7 @@ namespace ComputergrafikSpiel.Model.Entity
                     break;
             }
 
-            this.Texture = new ComputergrafikSpiel.Model.EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/" + this.texturename);
+            this.Texture = new EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/" + this.texturename);
         }
 
         public bool SingleDelete { get; private set; } = false;
@@ -94,7 +87,15 @@ namespace ComputergrafikSpiel.Model.Entity
 
         public void PlayerStatsIncrease()
         {
-            Scene.Scene.Player.IncreasePlayerStats(this.incNumber, this.stats);
+            switch (this.stat)
+            {
+                case PlayerEnum.Stats.Heal:
+                    Scene.Scene.Player.TakeHeal();
+                    return;
+                case PlayerEnum.Stats.Money:
+                    Scene.Scene.Player.TakeMoney();
+                    return;
+            }
         }
 
         public void RemoveInteractable()

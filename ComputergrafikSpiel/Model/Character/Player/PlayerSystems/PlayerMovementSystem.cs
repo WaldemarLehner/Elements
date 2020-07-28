@@ -46,7 +46,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
         {
             this.setMovementspeedToValueBefore = player.MovementSpeed;
             Console.WriteLine("DAshh");
-            player.MovementSpeed = 400;
+            //TODO: player.MovementSpeed = 400;
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             this.ReduceSpeedAfterDash(player);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -56,7 +56,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
         public async Task ReduceSpeedAfterDash(Player player)
         {
             await Task.Delay(100);
-            player.MovementSpeed = this.setMovementspeedToValueBefore;
+            //TODO: player.MovementSpeed = this.setMovementspeedToValueBefore;
             return;
         }
     }
