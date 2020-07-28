@@ -67,7 +67,7 @@ namespace ComputergrafikSpiel.Model.Collider
                     // Circle is right of rectangle. Check right edge for collision
                     Vector2 topRight = new Vector2(rect.Bounds.right, rect.Bounds.top);
                     Vector2 bottomRight = new Vector2(rect.Bounds.right, rect.Bounds.bottom);
-                    var ray = new Ray(bottomRight, topRight- bottomRight, (topRight- bottomRight).Length, ~ColliderLayer.Layer.Empty); // we can pass All Layers here as the check has already been done
+                    var ray = new Ray(bottomRight, topRight - bottomRight, (topRight - bottomRight).Length, ~ColliderLayer.Layer.Empty); // we can pass All Layers here as the check has already been done
                     edgesToCheck.Add(ray);
                 }
 

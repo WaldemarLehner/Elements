@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
-using OpenTK;
+using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 
 namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 {
@@ -13,15 +13,21 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 
         (int currentHealth, int maxHealth, int currency) PlayerData { get; }
 
+        void TakingDamage();
+
+        void TakeHeal();
+
+        void TakeMoney();
+
         // Receives a enum list of pressed player actions -> MoveUp, MoveDown, MoveLeft, MoveRight, Dash, Attack, Interaction
         void PlayerControl();
 
         void OnInc(EventArgs e);
 
-        void TakingDamage(int damage);
-
-        void IncreasePlayerStats(int incNumber, PlayerEnum.Stats incstats);
-
         void Equip(Weapon.Weapon weapon);
+
+        IList<UpgradeOption> GetOptions(uint currentLevel);
+
+        void SelectOption(PlayerEnum.Stats stat, uint level);
     }
 }

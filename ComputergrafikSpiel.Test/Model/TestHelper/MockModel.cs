@@ -4,6 +4,7 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Overlay;
+using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public IInputState InputState => throw new NotImplementedException();
 
+        public UpgradeScreen UpgradeScreen => throw new NotImplementedException();
 
         public bool CreateEnemy()
         {

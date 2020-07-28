@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
-using ComputergrafikSpiel.Model.Overlay;
 using ComputergrafikSpiel.View.Helpers;
-using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
@@ -11,7 +9,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.View.Renderer
 {
-    internal static class OpenTKRendererHelper
+    internal static class OpenTKDebugRenderingHelper
     {
         internal static void RenderRenderableDebug(IRenderer renderer, IRenderable renderable, Random rand, DebugMask.Mask mask)
         {
@@ -69,43 +67,6 @@ namespace ComputergrafikSpiel.View.Renderer
 
             GL.End();
             GL.Color4(Color4.White);
-        }
-
-        internal static IGUIElement PopulateMissingDataGUIRenderables(IGUIElement entry, IRenderer renderer)
-        {
-            var aspectRatios = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(renderer);
-
-            if (entry.Size.height == null && entry.Size.width == null)
-            {
-                throw new ArgumentException("Not enough data.", nameof(entry));
-            }
-
-            if (entry.Size.height == null)
-            {
-                // Height Data is missing.
-                float width = entry.Size.width ?? 0; // Not Normalized
-                float height = width / (float)entry.AspectRatio; // Not Normalized
-
-                width *= aspectRatios.x;
-                height *= aspectRatios.y;
-
-                entry.Size = (width, height);
-
-                entry.Offset *= new Vector2(aspectRatios.x, 1);
-
-                return entry;
-            }
-
-            if (entry.Size.width == null)
-            {
-                // Needs fixing.
-                // Width Data is missing.
-                var newWidth = (entry.Size.height * entry.AspectRatio) * aspectRatios.x * .5f;
-                entry.Size = (newWidth, entry.Size.height * aspectRatios.y);
-                return entry;
-            }
-
-            return entry;
         }
     }
 }

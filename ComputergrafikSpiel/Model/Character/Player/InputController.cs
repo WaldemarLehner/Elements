@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK.Input;
 
@@ -42,7 +41,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 /// </summary>
                 if (keyboardState.IsKeyDown(key))
                 {
-                    if (this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.MoveDown || this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.MoveUp || this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.MoveRight || this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.MoveLeft || this.KeyboardDefinitions[key] == PlayerEnum.PlayerActions.Run)
+                    if (InputController.IsMovementAction(this.KeyboardDefinitions[key]))
                     {
                         this.pressedActions.Add(this.KeyboardDefinitions[key]);
                     }
@@ -78,6 +77,28 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
 
             return this.pressedActions;
+        }
+
+        private static bool IsMovementAction(PlayerEnum.PlayerActions playerAction)
+        {
+            PlayerEnum.PlayerActions[] arr =
+            {
+                PlayerEnum.PlayerActions.MoveDown,
+                PlayerEnum.PlayerActions.MoveLeft,
+                PlayerEnum.PlayerActions.MoveRight,
+                PlayerEnum.PlayerActions.MoveUp,
+                PlayerEnum.PlayerActions.Run,
+            };
+
+            foreach (var entry in arr)
+            {
+                if (playerAction == entry)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

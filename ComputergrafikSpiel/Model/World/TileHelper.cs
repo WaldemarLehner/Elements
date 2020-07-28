@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Drawing.Text;
-using System.Security.Cryptography.X509Certificates;
 using ComputergrafikSpiel.Model.Collider;
-using SixLabors.ImageSharp.Processing.Processors.Transforms;
 
 namespace ComputergrafikSpiel.Model.World
 {
@@ -38,7 +35,6 @@ namespace ComputergrafikSpiel.Model.World
 
         internal static TileDefinitions.TextureSubType[] GetTexturesTransitionable(TileDefinitions.SurroundingTiles n)
         {
-            bool cornerTL = false, cornerTR = false, cornerBL = false, cornerBR = false;
             n.RemoveUnneccesary();
             if (n.Count == 0)
             {
@@ -52,114 +48,11 @@ namespace ComputergrafikSpiel.Model.World
 
             List<TileDefinitions.TextureSubType> textures = new List<TileDefinitions.TextureSubType>() { TileDefinitions.TextureSubType.Filled };
 
-            // Check TopRight
-            if (!n.Top && !n.Right)
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomRight);
-                cornerBR = true;
-            }
-            else if (n.Top && !n.TopRight && n.Right)
-            {
-                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomRight);
-            }
+            var corners = AddTileDefinitionsCorners(n, ref textures);
 
-            // Check TopLeft
-            if (!n.Top && !n.Left)
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomLeft);
-                cornerBL = true;
-            }
-            else if (n.Top && n.Left && !n.TopLeft)
-            {
-                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomLeft);
-            }
+            AddEdgeDefinitions(n, ref textures, corners);
 
-            // Check BottomRight
-            if (!n.Bottom && !n.Right)
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopRight);
-                cornerTR = true;
-            }
-            else if (n.Bottom && !n.BottomRight && n.Right)
-            {
-                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopRight);
-            }
-
-            // Check BottomLeft
-            if (!n.Bottom && !n.Left)
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopLeft);
-                cornerTL = true;
-            }
-            else if (n.Bottom && n.Left && !n.BottomLeft)
-            {
-                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopLeft);
-            }
-
-            // Check Edges
-            if (!n.Top && n.Bottom && !(cornerBL || cornerBR))
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeBottom);
-            }
-
-            if (!n.Bottom && n.Top && !(cornerTL || cornerTR))
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeTop);
-            }
-
-            if (!n.Left && n.Right && !(cornerTL || cornerBL))
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeLeft);
-            }
-
-            if (!n.Right && n.Left && !(cornerTR || cornerBR))
-            {
-                textures.Add(TileDefinitions.TextureSubType.EdgeRight);
-            }
-
-            // Check Narrow Variants
-            if (n.Count == 1)
-            {
-                if (n.Right)
-                {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndLeft);
-                }
-                else if (n.Left)
-                {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndRight);
-                }
-                else if (n.Top)
-                {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndTop);
-                }
-                else if (n.Bottom)
-                {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowCapEndBottom);
-                }
-            }
-            else if (n.Count == 2)
-            {
-                if (n.Right && n.Left)
-                {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowHorizontal);
-                }
-                else if (n.Top && n.Bottom)
-                {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
-                }
-            }
-            else
-            {
-                if(n.Right && n.Left && !n.Top && !n.Bottom)
-                {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowHorizontal);
-                }
-                if (!n.Right && !n.Left && n.Top && n.Bottom)
-                {
-                    textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
-                }
-
-            }
+            AddNarrowVariants(n, ref textures);
 
             return textures.ToArray();
         }
@@ -230,6 +123,143 @@ namespace ComputergrafikSpiel.Model.World
                 case TileDefinitions.Type.WallTrim:
                 default:
                     return false;
+            }
+        }
+
+        private static (bool tl, bool tr, bool br, bool bl) AddTileDefinitionsCorners(TileDefinitions.SurroundingTiles n, ref List<TileDefinitions.TextureSubType> textures)
+        {
+            (bool tl, bool tr, bool br, bool bl) returnTuple = (false, false, false, false);
+
+            // Check TopRight
+            if (!n.Top && !n.Right)
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomRight);
+                returnTuple.br = true;
+            }
+            else if (n.Top && !n.TopRight && n.Right)
+            {
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomRight);
+            }
+
+            // Check TopLeft
+            if (!n.Top && !n.Left)
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerBottomLeft);
+                returnTuple.bl = true;
+            }
+            else if (n.Top && n.Left && !n.TopLeft)
+            {
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerBottomLeft);
+            }
+
+            // Check BottomRight
+            if (!n.Bottom && !n.Right)
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopRight);
+                returnTuple.tr = true;
+            }
+            else if (n.Bottom && !n.BottomRight && n.Right)
+            {
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopRight);
+            }
+
+            // Check BottomLeft
+            if (!n.Bottom && !n.Left)
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeCornerTopLeft);
+                returnTuple.tl = true;
+            }
+            else if (n.Bottom && n.Left && !n.BottomLeft)
+            {
+                textures.Add(TileDefinitions.TextureSubType.InvertCornerTopLeft);
+            }
+
+            return returnTuple;
+        }
+
+        private static void AddEdgeDefinitions(TileDefinitions.SurroundingTiles n, ref List<TileDefinitions.TextureSubType> textures, (bool tl, bool tr, bool br, bool bl) corners)
+        {
+            // Check Edges
+            if (!n.Top && n.Bottom && !(corners.bl || corners.br))
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeBottom);
+            }
+
+            if (!n.Bottom && n.Top && !(corners.tl || corners.tr))
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeTop);
+            }
+
+            if (!n.Left && n.Right && !(corners.tl || corners.bl))
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeLeft);
+            }
+
+            if (!n.Right && n.Left && !(corners.tr || corners.br))
+            {
+                textures.Add(TileDefinitions.TextureSubType.EdgeRight);
+            }
+        }
+
+        private static void AddNarrowVariants(TileDefinitions.SurroundingTiles n, ref List<TileDefinitions.TextureSubType> textures)
+        {
+            // Check Narrow Variants
+            if (n.Count == 1)
+            {
+                AddTileDefinitions1Surrouning(n, ref textures);
+            }
+            else if (n.Count == 2)
+            {
+                AddTileDefinitions2Surrounding(n, ref textures);
+            }
+            else
+            {
+                AddTileDefintionsGreater2Surrounding(n, ref textures);
+            }
+        }
+
+        private static void AddTileDefintionsGreater2Surrounding(TileDefinitions.SurroundingTiles n, ref List<TileDefinitions.TextureSubType> textures)
+        {
+            if (n.Right && n.Left && !n.Top && !n.Bottom)
+            {
+                textures.Add(TileDefinitions.TextureSubType.NarrowHorizontal);
+            }
+
+            if (!n.Right && !n.Left && n.Top && n.Bottom)
+            {
+                textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
+            }
+        }
+
+        private static void AddTileDefinitions2Surrounding(TileDefinitions.SurroundingTiles n, ref List<TileDefinitions.TextureSubType> textures)
+        {
+            if (n.Right && n.Left)
+            {
+                textures.Add(TileDefinitions.TextureSubType.NarrowHorizontal);
+            }
+            else if (n.Top && n.Bottom)
+            {
+                textures.Add(TileDefinitions.TextureSubType.NarrowVertical);
+            }
+        }
+
+        private static void AddTileDefinitions1Surrouning(TileDefinitions.SurroundingTiles n, ref List<TileDefinitions.TextureSubType> textures)
+        {
+            if (n.Right)
+            {
+                textures.Add(TileDefinitions.TextureSubType.NarrowCapEndLeft);
+            }
+            else if (n.Left)
+            {
+                textures.Add(TileDefinitions.TextureSubType.NarrowCapEndRight);
+            }
+            else if (n.Top)
+            {
+                textures.Add(TileDefinitions.TextureSubType.NarrowCapEndTop);
+            }
+            else if (n.Bottom)
+            {
+                textures.Add(TileDefinitions.TextureSubType.NarrowCapEndBottom);
             }
         }
     }

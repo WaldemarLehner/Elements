@@ -21,6 +21,8 @@ namespace ComputergrafikSpiel.Controller
             this.View = view;
             this.Model = model;
             var player = new Player();
+
+            // this.CursorVisible = false;
             Scene.CreatePlayer(player);
         }
 
@@ -47,7 +49,7 @@ namespace ComputergrafikSpiel.Controller
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             this.Model.Update((float)e.Time);
-            this.Model.UpdateInput(IInputStateGenerationHelper.GenerateInputState(this.View.Renderer, this.cursorNDC));
+            this.Model.UpdateInput(IInputStateGenerationHelper.GenerateInputState(this.View.Renderer, this.cursorNDC, this.Focused));
             base.OnUpdateFrame(e);
         }
 

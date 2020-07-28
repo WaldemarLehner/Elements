@@ -11,5 +11,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
         MouseState MouseState { get; }
 
         KeyboardState KeyboardState { get; }
+
+        bool IsWindowFocused { get; }
     }
 }
