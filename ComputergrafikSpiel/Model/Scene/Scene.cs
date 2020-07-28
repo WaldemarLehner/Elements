@@ -141,7 +141,7 @@ namespace ComputergrafikSpiel.Model.Scene
             if (Scene.Player == null)
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
-                Scene.Player.Equip(new Weapon(3, 1, 4, 12, 5));
+                Scene.Player.Equip(new Weapon(3, 1, .6f, 12, 5));
                 return true;
             }
 

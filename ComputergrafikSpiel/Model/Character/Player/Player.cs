@@ -24,12 +24,15 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerStateManager playerStateManager = new PlayerStateManager(PlayerStateOptions.Default);
         private readonly Vector2 scale;
         private readonly InputController inputController = new InputController(InputControllerSettings.Default);
+        private readonly GenericParticleEmitter dirtEmitter;
 
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
 
         public Player()
         {
+            this.dirtEmitter = new GenericParticleEmitter(EmitParticleOnceOptions.Dirt, 0.1f);
+            this.dirtEmitter.Disable();
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 65);
             this.scale = new Vector2(24, 24);
@@ -158,11 +161,28 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 this.LookAt(Scene.Scene.Current.Model.InputState.Cursor.WorldCoordinates ?? Vector2.Zero);
             }
 
+            var rand = new Random();
+            var opt = this.dirtEmitter.Options;
+            opt.PointOfEmmision = this.Collider.Position + ((new Vector2((float)rand.NextDouble(), (float)rand.NextDouble()) - (Vector2.One * .5f)) * 5f);
+            this.dirtEmitter.Options = opt;
+
+            if (this.run || this.playerMovementSystem.DashMultiplier > 1)
+            {
+                this.dirtEmitter.Enable();
+            }
+            else
+            {
+                this.dirtEmitter.Disable();
+            }
+
             if (this.run)
             {
                 this.Position += this.directionXY * this.MovementSpeed * dtime / 2;
                 this.run = false;
             }
+
+
+            this.dirtEmitter.Update(dtime);
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;
 

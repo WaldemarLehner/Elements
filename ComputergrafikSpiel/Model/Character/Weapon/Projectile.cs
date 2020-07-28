@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
-using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
-using Spectrum;
+
 
 namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Projectile : IEntity
     {
+        private readonly GenericParticleEmitter backsmokeEmitter;
+
         internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize)
         {
             this.AttackDamage = attackDamage;
@@ -26,6 +27,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize / 2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
             this.Scale = Vector2.One * bulletSize;
+
+            var emitOpt = EmitParticleOnceOptions.BulletSmoke;
+            emitOpt.Direction = this.Direction * -1;
+            emitOpt.PointOfEmmision = this.Position;
+            this.backsmokeEmitter = new GenericParticleEmitter(emitOpt, .02f);
 
             // rotation calculation
             Vector2 positionForRotation = new Vector2(1, 0);
@@ -61,8 +67,25 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.RotationAnker = this.Position;
             this.TTL -= dtime;
             this.ProjectileCollisionManager();
+
+            var opt = this.backsmokeEmitter.Options;
+            opt.PointOfEmmision = this.Position;
+            this.backsmokeEmitter.Options = opt;
+            this.backsmokeEmitter.Update(dtime);
             if (this.TTL <= 0)
             {
+                EmitParticleOnceOptions onDeathOpt = EmitParticleOnceOptions.ProjectileHit;
+                onDeathOpt.Count = 50;
+                onDeathOpt.PointOfEmmision = this.Position;
+                onDeathOpt.TTL = .3f;
+                onDeathOpt.TTLDeviation = .2f;
+                onDeathOpt.Direction = Vector2.One;
+                onDeathOpt.DirectionDeviation = 180;
+                onDeathOpt.Hue = (0, 0);
+                onDeathOpt.Saturation = (0, 0);
+                onDeathOpt.SaturationDeviation = 0f;
+                onDeathOpt.Value = (.2f, 1f);
+                StaticParticleEmmiter.EmitOnce(onDeathOpt);
                 Scene.Scene.Current.RemoveObject(this);
             }
         }

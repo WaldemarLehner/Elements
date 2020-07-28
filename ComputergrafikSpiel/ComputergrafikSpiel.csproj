@@ -176,6 +176,7 @@
     <Compile Include="Model\Entity\Particles\EmitParticleOnceOptions.cs" />
     <Compile Include="Model\Entity\Particles\EmitParticleOnceOptionsHelper.cs" />
     <Compile Include="Model\Entity\Particles\GenericParticle.cs" />
+    <Compile Include="Model\Entity\Particles\GenericParticleEmitter.cs" />
     <Compile Include="Model\Entity\Particles\GenericParticleFunctions.cs" />
     <Compile Include="Model\Entity\Particles\ParticleCalculationHelper.cs" />
     <Compile Include="Model\Entity\Particles\ParticleFunction.cs" />

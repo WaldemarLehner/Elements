@@ -8,6 +8,10 @@ namespace ComputergrafikSpiel.Model.Entity.Particles
 
         public static EmitParticleOnceOptions ProjectileHit => EmitParticleOnceOptionsHelper.ProjectileHit;
 
+        public static EmitParticleOnceOptions BulletSmoke => EmitParticleOnceOptionsHelper.BulletSmoke;
+
+        public static EmitParticleOnceOptions Dirt => EmitParticleOnceOptionsHelper.Dirt;
+
         internal uint Count { get; set; }
 
         internal Vector2 Direction { get; set; }
