@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using OpenTK;
 
@@ -7,7 +6,9 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 {
     internal class PlayerMovementSystem
     {
-        private float setMovementspeedToValueBefore;
+        private const float Multiplier = 2f;
+
+        public float DashMultiplier { get; private set; } = 1f;
 
         // Determines in which direction the player moves
         public Vector2 SetPlayerDirection(IReadOnlyList<PlayerEnum.PlayerActions> movement)
@@ -44,19 +45,17 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 
         public void PlayerDash(Player player)
         {
-            this.setMovementspeedToValueBefore = player.MovementSpeed;
-            Console.WriteLine("DAshh");
-            //TODO: player.MovementSpeed = 400;
+            this.DashMultiplier = Multiplier;
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            this.ReduceSpeedAfterDash(player);
+            this.ReduceSpeedAfterDash();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             return;
         }
 
-        public async Task ReduceSpeedAfterDash(Player player)
+        private async Task ReduceSpeedAfterDash()
         {
             await Task.Delay(100);
-            //TODO: player.MovementSpeed = this.setMovementspeedToValueBefore;
+            this.DashMultiplier = 1f;
             return;
         }
     }

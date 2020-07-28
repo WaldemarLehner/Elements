@@ -64,7 +64,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float DashCooldownCurrent { get; set; } = 0;
 
-        public float MovementSpeed => 60f * this.playerStateManager.Current.MovementSpeed;
+        public float MovementSpeed => 60f * this.playerStateManager.Current.MovementSpeed * this.playerMovementSystem.DashMultiplier;
 
         public int Money => (int)this.playerStateManager.Current.Currency;
 
