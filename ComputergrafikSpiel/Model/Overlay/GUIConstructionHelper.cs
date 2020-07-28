@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Controller.Input;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
@@ -16,20 +17,20 @@ namespace ComputergrafikSpiel.Model.Overlay
     {
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
-        // private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 10, y: 10));
+        private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 1, y: 1));
         // private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/gameover1", (x: 2, y: 1));
 
         internal static IEnumerable<IRenderable> GenerateGuiIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
             var coinData = GUIConstructionHelper.GenerateCoinCount(sceneDefinition, player);
             var healthbar = GUIConstructionHelper.GenerateHealthBar(sceneDefinition, player);
-            // var crosshair = GUIConstructionHelper.GenerateCrosshair(sceneDefinition, player);
+            var crosshair = GUIConstructionHelper.GenerateCrosshair(sceneDefinition, player);
             // var gameover = GUIConstructionHelper.GenerateGameover(sceneDefinition, player);
 
             var renderables = new List<IRenderable>();
             renderables.AddRange(coinData);
             renderables.AddRange(healthbar);
-            // renderables.AddRange(crosshair);
+            renderables.AddRange(crosshair);
             // renderables.AddRange(gameover);
             return renderables;
         }
@@ -130,38 +131,19 @@ namespace ComputergrafikSpiel.Model.Overlay
             return healthEntries;
         }
 
-        /*private static List<IRenderable> GenerateCrosshair(IWorldScene sceneDefinition, IPlayer player)
+        private static List<IRenderable> GenerateCrosshair(IWorldScene sceneDefinition, IPlayer player)
         {
             List<IRenderable> crosshairEntries = new List<IRenderable>();
-            MouseCursor mouseCursor = new MouseCursor();
-            var (currentHealth, maxHealth, _) = player.PlayerData;
 
-            // Get bounds of GUI Area of Scene.
-            float left = sceneDefinition.WorldSceneBounds.left;
-            float right = sceneDefinition.WorldSceneBounds.right - (sceneDefinition.SceneDefinition.TileSize * 3);
-            float top = sceneDefinition.WorldSceneBounds.top;
-            float bottom = top - sceneDefinition.SceneDefinition.TileSize;
-
-            float heartSize = (right - left) / maxHealth;
-            if (heartSize < 0)
-            {
-                heartSize *= -1;
-            }
-
-            if (heartSize > top - bottom)
-            {
-                heartSize = top - bottom; ///////////
-            }
-
+            float croshairSize = 15;
             for (int i = 0; i < 1; i++)
             {
-                float xCenter = (left + right) / 2;
-                var texCoords = Heart.GetTexCoordsOfIndex(2); // Get the required texture.
+                var texCoords = Crosshair.GetTexCoordsOfIndex(0); // Get the required texture.
 
                 var entry = new GenericGUIRenderable()
                 {
-                    Scale = Vector2.One * .5f * heartSize,
-                    Position = new Vector2(xCenter, .5f * (top + bottom)),
+                    Scale = Vector2.One * .5f * croshairSize,
+                    Position = Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero,
                     Texture = Crosshair,
                     Coordinates = texCoords,
                 };
@@ -171,6 +153,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             return crosshairEntries;
         }
 
+        /*
         private static List<IRenderable> GenerateGameover(IWorldScene sceneDefinition, IPlayer player)
         {
             List<IRenderable> healthEntries = new List<IRenderable>();
