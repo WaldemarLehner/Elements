@@ -9,11 +9,14 @@ namespace ComputergrafikSpiel.Model.World
 {
     internal class WorldSceneGenerator : IWorldSceneGenerator
     {
-        internal WorldSceneGenerator(IWorldSceneDefinition definition, int? seed = null)
+        private readonly float obstaclePropability; // Vielzahl an Obstacles die gespawnt werden sollen
+
+        internal WorldSceneGenerator(float obstacleProbability, IWorldSceneDefinition definition, int? seed = null)
         {
             _ = definition ?? throw new ArgumentNullException(nameof(definition));
             this.WorldSceneDefinition = definition;
             this.Random = new Random(seed ?? new Random().Next(int.MinValue, int.MaxValue));
+            this.obstaclePropability = obstacleProbability;
         }
 
         public IWorldSceneDefinition WorldSceneDefinition { get; }
@@ -27,8 +30,8 @@ namespace ComputergrafikSpiel.Model.World
             TileDefinitions.Type[,] tileResult = NoiseToTileConversionHelper.ConvertNoiseToTiles(noiseResult, this.WorldSceneDefinition.NoiseDefinition);
 
             List<IWorldObstacle> obstacles = new List<IWorldObstacle>();
-            const float obstaclePropability = 0.1f;
-            IWorldTile[,] tiles = this.ConstructResult(tileResult.GetLength(0), tileResult.GetLength(1), obstaclePropability, ref tileResult, ref obstacles);
+
+            IWorldTile[,] tiles = this.ConstructResult(tileResult.GetLength(0), tileResult.GetLength(1), this.obstaclePropability, ref tileResult, ref obstacles);
 
             return new WorldScene(this.WorldSceneDefinition, tiles, obstacles.ToArray());
         }

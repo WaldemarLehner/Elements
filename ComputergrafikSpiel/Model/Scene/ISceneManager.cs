@@ -13,5 +13,9 @@ namespace ComputergrafikSpiel.Model.Scene
         void InitializeFirstScene();
 
         void SetSceneTexturesToForest();
+
+        void SetSceneTexturesToFire();
+
+        void SetSceneTexturesToForestBoss();
     }
 }
