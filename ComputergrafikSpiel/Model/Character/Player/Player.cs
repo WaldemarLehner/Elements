@@ -5,6 +5,7 @@ using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
@@ -23,12 +24,15 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerStateManager playerStateManager = new PlayerStateManager(PlayerStateOptions.Default);
         private readonly Vector2 scale;
         private readonly InputController inputController = new InputController(InputControllerSettings.Default);
+        private readonly GenericParticleEmitter dirtEmitter;
 
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
 
         public Player()
         {
+            this.dirtEmitter = new GenericParticleEmitter(EmitParticleOnceOptions.Dirt, 0.1f);
+            this.dirtEmitter.Disable();
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
             this.Position = new Vector2(50, 65);
             this.scale = new Vector2(24, 24);
@@ -90,6 +94,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public (int currentHealth, int maxHealth, int currency) PlayerData => (this.CurrentHealth, this.MaxHealth, this.Money);
 
+        public float BloodColorHue => 0f;
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl()
         {
@@ -124,6 +130,16 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
             }
+
+            // Spawn particles
+            EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
+            opt.Count = 25;
+            opt.PointOfEmmision = this.Position;
+            opt.Direction = Vector2.One;
+            opt.DirectionDeviation = 180;
+            opt.Hue = (this.BloodColorHue, this.BloodColorHue);
+            StaticParticleEmmiter.EmitOnce(opt);
+
         }
 
         public void TakeHeal()
@@ -145,15 +161,28 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 this.LookAt(Scene.Scene.Current.Model.InputState.Cursor.WorldCoordinates ?? Vector2.Zero);
             }
 
+            var rand = new Random();
+            var opt = this.dirtEmitter.Options;
+            opt.PointOfEmmision = this.Collider.Position + ((new Vector2((float)rand.NextDouble(), (float)rand.NextDouble()) - (Vector2.One * .5f)) * 5f);
+            this.dirtEmitter.Options = opt;
+
+            if (this.run || this.playerMovementSystem.DashMultiplier > 1)
+            {
+                this.dirtEmitter.Enable();
+            }
+            else
+            {
+                this.dirtEmitter.Disable();
+            }
+
             if (this.run)
             {
                 this.Position += this.directionXY * this.MovementSpeed * dtime / 4;
                 this.run = false;
-
-                // Dient nur zu Testzwecken
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write("Maximales Leben: {0} Aktuelles Leben: {1} Verteidigung: {2}  Angriffsgeschwindigkeit: {3}  Bewegungsgeschwindigkeit: {4}  Währung(Coins): {5}\n", this.MaxHealth, this.CurrentHealth, this.Defense, this.AttackSpeed, this.MovementSpeed, this.Money);
             }
+
+
+            this.dirtEmitter.Update(dtime);
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;
 
@@ -228,7 +257,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
             else if (playerAction == PlayerEnum.PlayerActions.Attack)
             {
-                if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0 && !Scene.Scene.Current.LockPlayerAttack)
+                if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
                 {
                     this.playerAttackSystem.PlayerAttack(inputState.Cursor.WorldCoordinates ?? Vector2.Zero);
                     this.AttackCooldownCurrent = this.AttackCooldown;
@@ -246,7 +275,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 if (this.DashCooldownCurrent <= 0)
                 {
-                    this.playerMovementSystem.PlayerDash(this);
+                    this.playerMovementSystem.PlayerDash();
                     this.DashCooldownCurrent = this.DashCooldown;
                 }
             }

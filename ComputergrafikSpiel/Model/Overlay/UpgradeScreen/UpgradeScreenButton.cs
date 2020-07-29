@@ -15,7 +15,7 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
     {
         private static readonly Dictionary<PlayerEnum.Stats, ITileTexture> TextureLookup = UpgradeScreenButtonTextureLookupGenerator.Default;
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
-        private static ITileTexture backgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/Button", (3, 2));
+        private static readonly ITileTexture BackgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/Button", (3, 2));
         private readonly List<GenericRenderable> backgroundTiles;
         private readonly List<GenericRenderable> foregroundTiles;
         private readonly UpgradeScreen parent;
@@ -32,10 +32,10 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
         /// Initializes a new instance of the <see cref="UpgradeScreenButton"/> class.
         /// Create a new button.
         /// </summary>
-        /// <param name="parent">The UpdateScreen the button belongs to</param>
+        /// <param name="parent">The UpdateScreen the button belongs to.</param>
         /// <param name="centre">The Centre of the button.</param>
         /// <param name="upgradeOption">Data for the button.</param>
-        /// <param name="contentWidth">The width of the inner part of the button. This is to make all buttons the same width</param>
+        /// <param name="contentWidth">The width of the inner part of the button. This is to make all buttons the same width.</param>
         /// <param name="onClick">Callback to be triggered when the button is clicked.</param>
         /// <param name="buttonSize">Buttons size in World Coordinates.</param>
         internal UpgradeScreenButton(UpgradeScreen parent, Vector2 centre, UpgradeOption upgradeOption, Vector2 buttonSize, Action<PlayerEnum.Stats> onClick)
@@ -65,15 +65,15 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
                 TextureCoordinates coords;
                 if (i == 0)
                 {
-                    coords = backgroundTexture.GetTexCoordsOfIndex(0);
+                    coords = BackgroundTexture.GetTexCoordsOfIndex(0);
                 }
                 else if (i == backgroundTileCount - 1)
                 {
-                    coords = backgroundTexture.GetTexCoordsOfIndex(2);
+                    coords = BackgroundTexture.GetTexCoordsOfIndex(2);
                 }
                 else
                 {
-                    coords = backgroundTexture.GetTexCoordsOfIndex(1);
+                    coords = BackgroundTexture.GetTexCoordsOfIndex(1);
                 }
 
                 this.backgroundTiles.Add(new GenericRenderable
@@ -81,7 +81,7 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
                     Coordinates = coords,
                     Position = center,
                     Scale = Vector2.One * buttonSize.Y / 2f,
-                    Tex = backgroundTexture,
+                    Tex = BackgroundTexture,
                 });
             }
 

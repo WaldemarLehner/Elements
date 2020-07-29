@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
-using OpenTK;
-using OpenTK.Input;
+﻿using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 {

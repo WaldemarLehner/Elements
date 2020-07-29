@@ -51,10 +51,10 @@ namespace ComputergrafikSpiel.View.Renderer
         internal static void RenderItemDebug(IRenderer renderer, Vector2[] vertsWorldSpace, Color4 color)
         {
             var vertsNDC = new List<Vector2>();
+            var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(renderer.Camera.AspectRatio, renderer.Screen.width / (float)renderer.Screen.height);
 
             foreach (var vert in vertsWorldSpace)
             {
-                var multipliers = CameraCoordinateConversionHelper.CalculateAspectRatioMultiplier(renderer.Camera.AspectRatio, renderer.Screen.width / (float)renderer.Screen.height);
                 vertsNDC.Add(CameraCoordinateConversionHelper.WorldToNDC(vert, multipliers, renderer.Camera));
             }
 

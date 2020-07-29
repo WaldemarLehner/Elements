@@ -87,6 +87,9 @@
     <Reference Include="SixLabors.ImageSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SixLabors.ImageSharp.1.0.0-beta0007\lib\net472\SixLabors.ImageSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Spectrum, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spectrum.0.1.0\lib\portable-net45+sl5+win8+wp8+wpa81\Spectrum.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
@@ -157,6 +160,7 @@
     <Compile Include="Model\Collider\RayCollisionDetectionHelper.cs" />
     <Compile Include="Model\Collider\RectangleOffsetCollider.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IEntity.cs" />
+    <Compile Include="Model\EntitySettings\Interfaces\IParticle.cs" />
     <Compile Include="Model\EntitySettings\Interfaces\IRenderableBackground.cs" />
     <Compile Include="Model\EntitySettings\Texture\AnimatedTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\Animation.cs" />
@@ -173,6 +177,14 @@
     <Compile Include="Model\EntitySettings\Texture\TexturePointerCalculationHelper.cs" />
     <Compile Include="Model\EntitySettings\Texture\TileTexture.cs" />
     <Compile Include="Model\EntitySettings\Texture\WorldTileTextureLoader.cs" />
+    <Compile Include="Model\Entity\Particles\EmitParticleOnceOptions.cs" />
+    <Compile Include="Model\Entity\Particles\EmitParticleOnceOptionsHelper.cs" />
+    <Compile Include="Model\Entity\Particles\GenericParticle.cs" />
+    <Compile Include="Model\Entity\Particles\GenericParticleEmitter.cs" />
+    <Compile Include="Model\Entity\Particles\GenericParticleFunctions.cs" />
+    <Compile Include="Model\Entity\Particles\ParticleCalculationHelper.cs" />
+    <Compile Include="Model\Entity\Particles\ParticleFunction.cs" />
+    <Compile Include="Model\Entity\Particles\StaticParticleEmmiter.cs" />
     <Compile Include="Model\Interfaces\IInputState.cs" />
     <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
     <Compile Include="Model\Overlay\IGUIElement.cs" />
@@ -273,10 +285,64 @@
     <Content Include="Content\Images\Door\TreeBranchesDoor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Enemy\Fungus.png">
+    <Content Include="Content\Images\NPC\Boss\Death.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Boss\FireBoss.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Boss\SkeletonGolem.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Boss\Tree.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Air\Ghost.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Air\Imp.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Air\Skull.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Air\WitchDoctor.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Earth\EarthElemental.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Earth\EarthGolem.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Earth\Goblin.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Earth\Slime.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Fire\DemonEye.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Fire\FireClaw.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Fire\FireDemon.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Fire\FireLizard.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Water\Crab.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Water\Fungus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Enemy\WaterDrop.png">
+    <Content Include="Content\Images\NPC\Enemy\Water\Lizard.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\NPC\Enemy\Water\WaterDrop.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Font\vt323.png">
