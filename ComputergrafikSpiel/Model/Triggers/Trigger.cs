@@ -14,14 +14,11 @@ namespace ComputergrafikSpiel.Model.Triggers
 {
     internal class Trigger : ITrigger
     {
-        private List<INonPlayerCharacter> enemyCount;
         private ColliderLayer.Layer activators;
         private bool setAsPassive;
 
         public Trigger(Vector2 position, ColliderLayer.Layer activators, bool passive)
         {
-            // radius may have to be changed
-            this.enemyCount = Scene.Scene.Current.NPCs.ToList();
             this.activators = activators;
             this.Position = position;
             this.Texture = new TextureLoader().LoadTexture("Door/TreeBranchesDoor");
