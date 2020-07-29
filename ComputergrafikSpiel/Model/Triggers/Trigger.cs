@@ -26,7 +26,14 @@ namespace ComputergrafikSpiel.Model.Triggers
             this.Position = position;
             this.Texture = new TextureLoader().LoadTexture("Door/TreeBranchesDoor");
             this.Scale = new Vector2(16, 16);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, ColliderLayer.Layer.Trigger, this.activators);
+            if (!passive)
+            {
+                this.Collider = new CircleOffsetCollider(this, new Vector2(-1, 0), 16, ColliderLayer.Layer.Trigger, this.activators);
+            }
+            else
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, ColliderLayer.Layer.Trigger, this.activators);
+            }
             this.setAsPassive = passive;
         }
 
