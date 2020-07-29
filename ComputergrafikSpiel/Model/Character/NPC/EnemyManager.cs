@@ -35,6 +35,28 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             }
         }
 
+        public void BossSpawner(Vector2 spawnPosition, WorldEnum.Type type)
+        {
+            this.spawnPosition = spawnPosition;
+
+            switch (type)
+            {
+                case WorldEnum.Type.Water:
+                    string WaterTexture = "WaterTree";
+                    break;
+                case WorldEnum.Type.Earth:
+                    string EarthTexture = "StoneGolem";
+                    break;
+                case WorldEnum.Type.Fire:
+                    string FireTexture = "FireBoss";
+                    break;
+                case WorldEnum.Type.Air:
+                    string AirTexture = "AirBoss";
+                    break;
+                default: break;
+            }
+        }
+
         private EnemyEnum.Variant WichVariantOfEnemy(string texture)
         {
             switch (texture)

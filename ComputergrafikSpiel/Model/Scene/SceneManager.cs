@@ -2,8 +2,6 @@
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Soundtrack;
 using ComputergrafikSpiel.Model.World;
-using OpenTK;
-using System.Runtime.InteropServices;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
@@ -13,6 +11,7 @@ namespace ComputergrafikSpiel.Model.Scene
         private int setDifferentDungeons = 0;
         private float obstaclePropability; // Spawn der Obstacles Anzahl
         private float noiseScale; // Spawn der Anzahl an Gewässer / Boden
+        private WorldEnum.Type elementType;
 
         public SceneManager(IModel model)
         {
@@ -34,28 +33,25 @@ namespace ComputergrafikSpiel.Model.Scene
                 this.play.battleMusicOn = true;
             }
 
-            // bei Raum 1 werden Waldtexturen geladen
-            if (this.setDifferentDungeons == 1)
+            switch (this.setDifferentDungeons)
             {
-                this.SetSceneTexturesToForest();
-            }
-
-            // bei Raum 11 wird der Dungeon zu Feuertexturen geändert
-            if (this.setDifferentDungeons == 11)
-            {
-                this.SetSceneTexturesToFire();
-            }
-
-            // bei Raum 21 wird der Dungeon zu Waldtexturen geändert
-            if (this.setDifferentDungeons == 21)
-            {
-                this.SetSceneTexturesToForest();
-            }
-
-            // bei Raum 31 wird der Dungeon zu Feuertexturen geändert
-            if (this.setDifferentDungeons == 31)
-            {
-                this.SetSceneTexturesToFire();
+                case 1:
+                    this.SetSceneTexturesToForest();
+                    this.elementType = WorldEnum.Type.Water;
+                    break;
+                case 11:
+                    this.SetSceneTexturesToFire();
+                    this.elementType = WorldEnum.Type.Earth;
+                    break;
+                case 21:
+                    this.SetSceneTexturesToForest();
+                    this.elementType = WorldEnum.Type.Fire;
+                    break;
+                case 31:
+                    this.SetSceneTexturesToFire();
+                    this.elementType = WorldEnum.Type.Air;
+                    break;
+                default: break;
             }
 
             (this.Model as Model).FirstScene = false;
@@ -77,30 +73,23 @@ namespace ComputergrafikSpiel.Model.Scene
             var newScene = new Scene(worldScene);
             newScene.GiveModeltoScene(this.Model);
             newScene.SetAsActive();
-            newScene.SpawningEnemies(newScene.World);
 
-            // bei Raum 10 wird der Waldboss gespawnt
-            if (this.setDifferentDungeons == 10)
+            switch (this.setDifferentDungeons)
             {
-                newScene.SpawningWaterBoss(newScene.World);
-            }
-
-            // bei Raum 20 wird der Feuerboss gespawnt
-            if (this.setDifferentDungeons == 20)
-            {
-                newScene.SpawningFireBoss(newScene.World);
-            }
-
-            // bei Raum 30 wird der Luftboss gespawnt
-            if (this.setDifferentDungeons == 30)
-            {
-                newScene.SpawningAirBoss(newScene.World);
-            }
-
-            // bei Raum 40 wird der Steinboss gespawnt
-            if (this.setDifferentDungeons == 40)
-            {
-                newScene.SpawningStoneBoss(newScene.World);
+                case 10:
+                    newScene.SpawningEnemies(newScene.World, this.elementType, true);
+                    break;
+                case 20:
+                    newScene.SpawningEnemies(newScene.World, this.elementType, true);
+                    break;
+                case 30:
+                    newScene.SpawningEnemies(newScene.World, this.elementType, true);
+                    break;
+                case 40:
+                    newScene.SpawningEnemies(newScene.World, this.elementType, true);
+                    break;
+                default: newScene.SpawningEnemies(newScene.World, this.elementType, false);
+                    break;
             }
         }
 

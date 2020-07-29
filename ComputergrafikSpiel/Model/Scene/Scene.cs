@@ -309,29 +309,9 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).SceneManager.LoadNewScene();
         }
 
-        public void SpawningEnemies(IWorldScene scene)
+        public void SpawningEnemies(IWorldScene scene, WorldEnum.Type type, bool boss)
         {
-            (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, WorldEnum.Type.Water);
-        }
-
-        public void SpawningWaterBoss(IWorldScene scene)
-        {
-            (this.Model as Model).CreateWaterBoss(1, 1, scene);
-        }
-
-        public void SpawningFireBoss(IWorldScene scene)
-        {
-            (this.Model as Model).CreateFireBoss(1, 1, scene);
-        }
-
-        public void SpawningAirBoss(IWorldScene scene)
-        {
-            (this.Model as Model).CreateAirBoss(1, 1, scene);
-        }
-
-        public void SpawningStoneBoss(IWorldScene scene)
-        {
-            (this.Model as Model).CreateStoneBoss(1, 1, scene);
+            (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, type, boss);
         }
 
         private void ApplySurrounding(Scene top, Scene left, Scene right, Scene bottom)

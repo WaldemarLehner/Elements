@@ -26,7 +26,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     break;
                 case WorldEnum.Type.Earth:
                     this.SetEnemyStats(40, 75, 2, 2);
-                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Warth/" + texture);
+                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
                     break;
                 case WorldEnum.Type.Fire:
                     this.SetEnemyStats(60, 80, 3, 3);

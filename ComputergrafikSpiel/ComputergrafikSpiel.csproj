@@ -129,6 +129,7 @@
     <Compile Include="Controller\Input\InputControllerSettings.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\Input\MouseCursor.cs" />
+    <Compile Include="Model\Character\NPC\EnemyBoss.cs" />
     <Compile Include="Model\Character\NPC\EnemyEnum.cs" />
     <Compile Include="Model\Character\NPC\EnemyManager.cs" />
     <Compile Include="Model\Character\NPC\DashEnemy.cs" />
