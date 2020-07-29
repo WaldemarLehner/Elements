@@ -52,7 +52,7 @@ namespace ComputergrafikSpiel.Model.Entity.Particles
                     GenericParticleFunctions.LinearTrivialColorFunction(startRGBTuple, endRGBTuple),
                     ttl);
                 var particle = new GenericParticle(particleFunctions);
-                Scene.Scene.Current.SpawnParticle(particle);
+                Scene.Scene.Current?.SpawnParticle(particle);
             }
         }
     }
