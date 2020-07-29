@@ -1,5 +1,4 @@
 ﻿using System;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
 
@@ -9,27 +8,27 @@ namespace ComputergrafikSpiel.Model.Character.NPC
     {
         private Vector2 spawnPosition;
 
-        public void EnemySpawner(Vector2 spawnPosition, WorldEnum.Type type)
+        public void EnemySpawner(Vector2 spawnPosition, WorldEnum.Type type, int random)
         {
             this.spawnPosition = spawnPosition;
 
             switch (type)
             {
                 case WorldEnum.Type.Water:
-                    string[] waterTexture = { "Fungus", "WaterDrop", "Crab", "Lizard"};
-                    this.SpawningEnemy(waterTexture, WorldEnum.Type.Water);
+                    string[] waterTexture = { "Fungus", "WaterDrop", "Crab", "Lizard" };
+                    this.SpawningEnemy(waterTexture, WorldEnum.Type.Water, random);
                     break;
                 case WorldEnum.Type.Earth:
-                    string[] earthTexture = { "EarthElemental", "EarthGolem", "Goblin", "Slime"};
-                    this.SpawningEnemy(earthTexture, WorldEnum.Type.Earth);
+                    string[] earthTexture = { "EarthElemental", "EarthGolem", "Goblin", "Slime" };
+                    this.SpawningEnemy(earthTexture, WorldEnum.Type.Earth, random);
                     break;
                 case WorldEnum.Type.Fire:
-                    string[] fireTexture = { "DemonEye", "FireClaw", "FireDemon", "FireLizard"};
-                    this.SpawningEnemy(fireTexture, WorldEnum.Type.Fire);
+                    string[] fireTexture = { "DemonEye", "FireClaw", "FireDemon", "FireLizard" };
+                    this.SpawningEnemy(fireTexture, WorldEnum.Type.Fire, random);
                     break;
                 case WorldEnum.Type.Air:
-                    string[] airTexture = { "Ghost", "Imp", "Skull", "WitchDoctor"};
-                    this.SpawningEnemy(airTexture, WorldEnum.Type.Air);
+                    string[] airTexture = { "Ghost", "Imp", "Skull", "WitchDoctor" };
+                    this.SpawningEnemy(airTexture, WorldEnum.Type.Air, random);
                     break;
                 default:
                     break;
@@ -64,10 +63,9 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             }
         }
 
-        private void SpawningEnemy(string[] texture, WorldEnum.Type type)
+        private void SpawningEnemy(string[] texture, WorldEnum.Type type, int random)
         {
-            Random random = new Random();
-            var randomTexture = texture[random.Next(0, texture.Length)];
+            var randomTexture = texture[random];
             switch (this.WichVariantOfEnemy(randomTexture))
             {
                 case EnemyEnum.Variant.Tank:

@@ -21,17 +21,20 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             switch (type)
             {
                 case WorldEnum.Type.Water:
-                    this.SetEnemyStats(20, 5, 1, 1);
+                    this.SetEnemyStats(20, 70, 1, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Water/" + texture);
                     break;
                 case WorldEnum.Type.Earth:
-                    this.SetEnemyStats(40, 10, 2, 2);
+                    this.SetEnemyStats(40, 75, 2, 2);
+                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Warth/" + texture);
                     break;
                 case WorldEnum.Type.Fire:
-                    this.SetEnemyStats(60, 15, 3, 3);
+                    this.SetEnemyStats(60, 80, 3, 3);
+                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Fire/" + texture);
                     break;
                 case WorldEnum.Type.Air:
-                    this.SetEnemyStats(80, 20, 4, 4);
+                    this.SetEnemyStats(80, 85, 4, 4);
+                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
                     break;
                 default: break;
             }

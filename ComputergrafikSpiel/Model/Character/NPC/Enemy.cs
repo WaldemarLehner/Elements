@@ -7,6 +7,7 @@ using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
+using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
@@ -15,6 +16,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public abstract class Enemy : INonPlayerCharacter
     {
+        public Enemy()
+        {
+            this.scale = this.Scale;
+        }
+
         private readonly Vector2 scale;
 
         public event EventHandler CharacterDeath;

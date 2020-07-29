@@ -131,7 +131,7 @@
     <Compile Include="Controller\Input\MouseCursor.cs" />
     <Compile Include="Model\Character\NPC\EnemyEnum.cs" />
     <Compile Include="Model\Character\NPC\EnemyManager.cs" />
-    <Compile Include="Model\Character\NPC\Interfaces\DashEnemy.cs" />
+    <Compile Include="Model\Character\NPC\DashEnemy.cs" />
     <Compile Include="Model\Character\NPC\NPCAI\AIEnemy.cs" />
     <Compile Include="Model\Character\NPC\Enemy.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INonPlayerCharacter.cs" />

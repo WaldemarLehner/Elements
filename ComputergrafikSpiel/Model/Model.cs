@@ -95,7 +95,7 @@ namespace ComputergrafikSpiel.Model
             this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
         }
 
-        public void CreateRandomEnemies(int min, int max, IWorldScene world)
+        public void CreateRandomEnemies(int min, int max, IWorldScene world, WorldEnum.Type enemytype)
         {
             Random random = new Random();
             int count = random.Next(min, max);
@@ -118,7 +118,7 @@ namespace ComputergrafikSpiel.Model
             foreach (var (x, y) in enemySpawnIndices)
             {
                 var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
-                enemyManager.EnemySpawner(position, WorldEnum.Type.Water);
+                enemyManager.EnemySpawner(position, enemytype, random.Next(0, 4));
             }
         }
 
