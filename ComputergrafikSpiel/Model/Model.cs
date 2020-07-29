@@ -60,10 +60,10 @@ namespace ComputergrafikSpiel.Model
         {
             Vector2[] positions =
             {
-                new Vector2(16, 272),
-                new Vector2(368, 16),
-                new Vector2(368, 528),
+                // new Vector2(368, 16),
+                // new Vector2(368, 528),
                 new Vector2(688, 272),
+                new Vector2(16, 272),
             };
             for (int i = 0; i < positions.Length; i++)
             {

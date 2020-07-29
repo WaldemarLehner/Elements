@@ -39,6 +39,7 @@ namespace ComputergrafikSpiel.Model.Triggers
         public void TriggerCollisionFunction()
         {
             Scene.Scene.Current.OnChangeScene();
+            Scene.Scene.Player.ChangePosition();
         }
 
         public void Update(float dtime)

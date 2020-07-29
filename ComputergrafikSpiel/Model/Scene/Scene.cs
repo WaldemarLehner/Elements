@@ -311,7 +311,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void SpawningEnemies(IWorldScene scene)
         {
-            (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, WorldEnum.Type.Air);
+            (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, WorldEnum.Type.Water);
         }
 
         private void ApplySurrounding(Scene top, Scene left, Scene right, Scene bottom)

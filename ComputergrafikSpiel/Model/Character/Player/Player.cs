@@ -247,6 +247,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerStateManager.Apply(stat, level);
         }
 
+        public void ChangePosition()
+        {
+            this.Position = new Vector2(40, 272);
+        }
+
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)
         {
             if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)

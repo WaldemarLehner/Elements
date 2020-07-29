@@ -2,6 +2,7 @@
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Soundtrack;
 using ComputergrafikSpiel.Model.World;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
