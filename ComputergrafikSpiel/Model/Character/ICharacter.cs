@@ -1,5 +1,4 @@
 ﻿using System;
-using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using OpenTK;
 
@@ -22,6 +21,8 @@ namespace ComputergrafikSpiel.Model.Character
         Vector2 LastPosition { get; set; }
 
         bool TextureWasMirrored { get; set; }
+
+        float BloodColorHue { get; }
 
         void OnDeath(EventArgs e);
 

@@ -7,5 +7,6 @@
         void IncreaseDifficulty(int multiplier);
 
         void TakingDamage(int damage);
+
     }
 }

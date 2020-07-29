@@ -43,7 +43,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
             return dir.Normalized();
         }
 
-        public void PlayerDash(Player player)
+        public void PlayerDash()
         {
             this.DashMultiplier = Multiplier;
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed

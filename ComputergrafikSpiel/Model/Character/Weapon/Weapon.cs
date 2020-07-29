@@ -3,11 +3,12 @@ using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
+using Spectrum;
 
 namespace ComputergrafikSpiel.Model.Character.Weapon
 {
@@ -36,8 +37,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public ICollider Collider { get; set; }
 
-        // temp position
-        public Vector2 Position => new Vector2(300, 300);
+        public Vector2 Position => new Vector2(Scene.Scene.Player.Position.X, Scene.Scene.Player.Position.Y - 10);
 
         public float Rotation { get; } = 0f;
 
@@ -57,6 +57,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             {
                 new Projectile(this.AttackDamage, direction, this.BulletTTL, this.BulletSize);
             }
+
+            EmitParticleOnceOptions opt = EmitParticleOnceOptions.PlayerWeaponMuzzle;
+            opt.PointOfEmmision = this.Position;
+            opt.Direction = direction.Normalized();
+            StaticParticleEmmiter.EmitOnce(opt);
         }
 
         public void Update(float dtime)
