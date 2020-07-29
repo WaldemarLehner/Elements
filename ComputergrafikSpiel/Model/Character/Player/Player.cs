@@ -181,7 +181,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 this.run = false;
             }
 
-
             this.dirtEmitter.Update(dtime);
 
             this.Position += this.directionXY * this.MovementSpeed * dtime;
