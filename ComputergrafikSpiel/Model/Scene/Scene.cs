@@ -79,8 +79,6 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IWorldScene World { get; }
 
-        public bool LockPlayerAttack => (this.Model as Model).FirstScene;
-
         public IEnumerable<IRenderable> Renderables
         {
             get
@@ -104,15 +102,15 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(entry);
                 }
 
+                if (this.Model.UpgradeScreen != null)
+                {
+                    enumerable.AddRange(this.Model.UpgradeScreen.Renderables);
+                }
+
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
                     enumerable.AddRange(GUIConstructionHelper.GenerateGuiIndicator(this.World, Player));
-                }
-
-                if (this.Model.UpgradeScreen != null)
-                {
-                    enumerable.AddRange(this.Model.UpgradeScreen.Renderables);
                 }
 
                 return enumerable;

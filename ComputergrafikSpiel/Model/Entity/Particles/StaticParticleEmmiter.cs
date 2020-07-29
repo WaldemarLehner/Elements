@@ -10,7 +10,6 @@ namespace ComputergrafikSpiel.Model.Entity.Particles
         {
             var rand = new Random();
 
-            //Parallel.For(0, (int)opt.Count, CreateParticleAndPushToScene);
             for (int i = 0; i < opt.Count; i++)
             {
                 CreateParticleAndPushToScene(i);

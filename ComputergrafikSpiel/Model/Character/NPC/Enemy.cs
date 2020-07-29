@@ -59,7 +59,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public int CurrentHealth { get; set; }
 
-        public float BloodColorHue => 34f;
+        public float BloodColorHue => 215f;
 
         public INPCController NPCController { get; }
 

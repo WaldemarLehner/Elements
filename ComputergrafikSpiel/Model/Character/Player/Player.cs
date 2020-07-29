@@ -257,7 +257,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
             else if (playerAction == PlayerEnum.PlayerActions.Attack)
             {
-                if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0 && !Scene.Scene.Current.LockPlayerAttack)
+                if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
                 {
                     this.playerAttackSystem.PlayerAttack(inputState.Cursor.WorldCoordinates ?? Vector2.Zero);
                     this.AttackCooldownCurrent = this.AttackCooldown;
