@@ -138,7 +138,7 @@ namespace ComputergrafikSpiel.Model
             }
         }
 
-        public void CreateForestBoss(int min, int max, IWorldScene world)
+        public void CreateWaterBoss(int min, int max, IWorldScene world)
         {
             Random random = new Random();
             int tileCount = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
@@ -156,12 +156,93 @@ namespace ComputergrafikSpiel.Model
                 enemySpawnIndices.Add(index ?? (0, 0)); // (0, 0) is never reached.
             }
 
-            string texture = "Boss/Tree";
+            string texture = "Boss/WaterTree";
             foreach (var (x, y) in enemySpawnIndices)
             {
                 var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
                 var randomTexture = texture[random.Next(0, texture.Length)];
                 Scene.Scene.Current.SpawnObject(new Enemy(50, texture, 60, 2, 3, position));
+            }
+        }
+
+        public void CreateFireBoss(int min, int max, IWorldScene world)
+        {
+            Random random = new Random();
+            int tileCount = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
+            List<(int x, int y)> enemySpawnIndices = new List<(int x, int y)>();
+            foreach (var index in from int i in Enumerable.Range(0, 1)
+                                  let index = FindNextSpawnSlot(random.Next(0, tileCount), world, SpawnMask.Mask.AllowNPC)
+                                  select index)
+            {
+                if (index == null)
+                {
+                    // No more open slots.
+                    break;
+                }
+
+                enemySpawnIndices.Add(index ?? (0, 0)); // (0, 0) is never reached.
+            }
+
+            string texture = "Boss/FireBoss";
+            foreach (var (x, y) in enemySpawnIndices)
+            {
+                var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
+                var randomTexture = texture[random.Next(0, texture.Length)];
+                Scene.Scene.Current.SpawnObject(new Enemy(60, texture, 65, 2, 3, position));
+            }
+        }
+
+        public void CreateAirBoss(int min, int max, IWorldScene world)
+        {
+            Random random = new Random();
+            int tileCount = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
+            List<(int x, int y)> enemySpawnIndices = new List<(int x, int y)>();
+            foreach (var index in from int i in Enumerable.Range(0, 1)
+                                  let index = FindNextSpawnSlot(random.Next(0, tileCount), world, SpawnMask.Mask.AllowNPC)
+                                  select index)
+            {
+                if (index == null)
+                {
+                    // No more open slots.
+                    break;
+                }
+
+                enemySpawnIndices.Add(index ?? (0, 0)); // (0, 0) is never reached.
+            }
+
+            string texture = "Boss/AirDeath";
+            foreach (var (x, y) in enemySpawnIndices)
+            {
+                var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
+                var randomTexture = texture[random.Next(0, texture.Length)];
+                Scene.Scene.Current.SpawnObject(new Enemy(70, texture, 70, 2, 3, position));
+            }
+        }
+
+        public void CreateStoneBoss(int min, int max, IWorldScene world)
+        {
+            Random random = new Random();
+            int tileCount = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
+            List<(int x, int y)> enemySpawnIndices = new List<(int x, int y)>();
+            foreach (var index in from int i in Enumerable.Range(0, 1)
+                                  let index = FindNextSpawnSlot(random.Next(0, tileCount), world, SpawnMask.Mask.AllowNPC)
+                                  select index)
+            {
+                if (index == null)
+                {
+                    // No more open slots.
+                    break;
+                }
+
+                enemySpawnIndices.Add(index ?? (0, 0)); // (0, 0) is never reached.
+            }
+
+            string texture = "Boss/StoneGolem";
+            foreach (var (x, y) in enemySpawnIndices)
+            {
+                var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
+                var randomTexture = texture[random.Next(0, texture.Length)];
+                Scene.Scene.Current.SpawnObject(new Enemy(80, texture, 75, 2, 3, position));
             }
         }
 

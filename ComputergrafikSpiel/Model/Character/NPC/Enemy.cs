@@ -43,10 +43,25 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             }
 
             // Bosse
-            else if (texture == "Boss/Tree")
+            else if (texture == "Boss/WaterTree")
             {
                 this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
                 this.scale = new Vector2(45, 45);
+            }
+            else if (texture == "Boss/FireBoss")
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
+                this.scale = new Vector2(55, 55);
+            }
+            else if (texture == "Boss/AirDeath")
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
+                this.scale = new Vector2(65, 65);
+            }
+            else if (texture == "Boss/StoneGolem")
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
+                this.scale = new Vector2(75, 75);
             }
 
             // Nichtdefinierte Gegner
