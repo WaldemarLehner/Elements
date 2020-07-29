@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ComputergrafikSpiel.Controller;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.Soundtrack;
 using ComputergrafikSpiel.Model.Triggers.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Model.Collider
 {
@@ -165,42 +162,17 @@ namespace ComputergrafikSpiel.Model.Collider
 
         internal IEnumerable<Tuple<int, int>> GetAffectedStaticTiles(Vector2 position, float maxDistance)
         {
-            (int keyX, int keyY) = ((int)(position.X / this.tileSize), (int)(position.Y / this.tileSize));
-            int tileDistance = (int)Math.Ceiling(maxDistance / this.tileSize);
+            var tileRadius = (int)Math.Ceiling(maxDistance / this.tileSize) + 1;
+            var tileRadiusSquared = tileRadius * tileRadius;
+            var tileOfPosition = (x: (int)(position.X / this.tileSize), y: (int)(position.Y / this.tileSize));
 
-            (int lowerX, int upperX) = (keyX - tileDistance, keyX + tileDistance);
-            (int lowerY, int upperY) = (keyY - tileDistance, keyY + tileDistance);
+            (int lower, int upper) x = (tileOfPosition.x - tileRadius, tileOfPosition.x + tileRadius);
+            (int lower, int upper) y = (tileOfPosition.y - tileRadius, tileOfPosition.y + tileRadius);
 
-            if (lowerX < 0)
-            {
-                lowerX = 0;
-            }
+            var filteredBox = this.CollidableTileDictionary.Keys.Where((Tuple<int, int> e) => e.Item1 > x.lower && e.Item1 < x.upper && e.Item2 > y.lower && e.Item2 < y.upper);
+            return filteredBox.Where((Tuple<int, int> e) => TileDistanceSquared(e.Item1, e.Item2) < tileRadiusSquared);
 
-            if (lowerY < 0)
-            {
-                lowerY = 0;
-            }
-
-            // Manager does not store max index.
-            var boxedKeys = from key
-                            in this.collidableTiles.Keys
-                            where (key.Item1 >= lowerX || key.Item1 <= upperX) && (key.Item2 >= lowerY || key.Item2 <= upperY)
-                            select key;
-            return boxedKeys;
-            /*
-            // Use Box Distance instead of Radius first, then iterate through that Set to get a subset with fitting Radius
-            int minX = (int)Math.Floor((position.X - maxDistance) / this.tileSize);
-            int minY = (int)Math.Floor((position.Y - maxDistance) / this.tileSize);
-            int maxX = (int)Math.Ceiling((position.X + maxDistance) / this.tileSize);
-            int maxY = (int)Math.Ceiling((position.Y + maxDistance) / this.tileSize);
-
-            var boxedKeys = from key
-                            in this.collidableTiles.Keys
-                            where (key.Item1 >= minX || key.Item1 <= maxX) && (key.Item2 >= minY || key.Item2 <= maxY)
-                            select key;
-
-            return from key in boxedKeys where (Vector2.Distance(position, this.collidableTiles[key].Collider.Position) - this.collidableTiles[key].Collider.MaximumDistanceFromPosition) <= maxDistance select key;
-    */
+            float TileDistanceSquared(int x_, int y_) => ((tileOfPosition.x - x_) * (tileOfPosition.x - x_)) + ((tileOfPosition.y - y_) * (tileOfPosition.y - y_));
         }
 
         internal IReadOnlyCollection<ICollidable> GetRayCollisionsWithStatic(IRay ray)

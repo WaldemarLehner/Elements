@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
+using ComputergrafikSpiel.Model.Entity.Particles;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Collider
 {
@@ -45,69 +46,7 @@ namespace ComputergrafikSpiel.Model.Collider
                 var rect = (collider1 is RectangleOffsetCollider) ? collider1 as RectangleOffsetCollider : collider2 as RectangleOffsetCollider;
                 var circle = (collider1 is CircleOffsetCollider) ? collider1 as CircleOffsetCollider : collider2 as CircleOffsetCollider;
 
-                // Check bounding circle first, if no collision, continue. See blue ring: https://i.imgur.com/0bvJzGk.png
-                if (Vector2.Distance(rect.Position, circle.Position) > (circle.MaximumDistanceFromPosition + rect.MaximumDistanceFromPosition))
-                {
-                    return false;
-                }
-
-                // Check the relative position between Circle and Rectangle. 2 Borders need to be checked.
-                // Convert them to Rays and calculate the shortest perpendicalar foot.
-                List<IRay> edgesToCheck = new List<IRay>();
-                if (circle.Position.X < rect.Position.X)
-                {
-                    // Circle is left of rectangle. Check left edge for collision
-                    Vector2 topLeft = new Vector2(rect.Bounds.left, rect.Bounds.top);
-                    Vector2 bottomLeft = new Vector2(rect.Bounds.left, rect.Bounds.bottom);
-                    var ray = new Ray(bottomLeft, topLeft - bottomLeft, (topLeft - bottomLeft).Length, ~ColliderLayer.Layer.Empty); // we can pass All Layers here as the check has already been done
-                    edgesToCheck.Add(ray);
-                }
-                else
-                {
-                    // Circle is right of rectangle. Check right edge for collision
-                    Vector2 topRight = new Vector2(rect.Bounds.right, rect.Bounds.top);
-                    Vector2 bottomRight = new Vector2(rect.Bounds.right, rect.Bounds.bottom);
-                    var ray = new Ray(bottomRight, topRight - bottomRight, (topRight - bottomRight).Length, ~ColliderLayer.Layer.Empty); // we can pass All Layers here as the check has already been done
-                    edgesToCheck.Add(ray);
-                }
-
-                if (circle.Position.Y < rect.Position.Y)
-                {
-                    // Circle is below Rectangle. Check bottom edge for collision
-                    Vector2 bottomLeft = new Vector2(rect.Bounds.left, rect.Bounds.bottom);
-                    Vector2 bottomRight = new Vector2(rect.Bounds.right, rect.Bounds.bottom);
-                    var ray = new Ray(bottomRight, bottomLeft - bottomRight, (bottomLeft - bottomRight).Length, ~ColliderLayer.Layer.Empty); // we can pass All Layers here as the check has already been done
-                    edgesToCheck.Add(ray);
-                }
-                else
-                {
-                    // Circle is below Rectangle. Check top edge for collision
-                    Vector2 topLeft = new Vector2(rect.Bounds.left, rect.Bounds.top);
-                    Vector2 topRight = new Vector2(rect.Bounds.right, rect.Bounds.top);
-                    var ray = new Ray(topRight, topLeft - topRight, (topLeft - topRight).Length, ~ColliderLayer.Layer.Empty); // we can pass All Layers here as the check has already been done
-                    edgesToCheck.Add(ray);
-                }
-
-                var anyCollisionsEdges = edgesToCheck.Any(e => RayCollisionDetectionHelper.DidRayCollideCircleCollider(e, circle));
-                if (anyCollisionsEdges)
-                {
-                    // At least one edge has been hit. There is a collision.
-                    return true;
-                }
-
-                // If the method hits this part, the circle collider is either:
-                // > Inside the Rectangle.
-                // > Right outside the Rectangle.
-
-                // Check the inner circle. For reference: Red circle here: https://i.imgur.com/0bvJzGk.png .
-                // If distance < 0, circle is inside the rectangle.
-                var height = rect.Bounds.top - rect.Bounds.bottom;
-                var width = rect.Bounds.right - rect.Bounds.left;
-
-                var innerRectRadius = (height < width) ? height / 2f : width / 2f;
-                var distanceInnerCircleCircleColliderDistance = Vector2.Distance(circle.Position, rect.Position) - (innerRectRadius + circle.MaximumDistanceFromPosition);
-
-                return distanceInnerCircleCircleColliderDistance < 0;
+                return DidRectangleCollideWithCircle(rect, circle);
             }
 
             if (collider1 is RectangleOffsetCollider && collider2 is RectangleOffsetCollider)
@@ -138,6 +77,116 @@ namespace ComputergrafikSpiel.Model.Collider
             return Vector2.Distance(collider1.Position, collider2.Position) - (collider1.MaximumDistanceFromPosition + collider2.MaximumDistanceFromPosition) < 0;
         }
 
+        private static bool DidRectangleCollideWithCircle(RectangleOffsetCollider rect, CircleOffsetCollider circle)
+        {
+            // Check bounding circle first, if no collision, continue. See blue ring: https://i.imgur.com/0bvJzGk.png
+            if (Vector2.Distance(rect.Position, circle.Position) > (circle.MaximumDistanceFromPosition + rect.MaximumDistanceFromPosition))
+            {
+                Scene.Scene.Current.IndependentDebugData.Add((Color4.Red, new Vector2[] { rect.Position, rect.Position + ((circle.Position - rect.Position).Normalized() * rect.MaximumDistanceFromPosition) }));
+                return false;
+            }
+
+            // Check inner circle
+            if (Vector2.Distance(rect.Position, circle.Position) < ((rect.Bounds.right - rect.Bounds.left) * .5f) + circle.MaximumDistanceFromPosition)
+            {
+                Scene.Scene.Current.IndependentDebugData.Add((Color4.Beige, new Vector2[] { rect.Position, circle.Position }));
+                return true;
+            }
+
+            // Check corners
+            if (DoesAnyCornerIntersect(rect.Corners, circle.Position, circle.MaximumDistanceFromPosition))
+            {
+                return true;
+            }
+
+            // Do the more complex perpendicular foot calculation.
+            var edges = GetNearestEdges(rect.Position, rect.Bounds, circle.Position);
+            foreach (var edge in edges)
+            {
+                if (GetPerpendicularFootDistance(edge, circle.Position) < circle.MaximumDistanceFromPosition)
+                {
+                    return true;
+                }
+            }
+
+            // No collisions have been found.
+            return false;
+        }
+
+        private static float GetPerpendicularFootDistance((Vector2 start, Vector2 directionAndLength) edge, Vector2 position)
+        {
+            // https://www.youtube.com/watch?v=mdtJjvsYdQg
+            // g: (s + x*n - P) * n || g: Line ; s: start; x: variable {0;1}; P: point; n: direction
+            var s = edge.start;
+            var n = edge.directionAndLength;
+            var p = position;
+
+            var sp = s - p;
+
+            var scalarProductSp = sp.ScalarProduct(n);
+            var scalarProductX = n.ScalarProduct(n);
+
+            // scalarProductSp + scalarProductX = 0 → scalarProductSp = scalarProductX
+            scalarProductSp *= -1;
+            var x = (scalarProductSp / scalarProductX).Clamp(0, 1);
+
+            Vector2 shortestPosition = edge.start + (x * edge.directionAndLength);
+            Scene.Scene.Current.IndependentDebugData.Add((Color4.AliceBlue, new Vector2[] { shortestPosition, position }));
+            return Vector2.Distance(shortestPosition, position);
+        }
+
+        private static IEnumerable<(Vector2 start, Vector2 directionAndLength)> GetNearestEdges(Vector2 rectanglePosition, (float top, float bottom, float left, float right) bounds, Vector2 circlePosition)
+        {
+            List<(Vector2 start, Vector2 directionAndLength)> edges = new List<(Vector2 start, Vector2 directionAndLength)>();
+
+            // Vertical Edge.
+            if (rectanglePosition.X > circlePosition.X)
+            {
+                var start = new Vector2(bounds.left, bounds.bottom);
+                var dirAndLen = new Vector2(0, bounds.top - bounds.bottom);
+                edges.Add((start, dirAndLen));
+            }
+            else if (rectanglePosition.X < circlePosition.X)
+            {
+                var start = new Vector2(bounds.right, bounds.bottom);
+                var dirAndLen = new Vector2(0, bounds.top - bounds.bottom);
+                edges.Add((start, dirAndLen));
+            }
+
+            // Horizontal Edge.
+            if (rectanglePosition.Y < circlePosition.Y)
+            {
+                var start = new Vector2(bounds.left, bounds.top);
+                var dirAndLen = new Vector2(bounds.right - bounds.left, 0);
+                edges.Add((start, dirAndLen));
+            }
+            else if (rectanglePosition.Y > circlePosition.Y)
+            {
+                var start = new Vector2(bounds.left, bounds.bottom);
+                var dirAndLen = new Vector2(bounds.right - bounds.left, 0);
+                edges.Add((start, dirAndLen));
+            }
+
+            return edges;
+        }
+
+        private static bool DoesAnyCornerIntersect(Vector2[] corners, Vector2 position, float maximumDistanceFromPosition)
+        {
+            foreach (var corner in corners)
+            {
+                if (Vector2.Distance(corner, position) < maximumDistanceFromPosition)
+                {
+                    Scene.Scene.Current.IndependentDebugData.Add((Color4.BlanchedAlmond, new Vector2[] { corner, position }));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static float DistanceVectorCircle(Vector2 vec, CircleOffsetCollider circle) => Vector2.Distance(circle.Position, vec) - circle.MaximumDistanceFromPosition;
+
+        private static float ScalarProduct(this Vector2 self, Vector2 other) => (self.X * other.X) + (self.Y * other.Y);
+
     }
 }
