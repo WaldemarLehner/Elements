@@ -316,6 +316,11 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene);
         }
 
+        public void SpawningForestBoss(IWorldScene scene)
+        {
+            (this.Model as Model).CreateForestBoss(1, 1, scene);
+        }
+
         private void ApplySurrounding(Scene top, Scene left, Scene right, Scene bottom)
         {
             this.TopScene = top;

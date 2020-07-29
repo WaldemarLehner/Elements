@@ -27,7 +27,8 @@ namespace ComputergrafikSpiel.Model.World
             TileDefinitions.Type[,] tileResult = NoiseToTileConversionHelper.ConvertNoiseToTiles(noiseResult, this.WorldSceneDefinition.NoiseDefinition);
 
             List<IWorldObstacle> obstacles = new List<IWorldObstacle>();
-            const float obstaclePropability = 0.1f;
+            const float obstaclePropability = 0.05f; // Vielzahl an Obstacles die gespawnt werden sollen
+
             IWorldTile[,] tiles = this.ConstructResult(tileResult.GetLength(0), tileResult.GetLength(1), obstaclePropability, ref tileResult, ref obstacles);
 
             return new WorldScene(this.WorldSceneDefinition, tiles, obstacles.ToArray());
