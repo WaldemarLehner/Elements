@@ -248,7 +248,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void ChangePosition()
         {
-            this.Position = new Vector2(40, 272);
+            this.Position = new Vector2(45, 272);
         }
 
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)

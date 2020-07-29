@@ -25,7 +25,7 @@ namespace ComputergrafikSpiel.Model.Triggers
             this.Scale = new Vector2(16, 16);
             if (!passive)
             {
-                this.Collider = new CircleOffsetCollider(this, new Vector2(-1, 0), 16, ColliderLayer.Layer.Trigger, this.activators);
+                this.Collider = new CircleOffsetCollider(this, new Vector2(-3, 0), 16, ColliderLayer.Layer.Trigger, this.activators);
             }
             else
             {
