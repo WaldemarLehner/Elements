@@ -16,6 +16,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
     [TestClass]
     public class PlayerTest
     {
+        private static float obstacleProbability = .05f; // Spawn der Obstacles Anzahl
         private ICollection<INonPlayerCharacter> EnemysList { get; set; } = new List<INonPlayerCharacter>();
         private IColliderManager ColliderManager { get; set; } = new ColliderManager(32);
         private IModel model { get; set; } = null;
@@ -27,7 +28,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
 
         private static void CreateNewScene()
         {
-            Scene scene = new Scene(new WorldSceneGenerator(new WorldSceneDefinition(false, false, false, false, 10, 10, .2f, 10, new (int weight, TileDefinitions.Type type)[] { (4, TileDefinitions.Type.Dirt), (6, TileDefinitions.Type.Grass), (4, TileDefinitions.Type.Water) })).GenerateWorldScene(), null);
+            Scene scene = new Scene(new WorldSceneGenerator(obstacleProbability, new WorldSceneDefinition(false, false, false, false, 10, 10, .2f, 10, new (int weight, TileDefinitions.Type type)[] { (4, TileDefinitions.Type.Dirt), (6, TileDefinitions.Type.Grass), (4, TileDefinitions.Type.Water) })).GenerateWorldScene(), null);
             scene.SetAsActive();
         }
         /*
