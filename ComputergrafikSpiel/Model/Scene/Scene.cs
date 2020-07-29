@@ -214,9 +214,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.EntitiesList.Remove(entity);
                 }
-
             }
-
         }
 
         public void SpawnParticle(IParticle particle) => this.Particles.Add(particle ?? throw new ArgumentNullException(nameof(particle)));

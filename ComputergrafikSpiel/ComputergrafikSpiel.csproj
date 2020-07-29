@@ -129,10 +129,16 @@
     <Compile Include="Controller\Input\InputControllerSettings.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\Input\MouseCursor.cs" />
+    <Compile Include="Model\Character\NPC\EnemyEnum.cs" />
+    <Compile Include="Model\Character\NPC\EnemyManager.cs" />
+    <Compile Include="Model\Character\NPC\Interfaces\DashEnemy.cs" />
     <Compile Include="Model\Character\NPC\NPCAI\AIEnemy.cs" />
     <Compile Include="Model\Character\NPC\Enemy.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INonPlayerCharacter.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
+    <Compile Include="Model\Character\NPC\RangeEnemy.cs" />
+    <Compile Include="Model\Character\NPC\SpeedEnemy.cs" />
+    <Compile Include="Model\Character\NPC\TankEnemy.cs" />
     <Compile Include="Model\Character\Player\InputControllerSettings.cs" />
     <Compile Include="Model\Character\Player\InputController.cs" />
     <Compile Include="Model\Character\Player\IPlayerState.cs" />
@@ -232,6 +238,7 @@
     <Compile Include="Model\World\Interfaces\IWorldTile.cs" />
     <Compile Include="Model\World\NoiseToTileConversionHelper.cs" />
     <Compile Include="Model\World\TileHelper.cs" />
+    <Compile Include="Model\World\WorldEnum.cs" />
     <Compile Include="Model\World\WorldScene.cs" />
     <Compile Include="Model\World\WorldSceneDefinition.cs" />
     <Compile Include="Model\World\WorldSceneGenerator.cs" />
@@ -286,61 +293,61 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Boss\Death.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Boss\FireBoss.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Boss\SkeletonGolem.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Boss\Tree.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Air\Ghost.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Air\Imp.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Air\Skull.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Air\WitchDoctor.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Earth\EarthElemental.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Earth\EarthGolem.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Earth\Goblin.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Earth\Slime.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Fire\DemonEye.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Fire\FireClaw.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Fire\FireDemon.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Fire\FireLizard.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Water\Crab.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Water\Fungus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Water\Lizard.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Enemy\Water\WaterDrop.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
