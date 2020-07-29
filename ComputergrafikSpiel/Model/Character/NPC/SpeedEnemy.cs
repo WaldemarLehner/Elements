@@ -9,8 +9,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public class SpeedEnemy : Enemy
     {
-        private readonly Vector2 scale;
-
         public SpeedEnemy(Vector2 startposition, string texture, WorldEnum.Type type)
         {
             Console.WriteLine("Creating Speed");
@@ -23,25 +21,31 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 case WorldEnum.Type.Water:
                     this.SetEnemyStats(20, 100, 1, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Water/" + texture);
+                    this.BloodColorHue = 241f;
                     break;
                 case WorldEnum.Type.Earth:
                     this.SetEnemyStats(40, 110, 2, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
+                    this.BloodColorHue = 96f;
                     break;
                 case WorldEnum.Type.Fire:
                     this.SetEnemyStats(60, 120, 3, 3);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Fire/" + texture);
+                    this.BloodColorHue = 51f;
                     break;
                 case WorldEnum.Type.Air:
                     this.SetEnemyStats(80, 20, 4, 4);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
-
+                    this.BloodColorHue = 0f;
                     break;
                 default: break;
             }
 
-            this.scale = new Vector2(20, 20);
-            this.Scale = this.scale;
+            this.CurrentHealth = this.MaxHealth;
+
+            this.Scale = new Vector2(20, 20);
+            this.SetScale();
+
             this.NPCController = new AIEnemy();
         }
     }

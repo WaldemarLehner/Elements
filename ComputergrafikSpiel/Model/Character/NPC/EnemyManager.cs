@@ -16,19 +16,19 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             {
                 case WorldEnum.Type.Water:
                     string[] waterTexture = { "Fungus", "WaterDrop", "Crab", "Lizard" };
-                    this.SpawningEnemy(waterTexture, WorldEnum.Type.Water, random);
+                    this.SpawningEnemy(waterTexture, type, random);
                     break;
                 case WorldEnum.Type.Earth:
                     string[] earthTexture = { "EarthElemental", "EarthGolem", "Goblin", "Slime" };
-                    this.SpawningEnemy(earthTexture, WorldEnum.Type.Earth, random);
+                    this.SpawningEnemy(earthTexture, type, random);
                     break;
                 case WorldEnum.Type.Fire:
                     string[] fireTexture = { "DemonEye", "FireClaw", "FireDemon", "FireLizard" };
-                    this.SpawningEnemy(fireTexture, WorldEnum.Type.Fire, random);
+                    this.SpawningEnemy(fireTexture, type, random);
                     break;
                 case WorldEnum.Type.Air:
                     string[] airTexture = { "Ghost", "Imp", "Skull", "WitchDoctor" };
-                    this.SpawningEnemy(airTexture, WorldEnum.Type.Air, random);
+                    this.SpawningEnemy(airTexture, type, random);
                     break;
                 default:
                     break;
@@ -37,21 +37,23 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void BossSpawner(Vector2 spawnPosition, WorldEnum.Type type)
         {
-            this.spawnPosition = spawnPosition;
-
             switch (type)
             {
                 case WorldEnum.Type.Water:
-                    string WaterTexture = "WaterTree";
+                    string waterTexture = "WaterTree";
+                    Scene.Scene.Current.SpawnObject(new EnemyBoss(spawnPosition, waterTexture, type));
                     break;
                 case WorldEnum.Type.Earth:
-                    string EarthTexture = "StoneGolem";
+                    string earthTexture = "StoneGolem";
+                    Scene.Scene.Current.SpawnObject(new EnemyBoss(spawnPosition, earthTexture, type));
                     break;
                 case WorldEnum.Type.Fire:
-                    string FireTexture = "FireBoss";
+                    string fireTexture = "FireBoss";
+                    Scene.Scene.Current.SpawnObject(new EnemyBoss(spawnPosition, fireTexture, type));
                     break;
                 case WorldEnum.Type.Air:
-                    string AirTexture = "AirBoss";
+                    string airTexture = "AirBoss";
+                    Scene.Scene.Current.SpawnObject(new EnemyBoss(spawnPosition, airTexture, type));
                     break;
                 default: break;
             }

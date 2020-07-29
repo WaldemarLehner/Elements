@@ -275,14 +275,9 @@ namespace ComputergrafikSpiel.Model.Scene
             // Spawn Interactable when all enemies are dead
             if (this.NpcList.Count == 0 && this.lockInc)
             {
-                if ((this.Model as Model).FirstScene)
-                {
-                    (this.Model as Model).CreateTriggerZone();
-                }
-                else
+                if (!(this.Model as Model).FirstScene)
                 {
                     (this.Model as Model).OnSceneCompleted(this.World);
-                    (this.Model as Model).CreateTriggerZone();
                 }
 
                 this.lockInc = false;
@@ -311,7 +306,15 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void SpawningEnemies(IWorldScene scene, WorldEnum.Type type, bool boss)
         {
-            (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, type, boss);
+            if (boss)
+            {
+                (this.Model as Model).CreateRandomEnemies(1, 1, scene, type, boss);
+            }
+            else
+            {
+                (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, type, boss);
+            }
+
         }
 
         private void ApplySurrounding(Scene top, Scene left, Scene right, Scene bottom)

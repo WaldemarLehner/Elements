@@ -9,8 +9,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public class EnemyBoss : Enemy
     {
-        private readonly Vector2 scale;
-
         public EnemyBoss(Vector2 startposition, string texture, WorldEnum.Type type)
         {
             Console.WriteLine("Create Boss");
@@ -22,25 +20,32 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             {
                 case WorldEnum.Type.Water:
                     this.SetEnemyStats(20, 70, 1, 1);
-                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Water/" + texture);
+                    this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
+                    this.BloodColorHue = 13f;
                     break;
                 case WorldEnum.Type.Earth:
                     this.SetEnemyStats(40, 75, 2, 2);
-                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
+                    this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
+                    this.BloodColorHue = 51f;
                     break;
                 case WorldEnum.Type.Fire:
                     this.SetEnemyStats(60, 80, 3, 3);
-                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Fire/" + texture);
+                    this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
+                    this.BloodColorHue = 25f;
                     break;
                 case WorldEnum.Type.Air:
                     this.SetEnemyStats(80, 85, 4, 4);
-                    this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
+                    this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
+                    this.BloodColorHue = 0f;
                     break;
                 default: break;
             }
 
-            this.scale = new Vector2(20, 20);
-            this.Scale = this.scale;
+            this.CurrentHealth = this.MaxHealth;
+
+            this.Scale = new Vector2(64, 64);
+            this.SetScale();
+
             this.NPCController = new AIEnemy();
         }
     }

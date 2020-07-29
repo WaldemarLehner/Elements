@@ -60,7 +60,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float AttackSpeed => this.playerStateManager.Current.Firerate;
 
-        public float AttackCooldown { get; } = 20;
+        public float AttackCooldown { get; } = 10;
 
         public float AttackCooldownCurrent { get; set; } = 0;
 
@@ -180,7 +180,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 this.Position += this.directionXY * this.MovementSpeed * dtime / 4;
                 this.run = false;
             }
-
 
             this.dirtEmitter.Update(dtime);
 

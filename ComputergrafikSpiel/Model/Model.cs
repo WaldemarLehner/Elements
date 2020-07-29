@@ -31,7 +31,7 @@ namespace ComputergrafikSpiel.Model
 
         public (float top, float bottom, float left, float right) CurrentSceneBounds => Scene.Scene.Current.World.WorldSceneBounds;
 
-        public int Level { get; private set; } = 1;
+        public int Level { get; set; } = 1;
 
         public UpgradeScreen UpgradeScreen { get; private set; }
 
@@ -56,18 +56,27 @@ namespace ComputergrafikSpiel.Model
             this.InputState = inputState;
         }
 
-        public void CreateTriggerZone()
+        public void CreateTriggerZone(bool firstScene, bool lastScene)
         {
             Vector2[] positions =
             {
                 // new Vector2(368, 16),
                 // new Vector2(368, 528),
-                new Vector2(688, 272),
-                new Vector2(16, 272),
+                new Vector2(688, 272), // rightDoor
+                new Vector2(16, 272), // left Door
             };
-            for (int i = 0; i < positions.Length; i++)
+            if (firstScene)
             {
-                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[i], ColliderLayer.Layer.Player));
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[0], ColliderLayer.Layer.Player, false));
+            }
+            else if (lastScene)
+            {
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[1], ColliderLayer.Layer.Player, true));
+            }
+            else
+            {
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[1], ColliderLayer.Layer.Player, true));
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[0], ColliderLayer.Layer.Player, false));
             }
 
             return;

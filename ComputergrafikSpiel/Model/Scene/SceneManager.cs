@@ -42,14 +42,17 @@ namespace ComputergrafikSpiel.Model.Scene
                 case 11:
                     this.SetSceneTexturesToFire();
                     this.elementType = WorldEnum.Type.Earth;
+                    this.Model.Level = 1;
                     break;
                 case 21:
                     this.SetSceneTexturesToForest();
                     this.elementType = WorldEnum.Type.Fire;
+                    this.Model.Level = 1;
                     break;
                 case 31:
                     this.SetSceneTexturesToFire();
                     this.elementType = WorldEnum.Type.Air;
+                    this.Model.Level = 1;
                     break;
                 default: break;
             }
@@ -91,6 +94,8 @@ namespace ComputergrafikSpiel.Model.Scene
                 default: newScene.SpawningEnemies(newScene.World, this.elementType, false);
                     break;
             }
+
+            this.Model.CreateTriggerZone(false, false);
         }
 
         public void InitializeFirstScene()
@@ -100,6 +105,7 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).FirstScene = true;
             initScene.GiveModeltoScene(this.Model);
             initScene.SetAsActive();
+            this.Model.CreateTriggerZone(true, false);
         }
 
         public void SetSceneTexturesToForest()

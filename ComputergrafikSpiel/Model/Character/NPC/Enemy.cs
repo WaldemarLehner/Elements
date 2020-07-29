@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
-using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
@@ -16,12 +14,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 {
     public abstract class Enemy : INonPlayerCharacter
     {
-        public Enemy()
-        {
-            this.scale = this.Scale;
-        }
-
-        private readonly Vector2 scale;
+        private Vector2 scale;
 
         public event EventHandler CharacterDeath;
 
@@ -31,7 +24,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public int CurrentHealth { get; set; }
 
-        public float BloodColorHue => 215f;
+        public float BloodColorHue { get; set; } = 255f;
 
         public INPCController NPCController { get; set; }
 
@@ -64,6 +57,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         private Vector2 Direction { get; set; }
 
         private float AttackCooldown { get; set; } = 0;
+
+        public void SetScale()
+        {
+            this.scale = this.Scale;
+        }
 
         public void OnDeath(EventArgs e)
         {
