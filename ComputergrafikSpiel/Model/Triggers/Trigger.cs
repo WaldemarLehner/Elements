@@ -31,6 +31,7 @@ namespace ComputergrafikSpiel.Model.Triggers
             {
                 this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, ColliderLayer.Layer.Trigger, this.activators);
             }
+
             this.setAsPassive = passive;
         }
 
@@ -51,7 +52,8 @@ namespace ComputergrafikSpiel.Model.Triggers
 
         public void TriggerCollisionFunction()
         {
-            if (!this.setAsPassive)
+            List<INonPlayerCharacter> enemyCount = Scene.Scene.Current.NPCs.ToList();
+            if (!this.setAsPassive && enemyCount.Count == 0)
             {
                 Scene.Scene.Current.OnChangeScene();
                 Scene.Scene.Player.ChangePosition();
