@@ -214,9 +214,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.EntitiesList.Remove(entity);
                 }
-
             }
-
         }
 
         public void SpawnParticle(IParticle particle) => this.Particles.Add(particle ?? throw new ArgumentNullException(nameof(particle)));
@@ -277,14 +275,9 @@ namespace ComputergrafikSpiel.Model.Scene
             // Spawn Interactable when all enemies are dead
             if (this.NpcList.Count == 0 && this.lockInc)
             {
-                if ((this.Model as Model).FirstScene)
-                {
-                    (this.Model as Model).CreateTriggerZone();
-                }
-                else
+                if (!(this.Model as Model).FirstScene)
                 {
                     (this.Model as Model).OnSceneCompleted(this.World);
-                    (this.Model as Model).CreateTriggerZone();
                 }
 
                 this.lockInc = false;
@@ -311,29 +304,17 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).SceneManager.LoadNewScene();
         }
 
-        public void SpawningEnemies(IWorldScene scene)
+        public void SpawningEnemies(IWorldScene scene, WorldEnum.Type type, bool boss)
         {
-            (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene);
-        }
+            if (boss)
+            {
+                (this.Model as Model).CreateRandomEnemies(1, 1, scene, type, boss);
+            }
+            else
+            {
+                (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, type, boss);
+            }
 
-        public void SpawningWaterBoss(IWorldScene scene)
-        {
-            (this.Model as Model).CreateWaterBoss(1, 1, scene);
-        }
-
-        public void SpawningFireBoss(IWorldScene scene)
-        {
-            (this.Model as Model).CreateFireBoss(1, 1, scene);
-        }
-
-        public void SpawningAirBoss(IWorldScene scene)
-        {
-            (this.Model as Model).CreateAirBoss(1, 1, scene);
-        }
-
-        public void SpawningStoneBoss(IWorldScene scene)
-        {
-            (this.Model as Model).CreateStoneBoss(1, 1, scene);
         }
 
         private void ApplySurrounding(Scene top, Scene left, Scene right, Scene bottom)

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -12,16 +14,28 @@ namespace ComputergrafikSpiel.Model.Triggers
 {
     internal class Trigger : ITrigger
     {
-        public Trigger(Vector2 position, ColliderLayer.Layer activators)
+        private ColliderLayer.Layer activators;
+        private bool setAsPassive;
+
+        public Trigger(Vector2 position, ColliderLayer.Layer activators, bool passive)
         {
-            // radius may have to be changed
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, ColliderLayer.Layer.Trigger, activators);
+            this.activators = activators;
             this.Position = position;
             this.Texture = new TextureLoader().LoadTexture("Door/TreeBranchesDoor");
             this.Scale = new Vector2(16, 16);
+            if (!passive)
+            {
+                this.Collider = new CircleOffsetCollider(this, new Vector2(-3, 0), 16, ColliderLayer.Layer.Trigger, this.activators);
+            }
+            else
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, ColliderLayer.Layer.Trigger, this.activators);
+            }
+
+            this.setAsPassive = passive;
         }
 
-        public ICollider Collider { get; }
+        public ICollider Collider { get; private set; }
 
         public Vector2 Position { get; }
 
@@ -38,7 +52,12 @@ namespace ComputergrafikSpiel.Model.Triggers
 
         public void TriggerCollisionFunction()
         {
-            Scene.Scene.Current.OnChangeScene();
+            List<INonPlayerCharacter> enemyCount = Scene.Scene.Current.NPCs.ToList();
+            if (!this.setAsPassive && enemyCount.Count == 0)
+            {
+                Scene.Scene.Current.OnChangeScene();
+                Scene.Scene.Player.ChangePosition();
+            }
         }
 
         public void Update(float dtime)

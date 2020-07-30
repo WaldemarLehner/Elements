@@ -129,10 +129,17 @@
     <Compile Include="Controller\Input\InputControllerSettings.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\Input\MouseCursor.cs" />
+    <Compile Include="Model\Character\NPC\EnemyBoss.cs" />
+    <Compile Include="Model\Character\NPC\EnemyEnum.cs" />
+    <Compile Include="Model\Character\NPC\EnemyManager.cs" />
+    <Compile Include="Model\Character\NPC\DashEnemy.cs" />
     <Compile Include="Model\Character\NPC\NPCAI\AIEnemy.cs" />
     <Compile Include="Model\Character\NPC\Enemy.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INonPlayerCharacter.cs" />
     <Compile Include="Model\Character\NPC\Interfaces\INPCController.cs" />
+    <Compile Include="Model\Character\NPC\RangeEnemy.cs" />
+    <Compile Include="Model\Character\NPC\SpeedEnemy.cs" />
+    <Compile Include="Model\Character\NPC\TankEnemy.cs" />
     <Compile Include="Model\Character\Player\InputControllerSettings.cs" />
     <Compile Include="Model\Character\Player\InputController.cs" />
     <Compile Include="Model\Character\Player\IPlayerState.cs" />
@@ -232,6 +239,7 @@
     <Compile Include="Model\World\Interfaces\IWorldTile.cs" />
     <Compile Include="Model\World\NoiseToTileConversionHelper.cs" />
     <Compile Include="Model\World\TileHelper.cs" />
+    <Compile Include="Model\World\WorldEnum.cs" />
     <Compile Include="Model\World\WorldScene.cs" />
     <Compile Include="Model\World\WorldSceneDefinition.cs" />
     <Compile Include="Model\World\WorldSceneGenerator.cs" />

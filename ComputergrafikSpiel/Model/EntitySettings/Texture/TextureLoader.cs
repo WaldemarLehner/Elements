@@ -21,6 +21,7 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Texture
             name += ".png";
 
             var pathToTexture = Path.Combine("./Content/Images/", name);
+
             Image currentTexture = Image.Load(pathToTexture);
             TextureContructor constructor;
 

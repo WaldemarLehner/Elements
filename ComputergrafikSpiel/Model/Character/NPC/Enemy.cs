@@ -1,79 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
-using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.NPC
 {
-    public class Enemy : INonPlayerCharacter
+    public abstract class Enemy : INonPlayerCharacter
     {
-        private readonly Vector2 scale;
-
-        public Enemy(int maxHealth, string texture, float movementSpeed, int defense, int attackDamage, Vector2 startPosition)
-        {
-            this.AttackDamage = attackDamage;
-            this.MaxHealth = maxHealth;
-            this.CurrentHealth = maxHealth;
-            this.MovementSpeed = movementSpeed;
-            this.Defense = defense;
-            this.Texture = new TextureLoader().LoadTexture("NPC/" + texture);
-            this.Position = startPosition;
-
-            this.Scale = this.scale;
-            var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
-            if (texture == "Enemy/Water/Fungus")
-            {
-                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 17, ColliderLayer.Layer.Enemy, collisionMask);
-                this.scale = new Vector2(18, 18);
-            }
-            else if (texture == "Enemy/Water/Lizard")
-            {
-                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
-                this.scale = new Vector2(24, 24);
-            }
-
-            // Bosse
-            else if (texture == "Boss/WaterTree")
-            {
-                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
-                this.scale = new Vector2(45, 45);
-            }
-            else if (texture == "Boss/FireBoss")
-            {
-                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
-                this.scale = new Vector2(55, 55);
-            }
-            else if (texture == "Boss/AirDeath")
-            {
-                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
-                this.scale = new Vector2(65, 65);
-            }
-            else if (texture == "Boss/StoneGolem")
-            {
-                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 20, ColliderLayer.Layer.Enemy, collisionMask);
-                this.scale = new Vector2(75, 75);
-            }
-
-            // Nichtdefinierte Gegner
-            else
-            {
-                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Enemy, collisionMask);
-                this.scale = new Vector2(16, 16);
-            }
-
-            this.Scale = this.scale;
-            this.NPCController = new AIEnemy();
-        }
+        private Vector2 scale;
 
         public event EventHandler CharacterDeath;
 
@@ -83,9 +24,9 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public int CurrentHealth { get; set; }
 
-        public float BloodColorHue => 215f;
+        public float BloodColorHue { get; set; } = 255f;
 
-        public INPCController NPCController { get; }
+        public INPCController NPCController { get; set; }
 
         public int MaxHealth { get; set; }
 
@@ -93,9 +34,9 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public int Defense { get; set; }
 
-        public ICollider Collider { get; }
+        public ICollider Collider { get; set; }
 
-        public ITexture Texture { get; } = null;
+        public ITexture Texture { get; set; } = null;
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => new (Color4 color, Vector2[] vertices)[] { this.Collider.DebugData };
 
@@ -117,6 +58,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         private float AttackCooldown { get; set; } = 0;
 
+        public void SetScale()
+        {
+            this.scale = this.Scale;
+        }
+
         public void OnDeath(EventArgs e)
         {
             this.CharacterDeath?.Invoke(this, e);
@@ -130,6 +76,14 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public void OnMove(EventArgs e)
         {
             this.CharacterMove?.Invoke(this, e);
+        }
+
+        public void SetEnemyStats(int maxHealth, float movementSpeed, int defense, int attackDamage)
+        {
+            this.MaxHealth = maxHealth;
+            this.MovementSpeed = movementSpeed;
+            this.Defense = defense;
+            this.AttackDamage = attackDamage;
         }
 
         public void TakingDamage(int damage)

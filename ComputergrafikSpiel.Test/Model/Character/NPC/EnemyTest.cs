@@ -27,17 +27,18 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
         [DataRow(-1)]
         public void AssertThatEnemyTakingDamageThrowsArgumentNotPositiveGreaterZeroException(int damage)
         {
-            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.Enemy(10, "Enemy/Water/Fungus", 25, 1, 4, this.Position);
+            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
             Assert.ThrowsException<ComputergrafikSpiel.View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException>(() => enemy.TakingDamage(damage));
         }
 
         [DataTestMethod]
-        [DataRow(1, 0)]
+        [DataRow(5, 2)]
         [DataRow(4, 3)]
         public void AssertThatLessDefenseThanDamageMakesDamage(int damage, int defense)
         {
             CreateNewScene();
-            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.Enemy(10, "Enemy/Water/Fungus", 25, defense, 4, this.Position);
+            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
+            enemy.Defense = defense;
             int Health = enemy.CurrentHealth;
             enemy.TakingDamage(damage);
             Assert.AreNotEqual(Health, enemy.CurrentHealth);
@@ -49,7 +50,8 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
         public void AssertThatMoreDefenseThanDamageMakesNoDamage(int damage, int defense)
         {
             CreateNewScene();
-            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.Enemy(10, "Enemy/Water/Fungus", 25, defense, 4, this.Position);
+            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
+            enemy.Defense = defense;
             int Health = enemy.CurrentHealth;
             enemy.TakingDamage(damage);
             Assert.AreEqual(Health, enemy.CurrentHealth);
@@ -60,7 +62,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
         [DataRow(4)]
         public void AssertThatMulitplierIncreaseEnemyStats (int multiplier)
         {
-            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.Enemy(10, "Enemy/Water/Fungus", 25, 3, 4,  this.Position);
+            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
             int MaxHealth = enemy.MaxHealth;
             int Defense = enemy.Defense;
             float MovementSpeed = enemy.MovementSpeed;
@@ -75,19 +77,19 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
         [TestMethod]
         public void AssertThatEnemyTextureIsFlippedCorrectlyDependingPlayerLocation()
         {
-            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.Enemy(10, "Enemy/Water/Fungus", 25, 3, 4, this.Position);
+            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
             Vector2 playerLocation = new Vector2(300, 0);
             enemy.LookAt(playerLocation);
-            Assert.AreEqual(enemy.Scale.X, -18);
+            Assert.AreEqual(enemy.Scale.X, -20);
 
             // make sure it is not flipped again
             enemy.LookAt(playerLocation);
-            Assert.AreEqual(enemy.Scale.X, -18);
+            Assert.AreEqual(enemy.Scale.X, -20);
 
             // make sure it is flipped back
             playerLocation = new Vector2(100, 0);
             enemy.LookAt(playerLocation);
-            Assert.AreEqual(enemy.Scale.X, 18);
+            Assert.AreEqual(enemy.Scale.X, 20);
         }
     }
 }

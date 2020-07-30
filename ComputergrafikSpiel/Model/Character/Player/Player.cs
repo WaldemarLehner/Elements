@@ -60,7 +60,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float AttackSpeed => this.playerStateManager.Current.Firerate;
 
-        public float AttackCooldown { get; } = 20;
+        public float AttackCooldown { get; } = 10;
 
         public float AttackCooldownCurrent { get; set; } = 0;
 
@@ -244,6 +244,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void SelectOption(PlayerEnum.Stats stat, uint level)
         {
             this.playerStateManager.Apply(stat, level);
+        }
+
+        public void ChangePosition()
+        {
+            this.Position = new Vector2(45, 272);
         }
 
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)

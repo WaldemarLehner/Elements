@@ -117,8 +117,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
                         opt.Direction = this.Direction.Normalized();
                         opt.Hue = (enemyCollidable.BloodColorHue, enemyCollidable.BloodColorHue);
                         StaticParticleEmmiter.EmitOnce(opt);
-
-
                     }
                 }
             }

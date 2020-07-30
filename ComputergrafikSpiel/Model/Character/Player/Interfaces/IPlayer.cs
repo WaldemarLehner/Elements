@@ -29,5 +29,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
         IList<UpgradeOption> GetOptions(uint currentLevel);
 
         void SelectOption(PlayerEnum.Stats stat, uint level);
+
+        void ChangePosition();
     }
 }
