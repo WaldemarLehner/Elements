@@ -31,6 +31,8 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
                 case PlayerEnum.Stats.MaxHealth: return "max health";
                 case PlayerEnum.Stats.Money: return "money bonus";
                 case PlayerEnum.Stats.MovementSpeed: return "movement";
+                case PlayerEnum.Stats.WeaponTTL: return "bullet range";
+                case PlayerEnum.Stats.WeaponDamage: return "weapon damage";
                 default: return "error";
             }
         }
@@ -45,6 +47,8 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
                 [PlayerEnum.Stats.Money] = texLoader.LoadTileTexture(root + "Coin", (1, 1)),
                 [PlayerEnum.Stats.MaxHealth] = texLoader.LoadTileTexture(root + "ExtraHeart", (1, 1)),
                 [PlayerEnum.Stats.MovementSpeed] = texLoader.LoadTileTexture(root + "MovementSpeed", (1, 1)),
+                [PlayerEnum.Stats.WeaponTTL] = texLoader.LoadTileTexture(root + "WeaponTTL", (1, 1)),
+                [PlayerEnum.Stats.WeaponDamage] = texLoader.LoadTileTexture(root + "WeaponDamage", (1, 1)),
             };
         }
     }
