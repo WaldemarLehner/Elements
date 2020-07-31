@@ -44,7 +44,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     Scene.Scene.Current.SpawnObject(new EnemyBoss(spawnPosition, waterTexture, type));
                     break;
                 case WorldEnum.Type.Earth:
-                    string earthTexture = "StoneGolem";
+                    string earthTexture = "EarthGolem";
                     Scene.Scene.Current.SpawnObject(new EnemyBoss(spawnPosition, earthTexture, type));
                     break;
                 case WorldEnum.Type.Fire:
@@ -52,7 +52,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     Scene.Scene.Current.SpawnObject(new EnemyBoss(spawnPosition, fireTexture, type));
                     break;
                 case WorldEnum.Type.Air:
-                    string airTexture = "AirBoss";
+                    string airTexture = "AirDeath";
                     Scene.Scene.Current.SpawnObject(new EnemyBoss(spawnPosition, airTexture, type));
                     break;
                 default: break;

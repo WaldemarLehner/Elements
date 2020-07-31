@@ -26,30 +26,27 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             this.setDifferentDungeons++;
 
-            if (this.play.battleMusicOn == false)
-            {
-                // Bei Beginn des Schlachtfeldes wird die Battlemusik gestartet
-                this.play.StartBattleMusic();
-                this.play.battleMusicOn = true;
-            }
-
             switch (this.setDifferentDungeons)
             {
                 case 1:
+                    this.play.StartDungeon1Music();
                     this.SetSceneTexturesToForest();
                     this.elementType = WorldEnum.Type.Water;
                     break;
                 case 11:
+                    this.play.StartDungeon2Music();
                     this.SetSceneTexturesToFire();
                     this.elementType = WorldEnum.Type.Earth;
                     this.Model.Level = 1;
                     break;
                 case 21:
+                    this.play.StartDungeon3Music();
                     this.SetSceneTexturesToForest();
                     this.elementType = WorldEnum.Type.Fire;
                     this.Model.Level = 1;
                     break;
                 case 31:
+                    this.play.StartDungeon4Music();
                     this.SetSceneTexturesToFire();
                     this.elementType = WorldEnum.Type.Air;
                     this.Model.Level = 1;
@@ -80,15 +77,19 @@ namespace ComputergrafikSpiel.Model.Scene
             switch (this.setDifferentDungeons)
             {
                 case 10:
+                    this.play.StartDungeon1BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 20:
+                    this.play.StartDungeon2BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 30:
+                    this.play.StartDungeon3BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 40:
+                    this.play.StartDungeon4BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 default: newScene.SpawningEnemies(newScene.World, this.elementType, false);
