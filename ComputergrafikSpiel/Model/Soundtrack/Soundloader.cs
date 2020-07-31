@@ -67,6 +67,12 @@ namespace ComputergrafikSpiel.Model.Soundtrack
             this.mediaPlayer.controls.play();
         }
 
+        public void StartGameoverMusic()
+        {
+            this.mediaPlayer.URL = "./Content/Soundtrack/Orange_Kiss.mp3";
+            this.mediaPlayer.controls.play();
+        }
+
         public void StopMusik()
         {
             this.mediaPlayer.controls.stop();
