@@ -26,31 +26,28 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             this.setDifferentDungeons++;
 
-            if (this.play.battleMusicOn == false)
-            {
-                // Bei Beginn des Schlachtfeldes wird die Battlemusik gestartet
-                this.play.StartBattleMusic();
-                this.play.battleMusicOn = true;
-            }
-
             switch (this.setDifferentDungeons)
             {
                 case 1:
-                    this.SetSceneTexturesToForest();
+                    this.play.StartDungeon1Music();
+                    this.SetSceneTexturesToWater();
                     this.elementType = WorldEnum.Type.Water;
                     break;
                 case 11:
-                    this.SetSceneTexturesToFire();
+                    this.play.StartDungeon2Music();
+                    this.SetSceneTexturesToEarth();
                     this.elementType = WorldEnum.Type.Earth;
                     this.Model.Level = 1;
                     break;
                 case 21:
-                    this.SetSceneTexturesToForest();
+                    this.play.StartDungeon3Music();
+                    this.SetSceneTexturesToFire();
                     this.elementType = WorldEnum.Type.Fire;
                     this.Model.Level = 1;
                     break;
                 case 31:
-                    this.SetSceneTexturesToFire();
+                    this.play.StartDungeon4Music();
+                    this.SetSceneTexturesToAir();
                     this.elementType = WorldEnum.Type.Air;
                     this.Model.Level = 1;
                     break;
@@ -80,15 +77,19 @@ namespace ComputergrafikSpiel.Model.Scene
             switch (this.setDifferentDungeons)
             {
                 case 10:
+                    this.play.StartDungeon1BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 20:
+                    this.play.StartDungeon2BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 30:
+                    this.play.StartDungeon3BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 40:
+                    this.play.StartDungeon4BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 default: newScene.SpawningEnemies(newScene.World, this.elementType, false);
@@ -108,11 +109,18 @@ namespace ComputergrafikSpiel.Model.Scene
             this.Model.CreateTriggerZone(true, false);
         }
 
-        public void SetSceneTexturesToForest()
+        public void SetSceneTexturesToWater()
         {
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Forest/WaterTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Forest/EarthTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Forest/Grass";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Water/WaterTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Water/EarthTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Water/Grass";
+        }
+
+        public void SetSceneTexturesToEarth()
+        {
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Earth/WaterTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Earth/EarthTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Earth/Grass";
         }
 
         public void SetSceneTexturesToFire()
@@ -122,12 +130,11 @@ namespace ComputergrafikSpiel.Model.Scene
             WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Fire/Grass";
         }
 
-        public void SetSceneTexturesToForestBoss()
+        public void SetSceneTexturesToAir()
         {
-            // Bodentexturen für Forest Boss
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Forest/WaterTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Forest/EarthTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Forest/Grass";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Air/WaterTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Air/EarthTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Air/Grass";
         }
     }
 }

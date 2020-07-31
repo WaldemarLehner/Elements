@@ -314,7 +314,6 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, type, boss);
             }
-
         }
 
         private void ApplySurrounding(Scene top, Scene left, Scene right, Scene bottom)

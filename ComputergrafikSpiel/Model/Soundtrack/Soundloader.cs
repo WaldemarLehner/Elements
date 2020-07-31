@@ -1,51 +1,81 @@
-﻿using System;
-using System.Media;
+﻿using WMPLib;
 
 namespace ComputergrafikSpiel.Model.Soundtrack
 {
-    public class Soundloader : ISoundloader
+    public class Soundloader
     {
-        private SoundPlayer soundplayer;
-        public bool battleMusicOn = false;
+        private readonly WindowsMediaPlayer mediaPlayer = new WindowsMediaPlayer();
 
         public Soundloader()
         {
-        }
-
-        public void StartMainThemeMusic()
-        {
-            this.soundplayer = new SoundPlayer("./Content/Soundtrack/main_theme.wav");
-            this.soundplayer.PlayLooping();
+            this.mediaPlayer.settings.setMode("loop", true);
         }
 
         public void StartSafeMusic()
         {
-            this.soundplayer = new SoundPlayer("./Content/Soundtrack/safe_zone.wav");
-            this.soundplayer.PlayLooping();
+            this.mediaPlayer.URL = "./Content/Soundtrack/Spanish_Waltz.mp3";
+            this.mediaPlayer.controls.play();
         }
 
-        public void StartBattleMusic()
+        // Soundtrack der Dungeons
+        public void StartDungeon1Music()
         {
-            if (this.battleMusicOn == true)
-            {
-                return;
-            }
-
-            this.battleMusicOn = true;
-            this.soundplayer = new SoundPlayer("./Content/Soundtrack/battle_has_begun.wav");
-            this.soundplayer.PlayLooping();
+            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Winter_Bliss.mp3";
+            this.mediaPlayer.controls.play();
         }
 
-        public void StartBossMusic()
+        public void StartDungeon2Music()
         {
-            this.soundplayer = new SoundPlayer("./Content/Soundtrack/boss_fight.wav");
-            this.soundplayer.PlayLooping();
+            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Rage_of_the_Champions.mp3";
+            this.mediaPlayer.controls.play();
+        }
+
+        public void StartDungeon3Music()
+        {
+            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Space_Pirates.mp3";
+            this.mediaPlayer.controls.play();
+        }
+
+        public void StartDungeon4Music()
+        {
+            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Dark_Skies.mp3";
+            this.mediaPlayer.controls.play();
+        }
+
+        // Soundtrack der Bosskammern
+        public void StartDungeon1BossMusic()
+        {
+            this.mediaPlayer.URL = "./Content/Soundtrack/Bosses/Race_Around_the_World.mp3";
+            this.mediaPlayer.controls.play();
+        }
+
+        public void StartDungeon2BossMusic()
+        {
+            this.mediaPlayer.URL = "./Content/Soundtrack/Bosses/Castle_in_the_Sky.mp3";
+            this.mediaPlayer.controls.play();
+        }
+
+        public void StartDungeon3BossMusic()
+        {
+            this.mediaPlayer.URL = "./Content/Soundtrack/Bosses/Vain_Star.mp3";
+            this.mediaPlayer.controls.play();
+        }
+
+        public void StartDungeon4BossMusic()
+        {
+            this.mediaPlayer.URL = "./Content/Soundtrack/Bosses/Till_Death.mp3";
+            this.mediaPlayer.controls.play();
+        }
+
+        public void StartGameoverMusic()
+        {
+            this.mediaPlayer.URL = "./Content/Soundtrack/Orange_Kiss.mp3";
+            this.mediaPlayer.controls.play();
         }
 
         public void StopMusik()
         {
-            this.soundplayer.Stop();
+            this.mediaPlayer.controls.stop();
         }
-
     }
 }

@@ -12,10 +12,12 @@ namespace ComputergrafikSpiel.Model.Scene
 
         void InitializeFirstScene();
 
-        void SetSceneTexturesToForest();
+        void SetSceneTexturesToWater();
+
+        void SetSceneTexturesToEarth();
 
         void SetSceneTexturesToFire();
 
-        void SetSceneTexturesToForestBoss();
+        void SetSceneTexturesToAir();
     }
 }
