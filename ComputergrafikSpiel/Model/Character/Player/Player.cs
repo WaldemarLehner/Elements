@@ -55,6 +55,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public int CurrentHealth => (int)this.playerStateManager.Current.Health;
 
+        public float BulletTTL => this.playerStateManager.Current.BulletTTL;
+
+        public int BulletDamage => (int)this.playerStateManager.Current.BulletDamage;
+
         [Obsolete]
         public int Defense { get; set; } = 0;
 
@@ -92,7 +96,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public Vector2 LastPosition { get; set; }
 
-        public (int currentHealth, int maxHealth, int currency) PlayerData => (this.CurrentHealth, this.MaxHealth, this.Money);
+        public (int currentHealth, int maxHealth, int currency, float bulletTTL, int bulletDamage) PlayerData => (this.CurrentHealth, this.MaxHealth, this.Money, this.BulletTTL, this.BulletDamage);
 
         public float BloodColorHue => 0f;
 

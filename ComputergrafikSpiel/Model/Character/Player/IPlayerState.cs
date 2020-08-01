@@ -11,5 +11,9 @@
         float MovementSpeed { get; }
 
         float Firerate { get; }
+
+        float BulletTTL { get; }
+
+        int BulletDamage { get; }
     }
 }
