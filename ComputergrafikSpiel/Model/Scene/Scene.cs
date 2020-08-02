@@ -274,7 +274,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 Scene.Player.Update(dtime);
                 if (Scene.Player.IsDead == true)
                 {
-                    
+                    (this.Model as Model).OnPlayerDeath();
                 }
             }
 
