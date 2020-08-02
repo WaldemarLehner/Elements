@@ -96,6 +96,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float BloodColorHue => 0f;
 
+        public bool IsDead { get; set; } = false;
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl()
         {
@@ -129,6 +131,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
+                this.IsDead = true;
             }
 
             // Spawn particles
@@ -154,6 +157,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
+            if (this.IsDead == true)
+            {
+                return;
+            }
+
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)
             {

@@ -272,6 +272,10 @@ namespace ComputergrafikSpiel.Model.Scene
             if (Scene.Player != null)
             {
                 Scene.Player.Update(dtime);
+                if (Scene.Player.IsDead == true)
+                {
+                    
+                }
             }
 
             // Spawn Interactable when all enemies are dead

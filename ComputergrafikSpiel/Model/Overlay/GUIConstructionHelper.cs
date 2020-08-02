@@ -18,20 +18,20 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
         private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 1, y: 1));
-        // private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/gameover", (x: 1, y: 1));
+        private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/gameover", (x: 1, y: 1));
 
         internal static IEnumerable<IRenderable> GenerateGuiIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
             var coinData = GUIConstructionHelper.GenerateCoinCount(sceneDefinition, player);
             var healthbar = GUIConstructionHelper.GenerateHealthBar(sceneDefinition, player);
             var crosshair = GUIConstructionHelper.GenerateCrosshair(sceneDefinition, player);
-            // var gameover = GUIConstructionHelper.GenerateGameover(sceneDefinition, player);
+            var gameover = GUIConstructionHelper.GenerateGameover(sceneDefinition, player);
 
             var renderables = new List<IRenderable>();
             renderables.AddRange(coinData);
             renderables.AddRange(healthbar);
             renderables.AddRange(crosshair);
-            // renderables.AddRange(gameover);
+            renderables.AddRange(gameover);
             return renderables;
         }
 
@@ -153,7 +153,6 @@ namespace ComputergrafikSpiel.Model.Overlay
             return crosshairEntries;
         }
 
-        /*
         private static List<IRenderable> GenerateGameover(IWorldScene sceneDefinition, IPlayer player)
         {
             List<IRenderable> healthEntries = new List<IRenderable>();
@@ -165,8 +164,9 @@ namespace ComputergrafikSpiel.Model.Overlay
             float bottom = sceneDefinition.WorldSceneBounds.bottom;
 
             float gameoverSize = (right - left) / 2;
+            var (currentHealth, _, _) = player.PlayerData;
 
-            for (int i = 0; i < 1; i++)
+            if (currentHealth == 0)
             {
                 float xCenter = (left + right) / 2;
                 float yCenter = (top + bottom) / 2;
@@ -184,7 +184,6 @@ namespace ComputergrafikSpiel.Model.Overlay
 
             return healthEntries;
         }
-        */
 
         private class GenericGUIRenderable : IRenderableLayeredTextures
         {

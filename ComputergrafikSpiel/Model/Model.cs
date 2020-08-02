@@ -7,6 +7,7 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
@@ -34,6 +35,8 @@ namespace ComputergrafikSpiel.Model
         public int Level { get; private set; } = 1;
 
         public UpgradeScreen UpgradeScreen { get; private set; }
+
+        public EndScreen EndScreen { get; private set; }
 
         public IInputState InputState { get; private set; }
 
@@ -93,6 +96,16 @@ namespace ComputergrafikSpiel.Model
             }
 
             this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
+        }
+
+        public void OnPlayerDeath()
+        {
+            this.Level = 0;
+
+            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
+            var topV = new Vector2((left + right) * .5f, top);
+            var width = (right - left) * .5f;
+            this.EndScreen = new EndScreen(10, topV, width);
         }
 
         public void CreateRandomEnemies(int min, int max, IWorldScene world)

@@ -9,6 +9,8 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
     {
         event EventHandler PlayerInc;
 
+        bool IsDead { get; set; }
+
         IWeapon EquipedWeapon { get; }
 
         (int currentHealth, int maxHealth, int currency) PlayerData { get; }
