@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
+using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
+using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
@@ -30,7 +33,9 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public int MaxHealth { get; set; }
 
-        public float MovementSpeed { get; set; } = 35;
+        public float MovementSpeedDash => 1f * this.MovementSpeed * this.DashMultiplier;
+
+        public float MovementSpeed { get; set; } = 1f;
 
         public int Defense { get; set; }
 
@@ -54,9 +59,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public Vector2 LastPosition { get; set; }
 
-        private Vector2 Direction { get; set; }
+        public EnemyEnum.Variant Variant { get; set; }
+
+        public Vector2 Direction { get; set; }
 
         private float AttackCooldown { get; set; } = 0;
+
+        private float DashMultiplier { get; set; } = 1f;
 
         public void SetScale()
         {
@@ -125,6 +134,9 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void Update(float dtime)
         {
+
+            Console.WriteLine(this.MovementSpeedDash);
+
             this.LastPosition = this.Position;
 
             this.LookAt(Scene.Scene.Player.Position);
@@ -133,16 +145,21 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             this.OnMove(EventArgs.Empty);
 
-            this.Position += this.Direction * this.MovementSpeed * dtime;
+            this.Position += this.Direction * this.MovementSpeedDash * dtime;
 
             this.AttackCooldown -= dtime;
 
+            this.CollisionPrevention();
+        }
+
+        public void ShootBullet()
+        {
             if (this.AttackCooldown <= 0)
             {
-                this.GiveDamageToPlayer();
+                this.AttackCooldown = 2;
+                new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet");
             }
 
-            this.CollisionPrevention();
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
@@ -162,17 +179,29 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             }
         }
 
-        private void GiveDamageToPlayer()
+        public void GiveDamageToPlayer()
         {
-            var collidables = Scene.Scene.Current.ColliderManager.GetCollisions(this);
-
-            foreach (var player in from i in collidables where i is Player.Player select i as Player.Player)
+            if (this.AttackCooldown <= 0)
             {
-                this.AttackCooldown = 2;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("Spieler wurde getroffen!\n");
-                Scene.Scene.Player.TakingDamage();
+                var collidables = Scene.Scene.Current.ColliderManager.GetCollisions(this);
+
+                foreach (var player in from i in collidables where i is Player.Player select i as Player.Player)
+                {
+                    this.AttackCooldown = 2;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write("Spieler wurde getroffen!\n");
+                    Scene.Scene.Player.TakingDamage(this.AttackDamage);
+                }
             }
+
+        }
+
+        public void Dash()
+        {
+#pragma warning disable CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+            this.DashTask();
+#pragma warning restore CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+            return;
         }
 
         private void DropLootOrHeal(int chance)
@@ -190,6 +219,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Money, this.Position.X, this.Position.Y);
                 }
             }
+        }
+
+        private async Task DashTask()
+        {
+            this.DashMultiplier = 4f;
+            await Task.Delay(100);
+            this.DashMultiplier = 1f;
         }
     }
 }

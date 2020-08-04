@@ -55,7 +55,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         {
             for (int i = 0; i < this.ProjectileCreationCount; i++)
             {
-                new Projectile(this.AttackDamage, direction, this.BulletTTL, this.BulletSize);
+                new Projectile(this.AttackDamage, direction, this.BulletTTL, this.BulletSize, true, new Vector2(Scene.Scene.Player.Position.X, Scene.Scene.Player.Position.Y - 10), "Bullet");
             }
 
             EmitParticleOnceOptions opt = EmitParticleOnceOptions.PlayerWeaponMuzzle;

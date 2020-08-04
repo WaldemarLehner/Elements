@@ -3,7 +3,6 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
-using System;
 
 namespace ComputergrafikSpiel.Model.Character.NPC
 {

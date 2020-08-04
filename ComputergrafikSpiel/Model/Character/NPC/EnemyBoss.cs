@@ -2,6 +2,7 @@
 using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
 

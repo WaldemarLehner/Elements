@@ -13,7 +13,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 
         (int currentHealth, int maxHealth, int currency) PlayerData { get; }
 
-        void TakingDamage();
+        void TakingDamage(int damage);
 
         void TakeHeal();
 

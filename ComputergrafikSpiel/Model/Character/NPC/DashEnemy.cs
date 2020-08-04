@@ -14,6 +14,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.Position = startposition;
             var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 17, ColliderLayer.Layer.Enemy, collisionMask);
+            this.Variant = EnemyEnum.Variant.Dash;
 
             switch (type)
             {

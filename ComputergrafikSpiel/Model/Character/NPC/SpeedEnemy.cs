@@ -1,6 +1,7 @@
 ﻿using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
+using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
 using System;
@@ -15,6 +16,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.Position = startposition;
             var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 17, ColliderLayer.Layer.Enemy, collisionMask);
+            this.Variant = EnemyEnum.Variant.Speed;
 
             switch (type)
             {

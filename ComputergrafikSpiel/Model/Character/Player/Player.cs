@@ -118,7 +118,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         }
 
         // Needs EventHandler from Npc who hits player
-        public void TakingDamage()
+        public void TakingDamage(int damage)
         {
             bool died = false;
 
@@ -247,6 +247,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void ChangePosition()
         {
+            // Change Position to Left Door
             this.Position = new Vector2(45, 272);
         }
 
