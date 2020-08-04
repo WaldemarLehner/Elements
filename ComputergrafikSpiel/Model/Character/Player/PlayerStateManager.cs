@@ -8,13 +8,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
     {
         private readonly PlayerStateOptions options;
         private PlayerState current;
-        private (ushort maxhealth, ushort movement, ushort firerate) currentLevel;
+        private (ushort maxhealth, ushort movement, ushort firerate, ushort bulletttl, ushort bulletdamage) currentLevel;
 
         internal PlayerStateManager(PlayerStateOptions opt)
         {
-            this.current = new PlayerState(0, 5, 5, 1, 1f);
+            this.current = new PlayerState(0, 5, 5, 1, 1f, .6f, 5);
             this.options = opt ?? throw new ArgumentNullException(nameof(opt));
-            this.currentLevel = (0, 0, 0);
+            this.currentLevel = (0, 0, 0, 0, 0);
         }
 
         public IPlayerState Current => this.current;
@@ -69,6 +69,22 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 }
             }
 
+            {
+                var (improvement, cost) = this.options.BulletTTLFunction(this.currentLevel.bulletttl);
+                if (cost <= this.current.Currency)
+                {
+                    options.Add(new UpgradeOption(PlayerEnum.Stats.BulletTTL, this.current.BulletTTL, this.current.BulletTTL + improvement, cost));
+                }
+            }
+
+            {
+                var (improvement, cost) = this.options.BulletDamageFunction(this.currentLevel.bulletdamage);
+                if (cost <= this.current.Currency)
+                {
+                    options.Add(new UpgradeOption(PlayerEnum.Stats.BulletDamage, this.current.BulletDamage, this.current.BulletDamage + improvement, cost));
+                }
+            }
+
             var firerate = this.options.FirerateFunction(this.currentLevel.firerate);
             if (firerate.cost <= this.current.Currency)
             {
@@ -83,7 +99,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         internal bool Apply(PlayerEnum.Stats stat, uint currentChamber)
         {
-            if (stat != PlayerEnum.Stats.AttackSpeed && stat != PlayerEnum.Stats.MaxHealth && stat != PlayerEnum.Stats.MovementSpeed && stat != PlayerEnum.Stats.Money)
+            if (stat != PlayerEnum.Stats.AttackSpeed && stat != PlayerEnum.Stats.BulletTTL && stat != PlayerEnum.Stats.BulletDamage && stat != PlayerEnum.Stats.MaxHealth && stat != PlayerEnum.Stats.MovementSpeed && stat != PlayerEnum.Stats.Money)
             {
                 return false;
             }
@@ -104,6 +120,22 @@ namespace ComputergrafikSpiel.Model.Character.Player
                     {
                         var (improvement, cost) = this.options.FirerateFunction(this.currentLevel.firerate++);
                         this.current.Firerate += improvement;
+                        this.current.Currency -= cost;
+                    }
+
+                    return true;
+                case PlayerEnum.Stats.BulletTTL:
+                    {
+                        var (improvement, cost) = this.options.BulletTTLFunction(this.currentLevel.bulletttl++);
+                        this.current.BulletTTL += improvement;
+                        this.current.Currency -= cost;
+                    }
+
+                    return true;
+                case PlayerEnum.Stats.BulletDamage:
+                    {
+                        var (improvement, cost) = this.options.BulletDamageFunction(this.currentLevel.bulletdamage++);
+                        this.current.BulletDamage += (int)improvement;
                         this.current.Currency -= cost;
                     }
 
@@ -136,6 +168,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 case PlayerEnum.Stats.AttackSpeed:
                     return this.current.Currency - this.options.FirerateFunction(this.currentLevel.firerate).cost >= 0;
+                case PlayerEnum.Stats.BulletTTL:
+                    return this.current.Currency - this.options.BulletTTLFunction(this.currentLevel.bulletttl).cost >= 0;
+                case PlayerEnum.Stats.BulletDamage:
+                    return this.current.Currency - this.options.BulletDamageFunction(this.currentLevel.bulletdamage).cost >= 0;
                 case PlayerEnum.Stats.MaxHealth:
                     return this.current.Currency - this.options.PrizeMoneyFunction(chamber) >= 0;
                 case PlayerEnum.Stats.MovementSpeed:

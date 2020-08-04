@@ -40,6 +40,28 @@ namespace ComputergrafikSpiel.Model.Character.Player
             };
         }
 
+        internal static PlayerStateOptions.ValueUpgradeDelegate BulletTTLCostAndValue()
+        {
+            return (uint x) =>
+            {
+                uint price = (x < 5) ? (uint)Math.Ceiling((x * x) - Math.Pow(x, 1.7f)) : 10;
+                float valueIncrease = .1f;
+
+                return (valueIncrease, price);
+            };
+        }
+
+        internal static PlayerStateOptions.ValueUpgradeDelegate BulletDamageCostAndValue()
+        {
+            return (uint x) =>
+            {
+                uint price = (x < 5) ? (uint)Math.Ceiling((x * x) - Math.Pow(x, 1.7f)) : 10;
+                float valueIncrease = 1;
+
+                return (valueIncrease, price);
+            };
+        }
+
         /// <summary>
         /// Returns quantity of prize reward per level <see href="https://www.desmos.com/calculator/a4bqkvnuzt"/>.
         /// </summary>

@@ -20,7 +20,7 @@ namespace ComputergrafikSpiel.Model.Soundtrack
         // Soundtrack der Dungeons
         public void StartDungeon1Music()
         {
-            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Winter_Bliss.mp3";
+            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Jumper.mp3";
             this.mediaPlayer.controls.play();
         }
 

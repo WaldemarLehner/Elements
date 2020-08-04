@@ -12,11 +12,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon.Interfaces
 
         int ProjectileCreationCount { get; }
 
-        float BulletTTL { get; }
-
         float BulletSize { get; }
-
-        int AttackDamage { get; }
 
         void CreateProjectile(Vector2 direction);
 
