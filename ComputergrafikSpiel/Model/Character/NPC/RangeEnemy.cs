@@ -1,8 +1,6 @@
 ﻿using ComputergrafikSpiel.Model.Character.NPC.NPCAI;
-using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
-using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
 
@@ -24,24 +22,32 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Water/" + texture);
                     this.BloodColorHue = 37f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
+                    this.Air = true;
+                    this.ProjectileHue = (202f, 223f);
                     break;
                 case WorldEnum.Type.Earth:
                     this.SetEnemyStats(40, 75, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
                     this.BloodColorHue = 179f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
+                    this.Air = true;
+                    this.ProjectileHue = (178f, 200f);
                     break;
                 case WorldEnum.Type.Fire:
                     this.SetEnemyStats(60, 80, 3);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Fire/" + texture);
                     this.BloodColorHue = 0f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
+                    this.Air = true;
+                    this.ProjectileHue = (0f, 30f);
                     break;
                 case WorldEnum.Type.Air:
                     this.SetEnemyStats(80, 85, 4);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
                     this.BloodColorHue = 119f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
+                    this.Air = false;
+                    this.ProjectileHue = (96f, 120f);
                     break;
                 default: break;
             }

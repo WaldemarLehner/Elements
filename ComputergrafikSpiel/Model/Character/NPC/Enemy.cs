@@ -27,7 +27,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public int CurrentHealth { get; set; }
 
+        public bool Air { get; set; }
+
         public float BloodColorHue { get; set; } = 255f;
+
+        public (float, float) ProjectileHue { get; set; } = (40f, 40f);
 
         public INPCController NPCController { get; set; }
 
@@ -164,13 +168,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 }
 
                 this.AttackCooldown = 2;
-                new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet");
+                new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
             }
         }
 
         private void ShootBulletBoss()
         {
-            new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, 4f, 24, false, this.Position, "Bullet");
+            new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;

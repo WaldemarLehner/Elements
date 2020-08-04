@@ -9,6 +9,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC.Interfaces
 
         EnemyEnum.Variant Variant { get; }
 
+        bool Air { get; set; }
+
         void IncreaseDifficulty(int multiplier);
 
         void TakingDamage(int damage);

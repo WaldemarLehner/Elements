@@ -15,7 +15,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     public class Weapon : IWeapon
     {
-        internal Weapon(float firerate, int projectileCCount, float bulletTTL, float bulletSize, int attackDamage)
+        internal Weapon(float firerate, int projectileCCount, float bulletSize)
         {
             this.Firerate = firerate;
             this.ProjectileCreationCount = projectileCCount;
@@ -50,7 +50,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         {
             for (int i = 0; i < this.ProjectileCreationCount; i++)
             {
-                new Projectile(this.AttackDamage, direction, this.BulletTTL, this.BulletSize, true, new Vector2(Scene.Scene.Player.Position.X, Scene.Scene.Player.Position.Y - 10), "Bullet");
+                new Projectile(Scene.Scene.Player.PlayerData.bulletDamage, direction, Scene.Scene.Player.PlayerData.bulletTTL, this.BulletSize, true, Scene.Scene.Player.Position, "Bullet", (37f, 20f));
             }
 
             EmitParticleOnceOptions opt = EmitParticleOnceOptions.PlayerWeaponMuzzle;

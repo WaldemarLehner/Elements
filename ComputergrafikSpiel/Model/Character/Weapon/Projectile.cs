@@ -10,14 +10,13 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
-
 namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Projectile : IEntity
     {
         private readonly GenericParticleEmitter backsmokeEmitter;
 
-        internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize, bool player, Vector2 position, string texture)
+        internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize, bool player, Vector2 position, string texture, (float, float) hue)
         {
             this.AttackDamage = attackDamage;
             this.Position = position;
@@ -40,6 +39,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             var emitOpt = EmitParticleOnceOptions.BulletSmoke;
             emitOpt.Direction = this.Direction * -1;
             emitOpt.PointOfEmmision = this.Position;
+            emitOpt.Hue = hue;
             this.backsmokeEmitter = new GenericParticleEmitter(emitOpt, .02f);
 
             // rotation calculation

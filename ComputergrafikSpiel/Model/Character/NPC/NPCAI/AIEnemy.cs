@@ -2,7 +2,6 @@
 using System.Linq;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Collider;
 using OpenTK;
 
@@ -10,6 +9,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
 {
     public class AIEnemy : INPCController
     {
+        private Ray ray;
+
         private float DashCooldown { get; set; } = 0;
 
         private float MovementCooldown { get; set; } = 0;
@@ -91,8 +92,16 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
 
         private bool LookForPlayer(INonPlayerCharacter myself, Vector2 direction)
         {
-            var ray = new Ray(myself.Collider.Position, direction, 500, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water);
-            var collidables = Scene.Scene.Current.ColliderManager.GetRayCollisionsSorted(ray, ray.Position);
+            if (myself.Air)
+            {
+                this.ray = new Ray(myself.Collider.Position, direction, 500, ColliderLayer.Layer.Player);
+            }
+            else
+            {
+                this.ray = new Ray(myself.Collider.Position, direction, 500, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water);
+            }
+
+            var collidables = Scene.Scene.Current.ColliderManager.GetRayCollisionsSorted(this.ray, this.ray.Position);
 
             var first = (from col in collidables where col != myself orderby Vector2.DistanceSquared(col.Collider.Position, myself.Position) - col.Collider.MaximumDistanceFromPosition ascending select col).FirstOrDefault();
             if (first == null || !(first is IPlayer))
