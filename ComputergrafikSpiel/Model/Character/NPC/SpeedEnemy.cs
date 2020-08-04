@@ -4,7 +4,6 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
-using System;
 
 namespace ComputergrafikSpiel.Model.Character.NPC
 {
@@ -12,33 +11,36 @@ namespace ComputergrafikSpiel.Model.Character.NPC
     {
         public SpeedEnemy(Vector2 startposition, string texture, WorldEnum.Type type)
         {
-            Console.WriteLine("Creating Speed");
             this.Position = startposition;
+            var collisionMaskAir = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall;
             var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 17, ColliderLayer.Layer.Enemy, collisionMask);
             this.Variant = EnemyEnum.Variant.Speed;
 
             switch (type)
             {
                 case WorldEnum.Type.Water:
-                    this.SetEnemyStats(20, 100, 1, 1);
+                    this.SetEnemyStats(20, 100, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Water/" + texture);
                     this.BloodColorHue = 241f;
+                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
                     break;
                 case WorldEnum.Type.Earth:
-                    this.SetEnemyStats(40, 110, 2, 2);
+                    this.SetEnemyStats(40, 110, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
                     this.BloodColorHue = 96f;
+                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
                     break;
                 case WorldEnum.Type.Fire:
-                    this.SetEnemyStats(60, 120, 3, 3);
+                    this.SetEnemyStats(60, 120, 3);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Fire/" + texture);
                     this.BloodColorHue = 51f;
+                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
                     break;
                 case WorldEnum.Type.Air:
-                    this.SetEnemyStats(80, 20, 4, 4);
+                    this.SetEnemyStats(80, 20, 4);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
                     this.BloodColorHue = 0f;
+                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
                     break;
                 default: break;
             }

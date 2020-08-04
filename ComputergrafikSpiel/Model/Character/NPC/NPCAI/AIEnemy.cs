@@ -22,12 +22,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
         {
             this.DashCooldown -= dtime;
             var direction = Scene.Scene.Player.Collider.Position - myself.Collider.Position;
-            direction.Normalize();
+
             if (this.LookForPlayer(myself, direction))
             {
                 if (myself.Variant == EnemyEnum.Variant.Range)
                 {
-                    myself.ShootBullet();
+                    myself.ShootBullet(dtime);
+                    return this.MoveTowardsPlayer(direction, new Vector2(10, 10));
                 }
                 else if (myself.Variant == EnemyEnum.Variant.Dash)
                 {
@@ -37,6 +38,17 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
                         this.DashCooldown = 1;
                     }
                 }
+                else if (myself.Variant == EnemyEnum.Variant.Boss)
+                {
+                    myself.ShootBullet(dtime);
+                    if (this.DashCooldown <= 0)
+                    {
+                        myself.Dash();
+                        this.DashCooldown = 1;
+                    }
+                }
+
+                myself.GiveDamageToPlayer();
 
                 return this.MoveTowardsPlayer(direction, new Vector2(0, 0));
             }
@@ -95,7 +107,9 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
 
         private Vector2 MoveTowardsPlayer(Vector2 direction, Vector2 offset)
         {
-            return direction - offset;
+            var truedirection = direction - offset;
+            truedirection.Normalize();
+            return truedirection;
         }
     }
 }

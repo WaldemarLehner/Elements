@@ -67,6 +67,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         private float DashMultiplier { get; set; } = 1f;
 
+        private float BossBulletCycle { get; set; } = 1f;
+
         public void SetScale()
         {
             this.scale = this.Scale;
@@ -87,11 +89,10 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.CharacterMove?.Invoke(this, e);
         }
 
-        public void SetEnemyStats(int maxHealth, float movementSpeed, int defense, int attackDamage)
+        public void SetEnemyStats(int maxHealth, float movementSpeed, int attackDamage)
         {
             this.MaxHealth = maxHealth;
             this.MovementSpeed = movementSpeed;
-            this.Defense = defense;
             this.AttackDamage = attackDamage;
         }
 
@@ -102,12 +103,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(damage));
             }
 
-            if (this.Defense < damage)
-            {
-                damage -= this.Defense;
-                this.CurrentHealth -= damage;
-                this.OnHit(EventArgs.Empty);
-            }
+            this.CurrentHealth -= damage;
 
             if (this.CurrentHealth <= 0)
             {
@@ -134,9 +130,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void Update(float dtime)
         {
-
-            Console.WriteLine(this.MovementSpeedDash);
-
             this.LastPosition = this.Position;
 
             this.LookAt(Scene.Scene.Player.Position);
@@ -152,14 +145,32 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.CollisionPrevention();
         }
 
-        public void ShootBullet()
+        public void ShootBullet(float dtime)
         {
             if (this.AttackCooldown <= 0)
             {
+                if (this.Variant == EnemyEnum.Variant.Boss)
+                {
+                    if (this.BossBulletCycle <= 0)
+                    {
+                        // TODO: geht nicht
+                        this.ShootBulletBoss();
+                        this.BossBulletCycle -= dtime;
+                    }
+
+                    this.BossBulletCycle = 1;
+                    this.AttackCooldown = 2;
+                    return;
+                }
+
                 this.AttackCooldown = 2;
                 new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet");
             }
+        }
 
+        private void ShootBulletBoss()
+        {
+            new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, 4f, 24, false, this.Position, "Bullet");
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;

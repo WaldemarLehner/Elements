@@ -13,7 +13,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC.Interfaces
 
         void TakingDamage(int damage);
 
-        void ShootBullet();
+        void ShootBullet(float dtime);
 
         void GiveDamageToPlayer();
 
