@@ -9,11 +9,11 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
     {
         internal static Dictionary<PlayerEnum.Stats, ITileTexture> Default => GenerateDefault();
 
-        internal static string MainText(EndOption End)
+        internal static string MainText(EndOption end)
         {
-            var nameText = GetName(End.Stat);
-            var EndText = GetEndText(End.ValueBefore, End.Improvement, End.ValueAfter);
-            return $"{nameText} {EndText}";
+            var nameText = GetName(end.Stat);
+            var endText = GetEndText(end.ValueBefore, end.Improvement, end.ValueAfter);
+            return $"{nameText} {endText}";
         }
 
         private static string GetEndText(float valueBefore, float improvement, float valueAfter)

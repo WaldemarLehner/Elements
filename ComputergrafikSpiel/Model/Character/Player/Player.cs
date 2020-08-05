@@ -143,7 +143,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             opt.DirectionDeviation = 180;
             opt.Hue = (this.BloodColorHue, this.BloodColorHue);
             StaticParticleEmmiter.EmitOnce(opt);
-
         }
 
         public void TakeHeal()
@@ -162,6 +161,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 return;
             }
+
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)
             {
@@ -188,7 +188,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 this.Position += this.directionXY * this.MovementSpeed * dtime / 4;
                 this.run = false;
             }
-
 
             this.dirtEmitter.Update(dtime);
 

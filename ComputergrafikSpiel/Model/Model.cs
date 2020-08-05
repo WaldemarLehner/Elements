@@ -52,6 +52,11 @@ namespace ComputergrafikSpiel.Model
                 this.UpgradeScreen.Update(dTime);
             }
 
+            if (this.EndScreen != null)
+            {
+                this.EndScreen.Update(dTime);
+            }
+
             Scene.Scene.Current.Update(dTime);
         }
 
@@ -111,6 +116,7 @@ namespace ComputergrafikSpiel.Model
                 Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
                 this.EndScreen = null;
             }
+
             Console.WriteLine("death");
             this.EndScreen = new EndScreen(Scene.Scene.Player.GetEndOptions((uint)this.Level), 10, topV, width, callback: Callback);
         }

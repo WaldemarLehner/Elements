@@ -107,6 +107,11 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(this.Model.UpgradeScreen.Renderables);
                 }
 
+                if (this.Model.EndScreen != null)
+                {
+                    enumerable.AddRange(this.Model.EndScreen.Renderables);
+                }
+
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
@@ -273,7 +278,6 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 if (Scene.Player.IsDead == true)
                 {
-                    // (this.Model as Model).OnSceneCompleted();
                     (this.Model as Model).OnPlayerDeath();
                     Scene.Player.IsDead = false;
                 }

@@ -34,19 +34,19 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         /// </summary>
         /// <param name="parent">The UpdateScreen the button belongs to.</param>
         /// <param name="centre">The Centre of the button.</param>
-        /// <param name="EndOption">Data for the button.</param>
+        /// <param name="endOption">Data for the button.</param>
         /// <param name="contentWidth">The width of the inner part of the button. This is to make all buttons the same width.</param>
         /// <param name="onClick">Callback to be triggered when the button is clicked.</param>
         /// <param name="buttonSize">Buttons size in World Coordinates.</param>
-        internal EndScreenButton(EndScreen parent, Vector2 centre, EndOption EndOption, Vector2 buttonSize, Action<PlayerEnum.Stats> onClick)
+        internal EndScreenButton(EndScreen parent, Vector2 centre, EndOption endOption, Vector2 buttonSize, Action<PlayerEnum.Stats> onClick)
         {
             this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.centre = centre;
             this.callback = onClick ?? throw new ArgumentNullException(nameof(onClick));
             this.size = buttonSize;
-            this.stat = EndOption.Stat;
-            string mainText = EndScreenButtonTextureLookupGenerator.MainText(EndOption);
-            string priceText = EndOption.Price.ToString();
+            this.stat = endOption.Stat;
+            string mainText = EndScreenButtonTextureLookupGenerator.MainText(endOption);
+            string priceText = endOption.Price.ToString();
 
             // Button Setup:
             // Icon Name ValueOld + Change > ValueNew MoneyIconSmall Price
@@ -103,7 +103,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                         Scale = scale,
                         Coordinates = TextureCoordinates.Default,
                         Position = center,
-                        Tex = TextureLookup[EndOption.Stat],
+                        Tex = TextureLookup[endOption.Stat],
                     });
                 }
                 else if (i <= mainText.Length)
