@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
@@ -82,7 +83,7 @@ namespace ComputergrafikSpiel.Model
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
-        public void OnSceneCompleted(IWorldScene world)
+        public void OnSceneCompleted()
         {
             this.Level++;
 
@@ -100,12 +101,18 @@ namespace ComputergrafikSpiel.Model
 
         public void OnPlayerDeath()
         {
-            this.Level = 0;
+            this.Level++;
 
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
             var topV = new Vector2((left + right) * .5f, top);
             var width = (right - left) * .5f;
-            this.EndScreen = new EndScreen(10, topV, width);
+            void Callback(PlayerEnum.Stats stat)
+            {
+                Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
+                this.EndScreen = null;
+            }
+            Console.WriteLine("death");
+            this.EndScreen = new EndScreen(Scene.Scene.Player.GetEndOptions((uint)this.Level), 10, topV, width, callback: Callback);
         }
 
         public void CreateRandomEnemies(int min, int max, IWorldScene world)

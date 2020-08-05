@@ -1,29 +1,27 @@
-﻿using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.Player;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 {
     public class EndScreen : IUpdateable
     {
-        private readonly List<EndScreenButton> endScreenButtons = new List<EndScreenButton>();
+        private readonly List<EndScreenButton> EndScreenButtons = new List<EndScreenButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 
-        internal EndScreen(float tileSize, Vector2 top, float width, float margin = 5f)
+        internal EndScreen(IList<EndOption> options, float tileSize, Vector2 top, float width, float margin = 5f, Action<PlayerEnum.Stats> callback = null)
         {
             this.TileSize = tileSize;
 
             var entrySize = width / 5;
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < options.Count; i++)
             {
                 float y = top.Y - ((entrySize + margin) * (i + 1));
-                this.endScreenButtons.Add(new EndScreenButton(this, new Vector2(top.X, y), new Vector2(entrySize * 8, entrySize)));
+                this.EndScreenButtons.Add(new EndScreenButton(this, new Vector2(top.X, y), options[i], new Vector2(entrySize * 8, entrySize), callback ?? ((PlayerEnum.Stats s) => Console.WriteLine("Clicked!"))));
             }
         }
 
@@ -35,7 +33,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 
         public void Update(float dtime)
         {
-            foreach (var entry in this.endScreenButtons)
+            foreach (var entry in this.EndScreenButtons)
             {
                 entry.Update(dtime);
             }
@@ -46,7 +44,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
             }
 
             this.renderables.Clear();
-            foreach (var button in this.endScreenButtons)
+            foreach (var button in this.EndScreenButtons)
             {
                 this.renderables.AddRange(button.Background);
                 this.renderables.AddRange(button.Foreground);

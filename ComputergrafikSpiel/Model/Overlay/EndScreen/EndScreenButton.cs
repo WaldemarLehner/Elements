@@ -1,25 +1,26 @@
-﻿using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using ComputergrafikSpiel.Model.Character.Player;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using OpenTK;
 using OpenTK.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 {
     internal class EndScreenButton : IUpdateable
     {
+        private static readonly Dictionary<PlayerEnum.Stats, ITileTexture> TextureLookup = EndScreenButtonTextureLookupGenerator.Default;
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture BackgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/Button", (3, 2));
         private readonly List<GenericRenderable> backgroundTiles;
         private readonly List<GenericRenderable> foregroundTiles;
         private readonly EndScreen parent;
+        private readonly Action<PlayerEnum.Stats> callback;
+        private readonly PlayerEnum.Stats stat;
 
         private bool triggered = false;
         private Vector2 size;
@@ -28,27 +29,28 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         private Vector2 centre;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpgradeScreenButton"/> class.
+        /// Initializes a new instance of the <see cref="EndScreenButton"/> class.
         /// Create a new button.
         /// </summary>
         /// <param name="parent">The UpdateScreen the button belongs to.</param>
         /// <param name="centre">The Centre of the button.</param>
-        /// <param name="upgradeOption">Data for the button.</param>
+        /// <param name="EndOption">Data for the button.</param>
         /// <param name="contentWidth">The width of the inner part of the button. This is to make all buttons the same width.</param>
         /// <param name="onClick">Callback to be triggered when the button is clicked.</param>
         /// <param name="buttonSize">Buttons size in World Coordinates.</param>
-        internal EndScreenButton(EndScreen parent, Vector2 centre, Vector2 buttonSize)
+        internal EndScreenButton(EndScreen parent, Vector2 centre, EndOption EndOption, Vector2 buttonSize, Action<PlayerEnum.Stats> onClick)
         {
             this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.centre = centre;
+            this.callback = onClick ?? throw new ArgumentNullException(nameof(onClick));
             this.size = buttonSize;
-            List<string> text = new List<string>();
-            text.Add("Retry");
-            text.Add("Quit");
+            this.stat = EndOption.Stat;
+            string mainText = EndScreenButtonTextureLookupGenerator.MainText(EndOption);
+            string priceText = EndOption.Price.ToString();
 
             // Button Setup:
             // Icon Name ValueOld + Change > ValueNew MoneyIconSmall Price
-            int foregroundTileCount = 1 + text[0].Length + 1;
+            int foregroundTileCount = 1 + mainText.Length + 1 + priceText.Length;
             var backgroundTileCount = (int)Math.Round(buttonSize.X / buttonSize.Y);
             float foregroundEntrySize = (buttonSize.Y < (buttonSize.X / foregroundTileCount)) ? buttonSize.Y : (buttonSize.X / foregroundTileCount);
 
@@ -93,7 +95,6 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                 Vector2 center = new Vector2(x, this.centre.Y);
                 var scale = foregroundEntrySize / 2f * Vector2.One;
 
-                /*
                 if (i == 0)
                 {
                     // Icon.
@@ -102,7 +103,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                         Scale = scale,
                         Coordinates = TextureCoordinates.Default,
                         Position = center,
-                        Tex = text[i],
+                        Tex = TextureLookup[EndOption.Stat],
                     });
                 }
                 else if (i <= mainText.Length)
@@ -150,7 +151,6 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                         Tex = Font,
                     });
                 }
-                */
             }
         }
 
@@ -191,6 +191,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                     if (this.triggered == false)
                     {
                         this.triggered = true;
+                        this.callback(this.stat);
                     }
                 }
             }

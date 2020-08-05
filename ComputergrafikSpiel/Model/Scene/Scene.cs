@@ -271,11 +271,14 @@ namespace ComputergrafikSpiel.Model.Scene
 
             if (Scene.Player != null)
             {
-                Scene.Player.Update(dtime);
                 if (Scene.Player.IsDead == true)
                 {
+                    // (this.Model as Model).OnSceneCompleted();
                     (this.Model as Model).OnPlayerDeath();
+                    Scene.Player.IsDead = false;
                 }
+
+                Scene.Player.Update(dtime);
             }
 
             // Spawn Interactable when all enemies are dead
@@ -287,7 +290,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 }
                 else
                 {
-                    (this.Model as Model).OnSceneCompleted(this.World);
+                    (this.Model as Model).OnSceneCompleted();
                     (this.Model as Model).CreateTriggerZone();
                 }
 

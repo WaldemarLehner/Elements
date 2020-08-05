@@ -9,6 +9,7 @@ using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using OpenTK;
 using OpenTK.Graphics;
@@ -161,7 +162,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 return;
             }
-
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)
             {
@@ -249,6 +249,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
         }
 
         public IList<UpgradeOption> GetOptions(uint level) => this.playerStateManager.GetUpgradeOptions(level);
+
+        public IList<EndOption> GetEndOptions(uint level) => this.playerStateManager.GetEndOptions(level);
 
         public void SelectOption(PlayerEnum.Stats stat, uint level)
         {

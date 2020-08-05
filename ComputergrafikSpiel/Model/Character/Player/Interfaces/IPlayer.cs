@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
+using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 
 namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
@@ -29,6 +30,8 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
         void Equip(Weapon.Weapon weapon);
 
         IList<UpgradeOption> GetOptions(uint currentLevel);
+
+        IList<EndOption> GetEndOptions(uint currentLevel);
 
         void SelectOption(PlayerEnum.Stats stat, uint level);
     }
