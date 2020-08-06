@@ -113,6 +113,22 @@ namespace ComputergrafikSpiel.Model
             this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
         }
 
+        public void OnPlayerDeath()
+        {
+            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
+            var centerV = new Vector2((left + right) * .5f, (top + bottom) * .5f);
+            var width = (right - left) * .5f;
+            void Reset(PlayerEnum.Stats stat)
+            {
+                Scene.Scene.Player.Reset();
+                this.EndScreen = null;
+            }
+
+            Console.WriteLine("death");
+            // this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
+            this.EndScreen = new EndScreen(Scene.Scene.Player.GetEndOptions((uint)this.Level), 10, centerV, width, reset: Reset);
+        }
+
         public List<(int x, int y)> SpawningAreaEnemys(int min, int max, IWorldScene world)
         {
             Random random = new Random();

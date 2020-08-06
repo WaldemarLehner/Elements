@@ -289,7 +289,7 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 if (!(this.Model as Model).FirstScene)
                 {
-                    (this.Model as Model).OnSceneCompleted(this.World);
+                    (this.Model as Model).OnSceneCompleted();
                 }
 
                 this.lockInc = false;

@@ -164,7 +164,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             float bottom = sceneDefinition.WorldSceneBounds.bottom;
 
             float gameoverSize = (right - left) / 2;
-            var (currentHealth, _, _) = player.PlayerData;
+            var (currentHealth, _, _, _, _) = player.PlayerData;
 
             if (currentHealth == 0)
             {
