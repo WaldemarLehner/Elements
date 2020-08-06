@@ -5,6 +5,7 @@ using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
+using System;
 using System.Collections.Generic;
 
 namespace ComputergrafikSpiel.Test.Model.Character.NPC
@@ -38,23 +39,9 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
         {
             CreateNewScene();
             ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
-            enemy.Defense = defense;
             int Health = enemy.CurrentHealth;
             enemy.TakingDamage(damage);
             Assert.AreNotEqual(Health, enemy.CurrentHealth);
-        }
-
-        [DataTestMethod]
-        [DataRow(1, 5)]
-        [DataRow(2, 3)]
-        public void AssertThatMoreDefenseThanDamageMakesNoDamage(int damage, int defense)
-        {
-            CreateNewScene();
-            ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
-            enemy.Defense = defense;
-            int Health = enemy.CurrentHealth;
-            enemy.TakingDamage(damage);
-            Assert.AreEqual(Health, enemy.CurrentHealth);
         }
 
         [DataTestMethod]
@@ -64,12 +51,10 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
         {
             ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
             int MaxHealth = enemy.MaxHealth;
-            int Defense = enemy.Defense;
             float MovementSpeed = enemy.MovementSpeed;
             int AttackDamage = enemy.AttackDamage;
             enemy.IncreaseDifficulty(multiplier);
             Assert.AreNotEqual(MaxHealth, enemy.MaxHealth);
-            Assert.AreNotEqual(Defense, enemy.Defense);
             Assert.AreNotEqual(MovementSpeed, enemy.MovementSpeed);
             Assert.AreNotEqual(AttackDamage, enemy.AttackDamage);
         }

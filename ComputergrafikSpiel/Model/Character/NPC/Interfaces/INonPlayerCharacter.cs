@@ -1,5 +1,6 @@
 ﻿using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.World;
+using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.NPC.Interfaces
 {

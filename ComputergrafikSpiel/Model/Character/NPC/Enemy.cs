@@ -19,12 +19,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
     {
         private Vector2 scale;
 
-        public event EventHandler CharacterDeath;
-
-        public event EventHandler CharacterHit;
-
-        public event EventHandler CharacterMove;
-
         public int CurrentHealth { get; set; }
 
         public bool Air { get; set; }
@@ -40,8 +34,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public float MovementSpeedDash => 1f * this.MovementSpeed * this.DashMultiplier;
 
         public float MovementSpeed { get; set; } = 1f;
-
-        public int Defense { get; set; }
 
         public ICollider Collider { get; set; }
 
@@ -80,21 +72,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.scale = this.Scale;
         }
 
-        public void OnDeath(EventArgs e)
-        {
-            this.CharacterDeath?.Invoke(this, e);
-        }
-
-        public void OnHit(EventArgs e)
-        {
-            this.CharacterHit?.Invoke(this, e);
-        }
-
-        public void OnMove(EventArgs e)
-        {
-            this.CharacterMove?.Invoke(this, e);
-        }
-
         public void SetEnemyStats(int maxHealth, float movementSpeed, int attackDamage)
         {
             this.MaxHealth = maxHealth;
@@ -122,14 +99,12 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 opt.Hue = (this.BloodColorHue, this.BloodColorHue);
                 StaticParticleEmmiter.EmitOnce(opt);
                 Scene.Scene.Current.RemoveObject(this);
-                this.OnDeath(EventArgs.Empty);
             }
         }
 
         public void IncreaseDifficulty(int multiplier)
         {
             this.AttackDamage += multiplier;
-            this.Defense += multiplier;
             this.MaxHealth += multiplier;
             this.MovementSpeed += multiplier;
         }
@@ -141,8 +116,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.LookAt(Scene.Scene.Player.Position);
 
             this.Direction = this.NPCController.EnemyAIMovement(this, dtime);
-
-            this.OnMove(EventArgs.Empty);
 
             this.Position += this.Direction * this.MovementSpeedDash * dtime;
 
@@ -165,7 +138,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 }
                 else
                 {
-                    Console.WriteLine("EnemyShoots");
                     new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
                 }
 

@@ -43,15 +43,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
         }
 
-        // Define Player
-        public event EventHandler CharacterDeath;
-
-        public event EventHandler CharacterHit;
-
-        public event EventHandler CharacterMove;
-
-        public event EventHandler PlayerInc;
-
         public int MaxHealth => (int)this.playerStateManager.Current.MaxHealth;
 
         public int CurrentHealth => (int)this.playerStateManager.Current.Health;
@@ -59,9 +50,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public float BulletTTL => this.playerStateManager.Current.BulletTTL;
 
         public int BulletDamage => (int)this.playerStateManager.Current.BulletDamage;
-
-        [Obsolete]
-        public int Defense { get; set; } = 0;
 
         public float AttackSpeed => this.playerStateManager.Current.Firerate;
 
@@ -101,6 +89,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float BloodColorHue => 0f;
 
+        public bool Invulnerable { get; set; } = false;
+
         // Look wich action was handed over and call corresponding method
         public void PlayerControl()
         {
@@ -122,28 +112,29 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.playerActionList.Clear();
         }
 
-        // Needs EventHandler from Npc who hits player
         public void TakingDamage(int damage)
         {
             bool died = false;
 
-            this.playerStateManager.Hurt(ref died);
+            if (!this.Invulnerable)
+            {
+                this.playerStateManager.Hurt(ref died, damage);
+
+                // Spawn particles
+                EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
+                opt.Count = 25;
+                opt.PointOfEmmision = this.Position;
+                opt.Direction = Vector2.One;
+                opt.DirectionDeviation = 180;
+                opt.Hue = (this.BloodColorHue, this.BloodColorHue);
+                StaticParticleEmmiter.EmitOnce(opt);
+            }
 
             if (died)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
-                this.OnDeath(EventArgs.Empty);
             }
-
-            // Spawn particles
-            EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
-            opt.Count = 25;
-            opt.PointOfEmmision = this.Position;
-            opt.Direction = Vector2.One;
-            opt.DirectionDeviation = 180;
-            opt.Hue = (this.BloodColorHue, this.BloodColorHue);
-            StaticParticleEmmiter.EmitOnce(opt);
         }
 
         public void TakeHeal()
@@ -200,26 +191,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             Scene.Scene.Current.ColliderManager.HandleTriggerCollisions(this);
         }
 
-        public void OnInc(EventArgs e)
-        {
-            this.PlayerInc?.Invoke(this, e);
-        }
-
-        public void OnDeath(EventArgs e)
-        {
-            this.CharacterDeath?.Invoke(this, e);
-        }
-
-        public void OnHit(EventArgs e)
-        {
-            this.CharacterHit?.Invoke(this, e);
-        }
-
-        public void OnMove(EventArgs e)
-        {
-            this.CharacterMove?.Invoke(this, e);
-        }
-
         public void Equip(Weapon.Weapon weapon)
         {
             this.EquipedWeapon = weapon;
@@ -261,7 +232,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             if (playerAction == PlayerEnum.PlayerActions.MoveUp || playerAction == PlayerEnum.PlayerActions.MoveDown || playerAction == PlayerEnum.PlayerActions.MoveLeft || playerAction == PlayerEnum.PlayerActions.MoveRight)
             {
                 this.playerActionList.Add(playerAction);
-                this.OnMove(EventArgs.Empty);
                 this.playerInteractionSystem.PlayerInteraction(this);
             }
             else if (playerAction == PlayerEnum.PlayerActions.Attack)
