@@ -67,11 +67,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public Vector2 Direction { get; set; }
 
-        private float AttackCooldown { get; set; } = 0;
+        public float AttackCooldown { get; set; } = 1f;
+
+        private float AttackCooldownSafestate { get; set; } = 0f;
+
+        private float AttackCooldownRangeSafestate { get; set; } = 0f;
 
         private float DashMultiplier { get; set; } = 1f;
-
-        private float BossBulletCycle { get; set; } = 1f;
 
         public void SetScale()
         {
@@ -144,37 +146,51 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             this.Position += this.Direction * this.MovementSpeedDash * dtime;
 
-            this.AttackCooldown -= dtime;
+            this.AttackCooldownSafestate -= dtime;
+
+            this.AttackCooldownRangeSafestate -= dtime;
+
+            this.GiveDamageToPlayer();
 
             this.CollisionPrevention();
         }
 
         public void ShootBullet(float dtime)
         {
-            if (this.AttackCooldown <= 0)
+            if (this.AttackCooldownRangeSafestate <= 0)
             {
                 if (this.Variant == EnemyEnum.Variant.Boss)
                 {
-                    if (this.BossBulletCycle <= 0)
-                    {
-                        // TODO: geht nicht
-                        this.ShootBulletBoss();
-                        this.BossBulletCycle -= dtime;
-                    }
-
-                    this.BossBulletCycle = 1;
-                    this.AttackCooldown = 2;
-                    return;
+                    this.ShootBulletBoss();
+                }
+                else
+                {
+                    Console.WriteLine("EnemyShoots");
+                    new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
                 }
 
-                this.AttackCooldown = 2;
-                new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
+                this.AttackCooldownRangeSafestate = this.AttackCooldown;
             }
         }
 
         private void ShootBulletBoss()
         {
-            new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
+            Vector2[] directions =
+            {
+                new Vector2(0, 100),
+                new Vector2(100, 100),
+                new Vector2(100, 0),
+                new Vector2(-100, 100),
+                new Vector2(100, -100),
+                new Vector2(0, -100),
+                new Vector2(-100, -100),
+                new Vector2(-100, 0),
+            };
+
+            for (int i = 0; i < directions.Length; i++)
+            {
+                new Projectile(this.AttackDamage, directions[i], 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
+            }
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
@@ -196,13 +212,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public void GiveDamageToPlayer()
         {
-            if (this.AttackCooldown <= 0)
+            if (this.AttackCooldownSafestate <= 0)
             {
                 var collidables = Scene.Scene.Current.ColliderManager.GetCollisions(this);
 
                 foreach (var player in from i in collidables where i is Player.Player select i as Player.Player)
                 {
-                    this.AttackCooldown = 2;
+                    this.AttackCooldownSafestate = this.AttackCooldown;
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write("Spieler wurde getroffen!\n");
                     Scene.Scene.Player.TakingDamage(this.AttackDamage);

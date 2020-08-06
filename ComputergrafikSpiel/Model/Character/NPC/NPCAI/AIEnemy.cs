@@ -19,12 +19,24 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
 
         private Vector2 RandomDirectionSave { get; set; }
 
+        private float StandingStillCooldownSaveState { get; set; } = 0;
+
+        private float StandingStillCooldown { get; set; } = 3f;
+
+        private Vector2 StandingPosition { get; set; }
+
         public Vector2 EnemyAIMovement(INonPlayerCharacter myself, float dtime)
         {
             this.DashCooldown -= dtime;
+            this.StandingStillCooldownSaveState -= dtime;
             var direction = Scene.Scene.Player.Collider.Position - myself.Collider.Position;
+            if (this.StandingStillCooldownSaveState <= 0)
+            {
+                this.StandingPosition = myself.Position;
+                this.StandingStillCooldownSaveState = this.StandingStillCooldown;
+            }
 
-            if (this.LookForPlayer(myself, direction))
+            if (this.LookForPlayer(myself, direction) && this.StandingPosition != myself.Position)
             {
                 if (myself.Variant == EnemyEnum.Variant.Range)
                 {
@@ -48,8 +60,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC.NPCAI
                         this.DashCooldown = 1;
                     }
                 }
-
-                myself.GiveDamageToPlayer();
 
                 return this.MoveTowardsPlayer(direction, new Vector2(0, 0));
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
@@ -37,7 +38,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Position = new Vector2(50, 65);
             this.scale = new Vector2(24, 24);
             this.Scale = this.scale;
-            var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Interactable | ColliderLayer.Layer.Trigger;
+            var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Interactable | ColliderLayer.Layer.Trigger;
             this.Collider = new CircleOffsetCollider(this, new Vector2(0, -15f), 10, ColliderLayer.Layer.Player, collisionLayer);
             this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
         }
