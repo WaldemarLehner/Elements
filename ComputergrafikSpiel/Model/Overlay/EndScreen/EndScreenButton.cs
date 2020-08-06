@@ -29,6 +29,8 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         private bool clickReleasedAfterCreation = false; // This is needed so that buttons dont get clicked immediatedly.
         private Vector2 centre;
 
+        private PlayerEnum.Stats endscreenbuttons;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EndScreenButton"/> class.
         /// Create a new button.
@@ -49,6 +51,15 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
             this.stat = endOption.Stat;
             //string mainText = EndScreenButtonTextureLookupGenerator.MainText(endOption);
             //string priceText = endOption.Price.ToString();
+
+            if (text == "Quit")
+            {
+                this.endscreenbuttons = PlayerEnum.Stats.Quit;
+            }
+            else if (text == "Retry")
+            {
+                this.endscreenbuttons = PlayerEnum.Stats.Reset;
+            }
 
             // Button Setup:
             // Icon Name ValueOld + Change > ValueNew MoneyIconSmall Price

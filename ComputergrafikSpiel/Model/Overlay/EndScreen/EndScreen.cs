@@ -9,11 +9,11 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 {
     public class EndScreen : IUpdateable
     {
-        private static readonly List<string> Text = new List<string>(new string[] { "Retry", "Quit" });
+        private static readonly string[] Text = new string[2] { "Retry", "Quit" };
         private readonly List<EndScreenButton> endScreenButtons = new List<EndScreenButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 
-        internal EndScreen(IList<EndOption> options, float tileSize, Vector2 bottom, float width, float margin = 5f, Action<PlayerEnum.Stats> reset = null)
+        internal EndScreen(IList<EndOption> options, float tileSize, Vector2 center, float width, float margin = 5f, Action<PlayerEnum.Stats> reset = null)
         {
             this.TileSize = tileSize;
 
@@ -21,8 +21,8 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 
             for (int i = 0; i < 2; i++)
             {
-                float y = bottom.Y - ((entrySize + margin) * (i + 1));
-                this.endScreenButtons.Add(new EndScreenButton(this, new Vector2(bottom.X, y), options[i], new Vector2(entrySize * 8, entrySize), reset ?? ((PlayerEnum.Stats s) => Console.WriteLine("Clicked!")), Text[i]));
+                float y = center.Y - ((entrySize + margin) * (i + 1));
+                this.endScreenButtons.Add(new EndScreenButton(this, new Vector2(center.X, y), options[i], new Vector2(entrySize * 8, entrySize), reset ?? ((PlayerEnum.Stats s) => Console.WriteLine("Clicked!")), Text[i]));
             }
         }
 

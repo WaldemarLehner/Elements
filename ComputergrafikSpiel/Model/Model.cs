@@ -107,7 +107,7 @@ namespace ComputergrafikSpiel.Model
         public void OnPlayerDeath()
         {
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
-            var bottomV = new Vector2((left + right) * .5f, bottom);
+            var centerV = new Vector2((left + right) * .5f, (top + bottom) * .5f);
             var width = (right - left) * .5f;
             void Reset(PlayerEnum.Stats stat)
             {
@@ -117,7 +117,7 @@ namespace ComputergrafikSpiel.Model
 
             Console.WriteLine("death");
             // this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
-            this.EndScreen = new EndScreen(Scene.Scene.Player.GetEndOptions((uint)this.Level), 10, bottomV, width, reset: Reset);
+            this.EndScreen = new EndScreen(Scene.Scene.Player.GetEndOptions((uint)this.Level), 10, centerV, width, reset: Reset);
         }
 
         public void CreateRandomEnemies(int min, int max, IWorldScene world)

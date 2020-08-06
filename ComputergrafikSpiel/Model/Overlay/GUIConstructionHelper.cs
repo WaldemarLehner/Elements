@@ -169,7 +169,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             if (currentHealth == 0)
             {
                 float xCenter = (left + right) / 2;
-                float yCenter = (top + bottom) / 2;
+                float yCenter = (bottom + top) / 1.5f;
                 var texCoords = Gameover.GetTexCoordsOfIndex(0); // Für die rechte Hälfte des Bildes.
 
                 var entry = new GenericGUIRenderable()
