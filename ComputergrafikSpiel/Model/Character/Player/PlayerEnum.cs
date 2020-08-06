@@ -25,6 +25,8 @@
             AttackSpeed,
             MovementSpeed,
             Money,
+            Reset,
+            Quit,
         }
     }
 }

@@ -29,6 +29,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
+        private bool updateDisabled = false;
 
         public Player()
         {
@@ -123,6 +124,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
         // Needs EventHandler from Npc who hits player
         public void TakingDamage()
         {
+            if (this.updateDisabled == true)
+            {
+                return;
+            }
+
             bool died = false;
 
             this.playerStateManager.Hurt(ref died);
@@ -132,6 +138,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
+                this.updateDisabled = true;
                 this.IsDead = true;
             }
 
@@ -157,11 +164,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
-            if (this.IsDead == true)
+            if (this.updateDisabled == true)
             {
                 return;
             }
-
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)
             {
@@ -254,6 +260,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void SelectOption(PlayerEnum.Stats stat, uint level)
         {
             this.playerStateManager.Apply(stat, level);
+        }
+
+        public void Reset()
+        {
+            this.playerStateManager.Reset();
         }
 
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)

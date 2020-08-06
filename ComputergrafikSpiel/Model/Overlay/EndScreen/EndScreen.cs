@@ -9,19 +9,20 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 {
     public class EndScreen : IUpdateable
     {
+        private static readonly List<string> Text = new List<string>(new string[] { "Retry", "Quit" });
         private readonly List<EndScreenButton> endScreenButtons = new List<EndScreenButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 
-        internal EndScreen(IList<EndOption> options, float tileSize, Vector2 top, float width, float margin = 5f, Action<PlayerEnum.Stats> callback = null)
+        internal EndScreen(IList<EndOption> options, float tileSize, Vector2 bottom, float width, float margin = 5f, Action<PlayerEnum.Stats> reset = null)
         {
             this.TileSize = tileSize;
 
             var entrySize = width / 5;
 
-            for (int i = 0; i < options.Count; i++)
+            for (int i = 0; i < 2; i++)
             {
-                float y = top.Y - ((entrySize + margin) * (i + 1));
-                this.endScreenButtons.Add(new EndScreenButton(this, new Vector2(top.X, y), options[i], new Vector2(entrySize * 8, entrySize), callback ?? ((PlayerEnum.Stats s) => Console.WriteLine("Clicked!"))));
+                float y = bottom.Y - ((entrySize + margin) * (i + 1));
+                this.endScreenButtons.Add(new EndScreenButton(this, new Vector2(bottom.X, y), options[i], new Vector2(entrySize * 8, entrySize), reset ?? ((PlayerEnum.Stats s) => Console.WriteLine("Clicked!")), Text[i]));
             }
         }
 

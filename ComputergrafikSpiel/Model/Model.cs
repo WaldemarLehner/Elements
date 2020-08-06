@@ -106,19 +106,18 @@ namespace ComputergrafikSpiel.Model
 
         public void OnPlayerDeath()
         {
-            this.Level++;
-
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
-            var topV = new Vector2((left + right) * .5f, top);
+            var bottomV = new Vector2((left + right) * .5f, bottom);
             var width = (right - left) * .5f;
-            void Callback(PlayerEnum.Stats stat)
+            void Reset(PlayerEnum.Stats stat)
             {
-                Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
+                Scene.Scene.Player.Reset();
                 this.EndScreen = null;
             }
 
             Console.WriteLine("death");
-            this.EndScreen = new EndScreen(Scene.Scene.Player.GetEndOptions((uint)this.Level), 10, topV, width, callback: Callback);
+            // this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
+            this.EndScreen = new EndScreen(Scene.Scene.Player.GetEndOptions((uint)this.Level), 10, bottomV, width, reset: Reset);
         }
 
         public void CreateRandomEnemies(int min, int max, IWorldScene world)

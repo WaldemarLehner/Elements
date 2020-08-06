@@ -13,7 +13,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 {
     internal class EndScreenButton : IUpdateable
     {
-        private static readonly Dictionary<PlayerEnum.Stats, ITileTexture> TextureLookup = EndScreenButtonTextureLookupGenerator.Default;
+        // private static readonly Dictionary<PlayerEnum.Stats, ITileTexture> TextureLookup = EndScreenButtonTextureLookupGenerator.Default;
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture BackgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/Button", (3, 2));
         private readonly List<GenericRenderable> backgroundTiles;
@@ -24,6 +24,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 
         private bool triggered = false;
         private Vector2 size;
+        private string text;
         private bool isHovered = false;
         private bool clickReleasedAfterCreation = false; // This is needed so that buttons dont get clicked immediatedly.
         private Vector2 centre;
@@ -38,19 +39,20 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         /// <param name="contentWidth">The width of the inner part of the button. This is to make all buttons the same width.</param>
         /// <param name="onClick">Callback to be triggered when the button is clicked.</param>
         /// <param name="buttonSize">Buttons size in World Coordinates.</param>
-        internal EndScreenButton(EndScreen parent, Vector2 centre, EndOption endOption, Vector2 buttonSize, Action<PlayerEnum.Stats> onClick)
+        internal EndScreenButton(EndScreen parent, Vector2 centre, EndOption endOption, Vector2 buttonSize, Action<PlayerEnum.Stats> onClick, string text)
         {
             this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.centre = centre;
             this.callback = onClick ?? throw new ArgumentNullException(nameof(onClick));
             this.size = buttonSize;
+            this.text = text;
             this.stat = endOption.Stat;
-            string mainText = EndScreenButtonTextureLookupGenerator.MainText(endOption);
-            string priceText = endOption.Price.ToString();
+            //string mainText = EndScreenButtonTextureLookupGenerator.MainText(endOption);
+            //string priceText = endOption.Price.ToString();
 
             // Button Setup:
             // Icon Name ValueOld + Change > ValueNew MoneyIconSmall Price
-            int foregroundTileCount = 1 + mainText.Length + 1 + priceText.Length;
+            int foregroundTileCount = text.Length;
             var backgroundTileCount = (int)Math.Round(buttonSize.X / buttonSize.Y);
             float foregroundEntrySize = (buttonSize.Y < (buttonSize.X / foregroundTileCount)) ? buttonSize.Y : (buttonSize.X / foregroundTileCount);
 
@@ -95,62 +97,20 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                 Vector2 center = new Vector2(x, this.centre.Y);
                 var scale = foregroundEntrySize / 2f * Vector2.One;
 
-                if (i == 0)
+                char c = text[i];
+                if (!Font.MappedPositions.ContainsKey(c))
                 {
-                    // Icon.
-                    this.foregroundTiles.Add(new GenericRenderable
-                    {
-                        Scale = scale,
-                        Coordinates = TextureCoordinates.Default,
-                        Position = center,
-                        Tex = TextureLookup[endOption.Stat],
-                    });
+                    continue;
                 }
-                else if (i <= mainText.Length)
-                {
-                    char c = mainText[i - 1];
-                    if (!Font.MappedPositions.ContainsKey(c))
-                    {
-                        continue;
-                    }
 
-                    var texCoords = Font.GetTexCoordsOfIndex(Font.MappedPositions[c]);
-                    this.foregroundTiles.Add(new GenericRenderable
-                    {
-                        Scale = scale,
-                        Coordinates = texCoords,
-                        Position = center,
-                        Tex = Font,
-                    });
-                }
-                else if (i == mainText.Length + 1)
+                var texCoords = Font.GetTexCoordsOfIndex(Font.MappedPositions[c]);
+                this.foregroundTiles.Add(new GenericRenderable
                 {
-                    // Cost Icon.
-                    this.foregroundTiles.Add(new GenericRenderable
-                    {
-                        Scale = scale * .5f,
-                        Coordinates = TextureCoordinates.Default,
-                        Position = center,
-                        Tex = TextureLookup[PlayerEnum.Stats.Money],
-                    });
-                }
-                else
-                {
-                    char c = priceText[i - (mainText.Length + 2)];
-                    if (!Font.MappedPositions.ContainsKey(c))
-                    {
-                        continue;
-                    }
-
-                    var texCoords = Font.GetTexCoordsOfIndex(Font.MappedPositions[c]);
-                    this.foregroundTiles.Add(new GenericRenderable
-                    {
-                        Scale = scale,
-                        Coordinates = texCoords,
-                        Position = center,
-                        Tex = Font,
-                    });
-                }
+                    Scale = scale,
+                    Coordinates = texCoords,
+                    Position = center,
+                    Tex = Font,
+                });
             }
         }
 
