@@ -9,7 +9,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 {
     public class EndScreen : IUpdateable
     {
-        private static readonly string[] Text = new string[2] { "Retry", "Quit" };
+        private static readonly string[] Text = new string[2] { "retry", "quit" };
         private readonly List<EndScreenButton> endScreenButtons = new List<EndScreenButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 

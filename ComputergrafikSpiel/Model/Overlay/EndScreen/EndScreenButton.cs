@@ -106,9 +106,10 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                 float rightcentreBound = this.centre.X + (this.size.X / 2f) - (this.size.Y / 2f);
                 float x = leftcentreBound + ((rightcentreBound - leftcentreBound) * (i / (float)foregroundTileCount));
                 Vector2 center = new Vector2(x, this.centre.Y);
-                var scale = foregroundEntrySize / 2f * Vector2.One;
+                var scale = foregroundEntrySize / 8f * Vector2.One;
 
                 char c = text[i];
+
                 if (!Font.MappedPositions.ContainsKey(c))
                 {
                     continue;
