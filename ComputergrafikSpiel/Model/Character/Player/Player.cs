@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
+using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
@@ -264,7 +265,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Reset()
         {
-            this.playerStateManager.Reset();
         }
 
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)

@@ -278,6 +278,7 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 if (Scene.Player.IsDead == true)
                 {
+                    Console.WriteLine("death");
                     (this.Model as Model).OnPlayerDeath();
                     Scene.Player.IsDead = false;
                 }

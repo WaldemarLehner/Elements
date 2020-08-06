@@ -2,6 +2,7 @@
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
+using ComputergrafikSpiel.Model.Scene;
 
 namespace ComputergrafikSpiel.Model.Interfaces
 {
@@ -18,6 +19,8 @@ namespace ComputergrafikSpiel.Model.Interfaces
         UpgradeScreen UpgradeScreen { get; }
 
         EndScreen EndScreen { get; }
+
+        ISceneManager SceneManager { get; set; }
 
         void Update(float dTime);
 

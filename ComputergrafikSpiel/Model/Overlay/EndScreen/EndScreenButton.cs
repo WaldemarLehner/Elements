@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -19,8 +21,8 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         private readonly List<GenericRenderable> backgroundTiles;
         private readonly List<GenericRenderable> foregroundTiles;
         private readonly EndScreen parent;
-        private readonly Action<PlayerEnum.Stats> callback;
-        private readonly PlayerEnum.Stats stat;
+        //private readonly Action<PlayerEnum.Stats> callback;
+        //private readonly PlayerEnum.Stats stat;
 
         private bool triggered = false;
         private Vector2 size;
@@ -29,7 +31,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         private bool clickReleasedAfterCreation = false; // This is needed so that buttons dont get clicked immediatedly.
         private Vector2 centre;
 
-        private PlayerEnum.Stats endscreenbuttons;
+        //private PlayerEnum.Stats endscreenbuttons;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EndScreenButton"/> class.
@@ -45,21 +47,12 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         {
             this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.centre = centre;
-            this.callback = onClick ?? throw new ArgumentNullException(nameof(onClick));
+            //this.callback = onClick ?? throw new ArgumentNullException(nameof(onClick));
             this.size = buttonSize;
             this.text = text;
-            this.stat = endOption.Stat;
+            //this.stat = endOption.Stat;
             //string mainText = EndScreenButtonTextureLookupGenerator.MainText(endOption);
             //string priceText = endOption.Price.ToString();
-
-            if (text == "Quit")
-            {
-                this.endscreenbuttons = PlayerEnum.Stats.Quit;
-            }
-            else if (text == "Retry")
-            {
-                this.endscreenbuttons = PlayerEnum.Stats.Reset;
-            }
 
             // Button Setup:
             // Icon Name ValueOld + Change > ValueNew MoneyIconSmall Price
@@ -163,7 +156,23 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                     if (this.triggered == false)
                     {
                         this.triggered = true;
-                        this.callback(this.stat);
+
+
+                        if (this.text.Equals("quit"))
+                        {
+                            Environment.Exit(0);
+                        }
+                        else if (this.text.Equals("retry"))
+                        {
+                            Scene.Scene.Current.Model.Level = 1;
+                            Scene.Scene.Current.Model.SceneManager.InitializeFirstScene();
+
+                            // in case nothing else works, use this:
+                            /*
+                            Application.Restart();
+                            Environment.Exit(0);
+                            */
+                        }
                     }
                 }
             }
