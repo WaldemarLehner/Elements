@@ -144,7 +144,7 @@ namespace ComputergrafikSpiel.Model.Scene
             if (Scene.Player == null)
             {
                 Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
-                Scene.Player.Equip(new Weapon(3, 1, .6f, 12, 5));
+                Scene.Player.Equip(new Weapon(3, 1, 12));
                 return true;
             }
 
@@ -219,9 +219,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.EntitiesList.Remove(entity);
                 }
-
             }
-
         }
 
         public void SpawnParticle(IParticle particle) => this.Particles.Add(particle ?? throw new ArgumentNullException(nameof(particle)));
@@ -289,14 +287,9 @@ namespace ComputergrafikSpiel.Model.Scene
             // Spawn Interactable when all enemies are dead
             if (this.NpcList.Count == 0 && this.lockInc)
             {
-                if ((this.Model as Model).FirstScene)
+                if (!(this.Model as Model).FirstScene)
                 {
-                    (this.Model as Model).CreateTriggerZone();
-                }
-                else
-                {
-                    (this.Model as Model).OnSceneCompleted();
-                    (this.Model as Model).CreateTriggerZone();
+                    (this.Model as Model).OnSceneCompleted(this.World);
                 }
 
                 this.lockInc = false;
@@ -323,9 +316,16 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).SceneManager.LoadNewScene();
         }
 
-        public void SpawningEnemies(IWorldScene scene)
+        public void SpawningEnemies(IWorldScene scene, WorldEnum.Type type, bool boss)
         {
-            (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene);
+            if (boss)
+            {
+                (this.Model as Model).CreateRandomEnemies(1, 1, scene, type, boss);
+            }
+            else
+            {
+                (this.Model as Model).CreateRandomEnemies(this.Model.Level, 2 * this.Model.Level, scene, type, boss);
+            }
         }
 
         private void ApplySurrounding(Scene top, Scene left, Scene right, Scene bottom)

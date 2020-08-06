@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
@@ -14,14 +15,12 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     public class Weapon : IWeapon
     {
-        internal Weapon(float firerate, int projectileCCount, float bulletTTL, float bulletSize, int attackDamage)
+        internal Weapon(float firerate, int projectileCCount, float bulletSize)
         {
             this.Firerate = firerate;
             this.ProjectileCreationCount = projectileCCount;
-            this.BulletTTL = bulletTTL;
             this.BulletSize = bulletSize;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Bullet);
-            this.AttackDamage = attackDamage;
         }
 
         // most likely temporary
@@ -30,8 +29,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         public int ProjectileCreationCount { get; }
 
         public float Firerate { get; }
-
-        public float BulletTTL { get; }
 
         public float BulletSize { get; }
 
@@ -45,8 +42,6 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public Vector2 Scale { get => new Vector2(32, 32); set => _ = value; }
 
-        public int AttackDamage { get; }
-
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData { get; } = new List<(Color4, Vector2[])>();
 
         public ITexture Texture { get; }
@@ -55,7 +50,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         {
             for (int i = 0; i < this.ProjectileCreationCount; i++)
             {
-                new Projectile(this.AttackDamage, direction, this.BulletTTL, this.BulletSize);
+                Console.WriteLine("Bullet Range: {0}", Scene.Scene.Player.PlayerData.bulletTTL);
+
+                Console.WriteLine("Bullet Damage: {0}", Scene.Scene.Player.PlayerData.bulletDamage);
+
+                new Projectile(Scene.Scene.Player.PlayerData.bulletDamage, direction, Scene.Scene.Player.PlayerData.bulletTTL, this.BulletSize);
             }
 
             EmitParticleOnceOptions opt = EmitParticleOnceOptions.PlayerWeaponMuzzle;

@@ -7,15 +7,15 @@ namespace ComputergrafikSpiel.Model.Collider
 {
     internal class RectangleOffsetCollider : ICollider
     {
-        private readonly (float width, float height) size;
+        private readonly (float width, float height) halfsize;
 
         private Vector2 offset;
 
-        internal RectangleOffsetCollider(ICollidable parent, Vector2 offset, float radius, ColliderLayer.Layer self, ColliderLayer.Layer collidesWith)
+        internal RectangleOffsetCollider(ICollidable parent, Vector2 offset, float diameter, ColliderLayer.Layer self, ColliderLayer.Layer collidesWith)
         {
             this.CollidableParent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.offset = offset;
-            this.size = (radius * 2, radius * 2);
+            this.halfsize = (diameter, diameter);
             this.CollidesWith = collidesWith;
             this.OwnLayer = self;
         }
@@ -24,7 +24,7 @@ namespace ComputergrafikSpiel.Model.Collider
 
         public ICollidable CollidableParent { get; }
 
-        public float MaximumDistanceFromPosition => Vector2.Distance(Vector2.Zero, new Vector2(this.size.width, this.size.height) / 2f);
+        public float MaximumDistanceFromPosition => Vector2.Distance(Vector2.Zero, new Vector2(this.halfsize.width, this.halfsize.height));
 
         public Vector2 Position => this.CollidableParent.Position + this.offset;
 
@@ -36,7 +36,7 @@ namespace ComputergrafikSpiel.Model.Collider
             new Vector2(this.Bounds.right, this.Bounds.bottom),
         };
 
-        public (float top, float bottom, float left, float right) Bounds => (this.Position.Y + this.size.height, this.Position.Y - this.size.height, this.Position.X - this.size.width, this.Position.X + this.size.width);
+        public (float top, float bottom, float left, float right) Bounds => (this.Position.Y + this.halfsize.height, this.Position.Y - this.halfsize.height, this.Position.X - this.halfsize.width, this.Position.X + this.halfsize.width);
 
         public (Color4 color, Vector2[] verts) DebugData => (new Color4(0, 255, 0, 255), this.GetDebugData());
 

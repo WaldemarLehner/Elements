@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         IInputState InputState { get; }
 
-        int Level { get; }
+        int Level { get; set; }
 
         UpgradeScreen UpgradeScreen { get; }
 
@@ -25,5 +25,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
         void Update(float dTime);
 
         void UpdateInput(IInputState input);
+
+        void CreateTriggerZone(bool firstScene, bool lastScene);
     }
 }

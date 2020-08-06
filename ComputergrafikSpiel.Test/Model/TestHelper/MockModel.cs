@@ -24,7 +24,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public IEnumerable<IRenderable> Renderables => RenderableList;
 
-        public int Level => throw new NotImplementedException();
+        public int Level { get;  set; } = 1;
 
         public IInputState InputState => throw new NotImplementedException();
 
@@ -83,6 +83,11 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         }
 
         public void UpdateInput(IInputState input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateTriggerZone(bool firstScene, bool lastScene)
         {
             throw new NotImplementedException();
         }

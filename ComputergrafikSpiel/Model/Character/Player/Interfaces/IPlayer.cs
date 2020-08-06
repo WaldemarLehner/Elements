@@ -14,7 +14,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 
         IWeapon EquipedWeapon { get; }
 
-        (int currentHealth, int maxHealth, int currency) PlayerData { get; }
+        (int currentHealth, int maxHealth, int currency, float bulletTTL, int bulletDamage) PlayerData { get; }
 
         void TakingDamage();
 
@@ -36,5 +36,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
         void SelectOption(PlayerEnum.Stats stat, uint level);
 
         void Reset();
+
+        void ChangePosition();
     }
 }

@@ -94,7 +94,7 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static List<IRenderable> GenerateHealthBar(IWorldScene sceneDefinition, IPlayer player)
         {
             List<IRenderable> healthEntries = new List<IRenderable>();
-            var (currentHealth, maxHealth, _) = player.PlayerData;
+            var (currentHealth, maxHealth, _, _, _) = player.PlayerData;
 
             // Get bounds of GUI Area of Scene.
             float left = sceneDefinition.WorldSceneBounds.left;

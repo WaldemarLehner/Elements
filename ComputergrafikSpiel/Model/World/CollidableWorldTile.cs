@@ -22,7 +22,7 @@ namespace ComputergrafikSpiel.Model.World
             this.Spawnmask = (type == TileDefinitions.Type.Water) ? SpawnMask.Mask.AllowObstacle : SpawnMask.Mask.Disallow;
             ColliderLayer.Layer collisionLayer = TileHelper.GetCollisionLayers(type);
             var self = (type == TileDefinitions.Type.Wall || type == TileDefinitions.Type.WallTrim) ? ColliderLayer.Layer.Wall : ColliderLayer.Layer.Water;
-            this.Collider = new RectangleOffsetCollider(this, Vector2.Zero, size / 4f, self, collisionLayer);
+            this.Collider = new RectangleOffsetCollider(this, Vector2.Zero, size / 2f, self, collisionLayer);
 
             this.TileTexture = new WorldTileTextureLoader().LoadTexture(type);
             TileDefinitions.TextureSubType[] textureLayers = TileHelper.HasTileTypeTrims(type) ? TileHelper.GetTexturesTransitionable(neighbors) : new TileDefinitions.TextureSubType[] { TileDefinitions.TextureSubType.Filled };
