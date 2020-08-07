@@ -34,6 +34,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         public EndScreen EndScreen => throw new NotImplementedException();
 
         public ISceneManager SceneManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        EndScreen IModel.EndScreen { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public bool CreateEnemy()
         {

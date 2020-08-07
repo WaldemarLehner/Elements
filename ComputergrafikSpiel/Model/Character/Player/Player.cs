@@ -142,6 +142,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
+                (Scene.Scene.Current.Model as Model).OnPlayerDeath();
+                this.updateDisabled = true;
             }
         }
 
