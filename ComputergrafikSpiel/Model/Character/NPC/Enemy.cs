@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
+using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
+using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
@@ -16,23 +19,21 @@ namespace ComputergrafikSpiel.Model.Character.NPC
     {
         private Vector2 scale;
 
-        public event EventHandler CharacterDeath;
-
-        public event EventHandler CharacterHit;
-
-        public event EventHandler CharacterMove;
-
         public int CurrentHealth { get; set; }
 
+        public bool Air { get; set; }
+
         public float BloodColorHue { get; set; } = 255f;
+
+        public (float, float) ProjectileHue { get; set; } = (40f, 40f);
 
         public INPCController NPCController { get; set; }
 
         public int MaxHealth { get; set; }
 
-        public float MovementSpeed { get; set; } = 35;
+        public float MovementSpeedDash => 1f * this.MovementSpeed * this.DashMultiplier;
 
-        public int Defense { get; set; }
+        public float MovementSpeed { get; set; } = 1f;
 
         public ICollider Collider { get; set; }
 
@@ -54,35 +55,27 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public Vector2 LastPosition { get; set; }
 
-        private Vector2 Direction { get; set; }
+        public EnemyEnum.Variant Variant { get; set; }
 
-        private float AttackCooldown { get; set; } = 0;
+        public Vector2 Direction { get; set; }
+
+        public float AttackCooldown { get; set; } = 1f;
+
+        private float AttackCooldownSafestate { get; set; } = 0f;
+
+        private float AttackCooldownRangeSafestate { get; set; } = 0f;
+
+        private float DashMultiplier { get; set; } = 1f;
 
         public void SetScale()
         {
             this.scale = this.Scale;
         }
 
-        public void OnDeath(EventArgs e)
-        {
-            this.CharacterDeath?.Invoke(this, e);
-        }
-
-        public void OnHit(EventArgs e)
-        {
-            this.CharacterHit?.Invoke(this, e);
-        }
-
-        public void OnMove(EventArgs e)
-        {
-            this.CharacterMove?.Invoke(this, e);
-        }
-
-        public void SetEnemyStats(int maxHealth, float movementSpeed, int defense, int attackDamage)
+        public void SetEnemyStats(int maxHealth, float movementSpeed, int attackDamage)
         {
             this.MaxHealth = maxHealth;
             this.MovementSpeed = movementSpeed;
-            this.Defense = defense;
             this.AttackDamage = attackDamage;
         }
 
@@ -93,12 +86,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 throw new View.Exceptions.ArgumentNotPositiveIntegerGreaterZeroException(nameof(damage));
             }
 
-            if (this.Defense < damage)
-            {
-                damage -= this.Defense;
-                this.CurrentHealth -= damage;
-                this.OnHit(EventArgs.Empty);
-            }
+            this.CurrentHealth -= damage;
 
             if (this.CurrentHealth <= 0)
             {
@@ -111,14 +99,12 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 opt.Hue = (this.BloodColorHue, this.BloodColorHue);
                 StaticParticleEmmiter.EmitOnce(opt);
                 Scene.Scene.Current.RemoveObject(this);
-                this.OnDeath(EventArgs.Empty);
             }
         }
 
         public void IncreaseDifficulty(int multiplier)
         {
             this.AttackDamage += multiplier;
-            this.Defense += multiplier;
             this.MaxHealth += multiplier;
             this.MovementSpeed += multiplier;
         }
@@ -131,18 +117,52 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             this.Direction = this.NPCController.EnemyAIMovement(this, dtime);
 
-            this.OnMove(EventArgs.Empty);
+            this.Position += this.Direction * this.MovementSpeedDash * dtime;
 
-            this.Position += this.Direction * this.MovementSpeed * dtime;
+            this.AttackCooldownSafestate -= dtime;
 
-            this.AttackCooldown -= dtime;
+            this.AttackCooldownRangeSafestate -= dtime;
 
-            if (this.AttackCooldown <= 0)
-            {
-                this.GiveDamageToPlayer();
-            }
+            this.GiveDamageToPlayer();
 
             this.CollisionPrevention();
+        }
+
+        public void ShootBullet(float dtime)
+        {
+            if (this.AttackCooldownRangeSafestate <= 0)
+            {
+                if (this.Variant == EnemyEnum.Variant.Boss)
+                {
+                    this.ShootBulletBoss();
+                }
+                else
+                {
+                    new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
+                }
+
+                this.AttackCooldownRangeSafestate = this.AttackCooldown;
+            }
+        }
+
+        private void ShootBulletBoss()
+        {
+            Vector2[] directions =
+            {
+                new Vector2(0, 100),
+                new Vector2(100, 100),
+                new Vector2(100, 0),
+                new Vector2(-100, 100),
+                new Vector2(100, -100),
+                new Vector2(0, -100),
+                new Vector2(-100, -100),
+                new Vector2(-100, 0),
+            };
+
+            for (int i = 0; i < directions.Length; i++)
+            {
+                new Projectile(this.AttackDamage, directions[i], 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
+            }
         }
 
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
@@ -162,17 +182,29 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             }
         }
 
-        private void GiveDamageToPlayer()
+        public void GiveDamageToPlayer()
         {
-            var collidables = Scene.Scene.Current.ColliderManager.GetCollisions(this);
-
-            foreach (var player in from i in collidables where i is Player.Player select i as Player.Player)
+            if (this.AttackCooldownSafestate <= 0)
             {
-                this.AttackCooldown = 2;
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("Spieler wurde getroffen!\n");
-                Scene.Scene.Player.TakingDamage();
+                var collidables = Scene.Scene.Current.ColliderManager.GetCollisions(this);
+
+                foreach (var player in from i in collidables where i is Player.Player select i as Player.Player)
+                {
+                    this.AttackCooldownSafestate = this.AttackCooldown;
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write("Spieler wurde getroffen!\n");
+                    Scene.Scene.Player.TakingDamage(this.AttackDamage);
+                }
             }
+
+        }
+
+        public void Dash()
+        {
+#pragma warning disable CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+            this.DashTask();
+#pragma warning restore CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+            return;
         }
 
         private void DropLootOrHeal(int chance)
@@ -190,6 +222,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Money, this.Position.X, this.Position.Y);
                 }
             }
+        }
+
+        private async Task DashTask()
+        {
+            this.DashMultiplier = 4f;
+            await Task.Delay(100);
+            this.DashMultiplier = 1f;
         }
     }
 }

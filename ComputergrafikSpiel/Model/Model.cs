@@ -132,6 +132,7 @@ namespace ComputergrafikSpiel.Model
             EnemyManager enemyManager = new EnemyManager();
             foreach (var (x, y) in this.SpawningAreaEnemys(min, max, world))
             {
+                Console.WriteLine("X: " + x + " Y: " + y);
                 var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
                 if (boss)
                 {
@@ -148,15 +149,20 @@ namespace ComputergrafikSpiel.Model
         {
             int checkedCount = 0;
             int maxCheck = world.SceneDefinition.TileCount.x * world.SceneDefinition.TileCount.y;
+            int[] excludeX = { 0, 1, 2, 3, 4, 5 };
             while (checkedCount < maxCheck)
             {
                 index %= maxCheck;
                 (int x, int y) = (index % world.SceneDefinition.TileCount.x, index / world.SceneDefinition.TileCount.x);
-                if ((world.WorldTiles[x, y].Spawnmask & mask) != 0)
+
+                if (x != excludeX[0] && x != excludeX[1] && x != excludeX[2] && x != excludeX[3] && x != excludeX[4] && x != excludeX[5])
                 {
-                    // This is a Spawn location. flip the bit to mark that a spawn already occured
-                    world.WorldTiles[x, y].Spawnmask ^= mask;
-                    return (x, y);
+                    if ((world.WorldTiles[x, y].Spawnmask & mask) != 0)
+                    {
+                        // This is a Spawn location. flip the bit to mark that a spawn already occured
+                        world.WorldTiles[x, y].Spawnmask ^= mask;
+                        return (x, y);
+                    }
                 }
 
                 index++;

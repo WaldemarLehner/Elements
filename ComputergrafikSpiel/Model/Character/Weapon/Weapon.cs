@@ -50,11 +50,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         {
             for (int i = 0; i < this.ProjectileCreationCount; i++)
             {
-                Console.WriteLine("Bullet Range: {0}", Scene.Scene.Player.PlayerData.bulletTTL);
-
-                Console.WriteLine("Bullet Damage: {0}", Scene.Scene.Player.PlayerData.bulletDamage);
-
-                new Projectile(Scene.Scene.Player.PlayerData.bulletDamage, direction, Scene.Scene.Player.PlayerData.bulletTTL, this.BulletSize);
+                new Projectile(Scene.Scene.Player.PlayerData.bulletDamage, direction, Scene.Scene.Player.PlayerData.bulletTTL, this.BulletSize, true, Scene.Scene.Player.Position, "Bullet", (37f, 20f));
             }
 
             EmitParticleOnceOptions opt = EmitParticleOnceOptions.PlayerWeaponMuzzle;
