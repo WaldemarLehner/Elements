@@ -11,32 +11,40 @@ namespace ComputergrafikSpiel.Model.Character.NPC
     {
         public EnemyBoss(Vector2 startposition, string texture, WorldEnum.Type type)
         {
-            Console.WriteLine("Create Boss");
             this.Position = startposition;
             var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 17, ColliderLayer.Layer.Enemy, collisionMask);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
+            this.Variant = EnemyEnum.Variant.Boss;
 
             switch (type)
             {
                 case WorldEnum.Type.Water:
-                    this.SetEnemyStats(20, 70, 1, 1);
+                    this.SetEnemyStats(100, 70, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 13f;
+                    this.ProjectileHue = (348f, 19f);
+                    this.AttackCooldown = 4f;
                     break;
                 case WorldEnum.Type.Earth:
-                    this.SetEnemyStats(40, 75, 2, 2);
+                    this.SetEnemyStats(200, 75, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 51f;
+                    this.ProjectileHue = (64f, 47f);
+                    this.AttackCooldown = 3f;
                     break;
                 case WorldEnum.Type.Fire:
-                    this.SetEnemyStats(60, 80, 3, 3);
+                    this.SetEnemyStats(300, 80, 3);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 25f;
+                    this.ProjectileHue = (0f, 50f);
+                    this.AttackCooldown = 2f;
                     break;
                 case WorldEnum.Type.Air:
-                    this.SetEnemyStats(80, 85, 4, 4);
+                    this.SetEnemyStats(500, 85, 4);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 0f;
+                    this.ProjectileHue = (261f, 295f);
+                    this.AttackCooldown = 1f;
                     break;
                 default: break;
             }

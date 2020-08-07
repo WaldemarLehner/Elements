@@ -10,27 +10,36 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 
-
 namespace ComputergrafikSpiel.Model.Character.Weapon
 {
     internal class Projectile : IEntity
     {
         private readonly GenericParticleEmitter backsmokeEmitter;
 
-        internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize)
+        internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize, bool player, Vector2 position, string texture, (float, float) hue)
         {
             this.AttackDamage = attackDamage;
-            this.Position = new Vector2(Scene.Scene.Player.Position.X, Scene.Scene.Player.Position.Y - 10);
+            this.Position = position;
             this.Direction = direction;
             this.TTL = ttl;
-            this.Texture = new TextureLoader().LoadTexture("Projectile/Bullet");
 
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize / 2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
+            this.Texture = new TextureLoader().LoadTexture("Projectile/" + texture);
+
+            if (player)
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize / 2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy);
+            }
+            else
+            {
+                this.Collider = new CircleOffsetCollider(this, Vector2.Zero, bulletSize / 2, ColliderLayer.Layer.Bullet, ColliderLayer.Layer.Wall | ColliderLayer.Layer.Player);
+            }
+
             this.Scale = Vector2.One * bulletSize;
 
             var emitOpt = EmitParticleOnceOptions.BulletSmoke;
             emitOpt.Direction = this.Direction * -1;
             emitOpt.PointOfEmmision = this.Position;
+            emitOpt.Hue = hue;
             this.backsmokeEmitter = new GenericParticleEmitter(emitOpt, .02f);
 
             // rotation calculation
@@ -96,6 +105,18 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
             foreach (var collidableToCheck in bulletCollisions)
             {
+                if (collidableToCheck == Scene.Scene.Player)
+                {
+                    Scene.Scene.Player.TakingDamage(this.AttackDamage);
+                    Scene.Scene.Current.RemoveObject(this);
+
+                    EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
+                    opt.PointOfEmmision = Scene.Scene.Player.Position;
+                    opt.Direction = this.Direction.Normalized();
+                    opt.Hue = (Scene.Scene.Player.BloodColorHue, Scene.Scene.Player.BloodColorHue);
+                    StaticParticleEmmiter.EmitOnce(opt);
+                }
+
                 foreach (var tileCollidable in Scene.Scene.Current.ColliderManager.CollidableTileDictionary)
                 {
                     if (collidableToCheck == tileCollidable.Value)

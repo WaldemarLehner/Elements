@@ -36,11 +36,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.current.Currency += count;
         }
 
-        public void Hurt(ref bool died)
+        public void Hurt(ref bool died, int damage)
         {
             if (this.current.Health > 0)
             {
-                this.current.Health--;
+                this.current.Health -= (uint)damage;
             }
 
             if (this.current.Health == 0)
