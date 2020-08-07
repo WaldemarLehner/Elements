@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 
 namespace ComputergrafikSpiel.Model.Character.Player
@@ -95,6 +96,12 @@ namespace ComputergrafikSpiel.Model.Character.Player
             options.Add(new UpgradeOption(PlayerEnum.Stats.Money, this.current.Currency, this.current.Currency + money, 0));
 
             return options;
+        }
+
+        internal bool Reset()
+        {
+            Console.WriteLine("got resetted");
+            return true;
         }
 
         internal bool Apply(PlayerEnum.Stats stat, uint currentChamber)

@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
+using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using OpenTK;
 using OpenTK.Graphics;
@@ -29,6 +31,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         private bool run = false;
         private Vector2 directionXY = Vector2.Zero;
+        private bool updateDisabled = false;
 
         public Player()
         {
@@ -114,6 +117,11 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void TakingDamage(int damage)
         {
+            if (this.updateDisabled == true)
+            {
+                return;
+            }
+
             bool died = false;
 
             if (!this.Invulnerable)
@@ -134,6 +142,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
+                (Scene.Scene.Current.Model as Model).OnPlayerDeath();
+                this.updateDisabled = true;
             }
         }
 
@@ -149,6 +159,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
+            if (this.updateDisabled == true)
+            {
+                return;
+            }
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)
             {
