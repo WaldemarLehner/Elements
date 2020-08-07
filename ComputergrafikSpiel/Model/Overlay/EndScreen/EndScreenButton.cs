@@ -153,12 +153,6 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                             (Scene.Scene.Current.Model as Model).SceneManager.SetSceneTexturesToSafeZone();
                             (Scene.Scene.Current.Model as Model).SceneManager.InitializeFirstScene();
                             Scene.Scene.Current.Model.EndScreen = null;
-
-                            // in case nothing else works, use this:
-                            /*
-                            Application.Restart();
-                            Environment.Exit(0);
-                            */
                         }
                     }
                 }
