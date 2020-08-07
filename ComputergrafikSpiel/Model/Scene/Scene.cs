@@ -102,6 +102,11 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(entry);
                 }
 
+                if (Scene.Player != null)
+                {
+                    enumerable.Add(Scene.Player);
+                }
+
                 if (this.Model.UpgradeScreen != null)
                 {
                     enumerable.AddRange(this.Model.UpgradeScreen.Renderables);
@@ -114,7 +119,6 @@ namespace ComputergrafikSpiel.Model.Scene
 
                 if (Scene.Player != null)
                 {
-                    enumerable.Add(Scene.Player);
                     enumerable.AddRange(GUIConstructionHelper.GenerateGuiIndicator(this.World, Player));
                 }
 
@@ -141,14 +145,13 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public static bool CreatePlayer(IPlayer player)
         {
-            if (Scene.Player == null)
-            {
-                Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
-                Scene.Player.Equip(new Weapon(3, 1, 12));
-                return true;
+            if (Scene.Player != null){
+                Scene.Player = null;
             }
 
-            return false;
+            Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
+            Scene.Player.Equip(new Weapon(3, 1, 12));
+            return true;
         }
 
         public void GiveModeltoScene(IModel model)
@@ -274,13 +277,6 @@ namespace ComputergrafikSpiel.Model.Scene
 
             if (Scene.Player != null)
             {
-                if (Scene.Player.IsDead == true)
-                {
-                    Console.WriteLine("death");
-                    (this.Model as Model).OnPlayerDeath();
-                    Scene.Player.IsDead = false;
-                }
-
                 Scene.Player.Update(dtime);
             }
 

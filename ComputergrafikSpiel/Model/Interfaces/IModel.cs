@@ -18,7 +18,7 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         UpgradeScreen UpgradeScreen { get; }
 
-        EndScreen EndScreen { get; }
+        EndScreen EndScreen { get; set; }
 
         ISceneManager SceneManager { get; set; }
 

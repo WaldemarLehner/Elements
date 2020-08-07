@@ -8,6 +8,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -15,15 +16,11 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 {
     internal class EndScreenButton : IUpdateable
     {
-        // private static readonly Dictionary<PlayerEnum.Stats, ITileTexture> TextureLookup = EndScreenButtonTextureLookupGenerator.Default;
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture BackgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/Button", (3, 2));
         private readonly List<GenericRenderable> backgroundTiles;
         private readonly List<GenericRenderable> foregroundTiles;
         private readonly EndScreen parent;
-        //private readonly Action<PlayerEnum.Stats> callback;
-        //private readonly PlayerEnum.Stats stat;
-
         private bool triggered = false;
         private Vector2 size;
         private string text;
@@ -31,31 +28,14 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         private bool clickReleasedAfterCreation = false; // This is needed so that buttons dont get clicked immediatedly.
         private Vector2 centre;
 
-        //private PlayerEnum.Stats endscreenbuttons;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EndScreenButton"/> class.
-        /// Create a new button.
-        /// </summary>
-        /// <param name="parent">The UpdateScreen the button belongs to.</param>
-        /// <param name="centre">The Centre of the button.</param>
-        /// <param name="endOption">Data for the button.</param>
-        /// <param name="contentWidth">The width of the inner part of the button. This is to make all buttons the same width.</param>
-        /// <param name="onClick">Callback to be triggered when the button is clicked.</param>
-        /// <param name="buttonSize">Buttons size in World Coordinates.</param>
-        internal EndScreenButton(EndScreen parent, Vector2 centre, EndOption endOption, Vector2 buttonSize, Action<PlayerEnum.Stats> onClick, string text)
+        internal EndScreenButton(EndScreen parent, Vector2 centre, Vector2 buttonSize, string text)
         {
             this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.centre = centre;
-            //this.callback = onClick ?? throw new ArgumentNullException(nameof(onClick));
             this.size = buttonSize;
             this.text = text;
-            //this.stat = endOption.Stat;
-            //string mainText = EndScreenButtonTextureLookupGenerator.MainText(endOption);
-            //string priceText = endOption.Price.ToString();
 
             // Button Setup:
-            // Icon Name ValueOld + Change > ValueNew MoneyIconSmall Price
             int foregroundTileCount = text.Length;
             var backgroundTileCount = (int)Math.Round(buttonSize.X / buttonSize.Y);
             float foregroundEntrySize = (buttonSize.Y < (buttonSize.X / foregroundTileCount)) ? buttonSize.Y : (buttonSize.X / foregroundTileCount);
@@ -95,8 +75,8 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
             this.foregroundTiles = new List<GenericRenderable>(foregroundTileCount);
             for (int i = 0; i < foregroundTileCount; i++)
             {
-                float leftcentreBound = this.centre.X - (this.size.X / 2f) + (this.size.Y / 2f);
-                float rightcentreBound = this.centre.X + (this.size.X / 2f) - (this.size.Y / 2f);
+                float leftcentreBound = this.centre.X - (this.size.X / 3.5f) + this.size.Y;
+                float rightcentreBound = this.centre.X + (this.size.X / 1.5f) - (this.size.Y / 0.3f);
                 float x = leftcentreBound + ((rightcentreBound - leftcentreBound) * (i / (float)foregroundTileCount));
                 Vector2 center = new Vector2(x, this.centre.Y);
                 var scale = foregroundEntrySize / 8f * Vector2.One;
@@ -164,8 +144,15 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                         }
                         else if (this.text.Equals("retry"))
                         {
+                            var player = new Player();
+                            Scene.Scene.CreatePlayer(player);
                             Scene.Scene.Current.Model.Level = 1;
-                            Scene.Scene.Current.Model.SceneManager.InitializeFirstScene();
+                            (Scene.Scene.Current.Model as Model).SceneManager.SetDifferentDungeons = 0;
+                            (Scene.Scene.Current.Model as Model).SceneManager.Play.StopMusik();
+                            (Scene.Scene.Current.Model as Model).SceneManager = new SceneManager(Scene.Scene.Current.Model);
+                            (Scene.Scene.Current.Model as Model).SceneManager.SetSceneTexturesToSafeZone();
+                            (Scene.Scene.Current.Model as Model).SceneManager.InitializeFirstScene();
+                            Scene.Scene.Current.Model.EndScreen = null;
 
                             // in case nothing else works, use this:
                             /*

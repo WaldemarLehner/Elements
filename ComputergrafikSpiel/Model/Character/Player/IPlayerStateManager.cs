@@ -16,7 +16,5 @@ namespace ComputergrafikSpiel.Model.Character.Player
         void AddCoin(uint value);
 
         IList<UpgradeOption> GetUpgradeOptions(uint level);
-
-        IList<EndOption> GetEndOptions(uint level);
     }
 }

@@ -103,8 +103,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float BloodColorHue => 0f;
 
-        public bool IsDead { get; set; } = false;
-
         // Look wich action was handed over and call corresponding method
         public void PlayerControl()
         {
@@ -143,8 +141,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("CurrentHealth is under 0 -- Player died");
                 this.OnDeath(EventArgs.Empty);
+                (Scene.Scene.Current.Model as Model).OnPlayerDeath();
                 this.updateDisabled = true;
-                this.IsDead = true;
             }
 
             // Spawn particles
@@ -260,8 +258,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public IList<UpgradeOption> GetOptions(uint level) => this.playerStateManager.GetUpgradeOptions(level);
 
-        public IList<EndOption> GetEndOptions(uint level) => this.playerStateManager.GetEndOptions(level);
-
         public void SelectOption(PlayerEnum.Stats stat, uint level)
         {
             this.playerStateManager.Apply(stat, level);
@@ -270,10 +266,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void ChangePosition()
         {
             this.Position = new Vector2(45, 272);
-        }
-
-        public void Reset()
-        {
         }
 
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)

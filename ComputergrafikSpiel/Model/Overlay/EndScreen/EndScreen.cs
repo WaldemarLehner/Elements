@@ -13,7 +13,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
         private readonly List<EndScreenButton> endScreenButtons = new List<EndScreenButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 
-        internal EndScreen(IList<EndOption> options, float tileSize, Vector2 center, float width, float margin = 5f, Action<PlayerEnum.Stats> reset = null)
+        internal EndScreen(float tileSize, Vector2 center, float width, float margin = 5f)
         {
             this.TileSize = tileSize;
 
@@ -22,7 +22,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
             for (int i = 0; i < 2; i++)
             {
                 float y = center.Y - ((entrySize + margin) * (i + 1));
-                this.endScreenButtons.Add(new EndScreenButton(this, new Vector2(center.X, y), options[i], new Vector2(entrySize * 8, entrySize), reset ?? ((PlayerEnum.Stats s) => Console.WriteLine("Clicked!")), Text[i]));
+                this.endScreenButtons.Add(new EndScreenButton(this, new Vector2(center.X, y), new Vector2(entrySize * 8, entrySize), Text[i]));
             }
         }
 

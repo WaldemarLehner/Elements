@@ -98,35 +98,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
             return options;
         }
 
-        public IList<EndOption> GetEndOptions(uint level)
-        {
-            List<EndOption> options = new List<EndOption>();
-            var heartPrice = this.options.ExtraHeartPriceFunction(this.currentLevel.maxhealth);
-            if (heartPrice <= this.current.Currency)
-            {
-                options.Add(new EndOption(PlayerEnum.Stats.MaxHealth, this.current.MaxHealth, this.current.MaxHealth + 1, heartPrice));
-            }
-
-            {
-                var (improvement, cost) = this.options.MovementSpeedFunction(this.currentLevel.movement);
-                if (cost <= this.current.Currency)
-                {
-                    options.Add(new EndOption(PlayerEnum.Stats.MovementSpeed, this.current.MovementSpeed, this.current.MovementSpeed + improvement, cost));
-                }
-            }
-
-            var firerate = this.options.FirerateFunction(this.currentLevel.firerate);
-            if (firerate.cost <= this.current.Currency)
-            {
-                options.Add(new EndOption(PlayerEnum.Stats.AttackSpeed, this.current.Firerate, this.current.Firerate + firerate.improvement, firerate.cost));
-            }
-
-            var money = this.options.PrizeMoneyFunction(level);
-            options.Add(new EndOption(PlayerEnum.Stats.Money, this.current.Currency, this.current.Currency + money, 0));
-
-            return options;
-        }
-
         internal bool Reset()
         {
             Console.WriteLine("got resetted");

@@ -10,8 +10,6 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
     {
         event EventHandler PlayerInc;
 
-        bool IsDead { get; set; }
-
         IWeapon EquipedWeapon { get; }
 
         (int currentHealth, int maxHealth, int currency, float bulletTTL, int bulletDamage) PlayerData { get; }
@@ -31,11 +29,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.Interfaces
 
         IList<UpgradeOption> GetOptions(uint currentLevel);
 
-        IList<EndOption> GetEndOptions(uint currentLevel);
-
         void SelectOption(PlayerEnum.Stats stat, uint level);
-
-        void Reset();
 
         void ChangePosition();
     }

@@ -24,8 +24,8 @@ namespace ComputergrafikSpiel.Model.Overlay
         {
             var coinData = GUIConstructionHelper.GenerateCoinCount(sceneDefinition, player);
             var healthbar = GUIConstructionHelper.GenerateHealthBar(sceneDefinition, player);
-            var crosshair = GUIConstructionHelper.GenerateCrosshair(sceneDefinition, player);
             var gameover = GUIConstructionHelper.GenerateGameover(sceneDefinition, player);
+            var crosshair = GUIConstructionHelper.GenerateCrosshair();
 
             var renderables = new List<IRenderable>();
             renderables.AddRange(coinData);
@@ -131,28 +131,6 @@ namespace ComputergrafikSpiel.Model.Overlay
             return healthEntries;
         }
 
-        private static List<IRenderable> GenerateCrosshair(IWorldScene sceneDefinition, IPlayer player)
-        {
-            List<IRenderable> crosshairEntries = new List<IRenderable>();
-
-            float croshairSize = 15;
-            for (int i = 0; i < 1; i++)
-            {
-                var texCoords = Crosshair.GetTexCoordsOfIndex(0); // Get the required texture.
-
-                var entry = new GenericGUIRenderable()
-                {
-                    Scale = Vector2.One * .5f * croshairSize,
-                    Position = Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero,
-                    Texture = Crosshair,
-                    Coordinates = texCoords,
-                };
-                crosshairEntries.Add(entry);
-            }
-
-            return crosshairEntries;
-        }
-
         private static List<IRenderable> GenerateGameover(IWorldScene sceneDefinition, IPlayer player)
         {
             List<IRenderable> healthEntries = new List<IRenderable>();
@@ -183,6 +161,28 @@ namespace ComputergrafikSpiel.Model.Overlay
             }
 
             return healthEntries;
+        }
+
+        private static List<IRenderable> GenerateCrosshair()
+        {
+            List<IRenderable> crosshairEntries = new List<IRenderable>();
+
+            float croshairSize = 15;
+            for (int i = 0; i < 1; i++)
+            {
+                var texCoords = Crosshair.GetTexCoordsOfIndex(0); // Get the required texture.
+
+                var entry = new GenericGUIRenderable()
+                {
+                    Scale = Vector2.One * .5f * croshairSize,
+                    Position = Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero,
+                    Texture = Crosshair,
+                    Coordinates = texCoords,
+                };
+                crosshairEntries.Add(entry);
+            }
+
+            return crosshairEntries;
         }
 
         private class GenericGUIRenderable : IRenderableLayeredTextures
