@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using ComputergrafikSpiel.Model.Interfaces;
+﻿using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.View.Interfaces;
 
 namespace ComputergrafikSpiel

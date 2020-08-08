@@ -6,7 +6,6 @@ using ComputergrafikSpiel.Test.Model.TestHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
 using System;
-using System.Linq;
 
 namespace ComputergrafikSpiel.Test.Model
 {
@@ -111,7 +110,7 @@ namespace ComputergrafikSpiel.Test.Model
             ICollidable static2 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(8, 10), 1);
             ICollidable dynamic1 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(3.4f, 4), 10);
 
-            manager.AddWorldTileCollidable(1,1,static1);
+            manager.AddWorldTileCollidable(1, 1, static1);
             manager.AddWorldTileCollidable(8, 10, static2);
             manager.AddEntityCollidable(dynamic1);
 
@@ -125,19 +124,19 @@ namespace ComputergrafikSpiel.Test.Model
         public void AssertThatRayCollisionsAreDetected()
         {
             ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
-            var scene = new Scene(new WorldSceneGenerator(.05f ,new WorldSceneDefinition(false, false, false, false, 1, 1, 1f, 1, new (int weight, TileDefinitions.Type type)[] { (1, TileDefinitions.Type.Dirt) })).GenerateWorldScene(), null);
+            var scene = new Scene(new WorldSceneGenerator(.05f, new WorldSceneDefinition(false, false, false, false, 1, 1, 1f, 1, new (int weight, TileDefinitions.Type type)[] { (1, TileDefinitions.Type.Dirt) })).GenerateWorldScene(), null);
             scene.SetAsActive();
             Scene.CreatePlayer(player);
-            
+
             IColliderManager manager = scene.ColliderManager;
-            Ray testRay = new Ray(new Vector2(2, 2), new Vector2( 1, 0), 10, (ColliderLayer.Layer)~0);
+            Ray testRay = new Ray(new Vector2(2, 2), new Vector2(1, 0), 10, (ColliderLayer.Layer)~0);
             ICollidable static1 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(1, 2), 1);
             ICollidable static2 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 2), 1);
             ICollidable static3 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 3), 1);
             ICollidable static4 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(14, 4), 10);
             ICollidable dynamic1 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(1, 2), 0.5f);
             ICollidable dynamic2 = MockCircleCollidable.CreateCollidableWithCollider(new Vector2(4, 2), 0.5f);
-            
+
             manager.AddWorldTileCollidable(1, 2, static1);
             manager.AddWorldTileCollidable(4, 2, static2);
             manager.AddWorldTileCollidable(4, 3, static3);
@@ -151,5 +150,5 @@ namespace ComputergrafikSpiel.Test.Model
 
     }
 
-   
+
 }

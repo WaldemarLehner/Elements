@@ -66,7 +66,7 @@ namespace ComputergrafikSpiel.Model.World
             return tiles;
         }
 
-        private void AddObstacle(ref IWorldTile[,] tiles,  ref List<IWorldObstacle> obstacles, int x, int y)
+        private void AddObstacle(ref IWorldTile[,] tiles, ref List<IWorldObstacle> obstacles, int x, int y)
         {
             if ((tiles[x, y].Spawnmask & SpawnMask.Mask.AllowObstacle) != 0)
             {

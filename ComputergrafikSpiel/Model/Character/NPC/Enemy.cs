@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
-using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -145,26 +144,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             }
         }
 
-        private void ShootBulletBoss()
-        {
-            Vector2[] directions =
-            {
-                new Vector2(0, 100),
-                new Vector2(100, 100),
-                new Vector2(100, 0),
-                new Vector2(-100, 100),
-                new Vector2(100, -100),
-                new Vector2(0, -100),
-                new Vector2(-100, -100),
-                new Vector2(-100, 0),
-            };
-
-            for (int i = 0; i < directions.Length; i++)
-            {
-                new Projectile(this.AttackDamage, directions[i], 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
-            }
-        }
-
         public void LookAt(Vector2 vec) => this.Scale = (this.Position.X < vec.X) ? this.Scale = this.scale * new Vector2(-1, 1) : this.scale;
 
         public void CollisionPrevention()
@@ -173,12 +152,23 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             foreach (ICollidable collision in collisions)
             {
-                if (collision.Collider.OwnLayer != ColliderLayer.Layer.Bullet)
+                if (collision.Collider.OwnLayer == ColliderLayer.Layer.Bullet)
                 {
-                    this.Position = this.LastPosition;
-                    this.Direction = this.NPCController.EnemyAIMovement(this, 4);
-                    return;
+                    continue;
                 }
+
+                var colliderPosition = CollisionPushbackHelper.PushbackCollider(this, collision);
+                var colliderOffset = this.Position - this.Collider.Position;
+
+                this.Position = colliderPosition + colliderOffset;
+
+                if (Scene.Scene.Current.ColliderManager.GetCollisions(this).Count > 0)
+                {
+                    // Fall back. The Pushback pushed the enemy onto another collider. We go back to the last position instead to be safe.
+                    this.Position = this.LastPosition;
+                }
+
+                return;
             }
         }
 
@@ -196,7 +186,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     Scene.Scene.Player.TakingDamage(this.AttackDamage);
                 }
             }
-
         }
 
         public void Dash()
@@ -229,6 +218,26 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.DashMultiplier = 4f;
             await Task.Delay(100);
             this.DashMultiplier = 1f;
+        }
+
+        private void ShootBulletBoss()
+        {
+            Vector2[] directions =
+            {
+                new Vector2(0, 100),
+                new Vector2(100, 100),
+                new Vector2(100, 0),
+                new Vector2(-100, 100),
+                new Vector2(100, -100),
+                new Vector2(0, -100),
+                new Vector2(-100, -100),
+                new Vector2(-100, 0),
+            };
+
+            for (int i = 0; i < directions.Length; i++)
+            {
+                new Projectile(this.AttackDamage, directions[i], 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
+            }
         }
     }
 }

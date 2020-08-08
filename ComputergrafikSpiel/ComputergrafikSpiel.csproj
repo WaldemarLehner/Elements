@@ -158,6 +158,7 @@
     <Compile Include="Model\Character\ICharacter.cs" />
     <Compile Include="Model\Collider\ColliderLayer.cs" />
     <Compile Include="Model\Collider\CollisionDetectionHelper.cs" />
+    <Compile Include="Model\Collider\CollisionPushbackHelper.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollidable.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollider.cs" />
     <Compile Include="Model\Collider\ColliderManager.cs" />

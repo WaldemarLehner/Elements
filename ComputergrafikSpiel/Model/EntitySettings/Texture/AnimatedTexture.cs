@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.ConstructorHelpers.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
-using OpenTK;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture
 {

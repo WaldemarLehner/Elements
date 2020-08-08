@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
-using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using OpenTK;
 using OpenTK.Graphics;
@@ -163,6 +160,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 return;
             }
+
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)
             {
@@ -223,7 +221,17 @@ namespace ComputergrafikSpiel.Model.Character.Player
                     continue;
                 }
 
-                this.Position = this.LastPosition;
+                var colliderPosition = CollisionPushbackHelper.PushbackCollider(this, collision);
+                var colliderOffset = this.Position - this.Collider.Position;
+
+                this.Position = colliderPosition + colliderOffset;
+
+                if (Scene.Scene.Current.ColliderManager.GetCollisions(this).Count > 0)
+                {
+                    // Fall back. The Pushback pushed the player onto another collider. We go back to the last position instead to be safe.
+                    this.Position = this.LastPosition;
+                }
+
                 return;
             }
         }

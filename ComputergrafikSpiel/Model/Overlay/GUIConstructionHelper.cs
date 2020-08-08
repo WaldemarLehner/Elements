@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using ComputergrafikSpiel.Controller.Input;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -9,7 +6,6 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.World;
 using OpenTK;
 using OpenTK.Graphics;
-using MouseCursor = ComputergrafikSpiel.Controller.Input.MouseCursor;
 
 namespace ComputergrafikSpiel.Model.Overlay
 {

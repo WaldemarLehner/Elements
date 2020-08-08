@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+﻿using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.Weapon.Interfaces

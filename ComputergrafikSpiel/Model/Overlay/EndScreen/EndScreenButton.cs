@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -136,7 +133,6 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                     if (this.triggered == false)
                     {
                         this.triggered = true;
-
 
                         if (this.text.Equals("quit"))
                         {

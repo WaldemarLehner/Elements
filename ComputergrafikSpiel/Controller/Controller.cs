@@ -1,7 +1,6 @@
 ﻿using System;
 using ComputergrafikSpiel.Controller.Input;
 using ComputergrafikSpiel.Model.Character.Player;
-using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.View.Interfaces;

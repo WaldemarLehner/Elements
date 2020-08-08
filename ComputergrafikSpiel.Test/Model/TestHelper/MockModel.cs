@@ -25,7 +25,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public IEnumerable<IRenderable> Renderables => RenderableList;
 
-        public int Level { get;  set; } = 1;
+        public int Level { get; set; } = 1;
 
         public IInputState InputState => throw new NotImplementedException();
 

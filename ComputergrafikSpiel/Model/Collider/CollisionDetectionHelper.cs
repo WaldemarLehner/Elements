@@ -187,6 +187,5 @@ namespace ComputergrafikSpiel.Model.Collider
         private static float DistanceVectorCircle(Vector2 vec, CircleOffsetCollider circle) => Vector2.Distance(circle.Position, vec) - circle.MaximumDistanceFromPosition;
 
         private static float ScalarProduct(this Vector2 self, Vector2 other) => (self.X * other.X) + (self.Y * other.Y);
-
     }
 }
