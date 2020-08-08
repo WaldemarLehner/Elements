@@ -26,41 +26,41 @@ namespace ComputergrafikSpiel.Test.View
                 RenderableList = null
             };
             ICamera camera = new Camera(100, 0, 0, 100);
-            Assert.ThrowsException<ArgumentNullException>(() => new OpenTKRenderer(m,camera));
+            Assert.ThrowsException<ArgumentNullException>(() => new OpenTKRenderer(m, camera));
         }
 
         [TestMethod]
         public void AssertThatCreatingInstanceWithEmptyListDoesNotThrowException()
         {
-            
+
             IModel model = new MockModel();
-       
+
             ICamera camera = new Camera(100, 0, 0, 100);
-            new OpenTKRenderer(model,camera);
+            new OpenTKRenderer(model, camera);
         }
 
         [DataTestMethod()]
-        [DataRow(-1,1920)]
+        [DataRow(-1, 1920)]
         //[DataRow(0, 1920)]  -> Zero no longer throws exception, but deactivates the renderer. This is to prevent from Crashes when minimized
         //[DataRow(2, 0)]
-        [DataRow(40,-1)]
+        [DataRow(40, -1)]
         public void AssertThatInvalidScreenDimensionsThrowArgumentNotPositiveIntegerGreaterZeroException(int width, int height)
         {
             IModel m = new MockModel();
             ICamera camera = new Camera(100, 0, 0, 100);
-            IRenderer renderer = new OpenTKRenderer(m,camera);
+            IRenderer renderer = new OpenTKRenderer(m, camera);
             Assert.ThrowsException<ArgumentNotPositiveIntegerGreaterZeroException>(() => renderer.Resize(width, height));
         }
 
         [DataTestMethod, Ignore("Thanks to this Function calling the GL.Viewport Method, it has to be disabled for now. GL.<...> Methods require an Active OpenGL Context, such as a GameWindow. Tests using a Running GameWindow have been done, to no success.")]
-        [DataRow(30,20)]
-        [DataRow(100,300)]
+        [DataRow(30, 20)]
+        [DataRow(100, 300)]
         [DataRow(1920, 1080)]
         public void AssertThatResizeUpdatesScreenDimensions(int width, int height)
         {
             IModel m = new MockModel();
             ICamera camera = new Camera(100, 0, 0, 100);
-            OpenTKRenderer renderer = new OpenTKRenderer(m,camera);
+            OpenTKRenderer renderer = new OpenTKRenderer(m, camera);
             renderer.Resize(width, height);
             Assert.AreEqual(width, renderer.Screen.width);
             Assert.AreEqual(height, renderer.Screen.height);

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -9,7 +7,6 @@ using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
-using Spectrum;
 
 namespace ComputergrafikSpiel.Model.Character.Weapon
 {

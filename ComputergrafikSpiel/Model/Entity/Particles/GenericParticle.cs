@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
-using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 

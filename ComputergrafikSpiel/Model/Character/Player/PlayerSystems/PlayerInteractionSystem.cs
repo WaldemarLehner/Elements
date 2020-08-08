@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Entity;
 

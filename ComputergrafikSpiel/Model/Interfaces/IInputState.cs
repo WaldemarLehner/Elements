@@ -1,5 +1,4 @@
 ﻿using ComputergrafikSpiel.Controller.Input;
-using OpenTK;
 using OpenTK.Input;
 
 namespace ComputergrafikSpiel.Model.Interfaces

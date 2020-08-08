@@ -12,7 +12,7 @@ namespace ComputergrafikSpiel.Test.View
         public void AssertThatWrongInputParametersThrowException()
         {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Camera(0, 0, 0, 0));
-            Assert.ThrowsException <ArgumentOutOfRangeException>(() => new Camera(0, 1, 1, 0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new Camera(0, 1, 1, 0));
         }
 
         [TestMethod]

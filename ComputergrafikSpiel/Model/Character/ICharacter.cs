@@ -1,5 +1,4 @@
-﻿using System;
-using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+﻿using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character

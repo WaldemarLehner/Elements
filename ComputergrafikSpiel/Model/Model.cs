@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
@@ -102,7 +101,7 @@ namespace ComputergrafikSpiel.Model
             this.Level++;
 
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
-            var topV = new Vector2((left + right) * .5f,  top);
+            var topV = new Vector2((left + right) * .5f, top);
             var width = (right - left) * .5f;
             void Callback(PlayerEnum.Stats stat)
             {

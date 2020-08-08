@@ -14,6 +14,6 @@ namespace ComputergrafikSpiel.Model.EntitySettings.Interfaces
 
     public interface IRenderableLayeredTextures : IRenderable
     {
-        new (IEnumerable<TextureCoordinates>, ITileTexture) Texture { get; }
+        new(IEnumerable<TextureCoordinates>, ITileTexture) Texture { get; }
     }
 }

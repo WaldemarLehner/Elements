@@ -32,7 +32,7 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             };
 
 
-            Assert.ThrowsException<ArgumentNullException>( ()=> new FontTexture(null, tileTextureContructor, mappings));
+            Assert.ThrowsException<ArgumentNullException>(() => new FontTexture(null, tileTextureContructor, mappings));
             Assert.ThrowsException<ArgumentNullException>(() => new FontTexture(textureContructor, null, mappings));
             Assert.ThrowsException<ArgumentNullException>(() => new FontTexture(textureContructor, tileTextureContructor, null));
         }
@@ -80,7 +80,7 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             Assert.AreEqual(1, pointer.x);
             Assert.AreEqual(1, pointer.y);
 
-            Assert.AreEqual((-1,-1),fontTexture.GetTileOfKey('o')); // Unused char
+            Assert.AreEqual((-1, -1), fontTexture.GetTileOfKey('o')); // Unused char
         }
         [TestMethod]
         public void AssertThatGettingTextureCoordinatesAreCorrect()
@@ -131,7 +131,7 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             //Bottom Left
             Assert.AreEqual(0, texCoords.BottomLeft.X);
             Assert.AreEqual(.75, texCoords.BottomLeft.Y);
-            
+
 
         }
     }

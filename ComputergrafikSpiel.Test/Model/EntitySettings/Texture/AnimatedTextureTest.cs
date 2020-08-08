@@ -67,7 +67,7 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             Assert.AreEqual(textureConstructor.Height, tex.Height);
             Assert.AreEqual(textureConstructor.Width, tex.Width);
             Assert.AreEqual(textureConstructor.FilePath, tex.FilePath);
-            
+
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@ namespace ComputergrafikSpiel.Test.Model.EntitySettings.Texture
             Assert.AreEqual(animationCollection[0].Item2.FirstFrameIndex, currAnim.FirstFrameIndex);
             Assert.AreEqual((0, 0), tex.Pointer); // First frame
             tex.Update(1f / currAnim.FramesPerSecond); // Update by one frame
-            Assert.AreEqual(.1f+(1f/currAnim.FramesPerSecond), tex.CurrentAnimationPlayTime);
+            Assert.AreEqual(.1f + (1f / currAnim.FramesPerSecond), tex.CurrentAnimationPlayTime);
             Assert.AreEqual((1, 0), tex.Pointer);
             //Queue the next animation
             tex.QueueAnimation(1);

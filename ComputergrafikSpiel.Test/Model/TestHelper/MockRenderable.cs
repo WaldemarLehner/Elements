@@ -25,7 +25,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public Vector2 Position { get; private set; }
 
-        public Vector2 Scale {get;set;}
+        public Vector2 Scale { get; set; }
 
         public float Rotation => 0f;
 

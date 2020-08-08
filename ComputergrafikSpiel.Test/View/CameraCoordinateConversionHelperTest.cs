@@ -2,11 +2,6 @@
 using ComputergrafikSpiel.View.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComputergrafikSpiel.Test.View
 {
@@ -20,7 +15,7 @@ namespace ComputergrafikSpiel.Test.View
             var center = new Vector2(5, 5);
 
             var result = CameraCoordinateConversionHelper.WorldToScreen(cam, center);
-            Assert.AreEqual(new Vector2(0.5f,0.5f), result);
+            Assert.AreEqual(new Vector2(0.5f, 0.5f), result);
         }
 
         [TestMethod]

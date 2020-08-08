@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 
 namespace ComputergrafikSpiel.Model.Character.Player

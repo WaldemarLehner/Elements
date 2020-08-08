@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
-using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.View.Exceptions;
 using ComputergrafikSpiel.View.Helpers;

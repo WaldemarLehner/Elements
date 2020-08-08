@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ComputergrafikSpiel.Model.Character.Player;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;

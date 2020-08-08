@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace ComputergrafikSpiel.Model.Character.Player
 {
     internal static class PlayerStateOptionsDefaultFunctions
@@ -65,7 +64,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         /// <summary>
         /// Returns quantity of prize reward per level <see href="https://www.desmos.com/calculator/a4bqkvnuzt"/>.
         /// </summary>
-        /// <returns>Quantity of Money</returns>
+        /// <returns>Quantity of Money.</returns>
         internal static PlayerStateOptions.PrizeMoneyCalculation MoneyReward()
         {
             return (uint x) =>

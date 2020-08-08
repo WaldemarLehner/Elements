@@ -1,5 +1,4 @@
-﻿using System;
-using ComputergrafikSpiel.Model.World;
+﻿using ComputergrafikSpiel.Model.World;
 using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.NPC

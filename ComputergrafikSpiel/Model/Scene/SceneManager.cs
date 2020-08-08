@@ -26,10 +26,9 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void LoadNewScene()
         {
-           this.SetDifferentDungeons++;
+            this.SetDifferentDungeons++;
 
-           switch (this.SetDifferentDungeons)
-
+            switch (this.SetDifferentDungeons)
             {
                 case 1:
                     this.Play.StartDungeon1Music();
@@ -57,49 +56,50 @@ namespace ComputergrafikSpiel.Model.Scene
                 default: break;
             }
 
-           (this.Model as Model).FirstScene = false;
-           Scene.Current.Disable();
+            (this.Model as Model).FirstScene = false;
+            Scene.Current.Disable();
 
             // Keine Obstacles & Gewässer bei Bossräumen Überprüfung
-           if (this.SetDifferentDungeons % 10 == 0)
-           {
-               this.obstaclePropability = .0f;
-               this.noiseScale = .0f;
-           }
-           else
-           {
-               this.obstaclePropability = .05f;
-               this.noiseScale = .1f;
-           }
+            if (this.SetDifferentDungeons % 10 == 0)
+            {
+                this.obstaclePropability = .0f;
+                this.noiseScale = .0f;
+            }
+            else
+            {
+                this.obstaclePropability = .05f;
+                this.noiseScale = .1f;
+            }
 
-           var worldScene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, this.noiseScale, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
-           var newScene = new Scene(worldScene);
-           newScene.GiveModeltoScene(this.Model);
-           newScene.SetAsActive();
+            var worldScene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, this.noiseScale, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
+            var newScene = new Scene(worldScene);
+            newScene.GiveModeltoScene(this.Model);
+            newScene.SetAsActive();
 
-           switch (this.SetDifferentDungeons)
-           {
-               case 10:
-                   this.Play.StartDungeon1BossMusic();
-                   newScene.SpawningEnemies(newScene.World, this.elementType, true);
-                   break;
-               case 20:
-                   this.Play.StartDungeon2BossMusic();
-                   newScene.SpawningEnemies(newScene.World, this.elementType, true);
-                   break;
-               case 30:
-                   this.Play.StartDungeon3BossMusic();
-                   newScene.SpawningEnemies(newScene.World, this.elementType, true);
-                   break;
-               case 40:
-                   this.Play.StartDungeon4BossMusic();
-                   newScene.SpawningEnemies(newScene.World, this.elementType, true);
-                   break;
-               default: newScene.SpawningEnemies(newScene.World, this.elementType, false);
-                   break;
-           }
+            switch (this.SetDifferentDungeons)
+            {
+                case 10:
+                    this.Play.StartDungeon1BossMusic();
+                    newScene.SpawningEnemies(newScene.World, this.elementType, true);
+                    break;
+                case 20:
+                    this.Play.StartDungeon2BossMusic();
+                    newScene.SpawningEnemies(newScene.World, this.elementType, true);
+                    break;
+                case 30:
+                    this.Play.StartDungeon3BossMusic();
+                    newScene.SpawningEnemies(newScene.World, this.elementType, true);
+                    break;
+                case 40:
+                    this.Play.StartDungeon4BossMusic();
+                    newScene.SpawningEnemies(newScene.World, this.elementType, true);
+                    break;
+                default:
+                    newScene.SpawningEnemies(newScene.World, this.elementType, false);
+                    break;
+            }
 
-           this.Model.CreateTriggerZone(false, false);
+            this.Model.CreateTriggerZone(false, false);
         }
 
         public void InitializeFirstScene()
@@ -146,6 +146,5 @@ namespace ComputergrafikSpiel.Model.Scene
             WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Air/EarthTileSet";
             WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Air/Grass";
         }
-
     }
 }
