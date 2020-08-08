@@ -118,23 +118,23 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void SetSceneTexturesToEarth()
         {
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Earth/WaterTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Earth/EarthAbyssTileSet";
             WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Earth/EarthTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Earth/Grass";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Earth/EarthGround";
         }
 
         public void SetSceneTexturesToFire()
         {
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Fire/WaterTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Fire/EarthTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Fire/Grass";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Fire/LavaTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Fire/EarthLavaTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Fire/FireLavaTile";
         }
 
         public void SetSceneTexturesToAir()
         {
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Air/WaterTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Air/EarthTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Air/Grass";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Air/AirSkyTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Air/AirGroundTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Air/AirPlate";
         }
     }
 }
