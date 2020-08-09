@@ -28,8 +28,8 @@ namespace ComputergrafikSpiel.Model.Overlay
             renderables.AddRange(dungeonInfo);
             renderables.AddRange(coinData);
             renderables.AddRange(healthbar);
-            renderables.AddRange(crosshair);
             renderables.AddRange(gameover);
+            renderables.AddRange(crosshair);
             return renderables;
         }
 
