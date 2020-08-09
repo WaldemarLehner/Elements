@@ -238,7 +238,6 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static List<IRenderable> GenerateCrosshair()
         {
             List<IRenderable> crosshairEntries = new List<IRenderable>();
-            Vector2? mouseCoordinates = Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero;
 
             float croshairSize = 15;
             for (int i = 0; i < 1; i++)
@@ -248,7 +247,7 @@ namespace ComputergrafikSpiel.Model.Overlay
                 var entry = new GenericGUIRenderable()
                 {
                     Scale = Vector2.One * .5f * croshairSize,
-                    Position = new Vector2(mouseCoordinates.Value.X, mouseCoordinates.Value.Y),
+                    Position = Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero,
                     Texture = Crosshair,
                     Coordinates = texCoords,
                 };

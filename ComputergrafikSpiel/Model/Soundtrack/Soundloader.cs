@@ -13,8 +13,8 @@ namespace ComputergrafikSpiel.Model.Soundtrack
 
         public void StartSafeMusic()
         {
-            //this.mediaPlayer.URL = "./Content/Soundtrack/Spanish_Waltz.mp3";
-            //this.mediaPlayer.controls.play();
+            this.mediaPlayer.URL = "./Content/Soundtrack/Spanish_Waltz.mp3";
+            this.mediaPlayer.controls.play();
         }
 
         // Soundtrack der Dungeons
