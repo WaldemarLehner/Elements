@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Spectrum;
 
 namespace ComputergrafikSpiel.Model.Entity.Particles

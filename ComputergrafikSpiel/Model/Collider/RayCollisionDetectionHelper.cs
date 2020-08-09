@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using OpenTK;
 

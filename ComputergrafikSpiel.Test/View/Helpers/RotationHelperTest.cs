@@ -10,22 +10,22 @@ namespace ComputergrafikSpiel.Test.View.Helpers
     public class RotationHelperTest
     {
         [DataTestMethod]
-        [DataRow(1,0,  0,1)]
-        [DataRow(0,1,  -1,0)]
-        [DataRow(-1,0,  0,-1)]
-        [DataRow(0,-1,  1,0)]
+        [DataRow(1, 0, 0, 1)]
+        [DataRow(0, 1, -1, 0)]
+        [DataRow(-1, 0, 0, -1)]
+        [DataRow(0, -1, 1, 0)]
         public void Rotate90degAroundOrigin(float vecX, float vecY, float vecXresult, float vecYresult)
         {
             var vec2 = new Vector2(vecX, vecY);
             var angle = MathHelper.DegreesToRadians(90);
             var vec2_rotated = vec2.Rotate(angle);
-            Assert.AreEqual(vecXresult, Math.Round(vec2_rotated.X,5));
-            Assert.AreEqual(vecYresult, Math.Round(vec2_rotated.Y,5));
+            Assert.AreEqual(vecXresult, Math.Round(vec2_rotated.X, 5));
+            Assert.AreEqual(vecYresult, Math.Round(vec2_rotated.Y, 5));
         }
 
         [DataTestMethod]
-        [DataRow(1,0,1,1,2,1)]
-        public void Rotate90degAroundPivot(float vecX, float vecY,float pivotX,float pivotY, float vecXresult, float vecYresult)
+        [DataRow(1, 0, 1, 1, 2, 1)]
+        public void Rotate90degAroundPivot(float vecX, float vecY, float pivotX, float pivotY, float vecXresult, float vecYresult)
         {
             var vec2 = new Vector2(vecX, vecY);
             var pivot = new Vector2(pivotX, pivotY);

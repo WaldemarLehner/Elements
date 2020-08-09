@@ -1,5 +1,4 @@
 ﻿using ComputergrafikSpiel.Model.Interfaces;
-using System;
 
 namespace ComputergrafikSpiel.Model.Entity.Particles
 {

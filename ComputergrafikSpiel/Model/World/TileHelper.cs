@@ -99,14 +99,14 @@ namespace ComputergrafikSpiel.Model.World
             maxLen.y--;
             var current = tileResult[x, y];
 
-            var top =           (y == 0)                            ? true : current == tileResult[x,      y - 1];
-            var bottom =        (y == maxLen.y)                     ? true : current == tileResult[x,      y + 1];
-            var left =          (x == 0)                            ? true : current == tileResult[x - 1,  y];
-            var right =         (x == maxLen.x)                     ? true : current == tileResult[x + 1,  y];
-            var topright =      (x == maxLen.x || y == 0)           ? true : current == tileResult[x + 1,  y - 1];
-            var topleft =       (x == 0 || y == 0)                  ? true : current == tileResult[x - 1,  y - 1];
-            var bottomright =   (x == maxLen.x || y == maxLen.y)    ? true : current == tileResult[x + 1,  y + 1];
-            var bottomleft =    (x == 0 || y == maxLen.y)           ? true : current == tileResult[x - 1,  y + 1];
+            var top = (y == 0) ? true : current == tileResult[x, y - 1];
+            var bottom = (y == maxLen.y) ? true : current == tileResult[x, y + 1];
+            var left = (x == 0) ? true : current == tileResult[x - 1, y];
+            var right = (x == maxLen.x) ? true : current == tileResult[x + 1, y];
+            var topright = (x == maxLen.x || y == 0) ? true : current == tileResult[x + 1, y - 1];
+            var topleft = (x == 0 || y == 0) ? true : current == tileResult[x - 1, y - 1];
+            var bottomright = (x == maxLen.x || y == maxLen.y) ? true : current == tileResult[x + 1, y + 1];
+            var bottomleft = (x == 0 || y == maxLen.y) ? true : current == tileResult[x - 1, y + 1];
 
             return new TileDefinitions.SurroundingTiles(top, bottom, left, right, topleft, topright, bottomright, bottomleft);
         }

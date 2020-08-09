@@ -158,6 +158,7 @@
     <Compile Include="Model\Character\ICharacter.cs" />
     <Compile Include="Model\Collider\ColliderLayer.cs" />
     <Compile Include="Model\Collider\CollisionDetectionHelper.cs" />
+    <Compile Include="Model\Collider\CollisionPushbackHelper.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollidable.cs" />
     <Compile Include="Model\Collider\Interfaces\ICollider.cs" />
     <Compile Include="Model\Collider\ColliderManager.cs" />
@@ -193,6 +194,8 @@
     <Compile Include="Model\Entity\Particles\ParticleFunction.cs" />
     <Compile Include="Model\Entity\Particles\StaticParticleEmmiter.cs" />
     <Compile Include="Model\Interfaces\IInputState.cs" />
+    <Compile Include="Model\Overlay\EndScreen\EndScreen.cs" />
+    <Compile Include="Model\Overlay\EndScreen\EndScreenButton.cs" />
     <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
     <Compile Include="Model\Overlay\IGUIElement.cs" />
     <Compile Include="Model\Overlay\UpgradeScreen\UpgradeOption.cs" />
@@ -326,6 +329,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\GUI\Crosshair_Cursor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Instruction.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\GUI\Upgrades\WeaponDamage.png">
@@ -517,9 +523,6 @@
     <Content Include="Content\Soundtrack\Spanish_Waltz.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Crosshair.cur">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <Content Include="Content\Images\GUI\Upgrades\Coin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

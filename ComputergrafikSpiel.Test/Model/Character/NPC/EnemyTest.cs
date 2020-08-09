@@ -1,12 +1,7 @@
-﻿using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
-using ComputergrafikSpiel.Model.Collider;
-using ComputergrafikSpiel.Model.Collider.Interfaces;
-using ComputergrafikSpiel.Model.Scene;
+﻿using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
-using System;
-using System.Collections.Generic;
 
 namespace ComputergrafikSpiel.Test.Model.Character.NPC
 {
@@ -47,7 +42,7 @@ namespace ComputergrafikSpiel.Test.Model.Character.NPC
         [DataTestMethod]
         [DataRow(1)]
         [DataRow(4)]
-        public void AssertThatMulitplierIncreaseEnemyStats (int multiplier)
+        public void AssertThatMulitplierIncreaseEnemyStats(int multiplier)
         {
             ComputergrafikSpiel.Model.Character.NPC.Enemy enemy = new ComputergrafikSpiel.Model.Character.NPC.TankEnemy(this.Position, "Fungus", WorldEnum.Type.Water);
             int MaxHealth = enemy.MaxHealth;

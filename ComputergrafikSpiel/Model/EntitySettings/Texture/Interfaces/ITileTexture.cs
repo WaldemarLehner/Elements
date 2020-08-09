@@ -1,8 +1,4 @@
-﻿using System;
-using ComputergrafikSpiel.Model;
-using OpenTK;
-
-namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
+﻿namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
 {
     public interface ITileTexture : ITexture
     {

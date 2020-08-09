@@ -27,6 +27,8 @@
             Money,
             BulletTTL,
             BulletDamage,
+            Reset,
+            Quit,
         }
     }
 }

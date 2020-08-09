@@ -1,6 +1,4 @@
-﻿using ComputergrafikSpiel.Model;
-
-namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
+﻿namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
 {
     internal interface ITextureLoader
     {

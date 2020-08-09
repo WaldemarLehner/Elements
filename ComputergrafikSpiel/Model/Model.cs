@@ -7,6 +7,7 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
@@ -35,6 +36,8 @@ namespace ComputergrafikSpiel.Model
 
         public UpgradeScreen UpgradeScreen { get; private set; }
 
+        public EndScreen EndScreen { get; set; }
+
         public IInputState InputState { get; private set; }
 
         /// <summary>
@@ -46,6 +49,11 @@ namespace ComputergrafikSpiel.Model
             if (this.UpgradeScreen != null)
             {
                 this.UpgradeScreen.Update(dTime);
+            }
+
+            if (this.EndScreen != null)
+            {
+                this.EndScreen.Update(dTime);
             }
 
             Scene.Scene.Current.Update(dTime);
@@ -88,12 +96,12 @@ namespace ComputergrafikSpiel.Model
         }
 
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
-        public void OnSceneCompleted(IWorldScene world)
+        public void OnSceneCompleted()
         {
             this.Level++;
 
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
-            var topV = new Vector2((left + right) * .5f,  top);
+            var topV = new Vector2((left + right) * .5f, top);
             var width = (right - left) * .5f;
             void Callback(PlayerEnum.Stats stat)
             {
@@ -102,6 +110,15 @@ namespace ComputergrafikSpiel.Model
             }
 
             this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
+        }
+
+        public void TriggerEndscreenButtons()
+        {
+            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
+            var centerV = new Vector2((left + right) * .5f, (top + bottom) * .5f);
+            var width = (right - left) * .5f;
+
+            this.EndScreen = new EndScreen(10, centerV, width);
         }
 
         public List<(int x, int y)> SpawningAreaEnemys(int min, int max, IWorldScene world)

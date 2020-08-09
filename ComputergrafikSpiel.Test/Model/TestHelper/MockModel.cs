@@ -4,7 +4,9 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Overlay;
+using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
+using ComputergrafikSpiel.Model.Scene;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -23,11 +25,16 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public IEnumerable<IRenderable> Renderables => RenderableList;
 
-        public int Level { get;  set; } = 1;
+        public int Level { get; set; } = 1;
 
         public IInputState InputState => throw new NotImplementedException();
 
         public UpgradeScreen UpgradeScreen => throw new NotImplementedException();
+
+        public EndScreen EndScreen => throw new NotImplementedException();
+
+        public ISceneManager SceneManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        EndScreen IModel.EndScreen { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public bool CreateEnemy()
         {

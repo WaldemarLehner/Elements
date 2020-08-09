@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.View.Interfaces;
 using ComputergrafikSpiel.View.Renderer;

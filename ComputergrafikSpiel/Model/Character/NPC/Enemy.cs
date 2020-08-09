@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
-using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
@@ -138,30 +137,16 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 }
                 else
                 {
-                    new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
+                    // Bullet speed will depend on dungeon level progression
+                    Vector2 direction = Vector2.Normalize(Vector2.Subtract(Scene.Scene.Player.Position, this.Position));
+                    Vector2 levelBulletBoost = Vector2.Multiply(direction, 20);
+                    levelBulletBoost = Vector2.Multiply(levelBulletBoost, Scene.Scene.Current.Model.SceneManager.CurrentDungeon);
+                    direction = Vector2.Multiply(direction, 200);
+                    direction = Vector2.Add(direction, levelBulletBoost);
+                    new Projectile(this.AttackDamage, direction, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
                 }
 
                 this.AttackCooldownRangeSafestate = this.AttackCooldown;
-            }
-        }
-
-        private void ShootBulletBoss()
-        {
-            Vector2[] directions =
-            {
-                new Vector2(0, 100),
-                new Vector2(100, 100),
-                new Vector2(100, 0),
-                new Vector2(-100, 100),
-                new Vector2(100, -100),
-                new Vector2(0, -100),
-                new Vector2(-100, -100),
-                new Vector2(-100, 0),
-            };
-
-            for (int i = 0; i < directions.Length; i++)
-            {
-                new Projectile(this.AttackDamage, directions[i], 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
             }
         }
 
@@ -173,12 +158,23 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             foreach (ICollidable collision in collisions)
             {
-                if (collision.Collider.OwnLayer != ColliderLayer.Layer.Bullet)
+                if (collision.Collider.OwnLayer == ColliderLayer.Layer.Bullet)
                 {
-                    this.Position = this.LastPosition;
-                    this.Direction = this.NPCController.EnemyAIMovement(this, 4);
-                    return;
+                    continue;
                 }
+
+                var colliderPosition = CollisionPushbackHelper.PushbackCollider(this, collision);
+                var colliderOffset = this.Position - this.Collider.Position;
+
+                this.Position = colliderPosition + colliderOffset;
+
+                if (Scene.Scene.Current.ColliderManager.GetCollisions(this).Count > 0)
+                {
+                    // Fall back. The Pushback pushed the enemy onto another collider. We go back to the last position instead to be safe.
+                    this.Position = this.LastPosition;
+                }
+
+                return;
             }
         }
 
@@ -196,7 +192,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     Scene.Scene.Player.TakingDamage(this.AttackDamage);
                 }
             }
-
         }
 
         public void Dash()
@@ -229,6 +224,26 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             this.DashMultiplier = 4f;
             await Task.Delay(100);
             this.DashMultiplier = 1f;
+        }
+
+        private void ShootBulletBoss()
+        {
+            Vector2[] directions =
+            {
+                new Vector2(0, 100),
+                new Vector2(100, 100),
+                new Vector2(100, 0),
+                new Vector2(-100, 100),
+                new Vector2(100, -100),
+                new Vector2(0, -100),
+                new Vector2(-100, -100),
+                new Vector2(-100, 0),
+            };
+
+            for (int i = 0; i < directions.Length; i++)
+            {
+                new Projectile(this.AttackDamage, directions[i], 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
+            }
         }
     }
 }

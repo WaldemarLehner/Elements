@@ -8,7 +8,6 @@ using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using System.Collections.Generic;
 
 namespace ComputergrafikSpiel.Test.Model.Character.Player
@@ -118,6 +117,6 @@ namespace ComputergrafikSpiel.Test.Model.Character.Player
             Assert.AreEqual(player.Scale.X, 24);
         }
 
-       
+
     }
 }

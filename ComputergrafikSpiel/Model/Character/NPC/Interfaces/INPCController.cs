@@ -1,6 +1,4 @@
-﻿using ComputergrafikSpiel.Model.Character.Player.Interfaces;
-using ComputergrafikSpiel.Model.Collider.Interfaces;
-using OpenTK;
+﻿using OpenTK;
 
 namespace ComputergrafikSpiel.Model.Character.NPC.Interfaces
 {

@@ -7,8 +7,6 @@ namespace ComputergrafikSpiel.Model.Scene
 {
     public class SceneManager : ISceneManager
     {
-        private readonly Soundloader play = new Soundloader();
-        private int setDifferentDungeons = 0;
         private float obstaclePropability; // Spawn der Obstacles Anzahl
         private float noiseScale; // Spawn der Anzahl an Gewässer / Boden
         private WorldEnum.Type elementType;
@@ -16,39 +14,55 @@ namespace ComputergrafikSpiel.Model.Scene
         public SceneManager(IModel model)
         {
             // Szene wird gestartet, ebenso direkt in der Safe-Zone wird das Lied gespielt
-            this.play.StartSafeMusic();
+            this.Play.StartSafeMusic();
             this.Model = model;
         }
+
+        public Soundloader Play { get; set; } = new Soundloader();
+
+        public int CurrentDungeon { get; set; } = 0; // Zähler für den aktuellen Dungeon (1-4)
+
+        public int CurrentDungeonRoom { get; set; } = 0; // Zähler für den aktuellen Raum im Dungeon (1-10)
+
+        public int CurrentStageLevel { get; set; } = 0; // Zähler wieviel Räume bereits betreten wurden insgesamt (1-40)
 
         private IModel Model { get; }
 
         public void LoadNewScene()
         {
-            this.setDifferentDungeons++;
+            this.CurrentStageLevel++;
+            this.CurrentDungeonRoom++;
 
-            switch (this.setDifferentDungeons)
+            switch (this.CurrentStageLevel)
             {
                 case 1:
-                    this.play.StartDungeon1Music();
+                    this.Play.StartDungeon1Music();
                     this.SetSceneTexturesToWater();
                     this.elementType = WorldEnum.Type.Water;
+                    this.CurrentDungeon++;
                     break;
                 case 11:
-                    this.play.StartDungeon2Music();
+                    this.Play.StartDungeon2Music();
                     this.SetSceneTexturesToEarth();
                     this.elementType = WorldEnum.Type.Earth;
+                    this.CurrentDungeon++;
+                    this.CurrentDungeonRoom = 1;
                     this.Model.Level = 1;
                     break;
                 case 21:
-                    this.play.StartDungeon3Music();
+                    this.Play.StartDungeon3Music();
                     this.SetSceneTexturesToFire();
                     this.elementType = WorldEnum.Type.Fire;
+                    this.CurrentDungeon++;
+                    this.CurrentDungeonRoom = 1;
                     this.Model.Level = 1;
                     break;
                 case 31:
-                    this.play.StartDungeon4Music();
+                    this.Play.StartDungeon4Music();
                     this.SetSceneTexturesToAir();
                     this.elementType = WorldEnum.Type.Air;
+                    this.CurrentDungeon++;
+                    this.CurrentDungeonRoom = 1;
                     this.Model.Level = 1;
                     break;
                 default: break;
@@ -58,7 +72,7 @@ namespace ComputergrafikSpiel.Model.Scene
             Scene.Current.Disable();
 
             // Keine Obstacles & Gewässer bei Bossräumen Überprüfung
-            if (this.setDifferentDungeons % 10 == 0)
+            if (this.CurrentStageLevel % 10 == 0)
             {
                 this.obstaclePropability = .0f;
                 this.noiseScale = .0f;
@@ -74,25 +88,26 @@ namespace ComputergrafikSpiel.Model.Scene
             newScene.GiveModeltoScene(this.Model);
             newScene.SetAsActive();
 
-            switch (this.setDifferentDungeons)
+            switch (this.CurrentStageLevel)
             {
                 case 10:
-                    this.play.StartDungeon1BossMusic();
+                    this.Play.StartDungeon1BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 20:
-                    this.play.StartDungeon2BossMusic();
+                    this.Play.StartDungeon2BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 30:
-                    this.play.StartDungeon3BossMusic();
+                    this.Play.StartDungeon3BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
                 case 40:
-                    this.play.StartDungeon4BossMusic();
+                    this.Play.StartDungeon4BossMusic();
                     newScene.SpawningEnemies(newScene.World, this.elementType, true);
                     break;
-                default: newScene.SpawningEnemies(newScene.World, this.elementType, false);
+                default:
+                    newScene.SpawningEnemies(newScene.World, this.elementType, false);
                     break;
             }
 
@@ -101,12 +116,19 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void InitializeFirstScene()
         {
-            var worldScene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
+            var worldScene = new WorldSceneGenerator(0f, new WorldSceneDefinition(true, true, true, true, 20, 15, 0f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             var initScene = new Scene(worldScene);
             (this.Model as Model).FirstScene = true;
             initScene.GiveModeltoScene(this.Model);
             initScene.SetAsActive();
             this.Model.CreateTriggerZone(true, false);
+        }
+
+        public void SetSceneTexturesToSafeZone()
+        {
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Safezone/WaterTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Safezone/EarthTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Safezone/Grass";
         }
 
         public void SetSceneTexturesToWater()

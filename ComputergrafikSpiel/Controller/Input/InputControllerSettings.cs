@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.Character.Player;
 using OpenTK.Input;
 

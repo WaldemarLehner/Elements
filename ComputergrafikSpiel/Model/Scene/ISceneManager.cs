@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ComputergrafikSpiel.Model.Soundtrack;
 
 namespace ComputergrafikSpiel.Model.Scene
 {
     public interface ISceneManager
     {
+        Soundloader Play { get; set; }
+
+        int CurrentDungeon { get; set; }
+
+        int CurrentDungeonRoom { get; set; }
+
+        int CurrentStageLevel { get; set; }
+
         void LoadNewScene();
 
         void InitializeFirstScene();
+
+        void SetSceneTexturesToSafeZone();
 
         void SetSceneTexturesToWater();
 

@@ -97,6 +97,12 @@ namespace ComputergrafikSpiel.Model.Character.Player
             return options;
         }
 
+        internal bool Reset()
+        {
+            Console.WriteLine("got resetted");
+            return true;
+        }
+
         internal bool Apply(PlayerEnum.Stats stat, uint currentChamber)
         {
             if (stat != PlayerEnum.Stats.AttackSpeed && stat != PlayerEnum.Stats.BulletTTL && stat != PlayerEnum.Stats.BulletDamage && stat != PlayerEnum.Stats.MaxHealth && stat != PlayerEnum.Stats.MovementSpeed && stat != PlayerEnum.Stats.Money)

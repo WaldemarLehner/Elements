@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
+using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
+using ComputergrafikSpiel.Model.Scene;
 
 namespace ComputergrafikSpiel.Model.Interfaces
 {
@@ -15,6 +17,10 @@ namespace ComputergrafikSpiel.Model.Interfaces
         int Level { get; set; }
 
         UpgradeScreen UpgradeScreen { get; }
+
+        EndScreen EndScreen { get; set; }
+
+        ISceneManager SceneManager { get; set; }
 
         void Update(float dTime);
 

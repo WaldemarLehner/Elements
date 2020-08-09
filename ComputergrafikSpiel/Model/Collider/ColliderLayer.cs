@@ -9,12 +9,12 @@ namespace ComputergrafikSpiel.Model.Collider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1025:Code should not contain multiple whitespace in a row", Justification = "helps visibility")]
         public enum Layer
         {
-            Empty =  0b00000000,
+            Empty = 0b00000000,
             Player = 0b00000001,
-            Enemy =  0b00000010,
+            Enemy = 0b00000010,
             Bullet = 0b00000100,
-            Wall =   0b00001000,
-            Water =  0b00010000,
+            Wall = 0b00001000,
+            Water = 0b00010000,
             Interactable = 0b00100000,
             Trigger = 0b01000000,
         }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
@@ -19,10 +18,9 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize, bool player, Vector2 position, string texture, (float, float) hue)
         {
             this.AttackDamage = attackDamage;
-            this.Position = position;
+            this.Position = new Vector2(position.X, position.Y - 10.5f); // Lowered position to spawn bullet on pistol level
             this.Direction = direction;
             this.TTL = ttl;
-
             this.Texture = new TextureLoader().LoadTexture("Projectile/" + texture);
 
             if (player)

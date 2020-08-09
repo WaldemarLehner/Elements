@@ -1,6 +1,4 @@
-using System;
 using ComputergrafikSpiel.Model.Interfaces;
-using OpenTK;
 
 namespace ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces
 {

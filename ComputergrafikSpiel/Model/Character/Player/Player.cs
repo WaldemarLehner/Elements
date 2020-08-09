@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.PlayerSystems;
 using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
@@ -28,7 +27,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly GenericParticleEmitter dirtEmitter;
 
         private bool run = false;
+        private bool died = false;
         private Vector2 directionXY = Vector2.Zero;
+        private bool updateDisabled = false;
 
         public Player()
         {
@@ -114,7 +115,12 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void TakingDamage(int damage)
         {
-            bool died = false;
+            if (this.updateDisabled == true)
+            {
+                return;
+            }
+
+            this.died = false;
 
             if (!this.Invulnerable)
             {
@@ -128,12 +134,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 opt.DirectionDeviation = 180;
                 opt.Hue = (this.BloodColorHue, this.BloodColorHue);
                 StaticParticleEmmiter.EmitOnce(opt);
-            }
-
-            if (died)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("CurrentHealth is under 0 -- Player died");
             }
         }
 
@@ -149,6 +149,18 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
+            if (this.updateDisabled == true)
+            {
+                return;
+            }
+
+            if (this.died || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)))
+            {
+                Scene.Scene.Current.Model.SceneManager.Play.StartGameoverMusic();
+                (Scene.Scene.Current.Model as Model).TriggerEndscreenButtons();
+                this.updateDisabled = true;
+            }
+
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)
             {
@@ -209,7 +221,17 @@ namespace ComputergrafikSpiel.Model.Character.Player
                     continue;
                 }
 
-                this.Position = this.LastPosition;
+                var colliderPosition = CollisionPushbackHelper.PushbackCollider(this, collision);
+                var colliderOffset = this.Position - this.Collider.Position;
+
+                this.Position = colliderPosition + colliderOffset;
+
+                if (Scene.Scene.Current.ColliderManager.GetCollisions(this).Count > 0)
+                {
+                    // Fall back. The Pushback pushed the player onto another collider. We go back to the last position instead to be safe.
+                    this.Position = this.LastPosition;
+                }
+
                 return;
             }
         }
@@ -238,7 +260,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
                 {
-                    this.playerAttackSystem.PlayerAttack(inputState.Cursor.WorldCoordinates ?? Vector2.Zero);
+                    this.playerAttackSystem.PlayerAttack(Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero);
                     this.AttackCooldownCurrent = this.AttackCooldown;
                 }
             }

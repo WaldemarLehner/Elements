@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
@@ -89,9 +87,17 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.Background,
                 };
+
+                // Abgespalten, da Schüsse sonst unter dem Tastaturlayout liegen zu beginn
+                enumerable.AddRange(this.World.WorldTilesEnumerable);
+
+                if (Scene.Player != null)
+                {
+                    enumerable.AddRange(GUIConstructionHelper.GenerateInstruction(this.World));
+                }
+
                 var renderables = new IEnumerable<IRenderable>[]
                 {
-                    this.World.WorldTilesEnumerable,
                     this.World.Obstacles,
                     this.Particles,
                     this.NPCs,
@@ -104,14 +110,23 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.AddRange(entry);
                 }
 
+                if (Scene.Player != null)
+                {
+                    enumerable.Add(Scene.Player);
+                }
+
                 if (this.Model.UpgradeScreen != null)
                 {
                     enumerable.AddRange(this.Model.UpgradeScreen.Renderables);
                 }
 
+                if (this.Model.EndScreen != null)
+                {
+                    enumerable.AddRange(this.Model.EndScreen.Renderables);
+                }
+
                 if (Scene.Player != null)
                 {
-                    enumerable.Add(Scene.Player);
                     enumerable.AddRange(GUIConstructionHelper.GenerateGuiIndicator(this.World, Player));
                 }
 
@@ -128,7 +143,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IEnumerable<Interactable> Interactables => from entity in this.Entities where entity is Interactable select entity as Interactable;
 
-        private List<INonPlayerCharacter> NpcList { get; } = new List<INonPlayerCharacter>();
+        public List<INonPlayerCharacter> NpcList { get; } = new List<INonPlayerCharacter>();
 
         private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
@@ -138,14 +153,14 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public static bool CreatePlayer(IPlayer player)
         {
-            if (Scene.Player == null)
+            if (Scene.Player != null)
             {
-                Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
-                Scene.Player.Equip(new Weapon(3, 1, 12));
-                return true;
+                Scene.Player = null;
             }
 
-            return false;
+            Scene.Player = player ?? throw new ArgumentNullException(nameof(player));
+            Scene.Player.Equip(new Weapon(3, 1, 12));
+            return true;
         }
 
         public void GiveModeltoScene(IModel model)
@@ -274,12 +289,19 @@ namespace ComputergrafikSpiel.Model.Scene
                 Scene.Player.Update(dtime);
             }
 
-            // Spawn Interactable when all enemies are dead
+            // Öffnet Upgrade-Options wenn alle Gegner erledigt wurden in einem Raum
             if (this.NpcList.Count == 0 && this.lockInc)
             {
+                // Im aller letzten Raum soll keine Upgrade-Option mehr erscheinen
+                if ((Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)
+                {
+                    this.lockInc = false;
+                    return;
+                }
+
                 if (!(this.Model as Model).FirstScene)
                 {
-                    (this.Model as Model).OnSceneCompleted(this.World);
+                    (this.Model as Model).OnSceneCompleted();
                 }
 
                 this.lockInc = false;
