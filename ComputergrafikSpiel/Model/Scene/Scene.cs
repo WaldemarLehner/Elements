@@ -135,7 +135,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IEnumerable<Interactable> Interactables => from entity in this.Entities where entity is Interactable select entity as Interactable;
 
-        private List<INonPlayerCharacter> NpcList { get; } = new List<INonPlayerCharacter>();
+        public List<INonPlayerCharacter> NpcList { get; } = new List<INonPlayerCharacter>();
 
         private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
@@ -281,9 +281,16 @@ namespace ComputergrafikSpiel.Model.Scene
                 Scene.Player.Update(dtime);
             }
 
-            // Spawn Interactable when all enemies are dead
+            // Öffnet Upgrade-Options wenn alle Gegner erledigt wurden in einem Raum
             if (this.NpcList.Count == 0 && this.lockInc)
             {
+                // Im aller letzten Raum soll keine Upgrade-Option mehr erscheinen
+                if ((Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)
+                {
+                    this.lockInc = false;
+                    return;
+                }
+
                 if (!(this.Model as Model).FirstScene)
                 {
                     (this.Model as Model).OnSceneCompleted();

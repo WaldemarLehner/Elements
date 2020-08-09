@@ -7,7 +7,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 {
     public class EndScreen : IUpdateable
     {
-        private static readonly string[] Text = new string[2] { "retry", "quit" };
+        private static readonly string[] Text = new string[2] { "new game", "quit" };
         private readonly List<EndScreenButton> endScreenButtons = new List<EndScreenButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 
@@ -19,7 +19,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
 
             for (int i = 0; i < 2; i++)
             {
-                float y = center.Y - ((entrySize + margin) * (i + 1));
+                float y = center.Y - ((entrySize + margin) * (i + 2));
                 this.endScreenButtons.Add(new EndScreenButton(this, new Vector2(center.X, y), new Vector2(entrySize * 8, entrySize), Text[i]));
             }
         }

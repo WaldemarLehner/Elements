@@ -27,6 +27,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly GenericParticleEmitter dirtEmitter;
 
         private bool run = false;
+        private bool died = false;
         private Vector2 directionXY = Vector2.Zero;
         private bool updateDisabled = false;
 
@@ -119,7 +120,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 return;
             }
 
-            bool died = false;
+            this.died = false;
 
             if (!this.Invulnerable)
             {
@@ -133,14 +134,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 opt.DirectionDeviation = 180;
                 opt.Hue = (this.BloodColorHue, this.BloodColorHue);
                 StaticParticleEmmiter.EmitOnce(opt);
-            }
-
-            if (died)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("CurrentHealth is under 0 -- Player died");
-                (Scene.Scene.Current.Model as Model).OnPlayerDeath();
-                this.updateDisabled = true;
             }
         }
 
@@ -159,6 +152,13 @@ namespace ComputergrafikSpiel.Model.Character.Player
             if (this.updateDisabled == true)
             {
                 return;
+            }
+
+            if (this.died || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)))
+            {
+                Scene.Scene.Current.Model.SceneManager.Play.StartGameoverMusic();
+                (Scene.Scene.Current.Model as Model).TriggerEndscreenButtons();
+                this.updateDisabled = true;
             }
 
             this.LastPosition = this.Position;

@@ -138,12 +138,14 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                         {
                             Environment.Exit(0);
                         }
-                        else if (this.text.Equals("retry"))
+                        else if (this.text.Equals("new game"))
                         {
                             var player = new Player();
                             Scene.Scene.CreatePlayer(player);
                             Scene.Scene.Current.Model.Level = 1;
-                            (Scene.Scene.Current.Model as Model).SceneManager.SetDifferentDungeons = 0;
+                            (Scene.Scene.Current.Model as Model).SceneManager.CurrentDungeon = 0;
+                            (Scene.Scene.Current.Model as Model).SceneManager.CurrentDungeonRoom = 0;
+                            (Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel = 0;
                             (Scene.Scene.Current.Model as Model).SceneManager.Play.StopMusik();
                             (Scene.Scene.Current.Model as Model).SceneManager = new SceneManager(Scene.Scene.Current.Model);
                             (Scene.Scene.Current.Model as Model).SceneManager.SetSceneTexturesToSafeZone();

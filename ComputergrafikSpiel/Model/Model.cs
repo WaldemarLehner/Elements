@@ -112,7 +112,7 @@ namespace ComputergrafikSpiel.Model
             this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
         }
 
-        public void OnPlayerDeath()
+        public void TriggerEndscreenButtons()
         {
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
             var centerV = new Vector2((left + right) * .5f, (top + bottom) * .5f);

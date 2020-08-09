@@ -18,16 +18,59 @@ namespace ComputergrafikSpiel.Model.Overlay
 
         internal static IEnumerable<IRenderable> GenerateGuiIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
+            var dungeonInfo = GUIConstructionHelper.GenerateDungeonInfo(sceneDefinition);
             var coinData = GUIConstructionHelper.GenerateCoinCount(sceneDefinition, player);
             var healthbar = GUIConstructionHelper.GenerateHealthBar(sceneDefinition, player);
             var gameover = GUIConstructionHelper.GenerateGameover(sceneDefinition, player);
             var crosshair = GUIConstructionHelper.GenerateCrosshair();
 
             var renderables = new List<IRenderable>();
+            renderables.AddRange(dungeonInfo);
             renderables.AddRange(coinData);
             renderables.AddRange(healthbar);
-            renderables.AddRange(crosshair);
             renderables.AddRange(gameover);
+            renderables.AddRange(crosshair);
+            return renderables;
+        }
+
+        private static List<IRenderable> GenerateDungeonInfo(IWorldScene sceneDefinition)
+        {
+            // Get bounds of GUI Area of Scene.
+            (float top, float bottom, float left, _, float width, float height) = GenerateCoinGUIBounds(sceneDefinition.SceneDefinition.TileSize, sceneDefinition.WorldSceneBounds);
+            string dungeonInfo;
+            if (Scene.Scene.Current.Model.SceneManager.CurrentDungeon == 0)
+            {
+                dungeonInfo = "safezone";
+            }
+            else
+            {
+                dungeonInfo = "dungeon: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeon.ToString() + "  room: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeonRoom.ToString();
+            }
+
+            int renderablesCount = dungeonInfo.Length;
+            float itemSize = (width / renderablesCount) < height ? width / renderablesCount : height;
+
+            List<IRenderable> renderables = new List<IRenderable>();
+
+            for (int i = 0; i < renderablesCount; i++)
+            {
+                var tex = Font;
+                int? texIndex = GetTexIndex(tex, dungeonInfo[i]);
+                if (texIndex == null)
+                {
+                    continue;
+                }
+
+                var entry = new GenericGUIRenderable()
+                {
+                    Scale = Vector2.One * itemSize / .8f,
+                    Position = new Vector2(left + ((i * (itemSize / .6f)) - 180), (top + bottom) / 2f),
+                    Texture = tex,
+                    Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
+                };
+                renderables.Add(entry);
+            }
+
             return renderables;
         }
 
@@ -140,10 +183,10 @@ namespace ComputergrafikSpiel.Model.Overlay
             float gameoverSize = (right - left) / 2;
             var (currentHealth, _, _, _, _) = player.PlayerData;
 
-            if (currentHealth == 0)
+            if (currentHealth == 0 || (((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40) && Scene.Scene.Current.NpcList.Count == 0))
             {
                 float xCenter = (left + right) / 2;
-                float yCenter = (bottom + top) / 1.5f;
+                float yCenter = (bottom + top) / 1.7f;
                 var texCoords = Gameover.GetTexCoordsOfIndex(0); // Für die rechte Hälfte des Bildes.
 
                 var entry = new GenericGUIRenderable()
