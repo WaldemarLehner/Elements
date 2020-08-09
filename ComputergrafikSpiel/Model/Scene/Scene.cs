@@ -87,9 +87,17 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.Background,
                 };
+
+                // Abgespalten, da Schüsse sonst unter dem Tastaturlayout liegen zu beginn
+                enumerable.AddRange(this.World.WorldTilesEnumerable);
+
+                if (Scene.Player != null)
+                {
+                    enumerable.AddRange(GUIConstructionHelper.GenerateInstruction(this.World));
+                }
+
                 var renderables = new IEnumerable<IRenderable>[]
                 {
-                    this.World.WorldTilesEnumerable,
                     this.World.Obstacles,
                     this.Particles,
                     this.NPCs,

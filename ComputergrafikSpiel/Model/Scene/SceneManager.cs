@@ -116,7 +116,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void InitializeFirstScene()
         {
-            var worldScene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, .1f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
+            var worldScene = new WorldSceneGenerator(0f, new WorldSceneDefinition(true, true, true, true, 20, 15, 0f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             var initScene = new Scene(worldScene);
             (this.Model as Model).FirstScene = true;
             initScene.GiveModeltoScene(this.Model);

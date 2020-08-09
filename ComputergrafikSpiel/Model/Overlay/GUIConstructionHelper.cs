@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -11,10 +12,42 @@ namespace ComputergrafikSpiel.Model.Overlay
 {
     internal static class GUIConstructionHelper
     {
+        private static readonly ITileTexture Instruction = new TextureLoader().LoadTileTexture("GUI/Instruction", (x: 1, y: 1));
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
         private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 1, y: 1));
         private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/gameover", (x: 1, y: 1));
+
+        public static List<IRenderable> GenerateInstruction(IWorldScene sceneDefinition)
+        {
+            List<IRenderable> healthEntries = new List<IRenderable>();
+
+            // Get bounds of GUI Area of Scene.
+            float left = sceneDefinition.WorldSceneBounds.left;
+            float right = sceneDefinition.WorldSceneBounds.right;
+            float top = sceneDefinition.WorldSceneBounds.top;
+            float bottom = sceneDefinition.WorldSceneBounds.bottom;
+
+            float instructionSize = (right - left) / 2;
+
+            if ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 0)
+            {
+                float xCenter = (left + right) / 2;
+                float yCenter = (bottom + top) / 2;
+                var texCoords = Instruction.GetTexCoordsOfIndex(0); // Für die rechte Hälfte des Bildes.
+
+                var entry = new GenericGUIRenderable()
+                {
+                    Scale = new Vector2(instructionSize * .95f, .5f * instructionSize), //Vector2.One * .5f * instructionSize,
+                    Position = new Vector2(xCenter, yCenter),
+                    Texture = Instruction,
+                    Coordinates = texCoords,
+                };
+                healthEntries.Add(entry);
+            }
+
+            return healthEntries;
+        }
 
         internal static IEnumerable<IRenderable> GenerateGuiIndicator(IWorldScene sceneDefinition, IPlayer player)
         {
@@ -23,8 +56,8 @@ namespace ComputergrafikSpiel.Model.Overlay
             var healthbar = GUIConstructionHelper.GenerateHealthBar(sceneDefinition, player);
             var gameover = GUIConstructionHelper.GenerateGameover(sceneDefinition, player);
             var crosshair = GUIConstructionHelper.GenerateCrosshair();
-
             var renderables = new List<IRenderable>();
+
             renderables.AddRange(dungeonInfo);
             renderables.AddRange(coinData);
             renderables.AddRange(healthbar);
@@ -205,6 +238,7 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static List<IRenderable> GenerateCrosshair()
         {
             List<IRenderable> crosshairEntries = new List<IRenderable>();
+            Vector2? mouseCoordinates = Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero;
 
             float croshairSize = 15;
             for (int i = 0; i < 1; i++)
@@ -214,7 +248,7 @@ namespace ComputergrafikSpiel.Model.Overlay
                 var entry = new GenericGUIRenderable()
                 {
                     Scale = Vector2.One * .5f * croshairSize,
-                    Position = Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero,
+                    Position = new Vector2(mouseCoordinates.Value.X, mouseCoordinates.Value.Y),
                     Texture = Crosshair,
                     Coordinates = texCoords,
                 };
