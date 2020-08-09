@@ -137,7 +137,13 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                 }
                 else
                 {
-                    new Projectile(this.AttackDamage, Scene.Scene.Player.Position - this.Position, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
+                    // Bullet speed will depend on dungeon level progression
+                    Vector2 direction = Vector2.Normalize(Vector2.Subtract(Scene.Scene.Player.Position, this.Position));
+                    Vector2 levelBulletBoost = Vector2.Multiply(direction, 20);
+                    levelBulletBoost = Vector2.Multiply(levelBulletBoost, Scene.Scene.Current.Model.SceneManager.CurrentDungeon);
+                    direction = Vector2.Multiply(direction, 200);
+                    direction = Vector2.Add(direction, levelBulletBoost);
+                    new Projectile(this.AttackDamage, direction, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
                 }
 
                 this.AttackCooldownRangeSafestate = this.AttackCooldown;

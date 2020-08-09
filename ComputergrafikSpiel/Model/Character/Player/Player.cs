@@ -260,7 +260,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 if (this.EquipedWeapon != null && this.AttackCooldownCurrent <= 0)
                 {
-                    this.playerAttackSystem.PlayerAttack(inputState.Cursor.WorldCoordinates ?? Vector2.Zero);
+                    this.playerAttackSystem.PlayerAttack(Scene.Scene.Current?.Model?.InputState?.Cursor?.WorldCoordinates ?? Vector2.Zero);
                     this.AttackCooldownCurrent = this.AttackCooldown;
                 }
             }
