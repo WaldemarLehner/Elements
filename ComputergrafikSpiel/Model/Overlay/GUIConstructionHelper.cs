@@ -37,8 +37,16 @@ namespace ComputergrafikSpiel.Model.Overlay
         {
             // Get bounds of GUI Area of Scene.
             (float top, float bottom, float left, _, float width, float height) = GenerateCoinGUIBounds(sceneDefinition.SceneDefinition.TileSize, sceneDefinition.WorldSceneBounds);
+            string dungeonInfo;
+            if (Scene.Scene.Current.Model.SceneManager.CurrentDungeon == 0)
+            {
+                dungeonInfo = "safezone";
+            }
+            else
+            {
+                dungeonInfo = "dungeon: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeon.ToString() + "  room: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeonRoom.ToString();
+            }
 
-            string dungeonInfo = "dungeon: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeon.ToString() + "  room: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeonRoom.ToString();
             int renderablesCount = dungeonInfo.Length;
             float itemSize = (width / renderablesCount) < height ? width / renderablesCount : height;
 
