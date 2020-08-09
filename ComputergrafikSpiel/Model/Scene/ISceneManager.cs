@@ -6,7 +6,11 @@ namespace ComputergrafikSpiel.Model.Scene
     {
         Soundloader Play { get; set; }
 
-        int SetDifferentDungeons { set; }
+        int CurrentDungeon { get; set; }
+
+        int CurrentDungeonRoom { get; set; }
+
+        int CurrentStageLevel { get; set; }
 
         void LoadNewScene();
 

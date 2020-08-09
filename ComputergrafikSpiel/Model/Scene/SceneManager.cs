@@ -20,37 +20,49 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public Soundloader Play { get; set; } = new Soundloader();
 
-        public int SetDifferentDungeons { get; set; } = 0;
+        public int CurrentDungeon { get; set; } = 0; // Zähler für den aktuellen Dungeon (1-4)
+
+        public int CurrentDungeonRoom { get; set; } = 0; // Zähler für den aktuellen Raum im Dungeon (1-10)
+
+        public int CurrentStageLevel { get; set; } = 0; // Zähler wieviel Räume bereits betreten wurden insgesamt (1-40)
 
         private IModel Model { get; }
 
         public void LoadNewScene()
         {
-            this.SetDifferentDungeons++;
+            this.CurrentStageLevel++;
+            this.CurrentDungeonRoom++;
 
-            switch (this.SetDifferentDungeons)
+            switch (this.CurrentStageLevel)
             {
                 case 1:
                     this.Play.StartDungeon1Music();
                     this.SetSceneTexturesToWater();
                     this.elementType = WorldEnum.Type.Water;
+                    this.CurrentDungeon++;
                     break;
                 case 11:
                     this.Play.StartDungeon2Music();
                     this.SetSceneTexturesToEarth();
                     this.elementType = WorldEnum.Type.Earth;
+                    this.CurrentDungeon++;
+                    this.CurrentDungeonRoom = 1;
                     this.Model.Level = 1;
                     break;
                 case 21:
                     this.Play.StartDungeon3Music();
                     this.SetSceneTexturesToFire();
                     this.elementType = WorldEnum.Type.Fire;
+                    this.CurrentDungeon++;
+                    this.CurrentDungeonRoom = 1;
                     this.Model.Level = 1;
                     break;
                 case 31:
                     this.Play.StartDungeon4Music();
                     this.SetSceneTexturesToAir();
                     this.elementType = WorldEnum.Type.Air;
+                    this.CurrentDungeon++;
+                    this.CurrentDungeonRoom = 1;
                     this.Model.Level = 1;
                     break;
                 default: break;
@@ -60,7 +72,7 @@ namespace ComputergrafikSpiel.Model.Scene
             Scene.Current.Disable();
 
             // Keine Obstacles & Gewässer bei Bossräumen Überprüfung
-            if (this.SetDifferentDungeons % 10 == 0)
+            if (this.CurrentStageLevel % 10 == 0)
             {
                 this.obstaclePropability = .0f;
                 this.noiseScale = .0f;
@@ -76,7 +88,7 @@ namespace ComputergrafikSpiel.Model.Scene
             newScene.GiveModeltoScene(this.Model);
             newScene.SetAsActive();
 
-            switch (this.SetDifferentDungeons)
+            switch (this.CurrentStageLevel)
             {
                 case 10:
                     this.Play.StartDungeon1BossMusic();
