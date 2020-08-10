@@ -73,6 +73,16 @@ namespace ComputergrafikSpiel.Model.Soundtrack
             this.mediaPlayer.controls.play();
         }
 
+        public void MuteMusik()
+        {
+            this.mediaPlayer.settings.mute = true;
+        }
+
+        public void UnmuteMusik()
+        {
+            this.mediaPlayer.settings.mute = false;
+        }
+
         public void StopMusik()
         {
             this.mediaPlayer.controls.stop();

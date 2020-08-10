@@ -153,7 +153,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             // Setzt Mutebutton einmalig auf den Screen zu Beginn
             if (!this.muteButtonOnScreen)
             {
-                //(Scene.Scene.Current.Model as Model).TriggerToggleMuteButton();
+                (Scene.Scene.Current.Model as Model).TriggerToggleMuteButton();
                 this.muteButtonOnScreen = true;
             }
 

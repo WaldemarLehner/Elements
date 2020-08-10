@@ -7,7 +7,7 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
 {
     public class ToggleMute : IUpdateable
     {
-        private static readonly string[] Text = new string[2] { "new game", "quit" };
+        private static readonly string[] Text = new string[2] { "mute", "unmute" };
         private readonly List<ToggleMuteButton> endScreenButtons = new List<ToggleMuteButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 

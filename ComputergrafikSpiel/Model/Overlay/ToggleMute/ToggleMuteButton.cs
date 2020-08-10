@@ -132,25 +132,18 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
                 {
                     if (this.triggered == false)
                     {
-                        this.triggered = true;
+                        // this.triggered = true;
 
-                        if (this.text.Equals("quit"))
+                        if (this.text.Equals("mute"))
                         {
-                            Environment.Exit(0);
+                            Console.WriteLine("Pressed MUTE");
+                            Scene.Scene.Current.Model.SceneManager.Play.MuteMusik();
                         }
-                        else if (this.text.Equals("new game"))
+                        else if (this.text.Equals("unmute"))
                         {
-                            var player = new Player();
-                            Scene.Scene.CreatePlayer(player);
-                            Scene.Scene.Current.Model.Level = 1;
-                            (Scene.Scene.Current.Model as Model).SceneManager.CurrentDungeon = 0;
-                            (Scene.Scene.Current.Model as Model).SceneManager.CurrentDungeonRoom = 0;
-                            (Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel = 0;
-                            (Scene.Scene.Current.Model as Model).SceneManager.Play.StopMusik();
-                            (Scene.Scene.Current.Model as Model).SceneManager = new SceneManager(Scene.Scene.Current.Model);
-                            (Scene.Scene.Current.Model as Model).SceneManager.SetSceneTexturesToSafeZone();
-                            (Scene.Scene.Current.Model as Model).SceneManager.InitializeFirstScene();
-                            Scene.Scene.Current.Model.EndScreen = null;
+                            Console.WriteLine("Pressed UNMUTE");
+                            Scene.Scene.Current.Model.SceneManager.Play.UnmuteMusik();
+                            // Scene.Scene.Current.Model.ToggleMute = null;
                         }
                     }
                 }
