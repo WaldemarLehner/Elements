@@ -13,6 +13,7 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
 {
     internal class ToggleMuteButton : IUpdateable
     {
+        private static readonly Dictionary<PlayerEnum.Stats, ITileTexture> TextureLookup = GenerateDefault();
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture BackgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/Button", (3, 2));
         private readonly List<GenericRenderable> backgroundTiles;
@@ -20,22 +21,21 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
         private readonly ToggleMute parent;
         private bool triggered = false;
         private Vector2 size;
-        private string text;
+        private PlayerEnum.Stats toggleitems;
         private bool isHovered = false;
         private bool clickReleasedAfterCreation = false; // This is needed so that buttons dont get clicked immediatedly.
         private Vector2 centre;
 
-        internal ToggleMuteButton(ToggleMute parent, Vector2 centre, Vector2 buttonSize, string text)
+        internal ToggleMuteButton(ToggleMute parent, Vector2 centre, Vector2 buttonSize, PlayerEnum.Stats toggleitems)
         {
             this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.centre = centre;
             this.size = buttonSize;
-            this.text = text;
+            this.toggleitems = toggleitems;
 
             // Button Setup:
-            int foregroundTileCount = text.Length;
             var backgroundTileCount = (int)Math.Round(buttonSize.X / buttonSize.Y);
-            float foregroundEntrySize = (buttonSize.Y < (buttonSize.X / foregroundTileCount)) ? buttonSize.Y : (buttonSize.X / foregroundTileCount);
+            float foregroundEntrySize = (buttonSize.Y < buttonSize.X) ? buttonSize.Y : buttonSize.X;
 
             this.backgroundTiles = new List<GenericRenderable>(backgroundTileCount);
 
@@ -69,29 +69,41 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
             }
 
             // Data
-            this.foregroundTiles = new List<GenericRenderable>(foregroundTileCount);
-            for (int i = 0; i < foregroundTileCount; i++)
+            this.foregroundTiles = new List<GenericRenderable>(1);
+            for (int i = 0; i < 1; i++)
             {
                 float leftcentreBound = this.centre.X - (this.size.X / 3.5f) + this.size.Y;
                 float rightcentreBound = this.centre.X + (this.size.X / 1.5f) - (this.size.Y / 0.3f);
-                float x = leftcentreBound + ((rightcentreBound - leftcentreBound) * (i / (float)foregroundTileCount));
+                float x = leftcentreBound + ((rightcentreBound - leftcentreBound) * i);
                 Vector2 center = new Vector2(x, this.centre.Y);
                 var scale = foregroundEntrySize / 8f * Vector2.One;
 
-                char c = text[i];
+                if (i == 0)
+                {
+                    // Icon.
+                    this.foregroundTiles.Add(new GenericRenderable
+                    {
+                        Scale = scale,
+                        Coordinates = TextureCoordinates.Default,
+                        Position = center,
+                        Tex = TextureLookup[PlayerEnum.Stats.Mute],
+                    });
+                }
+
+                /*char c = text[i];
 
                 if (!Font.MappedPositions.ContainsKey(c))
                 {
                     continue;
-                }
+                }*/
 
-                var texCoords = Font.GetTexCoordsOfIndex(Font.MappedPositions[c]);
+                var texCoords = TextureLookup[toggleitems].GetTexCoordsOfIndex(0);
                 this.foregroundTiles.Add(new GenericRenderable
                 {
                     Scale = scale,
                     Coordinates = texCoords,
                     Position = center,
-                    Tex = Font,
+                    Tex = TextureLookup[toggleitems],
                 });
             }
         }
@@ -134,12 +146,12 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
                     {
                         // this.triggered = true;
 
-                        if (this.text.Equals("mute"))
+                        if (this.toggleitems.Equals(PlayerEnum.Stats.Mute))
                         {
                             Console.WriteLine("Pressed MUTE");
                             Scene.Scene.Current.Model.SceneManager.Play.MuteMusik();
                         }
-                        else if (this.text.Equals("unmute"))
+                        else if (this.toggleitems.Equals(PlayerEnum.Stats.Unmute))
                         {
                             Console.WriteLine("Pressed UNMUTE");
                             Scene.Scene.Current.Model.SceneManager.Play.UnmuteMusik();
@@ -155,6 +167,17 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
                     this.ChangeStyle(false);
                 }
             }
+        }
+
+        private static Dictionary<PlayerEnum.Stats, ITileTexture> GenerateDefault()
+        {
+            const string root = "GUI/ToggleMute/";
+            var texLoader = new TextureLoader();
+            return new Dictionary<PlayerEnum.Stats, ITileTexture>
+            {
+                [PlayerEnum.Stats.Mute] = texLoader.LoadTileTexture(root + "Bell_mute", (1, 1)),
+                [PlayerEnum.Stats.Unmute] = texLoader.LoadTileTexture(root + "Bell_unmute", (1, 1)),
+            };
         }
 
         private void ChangeStyle(bool active)

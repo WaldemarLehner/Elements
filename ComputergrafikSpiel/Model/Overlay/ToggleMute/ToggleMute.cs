@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using OpenTK;
@@ -7,7 +8,8 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
 {
     public class ToggleMute : IUpdateable
     {
-        private static readonly string[] Text = new string[2] { "mute", "unmute" };
+        private readonly PlayerEnum.Stats[] toggleItems = new PlayerEnum.Stats[2] { PlayerEnum.Stats.Mute, PlayerEnum.Stats.Unmute };
+        // private static readonly string[] Text = new string[2] { "mute", "unmute" };
         private readonly List<ToggleMuteButton> endScreenButtons = new List<ToggleMuteButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 
@@ -17,10 +19,10 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
 
             var entrySize = width / 5;
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 1; i++)
             {
                 float y = center.Y - ((entrySize + margin) * (i + 2));
-                this.endScreenButtons.Add(new ToggleMuteButton(this, new Vector2(center.X, y), new Vector2(entrySize * 8, entrySize), Text[i]));
+                this.endScreenButtons.Add(new ToggleMuteButton(this, new Vector2(center.X, y), new Vector2(entrySize * 8, entrySize), this.toggleItems[i]));
             }
         }
 
