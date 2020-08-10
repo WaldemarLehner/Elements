@@ -71,12 +71,13 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).FirstScene = false;
             Scene.Current.Disable();
             IWorldScene scene;
-            // Keine Obstacles & Gewässer bei Bossräumen Überprüfung
+
+            // Keine Obstacles & Gewässer bei Bossräumen
             if (this.CurrentStageLevel % 10 == 0)
             {
                 this.obstaclePropability = .0f;
                 this.noiseScale = .1f;
-                scene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, this.noiseScale, 32, WorldSceneDefinition.ExtraordinaryDungeonMapping)).GenerateWorldScene();
+                scene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, this.noiseScale, 32, WorldSceneDefinition.BossRoomMapping)).GenerateWorldScene();
             }
             else
             {
