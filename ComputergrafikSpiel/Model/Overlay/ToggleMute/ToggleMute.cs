@@ -22,7 +22,7 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
             for (int i = 0; i < 1; i++)
             {
                 float y = center.Y - ((entrySize + margin) * (i + 2));
-                this.toggleMuteButton.Add(new ToggleMuteButton(this, new Vector2(center.X, y), new Vector2(entrySize * 8, entrySize), toggleItem));
+                this.toggleMuteButton.Add(new ToggleMuteButton(this, new Vector2(center.X, y), new Vector2(entrySize, entrySize), toggleItem));
             }
         }
 

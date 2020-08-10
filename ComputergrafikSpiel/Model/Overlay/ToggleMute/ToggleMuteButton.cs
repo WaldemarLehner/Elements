@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -15,7 +16,7 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
     {
         private static readonly Dictionary<PlayerEnum.Stats, ITileTexture> TextureLookup = GenerateDefault();
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
-        private static readonly ITileTexture BackgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/Button", (3, 2));
+        private static readonly ITileTexture BackgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/SquareButton", (1, 2));
         private readonly List<GenericRenderable> backgroundTiles;
         private readonly List<GenericRenderable> foregroundTiles;
         private readonly ToggleMute parent;
@@ -25,6 +26,7 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
         private bool isHovered = false;
         private bool clickReleasedAfterCreation = false; // This is needed so that buttons dont get clicked immediatedly.
         private Vector2 centre;
+        private Vector2 position = new Vector2(Scene.Scene.Current.World.WorldSceneBounds.right - 17, Scene.Scene.Current.World.WorldSceneBounds.top - 17);
 
         internal ToggleMuteButton(ToggleMute parent, Vector2 centre, Vector2 buttonSize, PlayerEnum.Stats toggleitem)
         {
@@ -40,60 +42,43 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
             this.backgroundTiles = new List<GenericRenderable>(backgroundTileCount);
 
             // Background Tiles
-            for (int i = 0; i < backgroundTileCount; i++)
+            float xBackground = this.centre.X - (this.size.X / 2f) + (.5f * this.size.Y);
+
+            Vector2 centerBackground = new Vector2(xBackground, this.centre.Y);
+            TextureCoordinates coords;
+
+            coords = BackgroundTexture.GetTexCoordsOfIndex(0);
+
+            this.backgroundTiles.Add(new GenericRenderable
             {
-                float x = this.centre.X - (this.size.X / 2f) + ((i + .5f) * this.size.Y);
+                Coordinates = coords,
+                Position = this.position,
+                Scale = Vector2.One * buttonSize.Y / 3.5f,
+                Tex = BackgroundTexture,
+            });
 
-                Vector2 center = new Vector2(x, this.centre.Y);
-                TextureCoordinates coords;
-                if (i == 0)
-                {
-                    coords = BackgroundTexture.GetTexCoordsOfIndex(0);
-                }
-                else if (i == backgroundTileCount - 1)
-                {
-                    coords = BackgroundTexture.GetTexCoordsOfIndex(2);
-                }
-                else
-                {
-                    coords = BackgroundTexture.GetTexCoordsOfIndex(1);
-                }
-
-                this.backgroundTiles.Add(new GenericRenderable
-                {
-                    Coordinates = coords,
-                    Position = center,
-                    Scale = Vector2.One * buttonSize.Y / 2f,
-                    Tex = BackgroundTexture,
-                });
-            }
-
-            // Data
+            // Data      new Vector2(left + ((i * (itemSize / .6f)) - 160), (top + bottom) / 2.04f),
             this.foregroundTiles = new List<GenericRenderable>(1);
-            for (int i = 0; i < 1; i++)
+            float leftcentreBound = this.centre.X - (this.size.X / 3.5f) + this.size.Y;
+            float rightcentreBound = this.centre.X + (this.size.X / 1.5f) - (this.size.Y / 0.3f);
+            // Vector2 centerForeground = new Vector2(xForeground, this.centre.Y);
+            var scale = foregroundEntrySize / 8f * Vector2.One;
+
+            /*char c = text[i];
+
+            if (!Font.MappedPositions.ContainsKey(c))
             {
-                float leftcentreBound = this.centre.X - (this.size.X / 3.5f) + this.size.Y;
-                float rightcentreBound = this.centre.X + (this.size.X / 1.5f) - (this.size.Y / 0.3f);
-                float x = leftcentreBound + ((rightcentreBound - leftcentreBound) * i);
-                Vector2 center = new Vector2(x, this.centre.Y);
-                var scale = foregroundEntrySize / 8f * Vector2.One;
+                continue;
+            }*/
 
-                /*char c = text[i];
-
-                if (!Font.MappedPositions.ContainsKey(c))
-                {
-                    continue;
-                }*/
-
-                var texCoords = TextureLookup[toggleitem].GetTexCoordsOfIndex(0);
-                this.foregroundTiles.Add(new GenericRenderable
-                {
-                    Scale = scale,
-                    Coordinates = texCoords,
-                    Position = center,
-                    Tex = TextureLookup[toggleitem],
-                });
-            }
+            var texCoords = TextureLookup[toggleitem].GetTexCoordsOfIndex(0);
+            this.foregroundTiles.Add(new GenericRenderable
+            {
+                Scale = scale,
+                Coordinates = texCoords,
+                Position = this.position,
+                Tex = TextureLookup[toggleitem],
+            });
         }
 
         public IEnumerable<IRenderable> Foreground => this.foregroundTiles;
@@ -104,10 +89,10 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
         {
             get
             {
-                var top = this.centre.Y + (this.size.Y / 2f);
-                var bottom = this.centre.Y - (this.size.Y / 2f);
-                var left = this.centre.X - (this.size.X / 2f);
-                var right = this.centre.X + (this.size.X / 2f);
+                var top = this.position.Y + (this.size.Y / 3.5f);
+                var bottom = this.position.Y - (this.size.Y / 3.5f);
+                var left = this.position.X - (this.size.X / 3.5f);
+                var right = this.position.X + (this.size.X / 3.5f);
                 return (top, bottom, left, right);
             }
         }
