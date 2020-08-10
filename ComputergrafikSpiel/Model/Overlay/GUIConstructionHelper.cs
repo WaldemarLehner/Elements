@@ -98,8 +98,8 @@ namespace ComputergrafikSpiel.Model.Overlay
 
                 var entry = new GenericGUIRenderable()
                 {
-                    Scale = Vector2.One * itemSize / .8f,
-                    Position = new Vector2(left + ((i * (itemSize / .6f)) - 180), (top + bottom) / 2f),
+                    Scale = Vector2.One * itemSize / 1.2f,
+                    Position = new Vector2(left + ((i * (itemSize / .6f)) - 160), (top + bottom) / 2.04f),
                     Texture = tex,
                     Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
                 };
