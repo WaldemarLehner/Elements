@@ -17,11 +17,12 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
         private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 1, y: 1));
-        private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/gameover", (x: 1, y: 1));
+        private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/Gameover", (x: 1, y: 1));
+        private static readonly ITileTexture Victory = new TextureLoader().LoadTileTexture("GUI/Victory", (x: 1, y: 1));
 
         public static List<IRenderable> GenerateInstruction(IWorldScene sceneDefinition)
         {
-            List<IRenderable> healthEntries = new List<IRenderable>();
+            List<IRenderable> instructionEntries = new List<IRenderable>();
 
             // Get bounds of GUI Area of Scene.
             float left = sceneDefinition.WorldSceneBounds.left;
@@ -39,15 +40,15 @@ namespace ComputergrafikSpiel.Model.Overlay
 
                 var entry = new GenericGUIRenderable()
                 {
-                    Scale = new Vector2(instructionSize * .95f, .5f * instructionSize), //Vector2.One * .5f * instructionSize,
+                    Scale = new Vector2(instructionSize * .95f, .5f * instructionSize),
                     Position = new Vector2(xCenter, yCenter),
                     Texture = Instruction,
                     Coordinates = texCoords,
                 };
-                healthEntries.Add(entry);
+                instructionEntries.Add(entry);
             }
 
-            return healthEntries;
+            return instructionEntries;
         }
 
         internal static IEnumerable<IRenderable> GenerateGuiIndicator(IWorldScene sceneDefinition, IPlayer player)
@@ -206,7 +207,7 @@ namespace ComputergrafikSpiel.Model.Overlay
 
         private static List<IRenderable> GenerateGameover(IWorldScene sceneDefinition, IPlayer player)
         {
-            List<IRenderable> healthEntries = new List<IRenderable>();
+            List<IRenderable> gameoverEntries = new List<IRenderable>();
 
             // Get bounds of GUI Area of Scene.
             float left = sceneDefinition.WorldSceneBounds.left;
@@ -216,12 +217,13 @@ namespace ComputergrafikSpiel.Model.Overlay
 
             float gameoverSize = (right - left) / 2;
             var (currentHealth, _, _, _, _) = player.PlayerData;
+            float xCenter = (left + right) / 2;
+            float yCenter = (bottom + top) / 1.7f;
 
-            if (currentHealth == 0 || (((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40) && Scene.Scene.Current.NpcList.Count == 0))
+            // Tod des Spielers -> Gameoveranzeige wird getriggert
+            if (currentHealth == 0)
             {
-                float xCenter = (left + right) / 2;
-                float yCenter = (bottom + top) / 1.7f;
-                var texCoords = Gameover.GetTexCoordsOfIndex(0); // Für die rechte Hälfte des Bildes.
+                var texCoords = Gameover.GetTexCoordsOfIndex(0);
 
                 var entry = new GenericGUIRenderable()
                 {
@@ -230,10 +232,25 @@ namespace ComputergrafikSpiel.Model.Overlay
                     Texture = Gameover,
                     Coordinates = texCoords,
                 };
-                healthEntries.Add(entry);
+                gameoverEntries.Add(entry);
             }
 
-            return healthEntries;
+            // Spiel wurde durchgespielt -> Victoryanzeige wird getriggert
+            if (((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40) && Scene.Scene.Current.NpcList.Count == 0)
+            {
+                var texCoords = Victory.GetTexCoordsOfIndex(0);
+
+                var entry = new GenericGUIRenderable()
+                {
+                    Scale = new Vector2(gameoverSize * .95f, .5f * gameoverSize),
+                    Position = new Vector2(xCenter, yCenter),
+                    Texture = Victory,
+                    Coordinates = texCoords,
+                };
+                gameoverEntries.Add(entry);
+            }
+
+            return gameoverEntries;
         }
 
         private static List<IRenderable> GenerateCrosshair()
