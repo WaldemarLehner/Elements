@@ -198,6 +198,8 @@
     <Compile Include="Model\Overlay\EndScreen\EndScreenButton.cs" />
     <Compile Include="Model\Overlay\GUIConstructionHelper.cs" />
     <Compile Include="Model\Overlay\IGUIElement.cs" />
+    <Compile Include="Model\Overlay\ToggleMute\ToggleMute.cs" />
+    <Compile Include="Model\Overlay\ToggleMute\ToggleMuteButton.cs" />
     <Compile Include="Model\Overlay\UpgradeScreen\UpgradeOption.cs" />
     <Compile Include="Model\Overlay\UpgradeScreen\UpgradeScreen.cs" />
     <Compile Include="Model\Overlay\UpgradeScreen\UpgradeScreenButton.cs" />
@@ -329,6 +331,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\GUI\Instruction.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\ToggleMute\Bell_mute.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\ToggleMute\Bell_unmute.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\GUI\Upgrades\WeaponDamage.png">

@@ -5,6 +5,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Overlay;
 using ComputergrafikSpiel.Model.Overlay.EndScreen;
+using ComputergrafikSpiel.Model.Overlay.ToggleMute;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
 using OpenTK;
@@ -35,6 +36,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
 
         public ISceneManager SceneManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         EndScreen IModel.EndScreen { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ToggleMute ToggleMute { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public bool CreateEnemy()
         {

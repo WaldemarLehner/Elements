@@ -27,8 +27,8 @@
             Money,
             BulletTTL,
             BulletDamage,
-            Reset,
-            Quit,
+            Mute,
+            Unmute,
         }
     }
 }

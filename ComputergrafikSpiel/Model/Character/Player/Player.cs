@@ -30,6 +30,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private bool died = false;
         private Vector2 directionXY = Vector2.Zero;
         private bool updateDisabled = false;
+        private bool muteButtonOnScreen = false;
 
         public Player()
         {
@@ -124,7 +125,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             if (!this.Invulnerable)
             {
-                this.playerStateManager.Hurt(ref died, damage);
+                this.playerStateManager.Hurt(ref this.died, damage);
 
                 // Spawn particles
                 EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
@@ -149,7 +150,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
-            if (this.updateDisabled == true)
+            // Setzt Mutebutton einmalig auf den Screen zu Beginn
+            if (!this.muteButtonOnScreen)
+            {
+                //(Scene.Scene.Current.Model as Model).TriggerToggleMuteButton();
+                this.muteButtonOnScreen = true;
+            }
+
+            if (this.updateDisabled)
             {
                 return;
             }
@@ -160,6 +168,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 (Scene.Scene.Current.Model as Model).TriggerEndscreenButtons();
                 this.updateDisabled = true;
             }
+
 
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)

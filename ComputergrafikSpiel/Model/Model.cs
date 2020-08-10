@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
@@ -8,6 +9,7 @@ using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Overlay.EndScreen;
+using ComputergrafikSpiel.Model.Overlay.ToggleMute;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
@@ -38,6 +40,8 @@ namespace ComputergrafikSpiel.Model
 
         public EndScreen EndScreen { get; set; }
 
+        public ToggleMute ToggleMute { get; set; }
+
         public IInputState InputState { get; private set; }
 
         /// <summary>
@@ -54,6 +58,11 @@ namespace ComputergrafikSpiel.Model
             if (this.EndScreen != null)
             {
                 this.EndScreen.Update(dTime);
+            }
+
+            if (this.ToggleMute != null)
+            {
+                this.ToggleMute.Update(dTime);
             }
 
             Scene.Scene.Current.Update(dTime);
@@ -119,6 +128,15 @@ namespace ComputergrafikSpiel.Model
             var width = (right - left) * .5f;
 
             this.EndScreen = new EndScreen(10, centerV, width);
+        }
+
+        public void TriggerToggleMuteButton()
+        {
+            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
+            var centerV = new Vector2((left + right) * .5f, (top + bottom) * .5f);
+            var width = (right - left) * .5f;
+
+            this.ToggleMute = new ToggleMute(10, centerV, width);
         }
 
         public List<(int x, int y)> SpawningAreaEnemys(int min, int max, IWorldScene world)

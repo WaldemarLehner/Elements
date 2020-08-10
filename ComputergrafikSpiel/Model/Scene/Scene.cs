@@ -115,6 +115,11 @@ namespace ComputergrafikSpiel.Model.Scene
                     enumerable.Add(Scene.Player);
                 }
 
+                if (this.Model.ToggleMute != null)
+                {
+                    enumerable.AddRange(this.Model.ToggleMute.Renderables);
+                }
+
                 if (this.Model.UpgradeScreen != null)
                 {
                     enumerable.AddRange(this.Model.UpgradeScreen.Renderables);
