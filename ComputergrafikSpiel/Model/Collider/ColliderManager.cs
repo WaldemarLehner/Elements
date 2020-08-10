@@ -116,7 +116,6 @@ namespace ComputergrafikSpiel.Model.Collider
                 var collidableToCheck = this.collidableTiles[position];
                 if (collidable.Collider.DidCollideWith(collidableToCheck.Collider) && collidable.Collider != collidableToCheck.Collider)
                 {
-                    Console.WriteLine("tile hit");
                     collidedCollidables.Add(collidableToCheck);
                 }
             }

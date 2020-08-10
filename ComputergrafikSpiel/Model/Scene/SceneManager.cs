@@ -26,6 +26,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public int CurrentStageLevel { get; set; } = 0; // Zähler wieviel Räume bereits betreten wurden insgesamt (1-40)
 
+        private IWorldScene WorldScene { get; set; }
+
         private IModel Model { get; }
 
         public void LoadNewScene()
@@ -76,15 +78,16 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.obstaclePropability = .0f;
                 this.noiseScale = .0f;
+                this.WorldScene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, this.noiseScale, 32, WorldSceneDefinition.ExtraordinaryDungeonMapping)).GenerateWorldScene();
             }
             else
             {
                 this.obstaclePropability = .05f;
                 this.noiseScale = .1f;
+                this.WorldScene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, this.noiseScale, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
             }
 
-            var worldScene = new WorldSceneGenerator(this.obstaclePropability, new WorldSceneDefinition(true, true, true, true, 20, 15, this.noiseScale, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
-            var newScene = new Scene(worldScene);
+            var newScene = new Scene(this.WorldScene);
             newScene.GiveModeltoScene(this.Model);
             newScene.SetAsActive();
 

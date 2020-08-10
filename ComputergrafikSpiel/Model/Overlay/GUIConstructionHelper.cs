@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
@@ -243,7 +244,6 @@ namespace ComputergrafikSpiel.Model.Overlay
             for (int i = 0; i < 1; i++)
             {
                 var texCoords = Crosshair.GetTexCoordsOfIndex(0); // Get the required texture.
-
                 var entry = new GenericGUIRenderable()
                 {
                     Scale = Vector2.One * .5f * croshairSize,

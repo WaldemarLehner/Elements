@@ -54,7 +54,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float AttackSpeed => this.playerStateManager.Current.Firerate;
 
-        public float AttackCooldown { get; } = 100;
+        public float AttackCooldown { get; } = -100;
 
         public float AttackCooldownCurrent { get; set; } = 0;
 
@@ -246,7 +246,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void ChangePosition()
         {
             // Change Position to Left Door
-            this.Position = new Vector2(45, 272);
+            this.Position = new Vector2(55, 272);
         }
 
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)

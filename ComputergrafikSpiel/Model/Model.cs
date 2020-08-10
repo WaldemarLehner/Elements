@@ -149,11 +149,10 @@ namespace ComputergrafikSpiel.Model
             EnemyManager enemyManager = new EnemyManager();
             foreach (var (x, y) in this.SpawningAreaEnemys(min, max, world))
             {
-                Console.WriteLine("X: " + x + " Y: " + y);
                 var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
                 if (boss)
                 {
-                    enemyManager.BossSpawner(position, enemytype);
+                    enemyManager.BossSpawner(enemytype);
                 }
                 else
                 {
