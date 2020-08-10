@@ -8,12 +8,12 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
 {
     public class ToggleMute : IUpdateable
     {
-        private readonly PlayerEnum.Stats[] toggleItems = new PlayerEnum.Stats[2] { PlayerEnum.Stats.Mute, PlayerEnum.Stats.Unmute };
+        // private readonly PlayerEnum.Stats[] toggleItems = new PlayerEnum.Stats[2] { PlayerEnum.Stats.Mute, PlayerEnum.Stats.Unmute };
         // private static readonly string[] Text = new string[2] { "mute", "unmute" };
-        private readonly List<ToggleMuteButton> endScreenButtons = new List<ToggleMuteButton>();
+        private readonly List<ToggleMuteButton> toggleMuteButton = new List<ToggleMuteButton>();
         private readonly List<IRenderable> renderables = new List<IRenderable>();
 
-        internal ToggleMute(float tileSize, Vector2 center, float width, float margin = 5f)
+        internal ToggleMute(float tileSize, Vector2 center, float width, PlayerEnum.Stats toggleItem, float margin = 5f)
         {
             this.TileSize = tileSize;
 
@@ -22,7 +22,7 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
             for (int i = 0; i < 1; i++)
             {
                 float y = center.Y - ((entrySize + margin) * (i + 2));
-                this.endScreenButtons.Add(new ToggleMuteButton(this, new Vector2(center.X, y), new Vector2(entrySize * 8, entrySize), this.toggleItems[i]));
+                this.toggleMuteButton.Add(new ToggleMuteButton(this, new Vector2(center.X, y), new Vector2(entrySize * 8, entrySize), toggleItem));
             }
         }
 
@@ -34,7 +34,7 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
 
         public void Update(float dtime)
         {
-            foreach (var entry in this.endScreenButtons)
+            foreach (var entry in this.toggleMuteButton)
             {
                 entry.Update(dtime);
             }
@@ -45,7 +45,7 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
             }
 
             this.renderables.Clear();
-            foreach (var button in this.endScreenButtons)
+            foreach (var button in this.toggleMuteButton)
             {
                 this.renderables.AddRange(button.Background);
                 this.renderables.AddRange(button.Foreground);

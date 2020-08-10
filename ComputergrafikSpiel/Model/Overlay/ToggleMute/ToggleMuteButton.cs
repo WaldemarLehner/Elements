@@ -21,17 +21,17 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
         private readonly ToggleMute parent;
         private bool triggered = false;
         private Vector2 size;
-        private PlayerEnum.Stats toggleitems;
+        private PlayerEnum.Stats toggleitem;
         private bool isHovered = false;
         private bool clickReleasedAfterCreation = false; // This is needed so that buttons dont get clicked immediatedly.
         private Vector2 centre;
 
-        internal ToggleMuteButton(ToggleMute parent, Vector2 centre, Vector2 buttonSize, PlayerEnum.Stats toggleitems)
+        internal ToggleMuteButton(ToggleMute parent, Vector2 centre, Vector2 buttonSize, PlayerEnum.Stats toggleitem)
         {
             this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
             this.centre = centre;
             this.size = buttonSize;
-            this.toggleitems = toggleitems;
+            this.toggleitem = toggleitem;
 
             // Button Setup:
             var backgroundTileCount = (int)Math.Round(buttonSize.X / buttonSize.Y);
@@ -78,18 +78,6 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
                 Vector2 center = new Vector2(x, this.centre.Y);
                 var scale = foregroundEntrySize / 8f * Vector2.One;
 
-                if (i == 0)
-                {
-                    // Icon.
-                    this.foregroundTiles.Add(new GenericRenderable
-                    {
-                        Scale = scale,
-                        Coordinates = TextureCoordinates.Default,
-                        Position = center,
-                        Tex = TextureLookup[PlayerEnum.Stats.Mute],
-                    });
-                }
-
                 /*char c = text[i];
 
                 if (!Font.MappedPositions.ContainsKey(c))
@@ -97,13 +85,13 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
                     continue;
                 }*/
 
-                var texCoords = TextureLookup[toggleitems].GetTexCoordsOfIndex(0);
+                var texCoords = TextureLookup[toggleitem].GetTexCoordsOfIndex(0);
                 this.foregroundTiles.Add(new GenericRenderable
                 {
                     Scale = scale,
                     Coordinates = texCoords,
                     Position = center,
-                    Tex = TextureLookup[toggleitems],
+                    Tex = TextureLookup[toggleitem],
                 });
             }
         }
@@ -144,19 +132,21 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
                 {
                     if (this.triggered == false)
                     {
-                        // this.triggered = true;
+                        this.triggered = true;
 
-                        if (this.toggleitems.Equals(PlayerEnum.Stats.Mute))
+                        if (this.toggleitem.Equals(PlayerEnum.Stats.Mute))
                         {
                             Console.WriteLine("Pressed MUTE");
                             Scene.Scene.Current.Model.SceneManager.Play.MuteMusik();
                         }
-                        else if (this.toggleitems.Equals(PlayerEnum.Stats.Unmute))
+                        else if (this.toggleitem.Equals(PlayerEnum.Stats.Unmute))
                         {
                             Console.WriteLine("Pressed UNMUTE");
                             Scene.Scene.Current.Model.SceneManager.Play.UnmuteMusik();
                             // Scene.Scene.Current.Model.ToggleMute = null;
                         }
+
+                        (Scene.Scene.Current.Model as Model).TriggerToggleMuteButton();
                     }
                 }
             }

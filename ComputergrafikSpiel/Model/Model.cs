@@ -20,6 +20,8 @@ namespace ComputergrafikSpiel.Model
 {
     public class Model : IModel
     {
+        private bool muted = false;
+
         internal Model()
         {
             this.SceneManager = new SceneManager(this);
@@ -132,11 +134,24 @@ namespace ComputergrafikSpiel.Model
 
         public void TriggerToggleMuteButton()
         {
+            if (this.ToggleMute != null)
+            {
+                this.ToggleMute = null;
+            }
+
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
             var centerV = new Vector2((left + right) * .5f, (top + bottom) * .5f);
             var width = (right - left) * .5f;
 
-            this.ToggleMute = new ToggleMute(10, centerV, width);
+            if (this.muted)
+            {
+                this.ToggleMute = new ToggleMute(10, centerV, width, PlayerEnum.Stats.Unmute);
+                this.muted = false;
+                return;
+            }
+
+            this.ToggleMute = new ToggleMute(10, centerV, width, PlayerEnum.Stats.Mute);
+            this.muted = true;
         }
 
         public List<(int x, int y)> SpawningAreaEnemys(int min, int max, IWorldScene world)
