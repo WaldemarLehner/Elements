@@ -20,12 +20,13 @@ namespace ComputergrafikSpiel.Model.World.Obstacles
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, scale / 2f, ColliderLayer.Layer.Wall, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player);
             switch (type)
             {
-                case WorldEnum.Type.Air:
                 case WorldEnum.Type.Water: this.Texture = new TextureLoader().LoadTexture("Obstacle/TreeStump");
                     break;
                 case WorldEnum.Type.Earth: this.Texture = new TextureLoader().LoadTexture("Obstacle/StoneGreen");
                     break;
                 case WorldEnum.Type.Fire: this.Texture = new TextureLoader().LoadTexture("Obstacle/Fire");
+                    break;
+                case WorldEnum.Type.Air: this.Texture = new TextureLoader().LoadTexture("Obstacle/Vase");
                     break;
                 default: break;
             }

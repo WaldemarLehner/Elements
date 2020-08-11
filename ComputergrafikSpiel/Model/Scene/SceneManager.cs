@@ -111,7 +111,14 @@ namespace ComputergrafikSpiel.Model.Scene
                     break;
             }
 
-            this.Model.CreateTriggerZone(false, false);
+            if (this.CurrentStageLevel == 40)
+            {
+                this.Model.CreateTriggerZone(false, true, this.elementType);
+            }
+            else
+            {
+                this.Model.CreateTriggerZone(false, false, this.elementType);
+            }
         }
 
         public void InitializeFirstScene()
@@ -122,7 +129,7 @@ namespace ComputergrafikSpiel.Model.Scene
             (this.Model as Model).FirstScene = true;
             initScene.GiveModeltoScene(this.Model);
             initScene.SetAsActive();
-            this.Model.CreateTriggerZone(true, false);
+            this.Model.CreateTriggerZone(true, false, this.elementType);
         }
 
         public void SetSceneTexturesToSafeZone()

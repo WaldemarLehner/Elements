@@ -28,7 +28,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             float top = sceneDefinition.WorldSceneBounds.top;
             float bottom = sceneDefinition.WorldSceneBounds.bottom;
 
-            float instructionSize = (right - left) / 2;
+            float instructionSize = (right - left) / 4;
 
             if ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 0)
             {
@@ -38,7 +38,7 @@ namespace ComputergrafikSpiel.Model.Overlay
 
                 var entry = new GenericGUIRenderable()
                 {
-                    Scale = new Vector2(instructionSize * .95f, .5f * instructionSize), //Vector2.One * .5f * instructionSize,
+                    Scale = new Vector2(instructionSize * .95f, .4f * instructionSize), // Vector2.One * .5f * instructionSize,
                     Position = new Vector2(xCenter, yCenter),
                     Texture = Instruction,
                     Coordinates = texCoords,
@@ -73,7 +73,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             string dungeonInfo;
             if (Scene.Scene.Current.Model.SceneManager.CurrentDungeon == 0)
             {
-                dungeonInfo = "safezone";
+                dungeonInfo = "prison";
             }
             else
             {

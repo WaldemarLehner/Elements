@@ -6,6 +6,7 @@ using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Triggers.Interfaces;
+using ComputergrafikSpiel.Model.World;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -15,13 +16,15 @@ namespace ComputergrafikSpiel.Model.Triggers
     {
         private ColliderLayer.Layer activators;
         private bool setAsPassive;
+        private World.WorldEnum.Type type;
 
-        public Trigger(Vector2 position, ColliderLayer.Layer activators, bool passive)
+        public Trigger(Vector2 position, ColliderLayer.Layer activators, bool passive, World.WorldEnum.Type type)
         {
             this.activators = activators;
             this.Position = position;
             this.Texture = new TextureLoader().LoadTexture("Door/Door");
             this.Scale = new Vector2(16, 32);
+            this.type = type;
             if (!passive)
             {
                 this.Collider = new CircleOffsetCollider(this, new Vector2(-3, 0), 16, ColliderLayer.Layer.Trigger, this.activators);
@@ -64,7 +67,20 @@ namespace ComputergrafikSpiel.Model.Triggers
         {
             if (!this.setAsPassive && Scene.Scene.Current.NpcList.Count == 0)
             {
-                this.Texture = new TextureLoader().LoadTexture("Door/DoorWaterOpen");
+                switch (this.type)
+                {
+                    case WorldEnum.Type.Water: this.Texture = new TextureLoader().LoadTexture("Door/DoorWaterOpen");
+                        break;
+                    case WorldEnum.Type.Earth: this.Texture = new TextureLoader().LoadTexture("Door/DoorEarthOpen");
+                        break;
+                    case WorldEnum.Type.Fire: this.Texture = new TextureLoader().LoadTexture("Door/DoorFireOpen");
+                        break;
+                    case WorldEnum.Type.Air: this.Texture = new TextureLoader().LoadTexture("Door/DoorAirOpen");
+                        break;
+                    case WorldEnum.Type.Safezone: this.Texture = new TextureLoader().LoadTexture("Door/DoorSafezoneOpen");
+                        break;
+                    default: break;
+                }
             }
         }
     }

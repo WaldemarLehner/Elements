@@ -23,10 +23,11 @@ namespace ComputergrafikSpiel.Model.World.Obstacles
             {
                 case WorldEnum.Type.Water:
                 case WorldEnum.Type.Earth:
-                case WorldEnum.Type.Air:
                     this.Texture = new TextureLoader().LoadTexture("Obstacle/Stone");
                     break;
                 case WorldEnum.Type.Fire: this.Texture = new TextureLoader().LoadTexture("Obstacle/LavaStone");
+                    break;
+                case WorldEnum.Type.Air: this.Texture = new TextureLoader().LoadTexture("Obstacle/Saeule");
                     break;
                 default: break;
             }

@@ -18,6 +18,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
     {
         private Vector2 scale;
 
+        public string BulletTexture { get; set; } = null;
+
         public int CurrentHealth { get; set; }
 
         public bool Air { get; set; }
@@ -59,8 +61,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public Vector2 Direction { get; set; }
 
         public float AttackCooldown { get; set; } = 1f;
-
-        public string BulletTexture = null;
 
         private float AttackCooldownSafestate { get; set; } = 0f;
 

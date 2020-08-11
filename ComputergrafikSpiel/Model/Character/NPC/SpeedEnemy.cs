@@ -39,7 +39,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.Air = true;
                     break;
                 case WorldEnum.Type.Air:
-                    this.SetEnemyStats(80, 20, 2);
+                    this.SetEnemyStats(80, 130, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
                     this.BloodColorHue = 0f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);

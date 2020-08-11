@@ -64,7 +64,7 @@ namespace ComputergrafikSpiel.Model
             this.InputState = inputState;
         }
 
-        public void CreateTriggerZone(bool firstScene, bool lastScene)
+        public void CreateTriggerZone(bool firstScene, bool lastScene, WorldEnum.Type type)
         {
             Vector2[] positions =
             {
@@ -75,16 +75,16 @@ namespace ComputergrafikSpiel.Model
             };
             if (firstScene)
             {
-                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[0], ColliderLayer.Layer.Player, false));
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[0], ColliderLayer.Layer.Player, false, type));
             }
             else if (lastScene)
             {
-                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[1], ColliderLayer.Layer.Player, true));
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[1], ColliderLayer.Layer.Player, true, type));
             }
             else
             {
-                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[1], ColliderLayer.Layer.Player, true));
-                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[0], ColliderLayer.Layer.Player, false));
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[1], ColliderLayer.Layer.Player, true, type));
+                Scene.Scene.Current.SpawnTrigger(new Trigger(positions[0], ColliderLayer.Layer.Player, false, type));
             }
 
             return;
