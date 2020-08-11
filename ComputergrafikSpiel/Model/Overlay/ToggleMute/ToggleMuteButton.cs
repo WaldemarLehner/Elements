@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
-using ComputergrafikSpiel.Model.Scene;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -15,68 +13,52 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
     internal class ToggleMuteButton : IUpdateable
     {
         private static readonly Dictionary<PlayerEnum.Stats, ITileTexture> TextureLookup = GenerateDefault();
-        private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture BackgroundTexture = new TextureLoader().LoadTileTexture("GUI/Buttons/SquareButton", (1, 2));
         private readonly List<GenericRenderable> backgroundTiles;
         private readonly List<GenericRenderable> foregroundTiles;
         private readonly ToggleMute parent;
+        private readonly PlayerEnum.Stats toggleitem;
         private bool triggered = false;
         private Vector2 size;
-        private PlayerEnum.Stats toggleitem;
         private bool isHovered = false;
         private bool clickReleasedAfterCreation = false; // This is needed so that buttons dont get clicked immediatedly.
-        private Vector2 centre;
-        private Vector2 position = new Vector2(Scene.Scene.Current.World.WorldSceneBounds.right - 17, Scene.Scene.Current.World.WorldSceneBounds.top - 17);
+        private Vector2 location;
 
-        internal ToggleMuteButton(ToggleMute parent, Vector2 centre, Vector2 buttonSize, PlayerEnum.Stats toggleitem)
+        internal ToggleMuteButton(ToggleMute parent, PlayerEnum.Stats toggleitem)
         {
             this.parent = parent ?? throw new ArgumentNullException(nameof(parent));
-            this.centre = centre;
-            this.size = buttonSize;
+
+            var (top, _, left, right) = Scene.Scene.Current.World.WorldSceneBounds; // bottom is ignored, as it is never needed
+            this.location = new Vector2(right - 20, top - 20);
+
+            float buttonSize = (right - left) * .025f;
+            this.size = new Vector2(buttonSize, buttonSize);
+
             this.toggleitem = toggleitem;
 
             // Button Setup:
-            var backgroundTileCount = (int)Math.Round(buttonSize.X / buttonSize.Y);
-            float foregroundEntrySize = (buttonSize.Y < buttonSize.X) ? buttonSize.Y : buttonSize.X;
+            var backgroundTileCount = (int)Math.Round(this.size.X / this.size.Y);
 
             this.backgroundTiles = new List<GenericRenderable>(backgroundTileCount);
-
-            // Background Tiles
-            float xBackground = this.centre.X - (this.size.X / 2f) + (.5f * this.size.Y);
-
-            Vector2 centerBackground = new Vector2(xBackground, this.centre.Y);
-            TextureCoordinates coords;
-
-            coords = BackgroundTexture.GetTexCoordsOfIndex(0);
+            TextureCoordinates coords = BackgroundTexture.GetTexCoordsOfIndex(0);
 
             this.backgroundTiles.Add(new GenericRenderable
             {
                 Coordinates = coords,
-                Position = this.position,
-                Scale = Vector2.One * buttonSize.Y / 3.5f,
+                Position = this.location,
+                Scale = this.size,
                 Tex = BackgroundTexture,
             });
 
-            // Data      new Vector2(left + ((i * (itemSize / .6f)) - 160), (top + bottom) / 2.04f),
+            // Data
             this.foregroundTiles = new List<GenericRenderable>(1);
-            float leftcentreBound = this.centre.X - (this.size.X / 3.5f) + this.size.Y;
-            float rightcentreBound = this.centre.X + (this.size.X / 1.5f) - (this.size.Y / 0.3f);
-            // Vector2 centerForeground = new Vector2(xForeground, this.centre.Y);
-            var scale = foregroundEntrySize / 8f * Vector2.One;
-
-            /*char c = text[i];
-
-            if (!Font.MappedPositions.ContainsKey(c))
-            {
-                continue;
-            }*/
 
             var texCoords = TextureLookup[toggleitem].GetTexCoordsOfIndex(0);
             this.foregroundTiles.Add(new GenericRenderable
             {
-                Scale = scale,
+                Scale = this.size / 2,
                 Coordinates = texCoords,
-                Position = this.position,
+                Position = this.location,
                 Tex = TextureLookup[toggleitem],
             });
         }
@@ -89,10 +71,10 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
         {
             get
             {
-                var top = this.position.Y + (this.size.Y / 3.5f);
-                var bottom = this.position.Y - (this.size.Y / 3.5f);
-                var left = this.position.X - (this.size.X / 3.5f);
-                var right = this.position.X + (this.size.X / 3.5f);
+                var top = this.location.Y + this.size.Y;
+                var bottom = this.location.Y - this.size.Y;
+                var left = this.location.X - this.size.X;
+                var right = this.location.X + this.size.X;
                 return (top, bottom, left, right);
             }
         }
@@ -128,7 +110,6 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
                         {
                             Console.WriteLine("Pressed UNMUTE");
                             Scene.Scene.Current.Model.SceneManager.Play.UnmuteMusik();
-                            // Scene.Scene.Current.Model.ToggleMute = null;
                         }
 
                         (Scene.Scene.Current.Model as Model).TriggerToggleMuteButton();

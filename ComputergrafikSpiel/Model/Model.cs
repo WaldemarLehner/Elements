@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
@@ -139,18 +138,14 @@ namespace ComputergrafikSpiel.Model
                 this.ToggleMute = null;
             }
 
-            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
-            var centerV = new Vector2((left + right) * .5f, (top + bottom) * .5f);
-            var width = (right - left) * .5f;
-
             if (this.muted)
             {
-                this.ToggleMute = new ToggleMute(10, centerV, width, PlayerEnum.Stats.Unmute);
+                this.ToggleMute = new ToggleMute(PlayerEnum.Stats.Unmute);
                 this.muted = false;
                 return;
             }
 
-            this.ToggleMute = new ToggleMute(10, centerV, width, PlayerEnum.Stats.Mute);
+            this.ToggleMute = new ToggleMute(PlayerEnum.Stats.Mute);
             this.muted = true;
         }
 
