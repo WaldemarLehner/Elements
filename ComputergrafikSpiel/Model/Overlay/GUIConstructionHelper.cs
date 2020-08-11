@@ -221,7 +221,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             float yCenter = (bottom + top) / 1.7f;
 
             // Tod des Spielers -> Gameoveranzeige wird getriggert
-            if (currentHealth == 0)
+            if (currentHealth <= 0)
             {
                 var texCoords = Gameover.GetTexCoordsOfIndex(0);
 

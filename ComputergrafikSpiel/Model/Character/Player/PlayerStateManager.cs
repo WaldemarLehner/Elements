@@ -42,7 +42,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 this.current.Health -= (uint)damage;
             }
 
-            if (this.current.Health == 0)
+            if (this.current.Health <= 0)
             {
                 died = true;
             }
