@@ -24,30 +24,34 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
                     this.Air = true;
                     this.ProjectileHue = (202f, 223f);
+                    this.BulletTexture = "Water";
                     break;
                 case WorldEnum.Type.Earth:
-                    this.SetEnemyStats(40, 75, 2);
+                    this.SetEnemyStats(40, 75, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
                     this.BloodColorHue = 179f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
                     this.Air = true;
                     this.ProjectileHue = (178f, 200f);
+                    this.BulletTexture = "BlueBlast";
                     break;
                 case WorldEnum.Type.Fire:
-                    this.SetEnemyStats(60, 80, 3);
+                    this.SetEnemyStats(60, 80, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Fire/" + texture);
                     this.BloodColorHue = 0f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
                     this.Air = true;
                     this.ProjectileHue = (0f, 30f);
+                    this.BulletTexture = "Laser";
                     break;
                 case WorldEnum.Type.Air:
-                    this.SetEnemyStats(80, 85, 3);
+                    this.SetEnemyStats(80, 85, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
                     this.BloodColorHue = 119f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
                     this.Air = false;
                     this.ProjectileHue = (96f, 120f);
+                    this.BulletTexture = "Flask";
                     break;
                 default: break;
             }

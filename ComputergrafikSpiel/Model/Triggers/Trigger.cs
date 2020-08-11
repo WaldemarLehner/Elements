@@ -20,8 +20,8 @@ namespace ComputergrafikSpiel.Model.Triggers
         {
             this.activators = activators;
             this.Position = position;
-            this.Texture = new TextureLoader().LoadTexture("Door/TreeBranchesDoor");
-            this.Scale = new Vector2(16, 16);
+            this.Texture = new TextureLoader().LoadTexture("Door/Door");
+            this.Scale = new Vector2(16, 32);
             if (!passive)
             {
                 this.Collider = new CircleOffsetCollider(this, new Vector2(-3, 0), 16, ColliderLayer.Layer.Trigger, this.activators);
@@ -29,6 +29,7 @@ namespace ComputergrafikSpiel.Model.Triggers
             else
             {
                 this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 16, ColliderLayer.Layer.Trigger, this.activators);
+                this.Scale = this.Scale * new Vector2(-1, 1);
             }
 
             this.setAsPassive = passive;
@@ -45,7 +46,7 @@ namespace ComputergrafikSpiel.Model.Triggers
         // may have to be changed with the collider radius
         public Vector2 Scale { get; set; } = Vector2.One * 16;
 
-        public ITexture Texture { get; }
+        public ITexture Texture { get; set;  }
 
         public IEnumerable<(Color4 color, Vector2[] vertices)> DebugData => null;
 
@@ -61,6 +62,10 @@ namespace ComputergrafikSpiel.Model.Triggers
 
         public void Update(float dtime)
         {
+            if (!this.setAsPassive && Scene.Scene.Current.NpcList.Count == 0)
+            {
+                this.Texture = new TextureLoader().LoadTexture("Door/DoorWaterOpen");
+            }
         }
     }
 }

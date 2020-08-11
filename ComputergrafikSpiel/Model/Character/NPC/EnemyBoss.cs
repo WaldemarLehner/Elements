@@ -23,6 +23,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BloodColorHue = 13f;
                     this.ProjectileHue = (348f, 19f);
                     this.AttackCooldown = 2f;
+                    this.BulletTexture = "Leaf";
                     break;
                 case WorldEnum.Type.Earth:
                     this.SetEnemyStats(300, 75, 2);
@@ -30,6 +31,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BloodColorHue = 51f;
                     this.ProjectileHue = (64f, 47f);
                     this.AttackCooldown = 1.5f;
+                    this.BulletTexture = "Stone";
                     break;
                 case WorldEnum.Type.Fire:
                     this.SetEnemyStats(400, 80, 3);
@@ -37,6 +39,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BloodColorHue = 25f;
                     this.ProjectileHue = (0f, 50f);
                     this.AttackCooldown = 1f;
+                    this.BulletTexture = "FireBlast";
                     break;
                 case WorldEnum.Type.Air:
                     this.SetEnemyStats(600, 85, 4);
@@ -44,6 +47,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BloodColorHue = 0f;
                     this.ProjectileHue = (261f, 295f);
                     this.AttackCooldown = .5f;
+                    this.BulletTexture = "Scythe";
                     break;
                 default: break;
             }

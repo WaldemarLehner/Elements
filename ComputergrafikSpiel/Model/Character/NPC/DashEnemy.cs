@@ -25,7 +25,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.Air = false;
                     break;
                 case WorldEnum.Type.Earth:
-                    this.SetEnemyStats(40, 75, 2);
+                    this.SetEnemyStats(40, 75, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
                     this.BloodColorHue = 100f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);

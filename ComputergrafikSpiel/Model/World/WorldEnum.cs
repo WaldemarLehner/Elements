@@ -9,6 +9,7 @@
             Earth,
             Fire,
             Air,
+            Safezone,
         }
     }
 }

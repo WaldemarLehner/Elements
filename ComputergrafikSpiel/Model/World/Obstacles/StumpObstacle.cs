@@ -13,12 +13,22 @@ namespace ComputergrafikSpiel.Model.World.Obstacles
     {
         private readonly float scale;
 
-        internal StumpObstacle(Vector2 position, float scale)
+        internal StumpObstacle(Vector2 position, float scale, WorldEnum.Type type)
         {
             this.Position = position;
             this.scale = scale;
             this.Collider = new CircleOffsetCollider(this, Vector2.Zero, scale / 2f, ColliderLayer.Layer.Wall, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player);
-            this.Texture = new TextureLoader().LoadTexture("Obstacle/TreeStump");
+            switch (type)
+            {
+                case WorldEnum.Type.Air:
+                case WorldEnum.Type.Water: this.Texture = new TextureLoader().LoadTexture("Obstacle/TreeStump");
+                    break;
+                case WorldEnum.Type.Earth: this.Texture = new TextureLoader().LoadTexture("Obstacle/StoneGreen");
+                    break;
+                case WorldEnum.Type.Fire: this.Texture = new TextureLoader().LoadTexture("Obstacle/Fire");
+                    break;
+                default: break;
+            }
         }
 
         public ICollider Collider { get; }

@@ -124,7 +124,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             if (!this.Invulnerable)
             {
-                this.playerStateManager.Hurt(ref died, damage);
+                this.playerStateManager.Hurt(ref this.died, damage);
 
                 // Spawn particles
                 EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;

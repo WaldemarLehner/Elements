@@ -60,6 +60,8 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
         public float AttackCooldown { get; set; } = 1f;
 
+        public string BulletTexture = null;
+
         private float AttackCooldownSafestate { get; set; } = 0f;
 
         private float AttackCooldownRangeSafestate { get; set; } = 0f;
@@ -143,7 +145,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     levelBulletBoost = Vector2.Multiply(levelBulletBoost, Scene.Scene.Current.Model.SceneManager.CurrentDungeon);
                     direction = Vector2.Multiply(direction, 200);
                     direction = Vector2.Add(direction, levelBulletBoost);
-                    new Projectile(this.AttackDamage, direction, .6f, 12, false, this.Position, "Bullet", this.ProjectileHue);
+                    new Projectile(this.AttackDamage, direction, .6f, 12, false, this.Position, this.BulletTexture, this.ProjectileHue);
                 }
 
                 this.AttackCooldownRangeSafestate = this.AttackCooldown;
@@ -242,7 +244,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
 
             for (int i = 0; i < directions.Length; i++)
             {
-                new Projectile(this.AttackDamage, directions[i], 4f, 24, false, this.Position, "Bullet", this.ProjectileHue);
+                new Projectile(this.AttackDamage, directions[i], 4f, 24, false, this.Position, this.BulletTexture, this.ProjectileHue);
             }
         }
     }
