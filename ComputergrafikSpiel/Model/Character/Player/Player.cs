@@ -175,7 +175,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 return;
             }
 
-            if (this.CurrentHealth <= 0 || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 1)))
+            if (this.CurrentHealth <= 0 || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)))
             {
                 Scene.Scene.Current.Model.SceneManager.Play.StartGameoverMusic();
                 (Scene.Scene.Current.Model as Model).TriggerEndscreenButtons();
