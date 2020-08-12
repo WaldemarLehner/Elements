@@ -17,8 +17,8 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static readonly IMappedTileFont Font = new TextureLoader().LoadFontTexture("Font/vt323", (x: 8, y: 8), FontTextureMappingHelper.Default);
         private static readonly ITileTexture Heart = new TextureLoader().LoadTileTexture("GUI/Heart", (x: 2, y: 1));
         private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 1, y: 1));
-        private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/Gameover", (x: 1, y: 1));
-        private static readonly ITileTexture Victory = new TextureLoader().LoadTileTexture("GUI/Victory", (x: 1, y: 1));
+        private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/Gameover/Gameover", (x: 1, y: 1));
+        private static readonly ITileTexture Victory = new TextureLoader().LoadTileTexture("GUI/Gameover/Victory", (x: 1, y: 1));
 
         public static List<IRenderable> GenerateInstruction(IWorldScene sceneDefinition)
         {

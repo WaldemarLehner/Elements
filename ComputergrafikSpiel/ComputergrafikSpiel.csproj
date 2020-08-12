@@ -330,7 +330,10 @@
     <Content Include="Content\Images\GUI\Crosshair_Cursor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\GUI\Gameover.png">
+    <Content Include="Content\Images\GUI\Gameover\Gameover.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\GUI\Gameover\Textfield_credits.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\GUI\Instruction.png">
@@ -348,7 +351,7 @@
     <Content Include="Content\Images\GUI\Upgrades\WeaponTTL.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\GUI\Victory.png">
+    <Content Include="Content\Images\GUI\Gameover\Victory.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\NPC\Boss\AirDeath.png">
