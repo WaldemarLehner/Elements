@@ -11,8 +11,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public EnemyBoss(Vector2 startposition, string texture, WorldEnum.Type type)
         {
             this.Position = startposition;
-            var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 25, ColliderLayer.Layer.Enemy, this.SetEnemyCollider(false));
             this.Variant = EnemyEnum.Variant.Boss;
 
             switch (type)
