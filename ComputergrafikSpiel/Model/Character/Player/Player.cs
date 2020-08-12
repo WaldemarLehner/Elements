@@ -56,7 +56,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float AttackSpeed => this.playerStateManager.Current.Firerate;
 
-        public float AttackCooldown { get; } = -100;
+        public float AttackCooldown { get; } = 100;
 
         public float AttackCooldownCurrent { get; set; } = 0;
 
