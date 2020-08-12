@@ -245,7 +245,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             }
 
             // Spiel wurde durchgespielt -> Victoryanzeige wird getriggert
-            if (((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 1) && Scene.Scene.Current.NpcList.Count == 0)
+            if (((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40) && Scene.Scene.Current.NpcList.Count == 0)
             {
                 // Victory Element
                 var texCoordsVictory = Victory.GetTexCoordsOfIndex(0);
