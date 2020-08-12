@@ -154,6 +154,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 case PlayerEnum.Stats.MaxHealth:
                     var healthPrice = this.options.ExtraHeartPriceFunction(this.currentLevel.maxhealth++);
                     this.current.MaxHealth++;
+                    this.Heal();
                     this.current.Currency -= healthPrice;
                     return true;
                 default:
