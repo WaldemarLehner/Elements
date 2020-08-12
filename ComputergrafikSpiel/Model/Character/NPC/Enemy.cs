@@ -210,6 +210,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             if (random.Next(0, 100) <= chance)
             {
                 var whichOne = random.Next(0, 5);
+
                 if (whichOne <= 2)
                 {
                     (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Heal, this.Position.X, this.Position.Y);

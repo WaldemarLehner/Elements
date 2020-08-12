@@ -67,6 +67,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IEnumerable<IEntity> Entities => this.EntitiesList;
 
+        public IEnumerable<IEntity> Projectiles => this.ProjectileList;
+
         public IEnumerable<ITrigger> Trigger => this.TriggerList;
 
         public IScene TopScene { get; private set; }
@@ -102,6 +104,7 @@ namespace ComputergrafikSpiel.Model.Scene
                     this.Particles,
                     this.NPCs,
                     this.Entities,
+                    this.Projectiles,
                     this.Trigger,
                 };
 
@@ -152,6 +155,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
         private List<IEntity> EntitiesList { get; } = new List<IEntity>();
 
+        private List<IEntity> ProjectileList { get; } = new List<IEntity>();
+
         private List<ITrigger> TriggerList { get; } = new List<ITrigger>();
 
         private List<IParticle> Particles { get; } = new List<IParticle>();
@@ -199,6 +204,10 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.NpcList.Add((INonPlayerCharacter)entity ?? throw new ArgumentNullException(nameof(entity)));
             }
+            else if (entity is Projectile)
+            {
+                this.ProjectileList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
+            }
             else
             {
                 this.EntitiesList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
@@ -226,6 +235,11 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.NpcList.Remove((INonPlayerCharacter)entity);
             }
+
+            if (entity is Projectile)
+            {
+                this.ProjectileList.Remove((Projectile)entity);
+            }
             else if (entity is Trigger)
             {
                 this.TriggerList.Remove((ITrigger)entity);
@@ -237,6 +251,11 @@ namespace ComputergrafikSpiel.Model.Scene
                     this.EntitiesList.Remove(entity);
                 }
             }
+        }
+
+        public void RemoveProjectiles()
+        {
+            this.ProjectileList.Clear();
         }
 
         public void SpawnParticle(IParticle particle) => this.Particles.Add(particle ?? throw new ArgumentNullException(nameof(particle)));
@@ -323,6 +342,11 @@ namespace ComputergrafikSpiel.Model.Scene
             foreach (var trigger in this.TriggerList.ToList())
             {
                 this.RemoveTrigger(trigger);
+            }
+
+            foreach (var projectile in from i in this.ProjectileList.ToList() where i is Interactable select i as Interactable)
+            {
+                this.RemoveObject(projectile);
             }
 
             foreach (var interactable in from i in this.EntitiesList.ToList() where i is Interactable select i as Interactable)

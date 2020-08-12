@@ -108,6 +108,7 @@ namespace ComputergrafikSpiel.Model
         // After each round the player can choose between 4 power-ups -> they spawn by calling this function
         public void OnSceneCompleted()
         {
+            Scene.Scene.Current.RemoveProjectiles();
             this.Level++;
 
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
