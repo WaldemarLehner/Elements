@@ -26,7 +26,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BulletTexture = "Leaf";
                     break;
                 case WorldEnum.Type.Earth:
-                    this.SetEnemyStats(300, 75, 2);
+                    this.SetEnemyStats(300, 75, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 51f;
                     this.ProjectileHue = (64f, 47f);
@@ -34,7 +34,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BulletTexture = "Stone";
                     break;
                 case WorldEnum.Type.Fire:
-                    this.SetEnemyStats(400, 80, 3);
+                    this.SetEnemyStats(400, 80, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 25f;
                     this.ProjectileHue = (0f, 50f);
@@ -42,11 +42,11 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BulletTexture = "FireBlast";
                     break;
                 case WorldEnum.Type.Air:
-                    this.SetEnemyStats(600, 85, 4);
+                    this.SetEnemyStats(600, 85, 3);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 0f;
                     this.ProjectileHue = (261f, 295f);
-                    this.AttackCooldown = 1.8f;
+                    this.AttackCooldown = .9f;
                     this.BulletTexture = "Scythe";
                     break;
                 default: break;
