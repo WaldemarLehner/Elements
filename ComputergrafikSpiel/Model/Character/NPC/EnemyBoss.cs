@@ -46,7 +46,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 0f;
                     this.ProjectileHue = (261f, 295f);
-                    this.AttackCooldown = .5f;
+                    this.AttackCooldown = 1.8f;
                     this.BulletTexture = "Scythe";
                     break;
                 default: break;
