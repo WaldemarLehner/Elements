@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.World.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -20,7 +22,8 @@ namespace ComputergrafikSpiel.Model.Entity
         {
             this.Scale = new Vector2(10, 10);
             this.Position = new Vector2(positionX, positionY);
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, ColliderLayer.Layer.Player);
+            var collisionLayer = ColliderLayer.Layer.Player | ColliderLayer.Layer.Water;
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 10, ColliderLayer.Layer.Interactable, collisionLayer);
 
             switch (stat)
             {
@@ -66,15 +69,9 @@ namespace ComputergrafikSpiel.Model.Entity
         {
             IReadOnlyCollection<ICollidable> interactableCollision = Scene.Scene.Current.ColliderManager.GetCollisions(this);
 
-            foreach (var collisions in interactableCollision)
+            foreach (var collisions in from t in interactableCollision where t is IWorldTileCollidable select t)
             {
-                foreach (var tileCollidable in Scene.Scene.Current.ColliderManager.CollidableTileDictionary)
-                {
-                    if (interactableCollision == tileCollidable.Value)
-                    {
-                        this.RemoveInteractable();
-                    }
-                }
+                this.RemoveInteractable();
             }
         }
 
