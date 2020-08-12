@@ -7,6 +7,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 
 namespace ComputergrafikSpiel.Model.Entity
 {
@@ -63,6 +64,18 @@ namespace ComputergrafikSpiel.Model.Entity
 
         public void Update(float dtime)
         {
+            IReadOnlyCollection<ICollidable> interactableCollision = Scene.Scene.Current.ColliderManager.GetCollisions(this);
+
+            foreach (var collisions in interactableCollision)
+            {
+                foreach (var tileCollidable in Scene.Scene.Current.ColliderManager.CollidableTileDictionary)
+                {
+                    if (interactableCollision == tileCollidable.Value)
+                    {
+                        this.RemoveInteractable();
+                    }
+                }
+            }
         }
 
         public void PlayerStatsIncrease()
