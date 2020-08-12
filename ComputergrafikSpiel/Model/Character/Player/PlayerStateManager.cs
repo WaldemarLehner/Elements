@@ -49,7 +49,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         {
             List<UpgradeOption> options = new List<UpgradeOption>();
             var heartPrice = this.options.ExtraHeartPriceFunction(this.currentLevel.maxhealth);
-            if (heartPrice <= this.current.Currency)
+            if (heartPrice <= this.current.Currency && Scene.Scene.Player.MaxHealth < 10)
             {
                 options.Add(new UpgradeOption(PlayerEnum.Stats.MaxHealth, this.current.MaxHealth, this.current.MaxHealth + 1, heartPrice));
             }
