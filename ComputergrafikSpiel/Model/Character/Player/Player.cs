@@ -6,6 +6,7 @@ using ComputergrafikSpiel.Model.Character.Weapon.Interfaces;
 using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.Entity.Particles;
+using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
@@ -15,7 +16,7 @@ using OpenTK.Graphics;
 
 namespace ComputergrafikSpiel.Model.Character.Player
 {
-    public class Player : IPlayer
+    public class Player : IPlayer, IRenderableLayeredTextures
     {
         private readonly List<PlayerEnum.PlayerActions> playerActionList;
         private readonly PlayerAttackSystem playerAttackSystem = new PlayerAttackSystem();
@@ -25,6 +26,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly Vector2 scale;
         private readonly InputController inputController = new InputController(InputControllerSettings.Default);
         private readonly GenericParticleEmitter dirtEmitter;
+        private readonly PlayerAnimationSystem playerAnimationSystem = new PlayerAnimationSystem(5);
 
         private bool run = false;
         private bool died = false;
@@ -41,7 +43,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.Scale = this.scale;
             var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Interactable | ColliderLayer.Layer.Trigger;
             this.Collider = new CircleOffsetCollider(this, new Vector2(0, -15f), 10, ColliderLayer.Layer.Player, collisionLayer);
-            this.Texture = new TextureLoader().LoadTexture("PlayerWeapon");
+            this.TileTexture = new TextureLoader().LoadTileTexture("PlayerTile", (5, 1));
         }
 
         public int MaxHealth => (int)this.playerStateManager.Current.MaxHealth;
@@ -74,7 +76,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public Vector2 RotationAnker { get; } = Vector2.Zero;
 
-        public ITexture Texture { get; }
+        public ITileTexture TileTexture { get; }
+
+        public ITexture Texture => this.TileTexture as ITexture;
 
         public ICollider Collider { get; set; }
 
@@ -91,6 +95,10 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public float BloodColorHue => 0f;
 
         public bool Invulnerable { get; set; } = false;
+
+        private TextureCoordinates CurrentTexCoords => TexturePointerCalculationHelper.GetCurrentTextureCoordinates(this.TileTexture, this.playerAnimationSystem.CurrentFrame) ?? TextureCoordinates.Error;
+
+        (IEnumerable<TextureCoordinates>, ITileTexture) IRenderableLayeredTextures.Texture => (new TextureCoordinates[] { this.CurrentTexCoords }, this.TileTexture);
 
         // Look wich action was handed over and call corresponding method
         public void PlayerControl()
@@ -110,6 +118,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
             }
 
             this.directionXY = this.playerMovementSystem.SetPlayerDirection(this.playerActionList);
+            if (this.directionXY.Length == 0f)
+            {
+                this.playerAnimationSystem.UpdateIsMoving(false);
+            }
+            else
+            {
+                this.playerAnimationSystem.UpdateIsMoving(true);
+            }
             this.playerActionList.Clear();
         }
 
@@ -199,6 +215,8 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.AttackCooldownCurrent -= dtime + this.AttackSpeed;
 
             this.DashCooldownCurrent -= dtime;
+
+            this.playerAnimationSystem.Update(dtime);
 
             Scene.Scene.Current.ColliderManager.HandleTriggerCollisions(this);
         }
