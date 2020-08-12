@@ -124,7 +124,7 @@ namespace ComputergrafikSpiel.Test.Model
         public void AssertThatRayCollisionsAreDetected()
         {
             ComputergrafikSpiel.Model.Character.Player.Player player = new ComputergrafikSpiel.Model.Character.Player.Player();
-            var scene = new Scene(new WorldSceneGenerator(.05f, new WorldSceneDefinition(false, false, false, false, 1, 1, 1f, 1, new (int weight, TileDefinitions.Type type)[] { (1, TileDefinitions.Type.Dirt) })).GenerateWorldScene(), null);
+            var scene = new Scene(new WorldSceneGenerator(.05f, new WorldSceneDefinition(false, false, false, false, 1, 1, 1f, 1, new (int weight, TileDefinitions.Type type)[] { (1, TileDefinitions.Type.Dirt) }, WorldEnum.Type.Water)).GenerateWorldScene(), null);
             scene.SetAsActive();
             Scene.CreatePlayer(player);
 

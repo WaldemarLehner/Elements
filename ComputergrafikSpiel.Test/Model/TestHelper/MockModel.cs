@@ -8,6 +8,7 @@ using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.ToggleMute;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
+using ComputergrafikSpiel.Model.World;
 using OpenTK;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
             throw new NotImplementedException();
         }
 
-        public void CreateTriggerZone()
+        public void CreateTriggerZone(bool firstScene, bool lastScene, WorldEnum.Type type)
         {
             throw new NotImplementedException();
         }

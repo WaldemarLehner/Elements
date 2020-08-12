@@ -4,6 +4,7 @@ using ComputergrafikSpiel.Model.Overlay.EndScreen;
 using ComputergrafikSpiel.Model.Overlay.ToggleMute;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
+using ComputergrafikSpiel.Model.World;
 
 namespace ComputergrafikSpiel.Model.Interfaces
 {
@@ -29,6 +30,6 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         void UpdateInput(IInputState input);
 
-        void CreateTriggerZone(bool firstScene, bool lastScene);
+        void CreateTriggerZone(bool firstScene, bool lastScene, WorldEnum.Type type);
     }
 }

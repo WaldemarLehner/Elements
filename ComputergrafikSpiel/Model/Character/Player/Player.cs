@@ -37,7 +37,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.dirtEmitter = new GenericParticleEmitter(EmitParticleOnceOptions.Dirt, 0.1f);
             this.dirtEmitter.Disable();
             this.playerActionList = new List<PlayerEnum.PlayerActions>();
-            this.Position = new Vector2(50, 65);
+            this.Position = new Vector2(350, 200);
             this.scale = new Vector2(24, 24);
             this.Scale = this.scale;
             var collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Water | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Interactable | ColliderLayer.Layer.Trigger;

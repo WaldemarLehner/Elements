@@ -24,13 +24,13 @@ namespace ComputergrafikSpiel.Model.Entity
             switch (stat)
             {
                 case PlayerEnum.Stats.Heal:
-                    this.texturename = "HealIncrease";
+                    this.texturename = "StatIncrease/HealIncrease";
                     this.stat = stat;
                     this.Scale = new Vector2(5, 5);
                     this.SingleDelete = true;
                     break;
                 case PlayerEnum.Stats.Money:
-                    this.texturename = "Währung";
+                    this.texturename = "GUI/Upgrades/Coin";
                     this.stat = stat;
                     this.Scale = new Vector2(5, 5);
                     this.SingleDelete = true;
@@ -40,7 +40,7 @@ namespace ComputergrafikSpiel.Model.Entity
                     break;
             }
 
-            this.Texture = new EntitySettings.Texture.TextureLoader().LoadTexture("StatIncrease/" + this.texturename);
+            this.Texture = new EntitySettings.Texture.TextureLoader().LoadTexture(this.texturename);
         }
 
         public bool SingleDelete { get; private set; } = false;

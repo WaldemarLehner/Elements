@@ -81,18 +81,18 @@ namespace ComputergrafikSpiel.Model.World
                 // If tile is water, just go w/ a rock
                 if (tiles[x, y].TileType == TileDefinitions.Type.Water)
                 {
-                    obstacles.Add(new RockObstacle(centre, scale));
+                    obstacles.Add(new RockObstacle(centre, scale, this.WorldSceneDefinition.WorldType));
                 }
                 else
                 {
                     // Decide between Stump and Rock
                     if (this.Random.NextDouble() < .5f)
                     {
-                        obstacles.Add(new StumpObstacle(centre, scale));
+                        obstacles.Add(new StumpObstacle(centre, scale, this.WorldSceneDefinition.WorldType));
                     }
                     else
                     {
-                        obstacles.Add(new RockObstacle(centre, scale));
+                        obstacles.Add(new RockObstacle(centre, scale, this.WorldSceneDefinition.WorldType));
                     }
                 }
             }

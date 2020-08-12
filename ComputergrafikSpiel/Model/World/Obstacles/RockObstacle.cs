@@ -3,6 +3,7 @@ using ComputergrafikSpiel.Model.Collider;
 using ComputergrafikSpiel.Model.Collider.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.World.Interfaces;
 using OpenTK;
 using OpenTK.Graphics;
@@ -13,12 +14,23 @@ namespace ComputergrafikSpiel.Model.World.Obstacles
     {
         private readonly float scale;
 
-        internal RockObstacle(Vector2 position, float scale)
+        internal RockObstacle(Vector2 position, float scale, WorldEnum.Type type)
         {
             this.Position = position;
             this.scale = scale;
             this.Collider = new CircleOffsetCollider(this, new Vector2(0, -4f), scale / 1.7f, ColliderLayer.Layer.Wall, ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Enemy | ColliderLayer.Layer.Player);
-            this.Texture = new TextureLoader().LoadTexture("Obstacle/Stone");
+            switch (type)
+            {
+                case WorldEnum.Type.Water:
+                case WorldEnum.Type.Earth:
+                    this.Texture = new TextureLoader().LoadTexture("Obstacle/Stone");
+                    break;
+                case WorldEnum.Type.Fire: this.Texture = new TextureLoader().LoadTexture("Obstacle/LavaStone");
+                    break;
+                case WorldEnum.Type.Air: this.Texture = new TextureLoader().LoadTexture("Obstacle/Saeule");
+                    break;
+                default: break;
+            }
         }
 
         public ICollider Collider { get; }

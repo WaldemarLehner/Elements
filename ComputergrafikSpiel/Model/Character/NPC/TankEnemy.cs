@@ -25,21 +25,21 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.Air = false;
                     break;
                 case WorldEnum.Type.Earth:
-                    this.SetEnemyStats(40, 55, 2);
+                    this.SetEnemyStats(40, 55, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
                     this.BloodColorHue = 34f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
                     this.Air = false;
                     break;
                 case WorldEnum.Type.Fire:
-                    this.SetEnemyStats(60, 60, 3);
+                    this.SetEnemyStats(60, 60, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Fire/" + texture);
                     this.BloodColorHue = 345f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
                     this.Air = false;
                     break;
                 case WorldEnum.Type.Air:
-                    this.SetEnemyStats(80, 65, 4);
+                    this.SetEnemyStats(80, 65, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
                     this.BloodColorHue = 58f;
                     this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);

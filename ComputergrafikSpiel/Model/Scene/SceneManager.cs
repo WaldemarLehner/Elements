@@ -113,17 +113,25 @@ namespace ComputergrafikSpiel.Model.Scene
                     break;
             }
 
-            this.Model.CreateTriggerZone(false, false);
+            if (this.CurrentStageLevel == 40)
+            {
+                this.Model.CreateTriggerZone(false, true, this.elementType);
+            }
+            else
+            {
+                this.Model.CreateTriggerZone(false, false, this.elementType);
+            }
         }
 
         public void InitializeFirstScene()
         {
-            var worldScene = new WorldSceneGenerator(0f, new WorldSceneDefinition(true, true, true, true, 20, 15, 0f, 32, WorldSceneDefinition.DefaultMapping)).GenerateWorldScene();
+            this.elementType = WorldEnum.Type.Safezone;
+            var worldScene = new WorldSceneGenerator(0f, new WorldSceneDefinition(true, true, true, true, 20, 15, 0f, 32, WorldSceneDefinition.DefaultMapping, this.elementType)).GenerateWorldScene();
             var initScene = new Scene(worldScene);
             (this.Model as Model).FirstScene = true;
             initScene.GiveModeltoScene(this.Model);
             initScene.SetAsActive();
-            this.Model.CreateTriggerZone(true, false);
+            this.Model.CreateTriggerZone(true, false, this.elementType);
         }
 
         public void SetSceneTexturesToSafeZone()
@@ -142,23 +150,23 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void SetSceneTexturesToEarth()
         {
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Earth/WaterTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Earth/EarthAbyssTileSet";
             WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Earth/EarthTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Earth/Grass";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Earth/EarthGround";
         }
 
         public void SetSceneTexturesToFire()
         {
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Fire/WaterTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Fire/EarthTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Fire/Grass";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Fire/LavaTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Fire/EarthLavaTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Fire/FireLavaTile";
         }
 
         public void SetSceneTexturesToAir()
         {
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Air/WaterTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Air/EarthTileSet";
-            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Air/Grass";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Water] = "Ground_Air/AirSkyTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Dirt] = "Ground_Air/AirGroundTileSet";
+            WorldTileTextureLoader.NameLookUp[TileDefinitions.Type.Grass] = "Ground_Air/AirPlate";
         }
     }
 }

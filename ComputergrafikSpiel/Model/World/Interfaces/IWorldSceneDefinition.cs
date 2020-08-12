@@ -17,5 +17,7 @@
         (int weight, TileDefinitions.Type type)[] NoiseDefinition { get; }
 
         int TileSize { get; }
+
+        WorldEnum.Type WorldType { get; }
     }
 }
