@@ -19,6 +19,7 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static readonly ITileTexture Crosshair = new TextureLoader().LoadTileTexture("GUI/Crosshair_Cursor", (x: 1, y: 1));
         private static readonly ITileTexture Gameover = new TextureLoader().LoadTileTexture("GUI/Gameover/Gameover", (x: 1, y: 1));
         private static readonly ITileTexture Victory = new TextureLoader().LoadTileTexture("GUI/Gameover/Victory", (x: 1, y: 1));
+        private static readonly ITileTexture CreditsField = new TextureLoader().LoadTileTexture("GUI/Gameover/Textfield_credits", (x: 1, y: 1));
 
         public static List<IRenderable> GenerateInstruction(IWorldScene sceneDefinition)
         {
@@ -214,40 +215,87 @@ namespace ComputergrafikSpiel.Model.Overlay
             float right = sceneDefinition.WorldSceneBounds.right;
             float top = sceneDefinition.WorldSceneBounds.top;
             float bottom = sceneDefinition.WorldSceneBounds.bottom;
+            float width = right - left;
+            float height = top - bottom;
 
             float gameoverSize = (right - left) / 2;
             var (currentHealth, _, _, _, _) = player.PlayerData;
             float xCenter = (left + right) / 2;
             float yCenter = (bottom + top) / 1.7f;
+            float yVictorySign = top / 1.2f;
+            float yCreditField = yVictorySign / 1.57f;
+            float yCreditText = yVictorySign / 1.3f;
+            string[] creditText = { "sunny1", "sunny2", "sunny3", "sunny4", "sunny5", "sunny6", "sunny7" };
+            char[] creditTextToChar;
 
             // Tod des Spielers -> Gameoveranzeige wird getriggert
             if (currentHealth <= 0)
             {
                 var texCoords = Gameover.GetTexCoordsOfIndex(0);
 
-                var entry = new GenericGUIRenderable()
+                var entryGameover = new GenericGUIRenderable()
                 {
                     Scale = Vector2.One * .5f * gameoverSize,
                     Position = new Vector2(xCenter, yCenter),
                     Texture = Gameover,
                     Coordinates = texCoords,
                 };
-                gameoverEntries.Add(entry);
+                gameoverEntries.Add(entryGameover);
             }
 
             // Spiel wurde durchgespielt -> Victoryanzeige wird getriggert
-            if (((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40) && Scene.Scene.Current.NpcList.Count == 0)
+            if (((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 1) && Scene.Scene.Current.NpcList.Count == 0)
             {
-                var texCoords = Victory.GetTexCoordsOfIndex(0);
+                // Victory Element
+                var texCoordsVictory = Victory.GetTexCoordsOfIndex(0);
 
-                var entry = new GenericGUIRenderable()
+                var entryVictory = new GenericGUIRenderable()
                 {
-                    Scale = new Vector2(gameoverSize * .95f, .5f * gameoverSize),
-                    Position = new Vector2(xCenter, yCenter),
+                    Scale = new Vector2(gameoverSize * .75f, .2f * gameoverSize),
+                    Position = new Vector2(xCenter, yVictorySign),
                     Texture = Victory,
-                    Coordinates = texCoords,
+                    Coordinates = texCoordsVictory,
                 };
-                gameoverEntries.Add(entry);
+                gameoverEntries.Add(entryVictory);
+
+                // Credit Feld Element
+                var texCoordsCreditField = CreditsField.GetTexCoordsOfIndex(0);
+
+                var entryCreditField = new GenericGUIRenderable()
+                {
+                    Scale = new Vector2(gameoverSize * .7f, .35f * gameoverSize),
+                    Position = new Vector2(xCenter, yCreditField),
+                    Texture = CreditsField,
+                    Coordinates = texCoordsCreditField,
+                };
+                gameoverEntries.Add(entryCreditField);
+
+                // Credit Text
+                for (int t = 0; t < creditText[t].Length - 1; t++)
+                {
+                    creditTextToChar = creditText[t].ToCharArray();
+                    int renderablesCount = creditText[t].Length;
+                    float itemSize = (width / renderablesCount) < height ? width / renderablesCount : height;
+
+                    for (int i = 0; i < renderablesCount; i++)
+                    {
+                        var tex = Font;
+                        int? texIndex = GetTexIndex(tex, creditTextToChar[i]);
+                        if (texIndex == null)
+                        {
+                            continue;
+                        }
+
+                        var entryCreditText = new GenericGUIRenderable()
+                        {
+                            Scale = new Vector2(itemSize / 14f, itemSize / 14f),
+                            Position = new Vector2(xCenter + (i * (itemSize / 8f)) - 200, yCreditText - (t * 30)),
+                            Texture = tex,
+                            Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
+                        };
+                        gameoverEntries.Add(entryCreditText);
+                    }
+                }
             }
 
             return gameoverEntries;
