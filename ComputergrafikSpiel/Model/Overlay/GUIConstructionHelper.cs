@@ -30,17 +30,17 @@ namespace ComputergrafikSpiel.Model.Overlay
             float top = sceneDefinition.WorldSceneBounds.top;
             float bottom = sceneDefinition.WorldSceneBounds.bottom;
 
-            float instructionSize = (right - left) / 4;
+            float instructionSize = (right - left) / 2.5f;
 
             if ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 0)
             {
                 float xCenter = (left + right) / 2;
                 float yCenter = (bottom + top) / 2;
-                var texCoords = Instruction.GetTexCoordsOfIndex(0); // Für die rechte Hälfte des Bildes.
+                var texCoords = Instruction.GetTexCoordsOfIndex(0);
 
                 var entry = new GenericGUIRenderable()
                 {
-                    Scale = new Vector2(instructionSize * .95f, .4f * instructionSize), // Vector2.One * .5f * instructionSize,
+                    Scale = new Vector2(instructionSize * .95f, .3f * instructionSize), // Vector2.One * .5f * instructionSize,
                     Position = new Vector2(xCenter, yCenter),
                     Texture = Instruction,
                     Coordinates = texCoords,
@@ -99,7 +99,7 @@ namespace ComputergrafikSpiel.Model.Overlay
                 var entry = new GenericGUIRenderable()
                 {
                     Scale = Vector2.One * itemSize / 1.2f,
-                    Position = new Vector2(left + ((i * (itemSize / .6f)) - 160), (top + bottom) / 2.04f),
+                    Position = new Vector2(left + ((i * (itemSize / .6f)) - 180), (top + bottom) / 2f),
                     Texture = tex,
                     Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
                 };

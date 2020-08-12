@@ -35,21 +35,14 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.current.Currency += count;
         }
 
-        public void Hurt(ref bool died, int damage)
+        public void Hurt(int damage)
         {
             if (this.current.Health > 0)
             {
                 this.current.Health -= (uint)damage;
             }
 
-            if (this.current.Health <= 0)
-            {
-                died = true;
-            }
-            else
-            {
-                died = false;
-            }
+            return;
         }
 
         public IList<UpgradeOption> GetUpgradeOptions(uint level)

@@ -13,7 +13,7 @@ namespace ComputergrafikSpiel.Model.Soundtrack
 
         public void StartSafeMusic()
         {
-            this.mediaPlayer.URL = "./Content/Soundtrack/Spanish_Waltz.mp3";
+            this.mediaPlayer.URL = "./Content/Soundtrack/Creepy_Frog.mp3";
             this.mediaPlayer.controls.play();
         }
 

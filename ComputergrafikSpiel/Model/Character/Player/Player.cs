@@ -27,7 +27,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly GenericParticleEmitter dirtEmitter;
 
         private bool run = false;
-        private bool died = false;
         private Vector2 directionXY = Vector2.Zero;
         private bool updateDisabled = false;
         private bool muteButtonOnScreen = false;
@@ -121,11 +120,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 return;
             }
 
-            this.died = false;
-
             if (!this.Invulnerable)
             {
-                this.playerStateManager.Hurt(ref this.died, damage);
+                this.playerStateManager.Hurt(damage);
 
                 // Spawn particles
                 EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
@@ -162,7 +159,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 return;
             }
 
-            if (this.died || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)))
+            if (this.CurrentHealth <= 0 || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)))
             {
                 Scene.Scene.Current.Model.SceneManager.Play.StartGameoverMusic();
                 (Scene.Scene.Current.Model as Model).TriggerEndscreenButtons();
