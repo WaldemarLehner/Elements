@@ -6,7 +6,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 {
     internal class PlayerMovementSystem
     {
-        private const float Multiplier = 2f;
+        private const float Multiplier = 3f;
 
         public float DashMultiplier { get; private set; } = 1f;
 
@@ -55,7 +55,7 @@ namespace ComputergrafikSpiel.Model.Character.Player.PlayerSystems
 
         private async Task ReduceSpeedAfterDash()
         {
-            await Task.Delay(100);
+            await Task.Delay(150);
             this.DashMultiplier = 1f;
             Scene.Scene.Player.Invulnerable = false;
             return;

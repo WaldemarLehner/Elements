@@ -14,6 +14,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
     internal class Projectile : IEntity
     {
         private readonly GenericParticleEmitter backsmokeEmitter;
+        private readonly bool activateRotation;
 
         internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize, bool player, Vector2 position, string texture, (float, float) hue)
         {
@@ -22,6 +23,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.Direction = direction;
             this.TTL = ttl;
             this.Texture = new TextureLoader().LoadTexture("Projectile/" + texture);
+
+            if (texture == "Scythe")
+            {
+                this.activateRotation = true;
+            }
 
             if (player)
             {
@@ -60,7 +66,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
 
         public ITexture Texture { get; }
 
-        public float Rotation { get; }
+        public float Rotation { get; set; }
 
         public Vector2 RotationAnker { get; set; }
 
@@ -74,6 +80,11 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
             this.RotationAnker = this.Position;
             this.TTL -= dtime;
             this.ProjectileCollisionManager();
+
+            if (this.activateRotation)
+            {
+                this.ProjectileRotation();
+            }
 
             var opt = this.backsmokeEmitter.Options;
             opt.PointOfEmmision = this.Position;
@@ -95,6 +106,16 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
                 StaticParticleEmmiter.EmitOnce(onDeathOpt);
                 Scene.Scene.Current.RemoveObject(this);
             }
+        }
+
+        private void ProjectileRotation()
+        {
+            if (this.Rotation == 360)
+            {
+                this.Rotation = 1;
+            }
+
+            this.Rotation += .5f;
         }
 
         public void ProjectileCollisionManager()
