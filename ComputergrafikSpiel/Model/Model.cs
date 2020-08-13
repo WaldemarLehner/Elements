@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
@@ -120,7 +121,16 @@ namespace ComputergrafikSpiel.Model
                 this.UpgradeScreen = null;
             }
 
-            this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
+            Timer upgradeTimer = new Timer();
+            upgradeTimer.Interval = 500;
+            upgradeTimer.Tick += new EventHandler(ActivateUpgradeScreen);
+            upgradeTimer.Start();
+
+            void ActivateUpgradeScreen(object sender, EventArgs e)
+            {
+                this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
+                upgradeTimer.Stop();
+            }
         }
 
         public void TriggerEndscreenButtons()
