@@ -37,7 +37,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 25f;
                     this.ProjectileHue = (0f, 50f);
-                    this.AttackCooldown = 1.3f;
+                    this.AttackCooldown = 1f;
                     this.BulletTexture = "FireBlast";
                     break;
                 case WorldEnum.Type.Air:
@@ -45,7 +45,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 0f;
                     this.ProjectileHue = (261f, 295f);
-                    this.AttackCooldown = 1.2f;
+                    this.AttackCooldown = .8f;
                     this.BulletTexture = "Scythe";
                     break;
                 default: break;

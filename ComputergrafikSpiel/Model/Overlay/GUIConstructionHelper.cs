@@ -146,7 +146,7 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static (float top, float bottom, float left, float right, float width, float height) GenerateCoinGUIBounds(int tileSize, (float top, float bottom, float left, float right) worldSceneBounds)
         {
             float left = worldSceneBounds.right - (tileSize * 3);
-            float right = worldSceneBounds.right;
+            float right = worldSceneBounds.right - 30;
             float top = worldSceneBounds.top;
             float bottom = top - tileSize;
             float width = right - left;
