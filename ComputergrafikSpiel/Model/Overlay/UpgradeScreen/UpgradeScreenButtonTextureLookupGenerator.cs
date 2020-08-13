@@ -21,10 +21,10 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
         private static string GetUpgradeText(float valueBefore, float improvement, float valueAfter)
         {
             CultureInfo invC = CultureInfo.InvariantCulture;
-            return $"{decimal.Round((decimal)valueBefore, 2).ToString(invC)} > {decimal.Round((decimal)valueAfter, 2).ToString(invC)} ";
+            return $"{valueBefore.ToString(invC)} > {valueAfter.ToString(invC)} ";
         }
 
-        // private static string Truncate(this float value) => string.Format("{0:0.00}", value).ToString(invC);
+        private static string Truncate(this float value) => string.Format(CultureInfo.InvariantCulture, "{0:0.00}", value);
 
         private static string GetName(PlayerEnum.Stats s)
         {
