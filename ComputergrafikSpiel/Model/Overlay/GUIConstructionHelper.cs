@@ -100,7 +100,7 @@ namespace ComputergrafikSpiel.Model.Overlay
                 var entry = new GenericGUIRenderable()
                 {
                     Scale = Vector2.One * itemSize / 1.2f,
-                    Position = new Vector2(left + ((i * (itemSize / .6f)) - 180), (top + bottom) / 2f),
+                    Position = new Vector2(left + ((i * (itemSize / .6f)) - 165), (top + bottom) / 2f),
                     Texture = tex,
                     Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
                 };

@@ -126,6 +126,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 this.playerAnimationSystem.UpdateIsMoving(true);
             }
+
             this.playerActionList.Clear();
         }
 
@@ -177,6 +178,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
             if (this.CurrentHealth <= 0 || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)))
             {
+                Scene.Scene.Current.RemoveProjectiles();
                 Scene.Scene.Current.Model.SceneManager.Play.StartGameoverMusic();
                 (Scene.Scene.Current.Model as Model).TriggerEndscreenButtons();
                 this.updateDisabled = true;
