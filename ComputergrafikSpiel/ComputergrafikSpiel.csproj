@@ -194,6 +194,7 @@
     <Compile Include="Model\Entity\Particles\ParticleCalculationHelper.cs" />
     <Compile Include="Model\Entity\Particles\ParticleFunction.cs" />
     <Compile Include="Model\Entity\Particles\StaticParticleEmmiter.cs" />
+    <Compile Include="Model\GlobalSettings.cs" />
     <Compile Include="Model\Interfaces\IInputState.cs" />
     <Compile Include="Model\Overlay\EndScreen\EndScreen.cs" />
     <Compile Include="Model\Overlay\EndScreen\EndScreenButton.cs" />

@@ -132,7 +132,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void TakingDamage(int damage)
         {
-            if (this.updateDisabled == true)
+            if (this.updateDisabled == true || GlobalSettings.GodMode)
             {
                 return;
             }
