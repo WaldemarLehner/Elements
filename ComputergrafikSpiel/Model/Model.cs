@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using ComputergrafikSpiel.Model.Character.NPC;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.Collider;
@@ -20,6 +19,8 @@ namespace ComputergrafikSpiel.Model
 {
     public class Model : IModel
     {
+        private bool sceneCompleted = false;
+        private float sceneCompletionCountdown = 0;
 
         internal Model()
         {
@@ -68,6 +69,16 @@ namespace ComputergrafikSpiel.Model
                 this.ToggleMute.Update(dTime);
             }
 
+            if (this.sceneCompleted)
+            {
+                this.sceneCompletionCountdown -= dTime;
+                if (this.sceneCompletionCountdown <= 0)
+                {
+                    this.OnSceneCompleted();
+                    this.sceneCompleted = false;
+                }
+            }
+
             Scene.Scene.Current.Update(dTime);
         }
 
@@ -105,32 +116,6 @@ namespace ComputergrafikSpiel.Model
         public void SpawnInteractable(PlayerEnum.Stats stat, float positionX, float positionY)
         {
             Scene.Scene.Current.SpawnObject(new Interactable(stat, positionX, positionY));
-        }
-
-        // After each round the player can choose between 4 power-ups -> they spawn by calling this function
-        public void OnSceneCompleted()
-        {
-            this.Level++;
-
-            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
-            var topV = new Vector2((left + right) * .5f, top);
-            var width = (right - left) * .5f;
-            void Callback(PlayerEnum.Stats stat)
-            {
-                Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
-                this.UpgradeScreen = null;
-            }
-
-            Timer upgradeTimer = new Timer();
-            upgradeTimer.Interval = 500;
-            upgradeTimer.Tick += new EventHandler(ActivateUpgradeScreen);
-            upgradeTimer.Start();
-
-            void ActivateUpgradeScreen(object sender, EventArgs e)
-            {
-                this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
-                upgradeTimer.Stop();
-            }
         }
 
         public void TriggerEndscreenButtons()
@@ -198,6 +183,12 @@ namespace ComputergrafikSpiel.Model
             }
         }
 
+        public void SceneCompleteTimerStart()
+        {
+            this.sceneCompleted = true;
+            this.sceneCompletionCountdown = .5f;
+        }
+
         private static (int x, int y)? FindNextSpawnSlot(int index, IWorldScene world, SpawnMask.Mask mask)
         {
             int checkedCount = 0;
@@ -223,6 +214,23 @@ namespace ComputergrafikSpiel.Model
             }
 
             return null;
+        }
+
+        // After each round the player can choose between 4 power-ups -> they spawn by calling this function
+        private void OnSceneCompleted()
+        {
+            this.Level++;
+
+            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
+            var topV = new Vector2((left + right) * .5f, top);
+            var width = (right - left) * .5f;
+            void Callback(PlayerEnum.Stats stat)
+            {
+                Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
+                this.UpgradeScreen = null;
+            }
+
+            this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
         }
     }
 }
