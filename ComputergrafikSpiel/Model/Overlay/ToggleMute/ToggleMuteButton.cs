@@ -5,6 +5,7 @@ using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
+using ComputergrafikSpiel.Model.Scene;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -103,13 +104,13 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
 
                         if (this.toggleitem.Equals(PlayerEnum.Stats.Mute))
                         {
-                            Console.WriteLine("Pressed MUTE");
                             Scene.Scene.Current.Model.SceneManager.Play.MuteMusik();
+                            Scene.Scene.Current.Model.Muted = true;
                         }
                         else if (this.toggleitem.Equals(PlayerEnum.Stats.Unmute))
                         {
-                            Console.WriteLine("Pressed UNMUTE");
                             Scene.Scene.Current.Model.SceneManager.Play.UnmuteMusik();
+                            Scene.Scene.Current.Model.Muted = false;
                         }
 
                         (Scene.Scene.Current.Model as Model).TriggerToggleMuteButton();

@@ -19,7 +19,6 @@ namespace ComputergrafikSpiel.Model
 {
     public class Model : IModel
     {
-        private bool muted = false;
 
         internal Model()
         {
@@ -44,6 +43,8 @@ namespace ComputergrafikSpiel.Model
         public ToggleMute ToggleMute { get; set; }
 
         public IInputState InputState { get; private set; }
+
+        public bool Muted { get; set; }
 
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
@@ -138,15 +139,13 @@ namespace ComputergrafikSpiel.Model
                 this.ToggleMute = null;
             }
 
-            if (this.muted)
+            if (this.Muted)
             {
                 this.ToggleMute = new ToggleMute(PlayerEnum.Stats.Unmute);
-                this.muted = false;
                 return;
             }
 
             this.ToggleMute = new ToggleMute(PlayerEnum.Stats.Mute);
-            this.muted = true;
         }
 
         public List<(int x, int y)> SpawningAreaEnemys(int min, int max, IWorldScene world)
