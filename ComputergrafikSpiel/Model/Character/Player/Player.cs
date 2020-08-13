@@ -60,7 +60,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public float AttackCooldownCurrent { get; set; } = 0;
 
-        public float DashCooldown { get; } = 4;
+        public float DashCooldown { get; } = 2;
 
         public float DashCooldownCurrent { get; set; } = 0;
 
@@ -132,7 +132,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void TakingDamage(int damage)
         {
-            if (this.updateDisabled == true)
+            if (this.updateDisabled == true || GlobalSettings.GodMode)
             {
                 return;
             }
@@ -183,7 +183,6 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 (Scene.Scene.Current.Model as Model).TriggerEndscreenButtons();
                 this.updateDisabled = true;
             }
-
 
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)

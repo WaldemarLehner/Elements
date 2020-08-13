@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
@@ -18,10 +20,11 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
 
         private static string GetUpgradeText(float valueBefore, float improvement, float valueAfter)
         {
-            return $"{valueBefore.Truncate()} > {valueAfter.Truncate()} ";
+            CultureInfo invC = CultureInfo.InvariantCulture;
+            return $"{valueBefore.ToString(invC)} > {valueAfter.ToString(invC)} ";
         }
 
-        private static string Truncate(this float value) => string.Format("{0:0.00}", value);
+        private static string Truncate(this float value) => string.Format(CultureInfo.InvariantCulture, "{0:0.00}", value);
 
         private static string GetName(PlayerEnum.Stats s)
         {
