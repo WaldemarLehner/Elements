@@ -38,6 +38,7 @@ namespace ComputergrafikSpiel.Test.Model.TestHelper
         public ISceneManager SceneManager { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         EndScreen IModel.EndScreen { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public ToggleMute ToggleMute { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool Muted { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public bool CreateEnemy()
         {

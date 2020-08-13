@@ -13,7 +13,6 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public SceneManager(IModel model)
         {
-            // Szene wird gestartet, ebenso direkt in der Safe-Zone wird das Lied gespielt
             this.Play.StartSafeMusic();
             this.Model = model;
         }
@@ -125,6 +124,11 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void InitializeFirstScene()
         {
+            if (this.Model.Muted)
+            {
+                this.Play.MuteMusik();
+            }
+
             this.elementType = WorldEnum.Type.Safezone;
             var worldScene = new WorldSceneGenerator(0f, new WorldSceneDefinition(true, true, true, true, 20, 15, 0f, 32, WorldSceneDefinition.DefaultMapping, this.elementType)).GenerateWorldScene();
             var initScene = new Scene(worldScene);

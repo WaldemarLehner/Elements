@@ -19,7 +19,8 @@ namespace ComputergrafikSpiel.Model
 {
     public class Model : IModel
     {
-        private bool muted = false;
+        private bool sceneCompleted = false;
+        private float sceneCompletionCountdown = 0;
 
         internal Model()
         {
@@ -45,6 +46,8 @@ namespace ComputergrafikSpiel.Model
 
         public IInputState InputState { get; private set; }
 
+        public bool Muted { get; set; }
+
         /// <summary>
         /// For the Test, this will draw a Rectangle doing a loop.
         /// </summary>
@@ -64,6 +67,16 @@ namespace ComputergrafikSpiel.Model
             if (this.ToggleMute != null)
             {
                 this.ToggleMute.Update(dTime);
+            }
+
+            if (this.sceneCompleted)
+            {
+                this.sceneCompletionCountdown -= dTime;
+                if (this.sceneCompletionCountdown <= 0)
+                {
+                    this.OnSceneCompleted();
+                    this.sceneCompleted = false;
+                }
             }
 
             Scene.Scene.Current.Update(dTime);
@@ -105,23 +118,6 @@ namespace ComputergrafikSpiel.Model
             Scene.Scene.Current.SpawnObject(new Interactable(stat, positionX, positionY));
         }
 
-        // After each round the player can choose between 4 power-ups -> they spawn by calling this function
-        public void OnSceneCompleted()
-        {
-            this.Level++;
-
-            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
-            var topV = new Vector2((left + right) * .5f, top);
-            var width = (right - left) * .5f;
-            void Callback(PlayerEnum.Stats stat)
-            {
-                Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
-                this.UpgradeScreen = null;
-            }
-
-            this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
-        }
-
         public void TriggerEndscreenButtons()
         {
             var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
@@ -138,15 +134,13 @@ namespace ComputergrafikSpiel.Model
                 this.ToggleMute = null;
             }
 
-            if (this.muted)
+            if (this.Muted)
             {
                 this.ToggleMute = new ToggleMute(PlayerEnum.Stats.Unmute);
-                this.muted = false;
                 return;
             }
 
             this.ToggleMute = new ToggleMute(PlayerEnum.Stats.Mute);
-            this.muted = true;
         }
 
         public List<(int x, int y)> SpawningAreaEnemys(int min, int max, IWorldScene world)
@@ -189,6 +183,12 @@ namespace ComputergrafikSpiel.Model
             }
         }
 
+        public void SceneCompleteTimerStart()
+        {
+            this.sceneCompleted = true;
+            this.sceneCompletionCountdown = .5f;
+        }
+
         private static (int x, int y)? FindNextSpawnSlot(int index, IWorldScene world, SpawnMask.Mask mask)
         {
             int checkedCount = 0;
@@ -214,6 +214,23 @@ namespace ComputergrafikSpiel.Model
             }
 
             return null;
+        }
+
+        // After each round the player can choose between 4 power-ups -> they spawn by calling this function
+        private void OnSceneCompleted()
+        {
+            this.Level++;
+
+            var (top, bottom, left, right) = Scene.Scene.Current.World.WorldSceneBounds;
+            var topV = new Vector2((left + right) * .5f, top);
+            var width = (right - left) * .5f;
+            void Callback(PlayerEnum.Stats stat)
+            {
+                Scene.Scene.Player.SelectOption(stat, (uint)this.Level);
+                this.UpgradeScreen = null;
+            }
+
+            this.UpgradeScreen = new UpgradeScreen(Scene.Scene.Player.GetOptions((uint)this.Level), 10, topV, width, callback: Callback);
         }
     }
 }

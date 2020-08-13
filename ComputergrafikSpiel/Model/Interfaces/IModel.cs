@@ -26,6 +26,8 @@ namespace ComputergrafikSpiel.Model.Interfaces
 
         ISceneManager SceneManager { get; set; }
 
+        bool Muted { get; set; }
+
         void Update(float dTime);
 
         void UpdateInput(IInputState input);

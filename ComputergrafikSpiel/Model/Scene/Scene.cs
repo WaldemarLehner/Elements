@@ -330,7 +330,7 @@ namespace ComputergrafikSpiel.Model.Scene
                 if (!(this.Model as Model).FirstScene)
                 {
                     this.RemoveProjectiles();
-                    (this.Model as Model).OnSceneCompleted();
+                    (this.Model as Model).SceneCompleteTimerStart();
                 }
 
                 this.lockInc = false;
