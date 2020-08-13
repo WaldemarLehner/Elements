@@ -109,7 +109,6 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
                 else if (i <= mainText.Length)
                 {
                     char c = mainText[i - 1];
-                    Console.WriteLine(c);
                     if (!Font.MappedPositions.ContainsKey(c))
                     {
                         continue;
