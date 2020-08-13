@@ -225,8 +225,9 @@ namespace ComputergrafikSpiel.Model.Overlay
             float yVictorySign = top / 1.2f;
             float yCreditField = yVictorySign / 1.57f;
             float yCreditText = yVictorySign / 1.3f;
-            Dictionary<int, string[]> dictionaryText = new Dictionary<int, string[]>();
-            dictionaryText.Add(0, new string[] { "sunny1", "sunny2", "sunny3", "sunny4", "sunny5", "sunny6", "sunny7" });
+            string[] creditText1 = { "   developer:    ", "   waldemar lehner   ", "     nico bautz      ", "gerald lautenschlager", "   julian lingnau    "};
+            string[] creditText2 = { "    designer:    ", "     nico bautz      ", "    renato nunes     " };
+            string[] creditText3 = { "audio: cc license", "     creepy frog > the behemoth      ", "  castle in the sky > the behemoth   ", "till death do you part > the behemoth", "     oranges kiss > dan paladin      ", "       dark skies > maestrorage      ", " rage of the champions > maestrorage ", "       factory > cornandbeans        ", "      space pirates > waterflame     ", " race around the world > waterflame  ", "         vain star > cycerin         " };
             char[] creditTextToChar;
 
             // Tod des Spielers -> Gameoveranzeige wird getriggert
@@ -271,37 +272,98 @@ namespace ComputergrafikSpiel.Model.Overlay
                 };
                 gameoverEntries.Add(entryCreditField);
 
-                // Credit Text
-                foreach (KeyValuePair<int, string[]> entry in dictionaryText)
+                // Credit Text 1 Developer
+                for (int t = 0; t < creditText1.Length; t++)
                 {
-                    for (int t = 0; t < entry.Value[t].Length; t++)
+                    creditTextToChar = creditText1[t].ToCharArray();
+                    int renderablesCount = creditText1[t].Length;
+                    float itemSize = (width / renderablesCount) < height ? width / renderablesCount : height;
+                    for (int i = 0; i < renderablesCount; i++)
                     {
-                        creditTextToChar = entry.Value[t].ToCharArray();
-                        int renderablesCount = entry.Value[t].Length;
-                        float itemSize = (width / renderablesCount) < height ? width / renderablesCount : height;
-
-                        for (int i = 0; i < renderablesCount; i++)
+                        var tex = Font;
+                        int? texIndex = GetTexIndex(tex, creditTextToChar[i]);
+                        if (texIndex == null)
                         {
-                            var tex = Font;
-                            int? texIndex = GetTexIndex(tex, creditTextToChar[i]);
-                            if (texIndex == null)
-                            {
-                                continue;
-                            }
+                            continue;
+                        }
 
-                            var entryCreditText = new GenericGUIRenderable()
+                        var entryCreditText1 = new GenericGUIRenderable()
+                        {
+                            Scale = new Vector2(itemSize / 8f, itemSize / 8f),
+                            Position = new Vector2(xCenter + (i * (itemSize / 6f)) - 200, yCreditText - (t * 25)),
+                            Texture = tex,
+                            Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
+                        };
+                        gameoverEntries.Add(entryCreditText1);
+                    }
+                }
+
+                // Credit Text 2 Designer
+                for (int t = 0; t < creditText2.Length; t++)
+                {
+                    creditTextToChar = creditText2[t].ToCharArray();
+                    int renderablesCount = creditText2[t].Length;
+                    float itemSize = (width / renderablesCount) < height ? width / renderablesCount : height;
+                    for (int i = 0; i < renderablesCount; i++)
+                    {
+                        var tex = Font;
+                        int? texIndex = GetTexIndex(tex, creditTextToChar[i]);
+                        if (texIndex == null)
+                        {
+                            continue;
+                        }
+
+                        var entryCreditText2 = new GenericGUIRenderable()
+                        {
+                            Scale = new Vector2(itemSize / 8f, itemSize / 8f),
+                            Position = new Vector2(xCenter + (i * (itemSize / 6f)) - 60, yCreditText - (t * 25)),
+                            Texture = tex,
+                            Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
+                        };
+                        gameoverEntries.Add(entryCreditText2);
+                    }
+                }
+
+                // Credit Text 3 Audio
+                for (int t = 0; t < creditText3.Length; t++)
+                {
+                    creditTextToChar = creditText3[t].ToCharArray();
+                    int renderablesCount = creditText3[t].Length;
+                    float itemSize = (width / renderablesCount) < height ? width / renderablesCount : height;
+                    for (int i = 0; i < renderablesCount; i++)
+                    {
+                        var tex = Font;
+                        int? texIndex = GetTexIndex(tex, creditTextToChar[i]);
+                        if (texIndex == null)
+                        {
+                            continue;
+                        }
+
+                        if (!creditText3[t].StartsWith("audio"))
+                        {
+                            var entryCreditText3 = new GenericGUIRenderable()
                             {
-                                Scale = new Vector2(itemSize / 14f, itemSize / 14f),
-                                Position = new Vector2(xCenter + (i * (itemSize / 8f)) - 200, yCreditText - (t * 30)),
+                                Scale = new Vector2(itemSize / 5f, itemSize / 5f),
+                                Position = new Vector2(xCenter + (i * (itemSize / 4f)) + 55, yCreditText - (t * 15)),
                                 Texture = tex,
                                 Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
                             };
-                            gameoverEntries.Add(entryCreditText);
+                            gameoverEntries.Add(entryCreditText3);
+                        }
+                        else
+                        {
+                            var entryCreditText3 = new GenericGUIRenderable()
+                            {
+                                Scale = new Vector2(itemSize / 8f, itemSize / 8f),
+                                Position = new Vector2(xCenter + (i * (itemSize / 6f)) + 80, yCreditText - (t * 25)),
+                                Texture = tex,
+                                Coordinates = tex.GetTexCoordsOfIndex((int)texIndex),
+                            };
+                            gameoverEntries.Add(entryCreditText3);
                         }
                     }
-
-                    // Wait seconds
                 }
+
             }
 
             return gameoverEntries;

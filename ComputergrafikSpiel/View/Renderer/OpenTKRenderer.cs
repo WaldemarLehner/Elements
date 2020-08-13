@@ -21,7 +21,7 @@ namespace ComputergrafikSpiel.View.Renderer
             this.Camera = camera ?? throw new ArgumentNullException(nameof(camera));
             this.Camera.AttachRenderer(this);
             this.TextureData = new Dictionary<string, TextureData>();
-            this.Debug = DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData; //0
+            this.Debug = 0; // DebugMask.Mask.DebugData | DebugMask.Mask.IndependentDebugData;
         }
 
         public bool Active { get; private set; } = true;

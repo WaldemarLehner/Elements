@@ -1,5 +1,6 @@
 ﻿using WMPLib;
 
+// Soundtrack CC License: https://creativecommons.org/2008/09/22/castle-crashers-soundtrack-released-under-cc-license/
 namespace ComputergrafikSpiel.Model.Soundtrack
 {
     public class Soundloader
@@ -20,7 +21,7 @@ namespace ComputergrafikSpiel.Model.Soundtrack
         // Soundtrack der Dungeons
         public void StartDungeon1Music()
         {
-            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Jumper.mp3";
+            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Factory.mp3";
             this.mediaPlayer.controls.play();
         }
 
