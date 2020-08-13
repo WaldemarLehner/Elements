@@ -7,7 +7,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
     {
         IPlayerState Current { get; }
 
-        void Hurt(ref bool died, int damage);
+        void Hurt(int damage);
 
         bool Heal();
 

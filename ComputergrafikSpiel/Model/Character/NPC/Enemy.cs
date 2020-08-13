@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using ComputergrafikSpiel.Model.Character.NPC.Interfaces;
 using ComputergrafikSpiel.Model.Character.Player;
@@ -71,6 +72,21 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public void SetScale()
         {
             this.scale = this.Scale;
+        }
+
+        public ColliderLayer.Layer SetEnemyCollider(bool air)
+        {
+            ColliderLayer.Layer collisionLayer;
+            if (air)
+            {
+                collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Enemy;
+            }
+            else
+            {
+                collisionLayer = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water | ColliderLayer.Layer.Enemy;
+            }
+
+            return collisionLayer;
         }
 
         public void SetEnemyStats(int maxHealth, float movementSpeed, int attackDamage)
@@ -210,6 +226,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             if (random.Next(0, 100) <= chance)
             {
                 var whichOne = random.Next(0, 5);
+
                 if (whichOne <= 2)
                 {
                     (Scene.Scene.Current.Model as Model).SpawnInteractable(PlayerEnum.Stats.Heal, this.Position.X, this.Position.Y);

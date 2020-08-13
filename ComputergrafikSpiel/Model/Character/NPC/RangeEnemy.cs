@@ -11,8 +11,6 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public RangeEnemy(Vector2 startposition, string texture, WorldEnum.Type type)
         {
             this.Position = startposition;
-            var collisionMaskAir = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall;
-            var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
             this.Variant = EnemyEnum.Variant.Range;
 
             switch (type)
@@ -21,7 +19,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.SetEnemyStats(20, 70, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Water/" + texture);
                     this.BloodColorHue = 37f;
-                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
+                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, this.SetEnemyCollider(true));
                     this.Air = true;
                     this.ProjectileHue = (202f, 223f);
                     this.BulletTexture = "Water";
@@ -30,7 +28,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.SetEnemyStats(40, 75, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Earth/" + texture);
                     this.BloodColorHue = 179f;
-                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
+                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, this.SetEnemyCollider(true));
                     this.Air = true;
                     this.ProjectileHue = (178f, 200f);
                     this.BulletTexture = "BlueBlast";
@@ -39,7 +37,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.SetEnemyStats(60, 80, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Fire/" + texture);
                     this.BloodColorHue = 0f;
-                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMaskAir);
+                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, this.SetEnemyCollider(true));
                     this.Air = true;
                     this.ProjectileHue = (0f, 30f);
                     this.BulletTexture = "Laser";
@@ -48,7 +46,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.SetEnemyStats(80, 85, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Enemy/Air/" + texture);
                     this.BloodColorHue = 119f;
-                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
+                    this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, this.SetEnemyCollider(false));
                     this.Air = false;
                     this.ProjectileHue = (96f, 120f);
                     this.BulletTexture = "Flask";

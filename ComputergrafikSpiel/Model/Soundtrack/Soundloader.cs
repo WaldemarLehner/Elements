@@ -1,5 +1,6 @@
 ﻿using WMPLib;
 
+// Soundtrack CC License: https://creativecommons.org/2008/09/22/castle-crashers-soundtrack-released-under-cc-license/
 namespace ComputergrafikSpiel.Model.Soundtrack
 {
     public class Soundloader
@@ -13,14 +14,14 @@ namespace ComputergrafikSpiel.Model.Soundtrack
 
         public void StartSafeMusic()
         {
-            this.mediaPlayer.URL = "./Content/Soundtrack/Spanish_Waltz.mp3";
+            this.mediaPlayer.URL = "./Content/Soundtrack/Creepy_Frog.mp3";
             this.mediaPlayer.controls.play();
         }
 
         // Soundtrack der Dungeons
         public void StartDungeon1Music()
         {
-            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Jumper.mp3";
+            this.mediaPlayer.URL = "./Content/Soundtrack/Dungeons/Factory.mp3";
             this.mediaPlayer.controls.play();
         }
 
@@ -71,6 +72,16 @@ namespace ComputergrafikSpiel.Model.Soundtrack
         {
             this.mediaPlayer.URL = "./Content/Soundtrack/Orange_Kiss.mp3";
             this.mediaPlayer.controls.play();
+        }
+
+        public void MuteMusik()
+        {
+            this.mediaPlayer.settings.mute = true;
+        }
+
+        public void UnmuteMusik()
+        {
+            this.mediaPlayer.settings.mute = false;
         }
 
         public void StopMusik()

@@ -29,9 +29,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
         private readonly PlayerAnimationSystem playerAnimationSystem = new PlayerAnimationSystem(5);
 
         private bool run = false;
-        private bool died = false;
         private Vector2 directionXY = Vector2.Zero;
         private bool updateDisabled = false;
+        private bool muteButtonOnScreen = false;
 
         public Player()
         {
@@ -126,6 +126,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
             {
                 this.playerAnimationSystem.UpdateIsMoving(true);
             }
+
             this.playerActionList.Clear();
         }
 
@@ -136,11 +137,9 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 return;
             }
 
-            this.died = false;
-
             if (!this.Invulnerable)
             {
-                this.playerStateManager.Hurt(ref this.died, damage);
+                this.playerStateManager.Hurt(damage);
 
                 // Spawn particles
                 EmitParticleOnceOptions opt = EmitParticleOnceOptions.ProjectileHit;
@@ -165,17 +164,26 @@ namespace ComputergrafikSpiel.Model.Character.Player
 
         public void Update(float dtime)
         {
-            if (this.updateDisabled == true)
+            // Setzt Mutebutton einmalig auf den Screen zu Beginn
+            if (!this.muteButtonOnScreen)
+            {
+                (Scene.Scene.Current.Model as Model).TriggerToggleMuteButton();
+                this.muteButtonOnScreen = true;
+            }
+
+            if (this.updateDisabled)
             {
                 return;
             }
 
-            if (this.died || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)))
+            if (this.CurrentHealth <= 0 || (Scene.Scene.Current.NpcList.Count == 0 && ((Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel == 40)))
             {
+                Scene.Scene.Current.RemoveProjectiles();
                 Scene.Scene.Current.Model.SceneManager.Play.StartGameoverMusic();
                 (Scene.Scene.Current.Model as Model).TriggerEndscreenButtons();
                 this.updateDisabled = true;
             }
+
 
             this.LastPosition = this.Position;
             if (Scene.Scene.Current.Model.InputState != null)
@@ -264,7 +272,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
         public void ChangePosition()
         {
             // Change Position to Left Door
-            this.Position = new Vector2(45, 272);
+            this.Position = new Vector2(55, 272);
         }
 
         private void HandlePlayerAction(IInputState inputState, PlayerEnum.PlayerActions playerAction)

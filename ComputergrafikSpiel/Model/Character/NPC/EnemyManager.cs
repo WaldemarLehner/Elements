@@ -34,8 +34,9 @@ namespace ComputergrafikSpiel.Model.Character.NPC
             }
         }
 
-        public void BossSpawner(Vector2 spawnPosition, WorldEnum.Type type)
+        public void BossSpawner(WorldEnum.Type type)
         {
+            Vector2 spawnPosition = new Vector2(550, 272);
             switch (type)
             {
                 case WorldEnum.Type.Water:

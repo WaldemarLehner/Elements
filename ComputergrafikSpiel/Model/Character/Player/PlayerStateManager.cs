@@ -35,28 +35,21 @@ namespace ComputergrafikSpiel.Model.Character.Player
             this.current.Currency += count;
         }
 
-        public void Hurt(ref bool died, int damage)
+        public void Hurt(int damage)
         {
             if (this.current.Health > 0)
             {
                 this.current.Health -= (uint)damage;
             }
 
-            if (this.current.Health == 0)
-            {
-                died = true;
-            }
-            else
-            {
-                died = false;
-            }
+            return;
         }
 
         public IList<UpgradeOption> GetUpgradeOptions(uint level)
         {
             List<UpgradeOption> options = new List<UpgradeOption>();
             var heartPrice = this.options.ExtraHeartPriceFunction(this.currentLevel.maxhealth);
-            if (heartPrice <= this.current.Currency)
+            if (heartPrice <= this.current.Currency && Scene.Scene.Player.MaxHealth < 12)
             {
                 options.Add(new UpgradeOption(PlayerEnum.Stats.MaxHealth, this.current.MaxHealth, this.current.MaxHealth + 1, heartPrice));
             }
@@ -161,6 +154,7 @@ namespace ComputergrafikSpiel.Model.Character.Player
                 case PlayerEnum.Stats.MaxHealth:
                     var healthPrice = this.options.ExtraHeartPriceFunction(this.currentLevel.maxhealth++);
                     this.current.MaxHealth++;
+                    this.Heal();
                     this.current.Currency -= healthPrice;
                     return true;
                 default:

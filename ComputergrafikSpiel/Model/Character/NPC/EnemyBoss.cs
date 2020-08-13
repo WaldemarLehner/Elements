@@ -11,8 +11,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
         public EnemyBoss(Vector2 startposition, string texture, WorldEnum.Type type)
         {
             this.Position = startposition;
-            var collisionMask = ColliderLayer.Layer.Bullet | ColliderLayer.Layer.Player | ColliderLayer.Layer.Wall | ColliderLayer.Layer.Water;
-            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 15, ColliderLayer.Layer.Enemy, collisionMask);
+            this.Collider = new CircleOffsetCollider(this, Vector2.Zero, 25, ColliderLayer.Layer.Enemy, this.SetEnemyCollider(false));
             this.Variant = EnemyEnum.Variant.Boss;
 
             switch (type)
@@ -26,7 +25,7 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BulletTexture = "Leaf";
                     break;
                 case WorldEnum.Type.Earth:
-                    this.SetEnemyStats(300, 75, 2);
+                    this.SetEnemyStats(300, 75, 1);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 51f;
                     this.ProjectileHue = (64f, 47f);
@@ -34,19 +33,19 @@ namespace ComputergrafikSpiel.Model.Character.NPC
                     this.BulletTexture = "Stone";
                     break;
                 case WorldEnum.Type.Fire:
-                    this.SetEnemyStats(400, 80, 3);
+                    this.SetEnemyStats(400, 80, 2);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 25f;
                     this.ProjectileHue = (0f, 50f);
-                    this.AttackCooldown = 1f;
+                    this.AttackCooldown = 1.3f;
                     this.BulletTexture = "FireBlast";
                     break;
                 case WorldEnum.Type.Air:
-                    this.SetEnemyStats(600, 85, 4);
+                    this.SetEnemyStats(600, 85, 3);
                     this.Texture = new TextureLoader().LoadTexture("NPC/Boss/" + texture);
                     this.BloodColorHue = 0f;
                     this.ProjectileHue = (261f, 295f);
-                    this.AttackCooldown = .5f;
+                    this.AttackCooldown = 1.2f;
                     this.BulletTexture = "Scythe";
                     break;
                 default: break;

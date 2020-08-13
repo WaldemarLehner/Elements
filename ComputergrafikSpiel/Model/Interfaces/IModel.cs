@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Overlay.EndScreen;
+using ComputergrafikSpiel.Model.Overlay.ToggleMute;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.World;
@@ -20,6 +21,8 @@ namespace ComputergrafikSpiel.Model.Interfaces
         UpgradeScreen UpgradeScreen { get; }
 
         EndScreen EndScreen { get; set; }
+
+        ToggleMute ToggleMute { get; set; }
 
         ISceneManager SceneManager { get; set; }
 

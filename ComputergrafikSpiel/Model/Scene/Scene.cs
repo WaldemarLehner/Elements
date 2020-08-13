@@ -67,6 +67,8 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public IEnumerable<IEntity> Entities => this.EntitiesList;
 
+        public IEnumerable<IEntity> Projectiles => this.ProjectileList;
+
         public IEnumerable<ITrigger> Trigger => this.TriggerList;
 
         public IScene TopScene { get; private set; }
@@ -102,6 +104,7 @@ namespace ComputergrafikSpiel.Model.Scene
                     this.Particles,
                     this.NPCs,
                     this.Entities,
+                    this.Projectiles,
                     this.Trigger,
                 };
 
@@ -113,6 +116,11 @@ namespace ComputergrafikSpiel.Model.Scene
                 if (Scene.Player != null)
                 {
                     enumerable.Add(Scene.Player);
+                }
+
+                if (this.Model.ToggleMute != null)
+                {
+                    enumerable.AddRange(this.Model.ToggleMute.Renderables);
                 }
 
                 if (this.Model.UpgradeScreen != null)
@@ -146,6 +154,8 @@ namespace ComputergrafikSpiel.Model.Scene
         public List<INonPlayerCharacter> NpcList { get; } = new List<INonPlayerCharacter>();
 
         private List<IEntity> EntitiesList { get; } = new List<IEntity>();
+
+        private List<IEntity> ProjectileList { get; } = new List<IEntity>();
 
         private List<ITrigger> TriggerList { get; } = new List<ITrigger>();
 
@@ -194,6 +204,10 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.NpcList.Add((INonPlayerCharacter)entity ?? throw new ArgumentNullException(nameof(entity)));
             }
+            else if (entity is Projectile)
+            {
+                this.ProjectileList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
+            }
             else
             {
                 this.EntitiesList.Add(entity ?? throw new ArgumentNullException(nameof(entity)));
@@ -221,6 +235,11 @@ namespace ComputergrafikSpiel.Model.Scene
             {
                 this.NpcList.Remove((INonPlayerCharacter)entity);
             }
+
+            if (entity is Projectile)
+            {
+                this.ProjectileList.Remove((Projectile)entity);
+            }
             else if (entity is Trigger)
             {
                 this.TriggerList.Remove((ITrigger)entity);
@@ -231,6 +250,15 @@ namespace ComputergrafikSpiel.Model.Scene
                 {
                     this.EntitiesList.Remove(entity);
                 }
+            }
+        }
+
+        public void RemoveProjectiles()
+        {
+            foreach (Projectile projectile in this.ProjectileList.ToList())
+            {
+                this.ColliderManager.RemoveEntityCollidable(projectile);
+                this.ProjectileList.Remove(projectile);
             }
         }
 
@@ -301,6 +329,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
                 if (!(this.Model as Model).FirstScene)
                 {
+                    this.RemoveProjectiles();
                     (this.Model as Model).OnSceneCompleted();
                 }
 
@@ -318,6 +347,11 @@ namespace ComputergrafikSpiel.Model.Scene
             foreach (var trigger in this.TriggerList.ToList())
             {
                 this.RemoveTrigger(trigger);
+            }
+
+            foreach (var projectile in from i in this.ProjectileList.ToList() where i is Interactable select i as Interactable)
+            {
+                this.RemoveObject(projectile);
             }
 
             foreach (var interactable in from i in this.EntitiesList.ToList() where i is Interactable select i as Interactable)

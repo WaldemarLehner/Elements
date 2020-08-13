@@ -8,6 +8,7 @@ using ComputergrafikSpiel.Model.Entity;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.Interfaces;
 using ComputergrafikSpiel.Model.Overlay.EndScreen;
+using ComputergrafikSpiel.Model.Overlay.ToggleMute;
 using ComputergrafikSpiel.Model.Overlay.UpgradeScreen;
 using ComputergrafikSpiel.Model.Scene;
 using ComputergrafikSpiel.Model.Triggers;
@@ -18,6 +19,8 @@ namespace ComputergrafikSpiel.Model
 {
     public class Model : IModel
     {
+        private bool muted = false;
+
         internal Model()
         {
             this.SceneManager = new SceneManager(this);
@@ -38,6 +41,8 @@ namespace ComputergrafikSpiel.Model
 
         public EndScreen EndScreen { get; set; }
 
+        public ToggleMute ToggleMute { get; set; }
+
         public IInputState InputState { get; private set; }
 
         /// <summary>
@@ -54,6 +59,11 @@ namespace ComputergrafikSpiel.Model
             if (this.EndScreen != null)
             {
                 this.EndScreen.Update(dTime);
+            }
+
+            if (this.ToggleMute != null)
+            {
+                this.ToggleMute.Update(dTime);
             }
 
             Scene.Scene.Current.Update(dTime);
@@ -121,6 +131,24 @@ namespace ComputergrafikSpiel.Model
             this.EndScreen = new EndScreen(10, centerV, width);
         }
 
+        public void TriggerToggleMuteButton()
+        {
+            if (this.ToggleMute != null)
+            {
+                this.ToggleMute = null;
+            }
+
+            if (this.muted)
+            {
+                this.ToggleMute = new ToggleMute(PlayerEnum.Stats.Unmute);
+                this.muted = false;
+                return;
+            }
+
+            this.ToggleMute = new ToggleMute(PlayerEnum.Stats.Mute);
+            this.muted = true;
+        }
+
         public List<(int x, int y)> SpawningAreaEnemys(int min, int max, IWorldScene world)
         {
             Random random = new Random();
@@ -149,11 +177,10 @@ namespace ComputergrafikSpiel.Model
             EnemyManager enemyManager = new EnemyManager();
             foreach (var (x, y) in this.SpawningAreaEnemys(min, max, world))
             {
-                Console.WriteLine("X: " + x + " Y: " + y);
                 var position = new Vector2(x + .5f, y + .5f) * world.SceneDefinition.TileSize;
                 if (boss)
                 {
-                    enemyManager.BossSpawner(position, enemytype);
+                    enemyManager.BossSpawner(enemytype);
                 }
                 else
                 {
