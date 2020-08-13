@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
 using ComputergrafikSpiel.Model.EntitySettings.Texture.Interfaces;
@@ -21,7 +22,7 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
             return $"{valueBefore.Truncate()} > {valueAfter.Truncate()} ";
         }
 
-        private static string Truncate(this float value) => string.Format("{0:0.00}", value);
+        private static string Truncate(this float value) => string.Format(CultureInfo.InvariantCulture, "{0:0.00}", value);
 
         private static string GetName(PlayerEnum.Stats s)
         {

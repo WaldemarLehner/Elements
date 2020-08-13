@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using ComputergrafikSpiel.Model.Character.Player;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Texture;
@@ -45,7 +46,7 @@ namespace ComputergrafikSpiel.Model.Overlay.UpgradeScreen
             this.size = buttonSize;
             this.stat = upgradeOption.Stat;
             string mainText = UpgradeScreenButtonTextureLookupGenerator.MainText(upgradeOption);
-            string priceText = upgradeOption.Price.ToString();
+            string priceText = upgradeOption.Price.ToString(CultureInfo.InvariantCulture);
 
             // Button Setup:
             // Icon Name ValueOld + Change > ValueNew MoneyIconSmall Price

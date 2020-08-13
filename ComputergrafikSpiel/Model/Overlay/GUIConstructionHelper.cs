@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using ComputergrafikSpiel.Model.Character.Player.Interfaces;
 using ComputergrafikSpiel.Model.EntitySettings.Interfaces;
@@ -80,7 +81,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             }
             else
             {
-                dungeonInfo = "dungeon: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeon.ToString() + "  room: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeonRoom.ToString();
+                dungeonInfo = "dungeon: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeon.ToString(CultureInfo.InvariantCulture) + "  room: " + Scene.Scene.Current.Model.SceneManager.CurrentDungeonRoom.ToString(CultureInfo.InvariantCulture);
             }
 
             int renderablesCount = dungeonInfo.Length;
@@ -115,7 +116,7 @@ namespace ComputergrafikSpiel.Model.Overlay
             // Get bounds of GUI Area of Scene.
             (float top, float bottom, float left, _, float width, float height) = GenerateCoinGUIBounds(sceneDefinition.SceneDefinition.TileSize, sceneDefinition.WorldSceneBounds);
 
-            string moneyCount = player.PlayerData.currency.ToString() + "$";
+            string moneyCount = player.PlayerData.currency.ToString(CultureInfo.InvariantCulture) + "$";
             int renderablesCount = moneyCount.Length;
             float itemSize = (width / renderablesCount) < height ? width / renderablesCount : height;
 
@@ -146,7 +147,7 @@ namespace ComputergrafikSpiel.Model.Overlay
         private static (float top, float bottom, float left, float right, float width, float height) GenerateCoinGUIBounds(int tileSize, (float top, float bottom, float left, float right) worldSceneBounds)
         {
             float left = worldSceneBounds.right - (tileSize * 3);
-            float right = worldSceneBounds.right;
+            float right = worldSceneBounds.right - tileSize;
             float top = worldSceneBounds.top;
             float bottom = top - tileSize;
             float width = right - left;
