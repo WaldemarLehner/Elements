@@ -144,6 +144,7 @@
     <Compile Include="Model\Character\Player\InputController.cs" />
     <Compile Include="Model\Character\Player\IPlayerState.cs" />
     <Compile Include="Model\Character\Player\IPlayerStateManager.cs" />
+    <Compile Include="Model\Character\Player\PlayerAnimationSystem.cs" />
     <Compile Include="Model\Character\Player\PlayerStateManager.cs" />
     <Compile Include="Model\Character\Player\PlayerStateOptions.cs" />
     <Compile Include="Model\Character\Player\PlayerStateOptionsDefaultFunctions.cs" />
@@ -493,6 +494,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Obstacle\Vase.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\PlayerTile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\PlayerWalk.png">

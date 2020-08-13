@@ -255,7 +255,11 @@ namespace ComputergrafikSpiel.Model.Scene
 
         public void RemoveProjectiles()
         {
-            this.ProjectileList.Clear();
+            foreach (Projectile projectile in this.ProjectileList.ToList())
+            {
+                this.ColliderManager.RemoveEntityCollidable(projectile);
+                this.ProjectileList.Remove(projectile);
+            }
         }
 
         public void SpawnParticle(IParticle particle) => this.Particles.Add(particle ?? throw new ArgumentNullException(nameof(particle)));
@@ -325,6 +329,7 @@ namespace ComputergrafikSpiel.Model.Scene
 
                 if (!(this.Model as Model).FirstScene)
                 {
+                    this.RemoveProjectiles();
                     (this.Model as Model).OnSceneCompleted();
                 }
 

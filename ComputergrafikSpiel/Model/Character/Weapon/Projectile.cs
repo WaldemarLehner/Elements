@@ -18,7 +18,7 @@ namespace ComputergrafikSpiel.Model.Character.Weapon
         internal Projectile(int attackDamage, Vector2 direction, float ttl, float bulletSize, bool player, Vector2 position, string texture, (float, float) hue)
         {
             this.AttackDamage = attackDamage;
-            this.Position = new Vector2(position.X, position.Y - 5.5f); // Lowered position to spawn bullet on pistol level
+            this.Position = new Vector2(position.X, position.Y - 12f); // Lowered position to spawn bullet on pistol level
             this.Direction = direction;
             this.TTL = ttl;
             this.Texture = new TextureLoader().LoadTexture("Projectile/" + texture);
