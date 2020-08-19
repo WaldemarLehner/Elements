@@ -126,7 +126,7 @@ namespace ComputergrafikSpiel.Model.Scene
         {
             if (this.Model.Muted)
             {
-                this.Play.MuteMusik();
+                this.Play.MuteMusic();
             }
 
             this.elementType = WorldEnum.Type.Safezone;

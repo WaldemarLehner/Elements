@@ -104,12 +104,12 @@ namespace ComputergrafikSpiel.Model.Overlay.ToggleMute
 
                         if (this.toggleitem.Equals(PlayerEnum.Stats.Mute))
                         {
-                            Scene.Scene.Current.Model.SceneManager.Play.MuteMusik();
+                            Scene.Scene.Current.Model.SceneManager.Play.MuteMusic();
                             Scene.Scene.Current.Model.Muted = true;
                         }
                         else if (this.toggleitem.Equals(PlayerEnum.Stats.Unmute))
                         {
-                            Scene.Scene.Current.Model.SceneManager.Play.UnmuteMusik();
+                            Scene.Scene.Current.Model.SceneManager.Play.UnmuteMusic();
                             Scene.Scene.Current.Model.Muted = false;
                         }
 
