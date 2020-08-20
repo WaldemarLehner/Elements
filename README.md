@@ -3,7 +3,8 @@
 
 Project: Elements is a 2D Rogue-Like. The game's goal is completing all rooms by defeating the enemies in it. After completing a room the player can purchase a powerup
 
-![Screenshot](https://i.imgur.com/jzWjCHu.png)
+![Screenshot](https://i.imgur.com/06rzDMw.png)
+[Trailer](https://www.youtube.com/watch?v=IAqc7bcY9iM)
 
 # Controls
 
