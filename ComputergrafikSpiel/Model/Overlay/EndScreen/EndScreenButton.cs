@@ -146,7 +146,7 @@ namespace ComputergrafikSpiel.Model.Overlay.EndScreen
                             (Scene.Scene.Current.Model as Model).SceneManager.CurrentDungeon = 0;
                             (Scene.Scene.Current.Model as Model).SceneManager.CurrentDungeonRoom = 0;
                             (Scene.Scene.Current.Model as Model).SceneManager.CurrentStageLevel = 0;
-                            (Scene.Scene.Current.Model as Model).SceneManager.Play.StopMusik();
+                            (Scene.Scene.Current.Model as Model).SceneManager.Play.StopMusic();
                             (Scene.Scene.Current.Model as Model).SceneManager = new SceneManager(Scene.Scene.Current.Model);
                             (Scene.Scene.Current.Model as Model).SceneManager.SetSceneTexturesToSafeZone();
                             (Scene.Scene.Current.Model as Model).SceneManager.InitializeFirstScene();
